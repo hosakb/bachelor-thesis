@@ -1,0 +1,64 @@
+<body>
+    <h2>Register User</h2>
+    <form action="/admin/user-registration" method="post">
+        <div>
+            <label for="firstName">First Name</label>
+            <input type="text" name="firstName" required>
+        </div>    
+        <div>
+            <label for="lastName">Last Name</label>
+            <input type="text" name="lastName" required>
+        </div>    
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" required>
+        </div>    
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+        </div>
+        <div>
+            <label for="password2">Please reenter password:</label>
+            <input type="password" name="password2" required>
+        </div>
+        <input type="submit" value="Create">
+    </form>
+
+    <ul>
+        <% if(typeof errors != 'undefined') { %>
+            <% errors.forEach( error => {%>
+        <li><%= error.message %></li>
+        <% })}; %>
+    </ul>
+
+    <br>
+
+    <h2>Register Startup</h2>
+    <form action="/admin/startup-registration" method="post">
+        <div>
+            <label for="name">Startup Name</label>
+            <input type="text" name="name" id="name" required>
+        </div>    
+        <div>
+            <label for="phase">Investment Phase</label>
+            <select name="phase" id="phase" required>
+                <option value="seed">Seed Phase</option>
+                <option value="startup">Startup Phase</option>
+                <option value="first_stage">First Stage Phase</option>
+                <option value="second_stage">Second Stage Phase</option>
+                <option value="third_stage">Third Stage Phase</option>
+                <option value="later">Later Stage Phase</option>
+            </select>
+        </div>
+        <input type="submit" value="Create">
+    </form>
+    <br>
+    <h2>Register Fund</h2>
+    <form action="/admin/fund-registration" method="post">
+        <div>
+            <label for="name" >Fund Name</label>
+            <input type="text" name="name" id="name" required>
+        </div>    
+        <input type="submit" value="Create">
+    </form>
+</body>
