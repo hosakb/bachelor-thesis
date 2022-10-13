@@ -1,0 +1,11 @@
+body {
+    background-color: rgb(60, 72, 72);
+    font-size: 26px;
+}
+
+.wrapper {
+    width: 700px;
+    margin: 0 auto;
+    background-color: gray;
+    padding: 10px;
+}

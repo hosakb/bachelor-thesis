@@ -18,24 +18,23 @@ CREATE TABLE
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     type VARCHAR(255) NOT NULL,
     fund_of_fund UUID,
-
     FOREIGN KEY(fund_of_fund) REFERENCES fund(id)
-); 
+  );
 
 CREATE TABLE
   IF NOT EXISTS fund_startup_map (
     id UUID NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
     fund_id UUID NOT NULL,
     startup_id UUID NOT NULL,
-    
     FOREIGN KEY(fund_id) REFERENCES fund(id),
     FOREIGN KEY(startup_id) REFERENCES startup(id)
-);
+  );
 
 CREATE TABLE
   IF NOT EXISTS users (
     id UUID NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
-    name VARCHAR(255),
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(255) NOT NULL,
@@ -43,7 +42,6 @@ CREATE TABLE
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     startup uuid,
     fund uuid,
-
     FOREIGN KEY(startup) REFERENCES startup(id),
-     FOREIGN KEY(fund) REFERENCES fund(id)
+    FOREIGN KEY(fund) REFERENCES fund(id)
   );

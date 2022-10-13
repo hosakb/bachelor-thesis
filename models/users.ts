@@ -1,23 +1,26 @@
-// import query from './config/db';
-// const bcrypt = require("bcryptjs")
+import pool from "../config/db";
 
+function getRole(email: string, cb: any): void {
+    pool.query(
+        `SELECT role FROM users
+          WHERE email = $1`,
+        [email],
+        (err, result) => {
+          
+          if (err) {
+            throw new Error("Failed query the user role after login. Error: " + err);
+          }
 
-// const createUser = async (email: string, password: string ) => {
-//   const salt = await bcrypt.genSalt(10);
-//   const hash = await bcrypt.hash(password, salt);
- 
-//   const data = await query(
-//     "INSERT INTO users(username, password) VALUES ($1, $2) RETURNING id, email, password",
-//     [email, hash], 
-//   );
- 
-//   if (data.rowCount == 0) return false;
-//   return data.rows[0];
-// }
+          if (result.rowCount > 1) {
+            throw new Error("To many roles for user with mail: " + email);
+          } 
 
-// const matchPassword = async (password: string, hashPassword: string) => {
-//   const match = await bcrypt.compare(password, hashPassword);
-//   return match
-// };
+          if (result.rows[0].role === undefined) {
+            throw new Error("Failed query the user role after login. User role does not exist.");
+          } 
 
-// module.exports = { createUser, matchPassword };
+          cb(result.rows[0].role);
+    })
+  };
+
+  export {getRole};

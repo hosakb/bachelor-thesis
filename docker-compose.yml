@@ -1,17 +1,18 @@
-version: '3.8'
+version: "3.8"
 
 services:
   postgres:
-    container_name: postgres_db
+    container_name: dashboard_db
     image: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: localhost
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-dashboard}
       PGDATA: /data/postgres
     volumes:
-       - postgres:/data/postgres
+      - postgres:/data/postgres
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     networks:
       - postgres
     restart: unless-stopped
@@ -21,4 +22,4 @@ networks:
     driver: bridge
 
 volumes:
-    postgres:
+  postgres:
