@@ -1,11 +1,186 @@
 body {
-    background-color: rgb(60, 72, 72);
-    font-size: 26px;
+  background-color: rgb(60, 72, 72);
+  font-size: 26px;
 }
 
 .wrapper {
-    width: 700px;
-    margin: 0 auto;
-    background-color: gray;
-    padding: 10px;
+  width: 900px;
+  margin: 0 auto;
+  background-color: gray;
+  padding: 10px;
+}
+
+header,
+footer {
+  background-color: rgb(107, 113, 123);
+  padding: 20px;
+}
+
+/* TMP */
+.form-btn,
+.form-input {
+  float: right;
+}
+
+.submit {
+  width: 100px;
+  height: 10px;
+  margin: 0 auto;
+
+  padding: 10px;
+}
+/* Admin Onboarding */
+#startup-selection-parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgb(116, 116, 116);
+}
+.startup-selection-child {
+  display: inline-block;
+  padding: 1rem 1rem;
+  vertical-align: middle;
+  flex-grow: 1;
+}
+
+#startup-controls {
+  flex-grow: 0;
+}
+
+ul.startup-list {
+  width: 400px;
+  height: 150px;
+  overflow-y: auto;
+  border: 3px solid rgb(54, 48, 48);
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+li.startup-list-items {
+  justify-content: left;
+  display: flex;
+}
+
+/* List Select */
+ul.startup-list > li:nth-last-child(even) {
+  background-color: darkslategray;
+}
+
+.selected {
+  background: rgb(121, 105, 121);
+}
+
+ul.startup-list > li.selected:nth-last-child(even) {
+  background: rgb(121, 105, 121);
+}
+
+/*Pop-Ups*/
+.variable-pane {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 9999;
+}
+
+.variable-pane-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #e7e7e7;
+  padding: 1rem 1.5rem;
+  width: 70rem;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.show {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+/* Partners */
+
+#partner-selection-parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #e7e7e7;
+}
+
+#partner-selection-child {
+  display: inline-block;
+  padding: 1rem 1rem;
+  vertical-align: middle;
+  flex-grow: 1;
+}
+
+ul#partner-list {
+  width: 300px;
+  height: 150px;
+  overflow-y: scroll;
+  border: 3px solid rgb(54, 48, 48);
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* List Select */
+ul#partner-list > li:nth-last-child(even) {
+  background-color: darkslategray;
+}
+
+ul#partner-list > li.selected:nth-last-child(even) {
+  background: rgb(121, 105, 121);
+}
+
+/* Startup Form */
+
+#startup-users-parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #e7e7e7;
+}
+
+.startup-users-child {
+  display: inline-block;
+  padding: 1rem 1rem;
+  vertical-align: middle;
+  flex-grow: 1;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+}
+th {
+  background: #eee;
+}
+
+#startup-users {
+  overflow: auto;
+  height: 200px;
+}
+
+#startup-users thead th {
+  position: sticky;
+  top: 0;
 }

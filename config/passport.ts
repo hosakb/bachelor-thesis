@@ -1,7 +1,7 @@
 import passportLocal from "passport-local";
 import { PassportStatic } from "passport";
 import pool from "./db";
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
 
 const LocalStrategy = passportLocal.Strategy;
 
@@ -12,7 +12,7 @@ export default function initPassport(passport: PassportStatic) {
         usernameField: "email",
         passwordField: "password",
       },
-      
+
       (email: string, password: string, done) => {
         pool.query(
           `SELECT * FROM users WHERE email = $1`,
@@ -21,10 +21,10 @@ export default function initPassport(passport: PassportStatic) {
             if (err) {
               throw new Error("User authentication failed. " + err);
             }
-    
+
             if (results.rowCount > 0) {
               const user = results.rows[0];
-    
+
               bcrypt.compare(
                 password,
                 user.password,
@@ -32,7 +32,7 @@ export default function initPassport(passport: PassportStatic) {
                   if (err) {
                     throw new Error("User authentication failed. " + err);
                   }
-    
+
                   if (isMatch) {
                     return done(null, user);
                   } else {
