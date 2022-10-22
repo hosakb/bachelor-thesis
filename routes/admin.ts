@@ -26,19 +26,16 @@ interface User {
 }
 
 router.get("/", async (req, res) => {
-  
   let startups: Startup[];
   try {
+    const res: QueryResult<any> = await pool.query(
+      `SELECT name, stage FROM startup`
+    );
 
-    const res: QueryResult<any> = await pool.query(`SELECT name, stage FROM startup`);
-
-    startups = res.rows.map(row =>  {
-      return {id: row.id,
-      name: row.name,
-      stage: row.stage
-    }});
-  
-  } catch(err) {
+    startups = res.rows.map((row) => {
+      return { id: row.id, name: row.name, stage: row.stage };
+    });
+  } catch (err) {
     throw new Error(
       "Failed to fetch startups due to the following error: " + err
     );
@@ -135,16 +132,18 @@ router.post("/new-startup", async (req, res) => {
 
   req.flash("success_msg", "Successfully registered startup: " + name);
 
-  let assignedStartupUser: User[] = await Promise.all(startupUsers.map(async (user) => {
-    return {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      password: await bcrypt.hash(user.password, 10) as string,
-      email: user.email,
-      role: user.role,
-      startup: id
-    }
-  }));
+  let assignedStartupUser: User[] = await Promise.all(
+    startupUsers.map(async (user) => {
+      return {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        password: (await bcrypt.hash(user.password, 10)) as string,
+        email: user.email,
+        role: user.role,
+        startup: id,
+      };
+    })
+  );
 
   assignedStartupUser.forEach((user) => {
     pool.query(

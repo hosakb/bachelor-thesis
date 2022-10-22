@@ -1,9 +1,46 @@
-<header>
-    <a href="/">Dashboard</a>
-    <ul>
-        <li><a href="/logout">Logout</a></li>
-    </ul>
-</header>
-<body>
-    <div id="kpi">10000</div>  
-</body>
+<div class="cards">
+    <div class="card-single-dev">
+        <div>
+            <h3>
+                <%= locals.netProfitMargin %>
+            </h3>
+            <span>Net Profit Margin</span>
+        </div>
+        <div>
+            <span class="las la-clipboard"></span>
+        </div>
+    </div>
+    <div class="card-single-dev">
+        <div>
+            <h3>
+                <%= locals.cashFlowRate %>
+            </h3>
+            <span>Cash-Flow Rate</span>
+        </div>
+        <div>
+            <span class="las la-clipboard"></span>
+        </div>
+    </div>
+    <div class="card-single-dev">
+        <div>
+            <h3>
+                <%= locals.liquidity %>
+            </h3>
+            <span>Liquidity</span>
+        </div>
+        <div>
+            <span class="las la-clipboard"></span>
+        </div>
+    </div>
+    <div class="card-single-dev">
+        <canvas id="npm-chart"></canvas>
+    </div>
+    <div class="card-single-dev">
+        <canvas id="cfr-chart"></canvas>
+    </div>
+    <div class="card-single-dev">
+        <canvas id="liq-chart"></canvas>
+    </div>
+</div>
+<script src="/js/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

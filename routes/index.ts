@@ -6,7 +6,7 @@ import pool from "../config/db";
 const router: Router = express.Router();
 
 router.get("/", checkAuthenticated, (req, res) => {
-  res.render("index");
+  res.render("index", { layout: "../views/layouts/login.ejs" });
 });
 
 router.post(
@@ -45,7 +45,9 @@ router.post(
           case "admin":
             return res.redirect("/admin");
           case "gm":
-            return res.redirect("/dashboard");
+            return res.redirect(
+              "/dashboard/01041536-a76f-43a5-a3e1-c0e76f8acefa"
+            );
           case "startup":
             return res.redirect("/submit");
           default:
