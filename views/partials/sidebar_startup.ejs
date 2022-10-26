@@ -1,0 +1,22 @@
+<input type="checkbox" id="nav-toggle" checked>
+<div class="sidebar">
+    <div class="sidebar-brand">
+        <h1><a href=""><span class="las la-binoculars"></span><span></span></a></h1>
+    </div>
+    <div class="sidebar-menu">
+        <ul>
+            <li><a href="/dashboard" id="side-dashboard" <% if (page === "dashboard" ) { %>  class="active"<% }%>  ><span class="las la-chart-bar"></span>
+                <span>Dashboard</span></a>
+            </li>
+            <% if (!erp) { %>
+            <li><a href="/submit" id="side-submit" <% if (page === "submit" )  { %> class="active"<%  }%> ><span class="las la-cloud-upload-alt"></span>
+                <span>Submit</span></a>
+            </li>
+            <% }%>
+            <li><a href="/logout"><span class="las la-power-off"></span>
+                <span>Log Out</span></a>
+             </li>
+        </ul>
+    </div>
+</div>
+<script src="/js/sidebar.js"></script>

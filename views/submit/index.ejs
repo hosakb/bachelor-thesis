@@ -1,14 +1,61 @@
-<header>
-    <a href="/">Submit new KPIS</a>
-    <ul>
-        <li><a href="/logout">Logout</a></li>
-    </ul>
-</header>
 <body>
-    <div>KPI Upload</div>
-    <form action="/submit" enctype="multipart/form-data" method="post">
-        <input type="file" name="kpis" />
-        <input type="submit">  
-    </form>
-    <label name="success"><%= locals.success %></label>
+    <div class="submit-cards">
+        <div class="submit-card">
+            <h3>Manuel Input</h3>
+            <form action="/submit/form" method="get">
+                <div>
+                    <label for="npm">Net Profit Margin</label>
+                    <input type="number">
+                </div>
+                <div>
+                    <label for="cfr">Cash-Flow-Rate</label>
+                    <input type="number">
+                </div>
+                <div>
+                    <label for="liq">Liquidity</label>
+                    <input type="number">
+                </div>
+                <div>
+                    <input type="submit">
+                </div>
+            </form>
+        </div>
+        <div class="submit-card">
+            <h3>Upload Excel</h3>
+            <form action="/submit" enctype="multipart/form-data" method="post">
+                <input type="file" name="kpis" />
+                <input type="submit">  
+            </form>
+            <% if (locals.showData) { %>
+                <h4>Data</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Kpi</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td scope="row">Net Profit Margin</td>
+                            <td><% locals.npc %></td>
+                        </tr>
+                        <tr>
+                            <td scope="row">Cash Flow Rate</td>
+                            <td><% locals.cfr %></td>
+                        </tr>
+                        <tr>
+                            <td scope="row">Liquidity</td>
+                            <td><% locals.liq %></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <label>Data correct?</label>
+                <button>Yes</button>
+                <button>No</button>
+                <% } %>
+            <label name="success"><%= locals.success %></label>
+        </div>
+    </div>
+    
 </body>

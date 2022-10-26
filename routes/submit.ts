@@ -9,15 +9,14 @@ import fs from "fs";
 
 const router = express.Router();
 
-const date = new Date();
-const filename =
-  "kpis-" +
-  date.getFullYear() +
-  "-" +
-  date.getMonth() +
-  "-" +
-  date.getDate() +
-  ".xlsx";
+router.get("/:startupId", (req: Request, res: Response) => {
+  let page = "submit";
+  res.render("submit/index", { page,  erp: false, showData: false });
+});
+
+router.get("/", (req, res) => {
+  res.redirect("/submit/01041536-a76f-43a5-a3e1-c0e76f8acefa") // TODO: dynamic ID
+});
 
 const storage: StorageEngine = multer.diskStorage({
   destination: function (req: Request, file: Express.Multer.File, cb) {
@@ -47,18 +46,31 @@ const fileFilter = (
 };
 
 let upload = multer({ storage: storage, fileFilter: fileFilter });
-
-router.get("/", (req: Request, res: Response) => {
-  res.render("submit/index");
-});
-
 router.post("/", upload.single("kpis"), uploadFiles);
+
+
+const date = new Date();
+const filename =
+  "kpis-" +
+  date.getFullYear() +
+  "-" +
+  date.getMonth() +
+  "-" +
+  date.getDate() +
+  ".xlsx";
 
 function uploadFiles(req: Request, res: Response) {
   const schema = {
-    Burnrate: {
-      // JSON object property name.
-      prop: "burnrate",
+    NetProfitMargin: {
+      prop: "netProfitMargin",
+      type: Number,
+    },
+    CashFlowRate: {
+      prop: "cashFlowRate",
+      type: Number,
+    },
+    Liquidity: {
+      prop: "liquidity",
       type: Number,
     },
   };

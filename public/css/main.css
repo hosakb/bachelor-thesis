@@ -198,6 +198,23 @@ main {
   grid-gap: 1rem;
 }
 
+.submit-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 2rem;
+  margin-top: 1rem;
+}
+.submit-card {
+  backdrop-filter: blur(10px);
+  box-shadow: 5px 5px 4px 4px rgb(0 0 0 / 10%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: #fff;
+  padding: 1%;
+}
+
 @media only screen and (max-width: 1200px) {
   .sidebar {
     width: 70px;

@@ -14,12 +14,18 @@ let netProfitMarginTs: Object;
 let cashFlowRateTs: Object;
 let liquidityTs: Object;
 
+router.get("/", (req, res) => {
+  
+  res.redirect("/dashboard/01041536-a76f-43a5-a3e1-c0e76f8acefa")
+});
+
 router.get("/:startupId", (req, res) => {
-  console.log(req.netProfitMargin)
   res.render("dashboard/index", {
     netProfitMargin: req.netProfitMargin,
     cashFlowRate: req.cashFlowRate,
     liquidity: req.liquidity,
+    page: "dashboard",
+    erp: false
   });
 });
 
@@ -85,6 +91,3 @@ router.param("startupId", (req, res, next, startupId) => {
 });
 
 module.exports = router;
-
-
-[{"date":"2022-09-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-10-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-11-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-12-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"netProfitMargin":90},{"date":"2022-01-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"netProfitMargin":70},{"date":"2022-02-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"netProfitMargin":90},{"date":"2022-03-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70}, {"date":"2022-04-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-05-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"netProfitMargin":90},{"date":"2022-06-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"netProfitMargin":70},{"date":"2022-07-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"netProfitMargin":90},{"date":"2022-08-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70}]
