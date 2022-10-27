@@ -2,9 +2,9 @@
     <div class="card-single-kpi">
         <div>
             <h3>
-                <%= locals.netProfitMargin %> %
+                <%= locals.netProfitMargin %>
             </h3>
-            <span>Fund KPI I</span>
+            <span>Net Profit Margin</span>
         </div>
         <div>
             <span class="las la-clipboard"></span>
@@ -13,9 +13,9 @@
     <div class="card-single-kpi">
         <div>
             <h3>
-                <%= locals.cashFlowRate %> %
+                <%= locals.cashFlowRate %>
             </h3>
-            <span>Fund KPI II</span>
+            <span>Cash-Flow Rate</span>
         </div>
         <div>
             <span class="las la-clipboard"></span>
@@ -24,17 +24,23 @@
     <div class="card-single-kpi">
         <div>
             <h3>
-                <%= locals.liquidity %> %
+                <%= locals.liquidity %>
             </h3>
-            <span>Fund KPI III</span>
+            <span>Liquidity</span>
         </div>
         <div>
             <span class="las la-clipboard"></span>
         </div>
     </div>
-    <div class="card-single-table">
-        <div id="table" class="ag-theme-alpine"></div>
+    <div class="card-single-kpi">
+        <canvas id="npm-chart"></canvas>
+    </div>
+    <div class="card-single-kpi">
+        <canvas id="cfr-chart"></canvas>
+    </div>
+    <div class="card-single-kpi">
+        <canvas id="liq-chart"></canvas>
     </div>
 </div>
-<script src="/js/table/table.js"></script>
-<script src="/js/table/ag-grid-community.min.js"></script>
+<script src="/js/chart/chart.js"></script>
+<script src="/js/chart/chart.min.js"></script>

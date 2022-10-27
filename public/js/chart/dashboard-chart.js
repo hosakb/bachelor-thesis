@@ -17,9 +17,11 @@ window.onload = function () {
       const config = {
         type: "line",
         data: data,
-        options: {layout: {
-             autoPadding: true
-          }},
+        options: {
+          layout: {
+            autoPadding: true,
+          },
+        },
       };
 
       const myChart = new Chart(document.querySelector("#npm-chart"), config);
@@ -43,9 +45,11 @@ window.onload = function () {
       const config = {
         type: "line",
         data: data,
-        options: {layout: {
-             autoPadding: true
-          }},
+        options: {
+          layout: {
+            autoPadding: true,
+          },
+        },
       };
 
       const myChart = new Chart(document.querySelector("#cfr-chart"), config);
@@ -69,10 +73,11 @@ window.onload = function () {
       const config = {
         type: "line",
         data: data,
-        options: {layout: {
-            autoPadding: true
-
-          }},
+        options: {
+          layout: {
+            autoPadding: true,
+          },
+        },
       };
 
       const myChart = new Chart(document.querySelector("#liq-chart"), config);

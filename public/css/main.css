@@ -177,7 +177,7 @@ main {
   background: #fff;
 }
 
-.card-single-dev {
+.card-single-kpi {
   display: flex;
   justify-content: space-between;
   backdrop-filter: blur(10px);
@@ -189,6 +189,27 @@ main {
   border-radius: 10px;
   background: #fafafa; /* Color */
   grid-row: span 1;
+}
+
+.card-single-table {
+  display: flex ;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  box-shadow: 7px 5px 16px 1px rgb(82 82 82 / 40%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1.5rem;
+  border-radius: 10px;
+  background: #fafafa; /* Color */
+  grid-row: span 1; 
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+#table {
+  height: 15rem;
+  width: 75rem;
 }
 
 .view-grid {

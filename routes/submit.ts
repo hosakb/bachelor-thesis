@@ -11,11 +11,11 @@ const router = express.Router();
 
 router.get("/:startupId", (req: Request, res: Response) => {
   let page = "submit";
-  res.render("submit/index", { page,  erp: false, showData: false });
+  res.render("submit/index", { page, erp: false, showData: false });
 });
 
 router.get("/", (req, res) => {
-  res.redirect("/submit/01041536-a76f-43a5-a3e1-c0e76f8acefa") // TODO: dynamic ID
+  res.redirect("/submit/01041536-a76f-43a5-a3e1-c0e76f8acefa"); // TODO: dynamic ID
 });
 
 const storage: StorageEngine = multer.diskStorage({
@@ -47,7 +47,6 @@ const fileFilter = (
 
 let upload = multer({ storage: storage, fileFilter: fileFilter });
 router.post("/", upload.single("kpis"), uploadFiles);
-
 
 const date = new Date();
 const filename =
