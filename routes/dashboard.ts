@@ -11,6 +11,7 @@ interface Kpis {
 }
 
 let netProfitMarginTs: Object;
+1;
 let cashFlowRateTs: Object;
 let liquidityTs: Object;
 
@@ -19,12 +20,29 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:startupId", (req, res) => {
+  // TMP (fund) charts
   res.render("dashboard/index", {
+    netProfitMargin: 55,
+    cashFlowRate: 33,
+    liquidity: 66,
+    page: "dashboard",
+    erpOrFund: true,
+  });
+});
+
+router.post("/startup/", (req, res) => {
+  console.log(`${req.body.id}`);
+  res.setHeader('content-type', 'application/javascript');
+  res.redirect(`/dashboard/startup/${req.body.id}`);
+});
+
+router.get("/startup/:startupId/", (req, res) => {
+  res.render("dashboard/startup", {
     netProfitMargin: req.netProfitMargin,
     cashFlowRate: req.cashFlowRate,
     liquidity: req.liquidity,
     page: "dashboard",
-    erp: false,
+    erpOrFund: true,
   });
 });
 
@@ -56,8 +74,6 @@ router.param("startupId", (req, res, next, startupId) => {
       req.netProfitMargin = kpis[kpis.length - 1].netProfitMargin;
       req.cashFlowRate = kpis[kpis.length - 1].cashFlowRate;
       req.liquidity = kpis[kpis.length - 1].liquidity;
-
-      console.log(req.netProfitMargin);
 
       let months: string[] = [];
       let netProfitMargin: number[] = [];

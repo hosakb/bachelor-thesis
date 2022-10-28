@@ -192,8 +192,8 @@ main {
 }
 
 .card-single-table {
-  display: flex ;
-  justify-content: space-between;
+  display: flex;
+  justify-content: start;
   backdrop-filter: blur(10px);
   box-shadow: 7px 5px 16px 1px rgb(82 82 82 / 40%);
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -202,9 +202,8 @@ main {
   padding: 1.5rem;
   border-radius: 10px;
   background: #fafafa; /* Color */
-  grid-row: span 1; 
-  grid-column-start: 1;
-  grid-column-end: 3;
+  grid-row: span 1;
+  grid-column: 1 / -1;
 }
 
 #table {

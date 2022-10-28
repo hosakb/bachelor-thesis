@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/:startupId", (req: Request, res: Response) => {
   let page = "submit";
-  res.render("submit/index", { page, erp: false, showData: false });
+  res.render("submit/index", { page, erpOrFund: false, showData: false });
 });
 
 router.get("/", (req, res) => {
