@@ -32,7 +32,7 @@ router.get("/:startupId", (req, res) => {
 
 router.post("/startup/", (req, res) => {
   console.log(`${req.body.id}`);
-  res.setHeader('content-type', 'application/javascript');
+  res.setHeader("content-type", "application/javascript");
   res.redirect(`/dashboard/startup/${req.body.id}`);
 });
 

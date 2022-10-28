@@ -63,8 +63,7 @@ const gridOptions = {
 function onSelectionChanged() {
   const selectedRows = gridOptions.api.getSelectedRows();
 
-
-  console.log(selectedRows[0].id)
+  console.log(selectedRows[0].id);
 
   fetch("/dashboard/startup", {
     method: "POST",
@@ -72,7 +71,7 @@ function onSelectionChanged() {
       "Content-Type": "application/json",
     },
     redirect: "follow",
-    body: JSON.stringify({id: selectedRows[0].id}),
+    body: JSON.stringify({ id: selectedRows[0].id }),
   })
     .then((response) => {
       if (response.redirected) {
