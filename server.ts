@@ -31,12 +31,13 @@ app.use(flash());
 
 const indexRouter = require("./routes/index");
 const submitRouter = require("./routes/submit");
-const dashboardRouter = require("./routes/dashboard");
+const fundDashboardRouter = require("./routes/fund");
+const startupDashboardRouter = require("./routes/startup");
 const adminRouter = require("./routes/admin");
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
-app.set("layout", "layouts/layout");
+app.set("layout", "layouts/login");
 app.use(expressLayouts);
 
 app.use(express.static("public"));
@@ -49,7 +50,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
 app.use("/submit", submitRouter);
-app.use("/dashboard", dashboardRouter);
+app.use("/fund", fundDashboardRouter);
 app.use("/admin", adminRouter);
+app.use("/startup", startupDashboardRouter);
 
 app.listen(process.env.PORT || 3000);

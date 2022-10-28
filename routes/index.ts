@@ -46,10 +46,12 @@ router.post(
             return res.redirect("/admin");
           case "startup":
             return res.redirect(
-              "/dashboard/01041536-a76f-43a5-a3e1-c0e76f8acefa" // TODO: change to dynamic startup id
+              "/startup/01041536-a76f-43a5-a3e1-c0e76f8acefa" // TODO: change to dynamic startup id
             );
           case "fund":
-            return res.redirect("/submit");
+            return res.redirect(
+              "/fund/d7774c62-20be-4a7e-9cd6-3ab33cd71dbc" // TODO: change to dynamic startup id
+            );
           default:
             console.log("No role assigned to user. Please contact the admin.");
             return res.redirect("/");

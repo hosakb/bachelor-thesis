@@ -1,4 +1,4 @@
-import express, { Express, Request, Response, Router } from "express";
+import express, { Router } from "express";
 import pool from "../config/db";
 
 const router: Router = express.Router();
@@ -11,38 +11,20 @@ interface Kpis {
 }
 
 let netProfitMarginTs: Object;
-1;
 let cashFlowRateTs: Object;
 let liquidityTs: Object;
 
 router.get("/", (req, res) => {
-  res.redirect("/dashboard/01041536-a76f-43a5-a3e1-c0e76f8acefa");
+  res.redirect("/startup/01041536-a76f-43a5-a3e1-c0e76f8acefa");
 });
 
-router.get("/:startupId", (req, res) => {
-  // TMP (fund) charts
-  res.render("dashboard/index", {
-    netProfitMargin: 55,
-    cashFlowRate: 33,
-    liquidity: 66,
-    page: "dashboard",
-    erpOrFund: true,
-  });
-});
-
-router.post("/startup/", (req, res) => {
-  console.log(`${req.body.id}`);
-  res.setHeader("content-type", "application/javascript");
-  res.redirect(`/dashboard/startup/${req.body.id}`);
-});
-
-router.get("/startup/:startupId/", (req, res) => {
-  res.render("dashboard/startup", {
+router.get("/:startupId/", (req, res) => {
+  res.render("dashboard/startup/index", {
+    layout: "../views/layouts/startup.ejs",
     netProfitMargin: req.netProfitMargin,
     cashFlowRate: req.cashFlowRate,
     liquidity: req.liquidity,
     page: "dashboard",
-    erpOrFund: true,
   });
 });
 
@@ -104,6 +86,6 @@ router.param("startupId", (req, res, next, startupId) => {
     }
   );
 });
-
 module.exports = router;
+
 // [{"date":"2022-09-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-10-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-11-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-12-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"netProfitMargin":90},{"date":"2022-01-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"netProfitMargin":70},{"date":"2022-02-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"netProfitMargin":90},{"date":"2022-03-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70}, {"date":"2022-04-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-05-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"netProfitMargin":90},{"date":"2022-06-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"netProfitMargin":70},{"date":"2022-07-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"netProfitMargin":90},{"date":"2022-08-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70}]

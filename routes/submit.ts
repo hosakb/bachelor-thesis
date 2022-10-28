@@ -10,8 +10,10 @@ import fs from "fs";
 const router = express.Router();
 
 router.get("/:startupId", (req: Request, res: Response) => {
-  let page = "submit";
-  res.render("submit/index", { page, erpOrFund: false, showData: false });
+  res.render("submit/index", {
+    layout: "../views/layouts/startup.ejs",
+    page: "submit",
+  });
 });
 
 router.get("/", (req, res) => {

@@ -1,5 +1,5 @@
 window.onload = function () {
-  fetch("/dashboard/chart/npm")
+  fetch("/fund/chart/npm")
     .then((res) => res.json())
     .then((tsData) => {
       const data = {
@@ -27,7 +27,7 @@ window.onload = function () {
       const myChart = new Chart(document.querySelector("#npm-chart"), config);
     });
 
-  fetch("/dashboard/chart/cfr")
+  fetch("/fund/chart/cfr")
     .then((res) => res.json())
     .then((tsData) => {
       const data = {
@@ -55,7 +55,7 @@ window.onload = function () {
       const myChart = new Chart(document.querySelector("#cfr-chart"), config);
     });
 
-  fetch("/dashboard/chart/liq")
+  fetch("/fund/chart/liq")
     .then((res) => res.json())
     .then((tsData) => {
       const data = {

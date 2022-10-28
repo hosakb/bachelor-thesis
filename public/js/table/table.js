@@ -1,71 +1,38 @@
-const columnDefs = [
-  { field: "id", hide: true },
-  { field: "name", headerName: "Startup Name" },
-  { field: "totalInvestment", headerName: "Total Investment ($)" },
-  { field: "share", headerName: "Portfolio Share (%)" },
-  { field: "sector", headerName: "Sector" },
-];
+// setup the grid after the page has finished loading
+document.addEventListener("DOMContentLoaded", async () => {
+  const columnDefs = [
+    { field: "id", hide: true },
+    { field: "name", headerName: "Startup Name" },
+    { field: "sector", headerName: "Sector" },
+    { field: "share", headerName: "Portfolio Share (%)" },
+    { field: "stage", headerName: "Investment Stage" },
+    { field: "totalInvestment", headerName: "Total Investment ($)" },
+  ];
 
-// specify the data
-const rowData = [
-  {
-    id: "01041536-a76f-43a5-a3e1-c0e76f8acefa",
-    name: "Finvia",
-    totalInvestment: "10000000",
-    share: 20,
-    sector: "Family Office",
-  },
-  {
-    id: "2",
-    name: "Vulcan Energy Resources",
-    totalInvestment: "1200000000",
-    share: 30,
-    sector: "Lithium",
-  },
-  {
-    id: "3",
-    name: "SpaceX",
-    totalInvestment: "30000000000",
-    share: 50,
-    sector: "Space",
-  },
-  {
-    id: "4",
-    name: "Liquid",
-    totalInvestment: "10000000",
-    share: 20,
-    sector: "Robo Advisor",
-  },
-  {
-    id: "5",
-    name: "Moonfare",
-    totalInvestment: "1200000000",
-    share: 30,
-    sector: "Robo Advisor",
-  },
-  {
-    id: "6",
-    name: "Blue Origin",
-    totalInvestment: "30000000000",
-    share: 50,
-    sector: "Space",
-  },
-];
+  gridOptions = {
+    columnDefs: columnDefs,
+    rowData: await getTableData(),
+    rowSelection: "single",
+    onSelectionChanged: onSelectionChanged,
+  };
 
-// let the grid know which columns and what data to use
-const gridOptions = {
-  columnDefs: columnDefs,
-  rowData: rowData,
-  rowSelection: "single",
-  onSelectionChanged: onSelectionChanged,
-};
+  const gridDiv = document.querySelector("#table");
+  new agGrid.Grid(gridDiv, gridOptions);
+  gridOptions.api.sizeColumnsToFit();
+});
+
+async function getTableData() {
+  const res = await fetch("/fund/table/values");
+  console.log(res);
+  return await res.json();
+}
 
 function onSelectionChanged() {
   const selectedRows = gridOptions.api.getSelectedRows();
 
   console.log(selectedRows[0].id);
 
-  fetch("/dashboard/startup", {
+  fetch("/fund/startup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -79,13 +46,6 @@ function onSelectionChanged() {
       }
     })
     .catch(function (err) {
-      console.info(err + " url: " + url);
+      console.info(err + " url: " + url); //TODO:
     });
 }
-
-// setup the grid after the page has finished loading
-document.addEventListener("DOMContentLoaded", () => {
-  const gridDiv = document.querySelector("#table");
-  new agGrid.Grid(gridDiv, gridOptions);
-  gridOptions.api.sizeColumnsToFit();
-});
