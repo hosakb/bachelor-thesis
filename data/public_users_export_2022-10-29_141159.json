@@ -1,0 +1,38 @@
+[
+  {
+    "id": "42b00046-2fbc-4621-9157-369d9cd00d8c",
+    "first_name": "Muriel",
+    "last_name": "Fischer",
+    "email": "murielfrf@gmail.com",
+    "password": "$2a$10$PpWgm/LDYmtShqFLtLHQuOA894IMMlwCdHXykUGhQBlG8EiQLw6Qe",
+    "role": "manager",
+    "created_at": "2022-10-10 18:01:50.063561+00",
+    "updated_at": "2022-10-10 18:01:50.063561+00",
+    "startup": null,
+    "fund": null
+  },
+  {
+    "id": "888a1d9d-9e9a-4991-8e1f-029211d7a347",
+    "first_name": "Tom",
+    "last_name": "Fenders",
+    "email": "tf@gmail.com",
+    "password": "$2a$10$PpWgm/LDYmtShqFLtLHQuOA894IMMlwCdHXykUGhQBlG8EiQLw6Qe",
+    "role": "",
+    "created_at": "2022-10-13 13:20:47.293258+00",
+    "updated_at": "2022-10-13 13:20:47.293258+00",
+    "startup": null,
+    "fund": null
+  },
+  {
+    "id": "c77b65c0-7ece-4767-9a89-8260f5142c14",
+    "first_name": "Ben",
+    "last_name": "Hosak",
+    "email": "hosakbenoliver@outlook.de",
+    "password": "$2a$10$PpWgm/LDYmtShqFLtLHQuOA894IMMlwCdHXykUGhQBlG8EiQLw6Qe",
+    "role": "fund",
+    "created_at": "2022-10-10 13:38:08.500162+00",
+    "updated_at": "2022-10-10 13:38:08.500162+00",
+    "startup": null,
+    "fund": null
+  },
+]
