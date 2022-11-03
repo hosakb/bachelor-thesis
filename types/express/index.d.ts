@@ -1,6 +1,8 @@
 import * as express from "express";
 
-export {};
+import { Session } from "express-session";
+
+import { User } from "../../models/users";
 
 declare global {
   namespace Express {
@@ -11,6 +13,15 @@ declare global {
       netProfitMarginTs?: any;
       cashFlowRateTs?: any;
       liquidityTs?: any;
+      user?: User;
     }
+  }
+}
+
+declare module "express-session" {
+  export interface Session {
+    startupId: string;
+    fundId: string;
+    admin: boolean;
   }
 }

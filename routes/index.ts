@@ -1,7 +1,8 @@
 import express, { Express, Request, Response, Router } from "express";
 import { checkAuthenticated } from "../middleware/check-auth";
 import passport from "passport";
-import pool from "../config/db";
+
+import { Role, UserRole, getUserRole } from "../models/users";
 
 const router: Router = express.Router();
 
@@ -15,49 +16,56 @@ router.post(
     failureRedirect: "/",
     failureFlash: true,
   }),
-  (req, res) => {
+  async (req, res) => {
     const { email } = req.body;
 
-    pool.query(
-      `SELECT role FROM users
-      WHERE email = $1`,
-      [email],
-      (err, result) => {
-        if (err) {
-          throw new Error(
-            "Failed query the user role after login. Error: " + err
-          );
-        }
+    let userRole: UserRole = await getUserRole(email);
 
-        if (result.rowCount > 1) {
-          throw new Error("To many roles for user with mail: " + email);
-        }
-
-        const role = result.rows[0].role;
-
-        if (role === undefined) {
-          throw new Error(
-            "Failed query the user role after login. User role does not exist."
-          );
-        }
-
-        switch (role) {
-          case "admin":
-            return res.redirect("/admin");
-          case "startup":
-            return res.redirect(
-              "/startup/01041536-a76f-43a5-a3e1-c0e76f8acefa" // TODO: change to dynamic startup id
-            );
-          case "fund":
-            return res.redirect(
-              "/fund/d7774c62-20be-4a7e-9cd6-3ab33cd71dbc" // TODO: change to dynamic startup id
-            );
-          default:
-            console.log("No role assigned to user. Please contact the admin.");
-            return res.redirect("/");
-        }
-      }
-    );
+    switch (userRole.role) {
+      case Role.Admin:
+        console.log(
+          `Logged in as admin with id
+          ${userRole.id}
+            and redirected to /admin/`
+        );
+        console.log(
+          "-------- Session ------------------\n" +
+            JSON.stringify(req.session) +
+            "\n-----------------------"
+        );
+        return res.redirect("/admin");
+      case Role.Startup:
+        console.log(
+          `Logged in as startup with id
+          ${userRole.id}
+            and redirected to /startup/${userRole.id}`
+        );
+        req.session.startupId = userRole.id;
+        console.log(
+          "-------- Session ------------------\n" +
+            JSON.stringify(req.session) +
+            "\n-----------------------"
+        );
+        return res.redirect("/startup/" + userRole.id);
+      case Role.Fund:
+        console.log(
+          `Logged in as fund with id  
+            ${userRole.id} 
+             and redirected to /startup/ 
+            ${userRole.id}
+        `
+        );
+        req.session.fundId = userRole.id;
+        console.log(
+          "-------- Session ------------------\n" +
+            JSON.stringify(req.session) +
+            "\n-----------------------"
+        );
+        return res.redirect("/fund/" + userRole.id);
+      default:
+        console.log("No role assigned to user. Please contact the admin.");
+        return res.redirect("/");
+    }
   }
 );
 

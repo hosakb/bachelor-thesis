@@ -1,4 +1,4 @@
-import express, { Express, Request, Response, Router } from "express";
+import express from "express";
 import expressLayouts from "express-ejs-layouts";
 import passport from "passport";
 import flash from "express-flash";
@@ -16,7 +16,7 @@ app.use(
     // Key we want to keep secret which will encrypt all of our information
     secret: "12345",
     // Should we resave our session variables if nothing has changes which we dont
-    resave: false,
+    resave: true,
     // Save empty value if there is no vaue which we do not want to do
     saveUninitialized: false,
   })
