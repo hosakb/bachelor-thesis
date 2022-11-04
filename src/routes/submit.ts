@@ -87,4 +87,4 @@ function uploadFiles(req: Request, res: Response) {
   res.render("submit/index", { success: "success" });
 }
 
-module.exports = router;
+export default router;

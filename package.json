@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "node server.ts",
-    "devStart": "nodemon server.ts",
+    "start": "node ./src/server.ts",
+    "devStart": "nodemon ./src/server.ts",
     "format": "npx prettier --write ."
   },
   "keywords": [],

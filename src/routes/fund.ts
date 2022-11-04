@@ -123,4 +123,4 @@ router.param("startupId", async (req, res, next, startupId) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -5,7 +5,12 @@ import flash from "express-flash";
 import session from "express-session";
 
 import initializePassport from "./config/passport";
-const { pool } = require("./db/config");
+
+import indexRouter from "./routes/index";
+import submitRouter from "./routes/submit";
+import fundDashboardRouter from "./routes/fund";
+import startupDashboardRouter from "./routes/startup";
+import adminRouter from "./routes/admin";
 
 const app = express();
 
@@ -28,12 +33,6 @@ app.use(passport.initialize());
 // Store our variables to be persisted across the whole session. Works with app.use(Session) above
 app.use(passport.session());
 app.use(flash());
-
-const indexRouter = require("./routes/index");
-const submitRouter = require("./routes/submit");
-const fundDashboardRouter = require("./routes/fund");
-const startupDashboardRouter = require("./routes/startup");
-const adminRouter = require("./routes/admin");
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");

@@ -140,4 +140,4 @@ router.post("/new-startup", async (req, res) => {
   req.flash("success_msg", "Successfully crated users");
 });
 
-module.exports = router;
+export default router;
