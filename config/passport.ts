@@ -20,28 +20,32 @@ export default function initPassport(passport: PassportStatic) {
       },
 
       async (email: string, password: string, done) => {
-        if (await emailRegistered(email)) {
-          let user: User = await getUserByEmail(email);
+        try {
+          if (await emailRegistered(email)) {
+            let user: User = await getUserByEmail(email);
 
-          bcrypt.compare(
-            password,
-            user.password,
-            (err: Error, isMatch: any) => {
-              if (err) {
-                throw new Error("User authentication failed. " + err);
-              }
+            bcrypt.compare(
+              password,
+              user.password,
+              (err: Error, isMatch: any) => {
+                if (err) {
+                  throw new Error("User authentication failed. " + err);
+                }
 
-              if (isMatch) {
-                return done(null, user);
-              } else {
-                return done(null, false, {
-                  message: "Password is not correct",
-                });
+                if (isMatch) {
+                  return done(null, user);
+                } else {
+                  return done(null, false, {
+                    message: "Password is not correct",
+                  });
+                }
               }
-            }
-          );
-        } else {
-          return done(null, false, { message: "Email not registered" });
+            );
+          } else {
+            return done(null, false, { message: "Email not registered" });
+          }
+        } catch (err) {
+          return done(err, false);
         }
       }
     )
@@ -52,8 +56,6 @@ export default function initPassport(passport: PassportStatic) {
   passport.deserializeUser(async (id: string, done) => {
     try {
       let user = await getUserById(id);
-
-      console.log(`ID is ${user.id}`);
       return done(null, user);
     } catch (err) {
       return done(err);

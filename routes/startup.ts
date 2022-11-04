@@ -9,14 +9,15 @@ let cashFlowRateTs: Object;
 let liquidityTs: Object;
 
 router.get("/", (req, res) => {
+  console.log("fund: " + req.session.fundId);
+  console.log("startup: " + req.session.startupId);
   if (req.session.fundId !== undefined) {
     res.redirect("/fund/" + req.session.fundId);
+  } else if (req.session.startupId !== undefined) {
+    res.redirect("/startup/" + req.session.startupId);
+  } else {
+    res.redirect("/");
   }
-  if (req.session.startupId !== undefined) {
-    res.redirect("/startup/" + req.session.fundId);
-  }
-
-  throw new Error("User not assigned to fund or startup.");
 });
 
 router.get("/:startupId/", (req, res) => {

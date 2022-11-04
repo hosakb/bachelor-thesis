@@ -4,9 +4,9 @@ interface Startup {
   id: string;
   name: string;
   stage: string;
-  totalInvestment: number;
-  share: number;
-  sector: string;
+  totalInvestment?: number;
+  share?: number;
+  sector?: string;
 }
 
 interface Kpis {
@@ -16,7 +16,7 @@ interface Kpis {
   liquidity: number;
 }
 
-const getStartup = async (startupId: string): Promise<Startup> => {
+const getStartupById = async (startupId: string) => {
   let client = await pool.connect();
 
   try {
@@ -69,4 +69,50 @@ const getKpis = async (startupId: string) => {
   }
 };
 
-export { Startup, Kpis, getStartup, getKpis };
+const getStartups = async () => {
+  let client = await pool.connect();
+
+  try {
+    let result = await client.query("SELECT name, stage FROM startup");
+
+    if (result.rowCount === 0) {
+      throw new Error(`No startups found found in db.`);
+    }
+
+    let startups: Startup[] = result.rows.map((row) => {
+      return { id: row.id, name: row.name, stage: row.stage };
+    });
+
+    return startups;
+  } catch (err) {
+    throw new Error(
+      `Failed to fetch all startups due to the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const insertUser = async (
+  firstName: string,
+  lastName: string,
+  email: string,
+  hashedPassword: string
+) => {
+  let client = await pool.connect();
+
+  try {
+    let result = await client.query(
+      `INSERT INTO users (first_name, last_name, email, password, role) VALUES ($1, $2, $3, $4, $5)`,
+      [firstName, lastName, email, hashedPassword, ""]
+    );
+  } catch (err) {
+    throw new Error(
+      "Failed to create new user due to the following error: " + err
+    );
+  } finally {
+    client.release();
+  }
+};
+
+export { Startup, Kpis, getStartupById, getStartups, getKpis, insertUser };

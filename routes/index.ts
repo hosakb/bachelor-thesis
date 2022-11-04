@@ -36,9 +36,7 @@ router.post(
         return res.redirect("/admin");
       case Role.Startup:
         console.log(
-          `Logged in as startup with id
-          ${userRole.id}
-            and redirected to /startup/${userRole.id}`
+          `Logged in as startup with id ${userRole.id} and redirected to /startup/${userRole.id}`
         );
         req.session.startupId = userRole.id;
         console.log(
@@ -49,11 +47,7 @@ router.post(
         return res.redirect("/startup/" + userRole.id);
       case Role.Fund:
         console.log(
-          `Logged in as fund with id  
-            ${userRole.id} 
-             and redirected to /startup/ 
-            ${userRole.id}
-        `
+          `Logged in as fund with id ${userRole.id} and redirected to /fund/${userRole.id}`
         );
         req.session.fundId = userRole.id;
         console.log(
@@ -62,6 +56,7 @@ router.post(
             "\n-----------------------"
         );
         return res.redirect("/fund/" + userRole.id);
+        return;
       default:
         console.log("No role assigned to user. Please contact the admin.");
         return res.redirect("/");

@@ -23,14 +23,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function getTableData() {
   const res = await fetch("/fund/table/values");
-  console.log(res);
   return await res.json();
 }
 
 function onSelectionChanged() {
   const selectedRows = gridOptions.api.getSelectedRows();
-
-  console.log(selectedRows[0].id);
 
   fetch("/fund/startup", {
     method: "POST",

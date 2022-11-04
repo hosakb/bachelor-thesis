@@ -1,6 +1,6 @@
 import pool from "../config/db";
 
-import { Startup, getStartup } from "./startup";
+import { Startup, getStartupById } from "./startup";
 
 const fundIdExists = async (fundId: string) => {
   let client = await pool.connect();
@@ -39,7 +39,7 @@ const getStartupsForFund = async (fundId: string): Promise<Startup[]> => {
     let startups = [];
 
     for (const startup of result.rows) {
-      startups.push(await getStartup(startup.startup_id));
+      startups.push(await getStartupById(startup.startup_id));
     }
 
     return startups;

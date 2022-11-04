@@ -11,14 +11,11 @@ let startupTable: Startup[] = [];
 
 router.get("/", (req, res) => {
   if (req.session.fundId !== undefined) {
-    console.log(req.session.fundId);
-    console.log("fund: " + req.session.fundId);
     res.redirect("/fund/" + req.session.fundId);
   } else if (req.session.startupId !== undefined) {
-    console.log("startup: " + req.session.startupId);
     res.redirect("/startup/" + req.session.startupId);
   } else {
-    res.redirect("/");
+    res.redirect("/admin");
   }
 });
 
@@ -35,14 +32,20 @@ router.get("/:fundId", (req, res) => {
 });
 
 router.param("fundId", async (req, res, next, fundId) => {
-  if (await !fundIdExists(fundId)) {
-    res.redirect("/"); // invalid query result for fundId
-    return;
+  try {
+    if (await !fundIdExists(fundId)) {
+      res.redirect("/"); // invalid query result for fundId
+      return;
+    }
+
+    startupTable = await getStartupsForFund(fundId);
+
+    next();
+  } catch (error) {
+    throw new Error(
+      `Failed to query funds and startups for fund id ${fundId} with error: ${error}`
+    );
   }
-
-  startupTable = await getStartupsForFund(fundId);
-
-  next();
 });
 
 router.get("/table/values", (req, res) => {
@@ -80,38 +83,44 @@ router.get("/chart/liq", (req, res) => {
 });
 
 router.param("startupId", async (req, res, next, startupId) => {
-  const kpis = await getKpis(startupId);
+  try {
+    const kpis = await getKpis(startupId);
 
-  req.netProfitMargin = kpis[kpis.length - 1].netProfitMargin;
-  req.cashFlowRate = kpis[kpis.length - 1].cashFlowRate;
-  req.liquidity = kpis[kpis.length - 1].liquidity;
+    req.netProfitMargin = kpis[kpis.length - 1].netProfitMargin;
+    req.cashFlowRate = kpis[kpis.length - 1].cashFlowRate;
+    req.liquidity = kpis[kpis.length - 1].liquidity;
 
-  let months: string[] = [];
-  let netProfitMargin: number[] = [];
-  let cashFlowRate: number[] = [];
-  let liquidity: number[] = [];
+    let months: string[] = [];
+    let netProfitMargin: number[] = [];
+    let cashFlowRate: number[] = [];
+    let liquidity: number[] = [];
 
-  kpis.forEach((i) => {
-    months.push(i.date.substring(0, 7));
-    netProfitMargin.push(i.netProfitMargin);
-    cashFlowRate.push(i.cashFlowRate);
-    liquidity.push(i.liquidity);
-  });
+    kpis.forEach((i) => {
+      months.push(i.date.substring(0, 7));
+      netProfitMargin.push(i.netProfitMargin);
+      cashFlowRate.push(i.cashFlowRate);
+      liquidity.push(i.liquidity);
+    });
 
-  netProfitMarginTs = {
-    months: months,
-    periodData: netProfitMargin,
-  };
-  cashFlowRateTs = {
-    months: months,
-    periodData: cashFlowRate,
-  };
-  liquidityTs = {
-    months: months,
-    periodData: liquidity,
-  };
+    netProfitMarginTs = {
+      months: months,
+      periodData: netProfitMargin,
+    };
+    cashFlowRateTs = {
+      months: months,
+      periodData: cashFlowRate,
+    };
+    liquidityTs = {
+      months: months,
+      periodData: liquidity,
+    };
 
-  next();
+    next();
+  } catch (error) {
+    throw new Error(
+      `Failed to query kpis for startup id ${startupId} with the following error: ${error}`
+    );
+  }
 });
 
 module.exports = router;

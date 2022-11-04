@@ -1,20 +1,15 @@
-import express, { Express, Request, Response, Router } from "express";
-import { QueryResult } from "pg";
+import express, { Router } from "express";
 import pool from "../config/db";
 import { checkAuthenticated } from "../middleware/check-auth";
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
+import { getStartups, insertUser } from "../models/startup";
+import { emailRegistered, getUserByEmail } from "../models/users";
 
 interface Err {
   message: string;
 }
 
 const router: Router = express.Router();
-
-interface Startup {
-  id: string;
-  name: string;
-  stage: string;
-}
 
 interface User {
   firstName: string;
@@ -26,22 +21,14 @@ interface User {
 }
 
 router.get("/", async (req, res) => {
-  let startups: Startup[];
   try {
-    const res: QueryResult<any> = await pool.query(
-      `SELECT name, stage FROM startup`
-    );
-
-    startups = res.rows.map((row) => {
-      return { id: row.id, name: row.name, stage: row.stage };
-    });
+    let startups = await getStartups();
+    res.render("admin/index", { startups });
   } catch (err) {
     throw new Error(
-      "Failed to fetch startups due to the following error: " + err
+      `Failed to load all startups into the admin panel due to error: ${err}`
     );
   }
-
-  res.render("admin/index", { startups });
 });
 
 router.get("/register", checkAuthenticated, (req, res) => {
@@ -68,40 +55,24 @@ router.post("/user-registration", async (req, res) => {
   if (errors.length > 0) {
     res.render("admin/index", { errors });
   } else {
-    let hashedPassword = await bcrypt.hash(password, 10);
-    pool.query(
-      `SELECT * FROM users
-        WHERE email = $1`,
-      [email],
-      (err, result) => {
-        if (err) {
-          throw new Error("Failed to check if user exists. Error: " + err);
-        }
+    try {
+      let hashedPassword = await bcrypt.hash(password, 10);
 
-        if (result.rowCount > 0) {
-          errors.push({ message: "Email already registered." });
-          res.render("admin/index", { errors });
-        } else {
-          pool.query(
-            `INSERT INTO users (first_name, last_name, email, password, role) VALUES ($1, $2, $3, $4, $5)`,
-            [firstName, lastName, email, hashedPassword, ""],
-            (err, result) => {
-              if (err) {
-                throw new Error(
-                  "Failed to create new user due to the following error: " + err
-                );
-              }
+      let registered = await emailRegistered(email);
 
-              req.flash(
-                "success_msg",
-                "Successfully registered " + firstName + " " + lastName
-              );
-              res.redirect("/user/login");
-            }
-          );
-        }
+      if (registered) {
+        errors.push({ message: "Email already registered." });
+        res.render("admin/index", { errors });
+      } else {
+        await insertUser(firstName, lastName, email, hashedPassword);
+
+        req.flash(
+          "success_msg",
+          "Successfully registered " + firstName + " " + lastName
+        );
+        res.redirect("/user/login");
       }
-    );
+    } catch (error) {}
   }
 });
 
@@ -118,7 +89,7 @@ router.post("/new-startup", async (req, res) => {
   let id: string;
 
   try {
-    const res: QueryResult<any> = await pool.query(
+    const res = await pool.query(
       `INSERT INTO startup (name, stage) VALUES ($1, $2) RETURNING id`,
       [name, phase]
     );
