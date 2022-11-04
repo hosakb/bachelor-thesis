@@ -2,7 +2,7 @@ import * as express from "express";
 
 import { Session } from "express-session";
 
-import { User } from "../../models/users";
+import { User } from "../../../models/users";
 
 declare global {
   namespace Express {
