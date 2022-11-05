@@ -2,8 +2,8 @@ import express, { Router } from "express";
 import pool from "../config/db";
 import { checkAuthenticated } from "../middleware/check-auth";
 import bcrypt from "bcryptjs";
-import { getStartups, insertUser } from "../models/startup";
-import { emailRegistered, getUserByEmail } from "../models/users";
+import { getStartups } from "../models/startup";
+import { emailRegistered, insertUser } from "../models/users";
 
 interface Err {
   message: string;

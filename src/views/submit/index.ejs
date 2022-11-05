@@ -2,18 +2,18 @@
     <div class="submit-cards">
         <div class="submit-card">
             <h3>Manuel Input</h3>
-            <form action="/submit/form" method="get">
+            <form action="/submit/kpi-form" method="POST">
                 <div>
-                    <label for="npm">Net Profit Margin</label>
-                    <input type="number">
+                    <label for="netProfitMargin">Net Profit Margin</label>
+                    <input name="netProfitMargin" type="number" name="">
                 </div>
                 <div>
-                    <label for="cfr">Cash-Flow-Rate</label>
-                    <input type="number">
+                    <label for="cashFlowRate">Cash-Flow-Rate</label>
+                    <input name="cashFlowRate" type="number">
                 </div>
                 <div>
-                    <label for="liq">Liquidity</label>
-                    <input type="number">
+                    <label for="liquidity">Liquidity</label>
+                    <input name="liquidity" type="number">
                 </div>
                 <div>
                     <input type="submit">
@@ -22,40 +22,42 @@
         </div>
         <div class="submit-card">
             <h3>Upload Excel</h3>
+            <% if (locals.kpis === undefined) { %>
             <form action="/submit" enctype="multipart/form-data" method="post">
                 <input type="file" name="kpis" />
                 <input type="submit">  
             </form>
-            <% if (locals.showData) { %>
-                <h4>Data</h4>
+            <% } else { %>
+                <br>
                 <table>
                     <thead>
                         <tr>
-                            <th scope="col">Kpi</th>
-                            <th scope="col">Value</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Net Profit Margin</th>
+                            <th scope="col">Cash Flow Rate</th>
+                            <th scope="col">Liquidity</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td scope="row">Net Profit Margin</td>
-                            <td><% locals.npc %></td>
-                        </tr>
-                        <tr>
-                            <td scope="row">Cash Flow Rate</td>
-                            <td><% locals.cfr %></td>
-                        </tr>
-                        <tr>
-                            <td scope="row">Liquidity</td>
-                            <td><% locals.liq %></td>
+                            <td id="date" scope="row"><%= locals.kpis.date %></td>
+                            <td id="netProfitMargin"><label><%= locals.kpis.netProfitMargin %></label><label>%</label></td>
+                            <td id="cashFlowRate"><label><%= locals.kpis.cashFlowRate %></label><label>%</label></td>
+                            <td id="liquidity"><label><%= locals.kpis.liquidity %></label><label>%</label></td>
                         </tr>
                     </tbody>
                 </table>
-                <label>Data correct?</label>
-                <button>Yes</button>
-                <button>No</button>
+                <br>
+                <div>
+                    <label>Data correct?</label>
+                    <br>
+                    <button onclick="submitKpiData()">Yes</button>
+                    <button onclick="reuploadKpiData()">No</button>
+                </div>
                 <% } %>
             <label name="success"><%= locals.success %></label>
         </div>
     </div>
-    
 </body>
+
+<script src="/js/submit.js"></script>

@@ -132,6 +132,28 @@ const emailRegistered = async (email: string) => {
   }
 };
 
+const insertUser = async (
+  firstName: string,
+  lastName: string,
+  email: string,
+  hashedPassword: string
+) => {
+  let client = await pool.connect();
+
+  try {
+    let result = await client.query(
+      `INSERT INTO users (first_name, last_name, email, password, role) VALUES ($1, $2, $3, $4, $5)`,
+      [firstName, lastName, email, hashedPassword, ""]
+    );
+  } catch (err) {
+    throw new Error(
+      "Failed to create new user due to the following error: " + err
+    );
+  } finally {
+    client.release();
+  }
+};
+
 export {
   User,
   Role,
@@ -140,4 +162,5 @@ export {
   getUserByEmail,
   getUserById,
   emailRegistered,
+  insertUser,
 };

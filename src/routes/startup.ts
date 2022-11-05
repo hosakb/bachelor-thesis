@@ -55,7 +55,7 @@ router.param("startupId", async (req, res, next, startupId) => {
   let liquidity: number[] = [];
 
   kpis.forEach((i) => {
-    months.push(i.date.substring(0, 7));
+    months.push(i.date);
     netProfitMargin.push(i.netProfitMargin);
     cashFlowRate.push(i.cashFlowRate);
     liquidity.push(i.liquidity);

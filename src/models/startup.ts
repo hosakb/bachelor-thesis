@@ -7,6 +7,7 @@ interface Startup {
   totalInvestment?: number;
   share?: number;
   sector?: string;
+  kpis?: Kpis;
 }
 
 interface Kpis {
@@ -93,26 +94,20 @@ const getStartups = async () => {
   }
 };
 
-const insertUser = async (
-  firstName: string,
-  lastName: string,
-  email: string,
-  hashedPassword: string
-) => {
+const updateKpis = async (kpis: Kpis, startupId: string) => {
   let client = await pool.connect();
 
   try {
-    let result = await client.query(
-      `INSERT INTO users (first_name, last_name, email, password, role) VALUES ($1, $2, $3, $4, $5)`,
-      [firstName, lastName, email, hashedPassword, ""]
+    await client.query(
+      `UPDATE startup SET updated_at = NOW(), kpis = kpis || $1::jsonb WHERE id = $2;`,
+      [kpis, startupId]
     );
   } catch (err) {
     throw new Error(
-      "Failed to create new user due to the following error: " + err
+      `Failed to update kpis ${kpis} due to the following error: ${err}`
     );
   } finally {
     client.release();
   }
 };
-
-export { Startup, Kpis, getStartupById, getStartups, getKpis, insertUser };
+export { Startup, Kpis, getStartupById, getStartups, getKpis, updateKpis };
