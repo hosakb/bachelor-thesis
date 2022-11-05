@@ -24,10 +24,10 @@ enum Role {
 }
 
 const getUserRole = async (email: string): Promise<UserRole> => {
-  let client = await pool.connect();
+  const client = await pool.connect();
 
   try {
-    let result = await client.query(
+    const result = await client.query(
       `SELECT id, role, fund, startup FROM users
       WHERE email = $1`,
       [email]
@@ -69,10 +69,10 @@ const getUserRole = async (email: string): Promise<UserRole> => {
 };
 
 const getUserByEmail = async (email: string) => {
-  let client = await pool.connect();
+  const client = await pool.connect();
 
   try {
-    let result = await client.query(`SELECT * FROM users WHERE email = $1`, [
+    const result = await client.query(`SELECT * FROM users WHERE email = $1`, [
       email,
     ]);
 
@@ -91,10 +91,10 @@ const getUserByEmail = async (email: string) => {
 };
 
 const getUserById = async (id: string) => {
-  let client = await pool.connect();
+  const client = await pool.connect();
 
   try {
-    let result = await client.query(`SELECT * FROM users WHERE id = $1`, [id]);
+    const result = await client.query(`SELECT * FROM users WHERE id = $1`, [id]);
 
     if (result.rowCount === 0) {
       throw new Error("No user found for id: " + id);
@@ -111,10 +111,10 @@ const getUserById = async (id: string) => {
 };
 
 const emailRegistered = async (email: string) => {
-  let client = await pool.connect();
+  const client = await pool.connect();
 
   try {
-    let result = await client.query(`SELECT * FROM users WHERE email = $1`, [
+    const result = await client.query(`SELECT * FROM users WHERE email = $1`, [
       email,
     ]);
 
@@ -138,10 +138,10 @@ const insertUser = async (
   email: string,
   hashedPassword: string
 ) => {
-  let client = await pool.connect();
+  const client = await pool.connect();
 
   try {
-    let result = await client.query(
+    const result = await client.query(
       `INSERT INTO users (first_name, last_name, email, password, role) VALUES ($1, $2, $3, $4, $5)`,
       [firstName, lastName, email, hashedPassword, ""]
     );

@@ -18,22 +18,22 @@ interface Kpis {
 }
 
 const getStartupById = async (startupId: string) => {
-  let client = await pool.connect();
+  const client = await pool.connect();
 
   try {
-    let result = await client.query(
+    const result = await client.query(
       "SELECT id, name, stage, info FROM startup WHERE id=$1",
       [startupId]
     );
 
     const { id, name, stage, info } = result.rows[0];
 
-    let share = info[0] === undefined ? "Not available" : info[0].share; //TODO: Fallback?
-    let sector = info[0] === undefined ? "Not available" : info[0].sector; //TODO: Fallback?
-    let totalInvestment =
+    const share = info[0] === undefined ? "Not available" : info[0].share; //TODO: Fallback?
+    const sector = info[0] === undefined ? "Not available" : info[0].sector; //TODO: Fallback?
+    const totalInvestment =
       info[0] === undefined ? "Not available" : info[0].totalInvestment; //TODO: Fallback?
 
-    let s: Startup = {
+    const s: Startup = {
       id,
       name: name,
       stage: stage,
@@ -53,14 +53,14 @@ const getStartupById = async (startupId: string) => {
 };
 
 const getKpis = async (startupId: string) => {
-  let client = await pool.connect();
+  const client = await pool.connect();
 
   try {
-    let result = await client.query(`SELECT kpis FROM startup WHERE id=$1`, [
+    const result = await client.query(`SELECT kpis FROM startup WHERE id=$1`, [
       startupId,
     ]);
 
-    let kpis: Kpis[] = result.rows[0].kpis;
+    const kpis: Kpis[] = result.rows[0].kpis;
 
     return kpis;
   } catch (err) {
@@ -71,16 +71,16 @@ const getKpis = async (startupId: string) => {
 };
 
 const getStartups = async () => {
-  let client = await pool.connect();
+  const client = await pool.connect();
 
   try {
-    let result = await client.query("SELECT name, stage FROM startup");
+    const result = await client.query("SELECT name, stage FROM startup");
 
     if (result.rowCount === 0) {
       throw new Error(`No startups found found in db.`);
     }
 
-    let startups: Startup[] = result.rows.map((row) => {
+    const startups: Startup[] = result.rows.map((row) => {
       return { id: row.id, name: row.name, stage: row.stage };
     });
 
@@ -95,7 +95,7 @@ const getStartups = async () => {
 };
 
 const updateKpis = async (kpis: Kpis, startupId: string) => {
-  let client = await pool.connect();
+  const client = await pool.connect();
 
   try {
     await client.query(

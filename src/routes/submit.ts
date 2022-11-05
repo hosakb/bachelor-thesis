@@ -48,10 +48,9 @@ const fileFilter = (
   }
 };
 
-let upload = multer({ storage: storage, fileFilter: fileFilter });
+const upload = multer({ storage: storage, fileFilter: fileFilter });
 router.post("/", upload.single("kpis"), uploadFiles);
 
-const date = new Date();
 const filename = "kpis-" + getTodaysDate() + ".xlsx";
 
 function uploadFiles(req: Request, res: Response) {
@@ -80,8 +79,8 @@ function uploadFiles(req: Request, res: Response) {
     schema,
   }).then(({ rows, errors }) => {
     if (errors.length === 0) {
-      let json = JSON.stringify(rows[rows.length - 1]);
-      let kpis: Kpis = JSON.parse(json);
+      const json = JSON.stringify(rows[rows.length - 1]);
+      const kpis: Kpis = JSON.parse(json);
 
       kpis.date = kpis.date.substring(0, 10);
       kpis.cashFlowRate = Math.round(kpis.cashFlowRate * 100);
@@ -108,13 +107,12 @@ router.post("/reupload", (req, res) => {
 router.post("/kpis", async (req, res) => {
   const { date, netProfitMargin, cashFlowRate, liquidity } = req.body.kpis;
 
-  const kpis: Kpis = 
-  {
+  const kpis: Kpis = {
     date: date,
     netProfitMargin: netProfitMargin,
     cashFlowRate: cashFlowRate,
     liquidity: liquidity,
-    };
+  };
 
   deleteSpreadsheets(UPLOAD_PATH); // TODO: error handling
   await updateKpis(kpis, req.session.startupId); // TODO: error handling
@@ -124,13 +122,12 @@ router.post("/kpis", async (req, res) => {
 
 router.post("/kpi-form", async (req, res) => {
   const { netProfitMargin, cashFlowRate, liquidity } = req.body;
-  const kpis: Kpis = 
-    {
-      date: getTodaysDate(),
-      netProfitMargin: netProfitMargin,
-      cashFlowRate: cashFlowRate,
-      liquidity: liquidity,
-    };
+  const kpis: Kpis = {
+    date: getTodaysDate(),
+    netProfitMargin: netProfitMargin,
+    cashFlowRate: cashFlowRate,
+    liquidity: liquidity,
+  };
   await updateKpis(kpis, req.session.startupId);
 
   res.redirect("/startup");

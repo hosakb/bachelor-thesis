@@ -3,10 +3,10 @@ import pool from "../config/db";
 import { Startup, getStartupById } from "./startup";
 
 const fundIdExists = async (fundId: string) => {
-  let client = await pool.connect();
+  const client = await pool.connect();
 
   try {
-    let result = await client.query("SELECT * FROM fund WHERE id=$1", [fundId]);
+    const result = await client.query("SELECT * FROM fund WHERE id=$1", [fundId]);
 
     if (result.rowCount > 1) {
       console.log(
@@ -29,14 +29,14 @@ const fundIdExists = async (fundId: string) => {
 };
 
 const getStartupsForFund = async (fundId: string): Promise<Startup[]> => {
-  let client = await pool.connect();
+  const client = await pool.connect();
   try {
-    let result = await client.query(
+    const result = await client.query(
       `SELECT startup_id FROM fund_startup_map WHERE fund_id=$1`,
       [fundId]
     );
 
-    let startups = [];
+    const startups = [];
 
     for (const startup of result.rows) {
       startups.push(await getStartupById(startup.startup_id));

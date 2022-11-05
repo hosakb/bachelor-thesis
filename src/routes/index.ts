@@ -1,4 +1,4 @@
-import express, { Express, Request, Response, Router } from "express";
+import express, { Router } from "express";
 import { checkAuthenticated } from "../middleware/check-auth";
 import passport from "passport";
 
@@ -19,7 +19,7 @@ router.post(
   async (req, res) => {
     const { email } = req.body;
 
-    let userRole: UserRole = await getUserRole(email);
+    const userRole: UserRole = await getUserRole(email);
 
     switch (userRole.role) {
       case Role.Admin:
@@ -65,7 +65,7 @@ router.post(
 );
 
 router.get("/logout", (req, res) => {
-  req.logout({ keepSessionInfo: false }, (err) => {});
+  req.logout({ keepSessionInfo: false }, (err) => {}); // TODO:
   res.redirect("/");
 });
 

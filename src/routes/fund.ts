@@ -3,8 +3,6 @@ import express, { Router } from "express";
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
 import { getKpis, Startup } from "../models/startup";
 
-import isUuid from "../util/uuid";
-
 const router: Router = express.Router();
 
 let startupTable: Startup[] = [];
@@ -90,10 +88,10 @@ router.param("startupId", async (req, res, next, startupId) => {
     req.cashFlowRate = kpis[kpis.length - 1].cashFlowRate;
     req.liquidity = kpis[kpis.length - 1].liquidity;
 
-    let months: string[] = [];
-    let netProfitMargin: number[] = [];
-    let cashFlowRate: number[] = [];
-    let liquidity: number[] = [];
+    const months: string[] = [];
+    const netProfitMargin: number[] = [];
+    const cashFlowRate: number[] = [];
+    const liquidity: number[] = [];
 
     kpis.forEach((i) => {
       months.push(i.date.substring(0, 7));

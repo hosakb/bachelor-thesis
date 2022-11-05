@@ -1,5 +1,4 @@
 import express, { Router } from "express";
-import pool from "../config/db";
 import { getKpis } from "../models/startup";
 
 const router: Router = express.Router();
@@ -49,10 +48,10 @@ router.param("startupId", async (req, res, next, startupId) => {
   req.cashFlowRate = kpis[kpis.length - 1].cashFlowRate;
   req.liquidity = kpis[kpis.length - 1].liquidity;
 
-  let months: string[] = [];
-  let netProfitMargin: number[] = [];
-  let cashFlowRate: number[] = [];
-  let liquidity: number[] = [];
+  const months: string[] = [];
+  const netProfitMargin: number[] = [];
+  const cashFlowRate: number[] = [];
+  const liquidity: number[] = [];
 
   kpis.forEach((i) => {
     months.push(i.date);

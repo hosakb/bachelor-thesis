@@ -1,18 +1,14 @@
-import * as express from "express";
-
-import { Session } from "express-session";
-
 import { User } from "../../../models/users";
 
 declare global {
   namespace Express {
     export interface Request {
-      netProfitMargin?: any;
-      cashFlowRate?: any;
-      liquidity?: any;
-      netProfitMarginTs?: any;
-      cashFlowRateTs?: any;
-      liquidityTs?: any;
+      netProfitMargin?: number;
+      cashFlowRate?: number;
+      liquidity?: number;
+      netProfitMarginTs?: number;
+      cashFlowRateTs?: number;
+      liquidityTs?: number;
       user?: User;
     }
   }

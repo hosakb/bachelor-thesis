@@ -1,6 +1,5 @@
 import passportLocal from "passport-local";
 import { PassportStatic } from "passport";
-import pool from "./db";
 import bcrypt from "bcryptjs";
 import {
   User,
@@ -22,12 +21,12 @@ export default function initPassport(passport: PassportStatic) {
       async (email: string, password: string, done) => {
         try {
           if (await emailRegistered(email)) {
-            let user: User = await getUserByEmail(email);
+            const user: User = await getUserByEmail(email);
 
             bcrypt.compare(
               password,
               user.password,
-              (err: Error, isMatch: any) => {
+              (err: Error, isMatch: boolean) => {
                 if (err) {
                   throw new Error("User authentication failed. " + err);
                 }
@@ -55,7 +54,7 @@ export default function initPassport(passport: PassportStatic) {
 
   passport.deserializeUser(async (id: string, done) => {
     try {
-      let user = await getUserById(id);
+      const user = await getUserById(id);
       return done(null, user);
     } catch (err) {
       return done(err);

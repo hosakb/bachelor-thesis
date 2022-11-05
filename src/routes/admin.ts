@@ -22,7 +22,7 @@ interface User {
 
 router.get("/", async (req, res) => {
   try {
-    let startups = await getStartups();
+    const startups = await getStartups();
     res.render("admin/index", { startups });
   } catch (err) {
     throw new Error(
@@ -56,9 +56,9 @@ router.post("/user-registration", async (req, res) => {
     res.render("admin/index", { errors });
   } else {
     try {
-      let hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-      let registered = await emailRegistered(email);
+      const registered = await emailRegistered(email);
 
       if (registered) {
         errors.push({ message: "Email already registered." });
@@ -72,7 +72,7 @@ router.post("/user-registration", async (req, res) => {
         );
         res.redirect("/user/login");
       }
-    } catch (error) {}
+    } catch (error) {} // TODO: impl
   }
 });
 
@@ -80,12 +80,12 @@ router.get("/onboarding", (req, res) => {
   res.render("admin/onboarding");
 });
 
-router.post("/new-startup", async (req, res) => {
+router.post("/new-startup", async (req) => {
   console.log(req.body);
 
   const { name, phase, users } = req.body;
 
-  let startupUsers: User[] = JSON.parse(users);
+  const startupUsers: User[] = JSON.parse(users);
   let id: string;
 
   try {
@@ -103,7 +103,7 @@ router.post("/new-startup", async (req, res) => {
 
   req.flash("success_msg", "Successfully registered startup: " + name);
 
-  let assignedStartupUser: User[] = await Promise.all(
+  const assignedStartupUser: User[] = await Promise.all(
     startupUsers.map(async (user) => {
       return {
         firstName: user.firstName,
@@ -127,7 +127,7 @@ router.post("/new-startup", async (req, res) => {
         user.role,
         user.startup,
       ],
-      (err, result) => {
+      (err) => {
         if (err) {
           throw new Error(
             "Failed to create new startup due to the following error: " + err
