@@ -10,6 +10,7 @@ let removePartnerBtn = document.querySelector("#remove-partner-btn");
 
 let partners = [];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function addPartner() {
   let firstNameInput = document.querySelector("#partner-first-name");
   let lastNameInput = document.querySelector("#partner-last-name");
@@ -51,14 +52,15 @@ partnerUl.onclick = function (event) {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 removePartnerBtn.onclick = function (event) {
   let selected = partnerUl.querySelectorAll(".selected");
   for (let elem of selected) {
     partnerUl.removeChild(elem);
-    fundPartners;
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function createGp() {
   const gpName = document.querySelector("#gp-name").value;
   document.querySelector("#gp").value = gpName;
@@ -95,9 +97,8 @@ existingStartupUl.onmousedown = function () {
   return false;
 };
 
-addStartupBtn.onclick = function (event) {
+addStartupBtn.onclick = function () {
   let selected = existingStartupUl.querySelectorAll(".selected");
-  const startupIds = [];
   for (let elem of selected) {
     const content = elem.textContent || this.innerHTML;
     let li = document.createElement("li");
@@ -129,7 +130,7 @@ addedStartupUl.onmousedown = function () {
   return false;
 };
 
-removeStartupBtn.onclick = function (event) {
+removeStartupBtn.onclick = function () {
   let selected = addedStartupUl.querySelectorAll(".selected");
   for (let elem of selected) {
     const content = elem.textContent || this.innerHTML;
@@ -173,6 +174,7 @@ let startupUserTBody = document.querySelector("#startup-user-tbody");
 
 let startupUsers = [];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function addStartupUser() {
   let firstName = userFirstNameInput.value;
   let lastName = userLastNameInput.value;
@@ -210,6 +212,7 @@ function addStartupUser() {
   userRoleInput.value = "";
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function registerNewStartup() {
   let startupName = document.querySelector("#startup-name");
   let phase = document.querySelector("#phase");
@@ -234,7 +237,7 @@ function registerNewStartup() {
   const urlEncodedData = urlEncodedDataPairs.join("&").replace(/%20/g, "+");
 
   // Define what happens in case of error
-  XHR.addEventListener("error", (event) => {
+  XHR.addEventListener("error", () => {
     alert("Something went wrong while transmitting new Startups.");
   });
 

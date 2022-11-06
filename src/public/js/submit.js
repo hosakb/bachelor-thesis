@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function submitKpiData() {
   const date = document.querySelector("#date").innerHTML;
   const netProfitMargin =
@@ -31,6 +32,7 @@ function submitKpiData() {
     });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function reuploadKpiData() {
   fetch("/submit/reupload", {
     method: "POST",

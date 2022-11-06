@@ -24,7 +24,8 @@ window.onload = function () {
         },
       };
 
-      const myChart = new Chart(document.querySelector("#npm-chart"), config);
+      // eslint-disable-next-line no-undef
+      new Chart(document.querySelector("#npm-chart"), config);
     });
 
   fetch("/startup/chart/cfr")
@@ -52,7 +53,8 @@ window.onload = function () {
         },
       };
 
-      const myChart = new Chart(document.querySelector("#cfr-chart"), config);
+      // eslint-disable-next-line no-undef
+      new Chart(document.querySelector("#cfr-chart"), config);
     });
 
   fetch("/startup/chart/liq")
@@ -80,6 +82,7 @@ window.onload = function () {
         },
       };
 
-      const myChart = new Chart(document.querySelector("#liq-chart"), config);
+      // eslint-disable-next-line no-undef
+      new Chart(document.querySelector("#liq-chart"), config);
     });
 };
