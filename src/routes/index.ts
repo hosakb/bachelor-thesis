@@ -66,9 +66,11 @@ router.post(
 
 router.get("/logout", (req, res) => {
   req.logout({ keepSessionInfo: false }, (err) => {
-    throw new Error(
-      `Failed to logout user ${req.user?.id} correctly due to ${err}`
-    );
+    if(err) {
+      throw new Error(
+        `Failed to logout user ${req.user?.id} correctly due to ${err}`
+      );
+    }
   });
   res.redirect("/");
 });
