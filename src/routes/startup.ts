@@ -1,11 +1,7 @@
 import express, { Router } from "express";
-import { getKpis } from "../models/startup";
+import { getKpis, getStartupNameById, TimeSeriesKpis } from "../models/startup";
 
 const router: Router = express.Router();
-
-let netProfitMarginTs: Object;
-let cashFlowRateTs: Object;
-let liquidityTs: Object;
 
 router.get("/", (req, res) => {
   console.log("fund: " + req.session.fundId);
@@ -26,22 +22,26 @@ router.get("/:startupId/", (req, res) => {
     cashFlowRate: req.cashFlowRate,
     liquidity: req.liquidity,
     page: "dashboard",
+    title: req.startupName,
+    name: req.user?.firstName + " " + req.user?.lastName,
   });
 });
 
 router.get("/chart/npm", (req, res) => {
-  res.status(200).json(netProfitMarginTs);
+  res.status(200).json(req.session.netProfitMarginTs);
 });
 
 router.get("/chart/cfr", (req, res) => {
-  res.status(200).json(cashFlowRateTs);
+  res.status(200).json(req.session.cashFlowRateTs);
 });
 
 router.get("/chart/liq", (req, res) => {
-  res.status(200).json(liquidityTs);
+  res.status(200).json(req.session.liquidityTs);
 });
 
 router.param("startupId", async (req, res, next, startupId) => {
+  req.startupName = await getStartupNameById(startupId);
+
   const kpis = await getKpis(startupId);
 
   req.netProfitMargin = kpis[kpis.length - 1].netProfitMargin;
@@ -60,18 +60,24 @@ router.param("startupId", async (req, res, next, startupId) => {
     liquidity.push(i.liquidity);
   });
 
-  netProfitMarginTs = {
+  const netProfitMarginTs: TimeSeriesKpis = {
     months: months,
     periodData: netProfitMargin,
   };
-  cashFlowRateTs = {
+
+  const cashFlowRateTs: TimeSeriesKpis = {
     months: months,
     periodData: cashFlowRate,
   };
-  liquidityTs = {
+
+  const liquidityTs: TimeSeriesKpis = {
     months: months,
     periodData: liquidity,
   };
+
+  req.session.netProfitMarginTs = netProfitMarginTs;
+  req.session.cashFlowRateTs = cashFlowRateTs;
+  req.session.liquidityTs = liquidityTs;
 
   next();
 });

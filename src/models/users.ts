@@ -94,13 +94,26 @@ const getUserById = async (id: string) => {
   const client = await pool.connect();
 
   try {
-    const result = await client.query(`SELECT * FROM users WHERE id = $1`, [id]);
+    const result = await client.query(`SELECT * FROM users WHERE id = $1`, [
+      id,
+    ]);
 
     if (result.rowCount === 0) {
       throw new Error("No user found for id: " + id);
     }
 
-    const user: User = result.rows[0];
+    const user: User = {
+      id: result.rows[0].id,
+      firstName: result.rows[0].first_name,
+      lastName: result.rows[0].last_name,
+      email: result.rows[0].email,
+      password: result.rows[0].password,
+      role: result.rows[0].role,
+      created_at: result.rows[0].created_at,
+      updated_at: result.rows[0].updated_at,
+      startup: result.rows[0].startup,
+      fund: result.rows[0].fund,
+    };
 
     return user;
   } catch (err) {
@@ -141,7 +154,7 @@ const insertUser = async (
   const client = await pool.connect();
 
   try {
-    const result = await client.query(
+    await client.query(
       `INSERT INTO users (first_name, last_name, email, password, role) VALUES ($1, $2, $3, $4, $5)`,
       [firstName, lastName, email, hashedPassword, ""]
     );

@@ -50,11 +50,11 @@ export default function initPassport(passport: PassportStatic) {
     )
   );
 
-  passport.serializeUser((user: any, done) => done(null, user.id));
+  passport.serializeUser((user: User, done) => done(null, user.id));
 
   passport.deserializeUser(async (id: string, done) => {
     try {
-      const user = await getUserById(id);
+      const user: User = await getUserById(id);
       return done(null, user);
     } catch (err) {
       return done(err);

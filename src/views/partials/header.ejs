@@ -2,15 +2,14 @@
     <h2>
         <label for="nav-toggle">
             <span class="las la-bars"></span>
-            <span>Dashboard</span>
+            <span><%= locals.title %></span>
         </label>
     </h2>
 
     <div class="user-wrapper">
-        <img src="/img/user-default.png" width="30" height="30" alt=""><!--   TODO: impl USER PIC -->
+        <img src="/img/user-default.png" width="30" height="30" alt="">
         <div>
-            <h4>Users Name</h4><!--   TODO: impl -->
-            <small>Role</small> <!--   TODO: impl  -->
+            <h4><%= locals.name %></h4>
         </div>
     </div>
 </header>

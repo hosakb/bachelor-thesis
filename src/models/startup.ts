@@ -17,6 +17,11 @@ interface Kpis {
   liquidity: number;
 }
 
+interface TimeSeriesKpis {
+  months: string[];
+  periodData: number[];
+}
+
 const getStartupById = async (startupId: string) => {
   const client = await pool.connect();
 
@@ -94,6 +99,29 @@ const getStartups = async () => {
   }
 };
 
+const getStartupNameById = async (startupId: string) => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      "SELECT name FROM startup WHERE id = $1",
+      [startupId]
+    );
+
+    if (result.rowCount === 0) {
+      throw new Error(`No startups found found for id ${startupId}.`);
+    }
+
+    return result.rows[0].name;
+  } catch (err) {
+    throw new Error(
+      `Failed to query startup with id ${startupId} due to the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
 const updateKpis = async (kpis: Kpis, startupId: string) => {
   const client = await pool.connect();
 
@@ -110,4 +138,13 @@ const updateKpis = async (kpis: Kpis, startupId: string) => {
     client.release();
   }
 };
-export { Startup, Kpis, getStartupById, getStartups, getKpis, updateKpis };
+export {
+  Startup,
+  Kpis,
+  TimeSeriesKpis,
+  getStartupById,
+  getStartupNameById,
+  getStartups,
+  getKpis,
+  updateKpis,
+};

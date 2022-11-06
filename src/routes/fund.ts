@@ -1,11 +1,10 @@
 import express, { Router } from "express";
+import { getFundNameById } from "../models/fund";
 
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
-import { getKpis, Startup } from "../models/startup";
+import { getKpis, getStartupNameById, TimeSeriesKpis } from "../models/startup";
 
 const router: Router = express.Router();
-
-let startupTable: Startup[] = [];
 
 router.get("/", (req, res) => {
   if (req.session.fundId !== undefined) {
@@ -26,17 +25,21 @@ router.get("/:fundId", (req, res) => {
     kpiIII: 66,
     page: "dashboard",
     startup: false,
+    title: req.fundName, // TODO: make dynamic
+    name: req.user?.firstName + " " + req.user?.lastName,
   });
 });
 
 router.param("fundId", async (req, res, next, fundId) => {
   try {
+    req.fundName = await getFundNameById(fundId);
+
     if (await !fundIdExists(fundId)) {
       res.redirect("/"); // invalid query result for fundId
       return;
     }
 
-    startupTable = await getStartupsForFund(fundId);
+    req.session.startupTable = await getStartupsForFund(fundId);
 
     next();
   } catch (error) {
@@ -47,7 +50,7 @@ router.param("fundId", async (req, res, next, fundId) => {
 });
 
 router.get("/table/values", (req, res) => {
-  res.status(200).json(startupTable);
+  res.status(200).json(req.session.startupTable);
 });
 
 router.post("/startup", (req, res) => {
@@ -55,33 +58,33 @@ router.post("/startup", (req, res) => {
   res.redirect(`startup/${req.body.id}`);
 });
 
-let netProfitMarginTs: Object;
-let cashFlowRateTs: Object;
-let liquidityTs: Object;
-
 router.get("/startup/:startupId/", (req, res) => {
   res.render("dashboard/fund/startup", {
     layout: "../views/layouts/fund.ejs",
     netProfitMargin: req.netProfitMargin,
     cashFlowRate: req.cashFlowRate,
     liquidity: req.liquidity,
+    title: req.startupName,
+    name: req.user?.firstName + " " + req.user?.lastName,
   });
 });
 
 router.get("/chart/npm", (req, res) => {
-  res.status(200).json(netProfitMarginTs);
+  res.status(200).json(req.session.netProfitMarginTs);
 });
 
 router.get("/chart/cfr", (req, res) => {
-  res.status(200).json(cashFlowRateTs);
+  res.status(200).json(req.session.cashFlowRateTs);
 });
 
 router.get("/chart/liq", (req, res) => {
-  res.status(200).json(liquidityTs);
+  res.status(200).json(req.session.liquidityTs);
 });
 
 router.param("startupId", async (req, res, next, startupId) => {
   try {
+    req.startupName = await getStartupNameById(startupId);
+
     const kpis = await getKpis(startupId);
 
     req.netProfitMargin = kpis[kpis.length - 1].netProfitMargin;
@@ -100,18 +103,24 @@ router.param("startupId", async (req, res, next, startupId) => {
       liquidity.push(i.liquidity);
     });
 
-    netProfitMarginTs = {
+    const netProfitMarginTs: TimeSeriesKpis = {
       months: months,
       periodData: netProfitMargin,
     };
-    cashFlowRateTs = {
+
+    const cashFlowRateTs: TimeSeriesKpis = {
       months: months,
       periodData: cashFlowRate,
     };
-    liquidityTs = {
+
+    const liquidityTs: TimeSeriesKpis = {
       months: months,
       periodData: liquidity,
     };
+
+    req.session.netProfitMarginTs = netProfitMarginTs;
+    req.session.cashFlowRateTs = cashFlowRateTs;
+    req.session.liquidityTs = liquidityTs;
 
     next();
   } catch (error) {

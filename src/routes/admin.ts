@@ -72,7 +72,9 @@ router.post("/user-registration", async (req, res) => {
         );
         res.redirect("/user/login");
       }
-    } catch (error) {} // TODO: impl
+    } catch (error) {
+      throw new Error(`Failed to register new user due to ${error}`);
+    }
   }
 });
 

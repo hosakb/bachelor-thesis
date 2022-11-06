@@ -1,4 +1,4 @@
-import { User } from "../../../models/users";
+import { TimeSeriesKpis } from "../../../models/startup";
 
 declare global {
   namespace Express {
@@ -6,10 +6,21 @@ declare global {
       netProfitMargin?: number;
       cashFlowRate?: number;
       liquidity?: number;
-      netProfitMarginTs?: number;
-      cashFlowRateTs?: number;
-      liquidityTs?: number;
       user?: User;
+      startupName: string;
+      fundName: string;
+    }
+    export interface User {
+      id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      password: string;
+      role: string;
+      created_at: string;
+      updated_at: string;
+      startup?: string;
+      fund?: string;
     }
   }
 }
@@ -19,5 +30,9 @@ declare module "express-session" {
     startupId: string;
     fundId: string;
     admin: boolean;
+    netProfitMarginTs?: TimeSeriesKpis;
+    cashFlowRateTs?: TimeSeriesKpis;
+    liquidityTs?: TimeSeriesKpis;
+    startupTable: Startup[];
   }
 }

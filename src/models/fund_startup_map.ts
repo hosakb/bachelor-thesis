@@ -6,7 +6,9 @@ const fundIdExists = async (fundId: string) => {
   const client = await pool.connect();
 
   try {
-    const result = await client.query("SELECT * FROM fund WHERE id=$1", [fundId]);
+    const result = await client.query("SELECT * FROM fund WHERE id=$1", [
+      fundId,
+    ]);
 
     if (result.rowCount > 1) {
       console.log(

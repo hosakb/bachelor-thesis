@@ -14,6 +14,8 @@ router.get("/:startupId", (req, res) => {
   res.render("submit/index", {
     layout: "../views/layouts/startup.ejs",
     page: "submit",
+    title: "Finvia", // TODO: make dynamic
+    name: req.user?.firstName + " " + req.user?.lastName,
   });
 });
 
@@ -91,6 +93,8 @@ function uploadFiles(req: Request, res: Response) {
         layout: "../views/layouts/startup.ejs",
         page: "submit",
         kpis,
+        title: "Finvia", // TODO: make dynamic
+        name: req.user?.firstName + " " + req.user?.lastName,
       });
 
       return;
