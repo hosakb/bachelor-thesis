@@ -2,7 +2,7 @@ import express, { Router } from "express";
 import { getFundNameById } from "../models/fund";
 
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
-import { getKpis, getStartupNameById, TimeSeriesKpis } from "../models/startup";
+import { getStartupKpiRequestData } from "./startup";
 
 const router: Router = express.Router();
 
@@ -59,11 +59,10 @@ router.post("/startup", (req, res) => {
 });
 
 router.get("/startup/:startupId/", (req, res) => {
-  res.render("dashboard/fund/startup", {
+  res.render("dashboard/startup/index", {
     layout: "../views/layouts/fund.ejs",
-    netProfitMargin: req.netProfitMargin,
-    cashFlowRate: req.cashFlowRate,
-    liquidity: req.liquidity,
+    phase: req.phase,
+    kpis: req.kpis,
     title: req.startupName,
     name: req.user?.firstName + " " + req.user?.lastName,
   });
@@ -83,51 +82,14 @@ router.get("/chart/liq", (req, res) => {
 
 router.param("startupId", async (req, res, next, startupId) => {
   try {
-    req.startupName = await getStartupNameById(startupId);
-
-    const kpis = await getKpis(startupId);
-
-    req.netProfitMargin = kpis[kpis.length - 1].netProfitMargin;
-    req.cashFlowRate = kpis[kpis.length - 1].cashFlowRate;
-    req.liquidity = kpis[kpis.length - 1].liquidity;
-
-    const months: string[] = [];
-    const netProfitMargin: number[] = [];
-    const cashFlowRate: number[] = [];
-    const liquidity: number[] = [];
-
-    kpis.forEach((i) => {
-      months.push(i.date.substring(0, 7));
-      netProfitMargin.push(i.netProfitMargin);
-      cashFlowRate.push(i.cashFlowRate);
-      liquidity.push(i.liquidity);
-    });
-
-    const netProfitMarginTs: TimeSeriesKpis = {
-      months: months,
-      periodData: netProfitMargin,
-    };
-
-    const cashFlowRateTs: TimeSeriesKpis = {
-      months: months,
-      periodData: cashFlowRate,
-    };
-
-    const liquidityTs: TimeSeriesKpis = {
-      months: months,
-      periodData: liquidity,
-    };
-
-    req.session.netProfitMarginTs = netProfitMarginTs;
-    req.session.cashFlowRateTs = cashFlowRateTs;
-    req.session.liquidityTs = liquidityTs;
-
-    next();
+    await getStartupKpiRequestData(req, startupId);
   } catch (error) {
     throw new Error(
-      `Failed to query kpis for startup id ${startupId} with the following error: ${error}`
+      `Failed to fetch startup kpi request data for startup with id ${startupId}`
     );
   }
+
+  next();
 });
 
 export default router;

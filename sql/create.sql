@@ -7,7 +7,13 @@ CREATE TABLE
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     stage VARCHAR(255) NOT NULL,
-    kpis JSONB NOT NULL DEFAULT '[]'
+    seed_phase_kpis JSONB NOT NULL DEFAULT '[]',
+    startup_phase_kpis JSONB NOT NULL DEFAULT '[]',
+    first_stage_kpis JSONB NOT NULL DEFAULT '[]',
+    second_stage_kpis JSONB NOT NULL DEFAULT '[]',
+    third_stage_kpis JSONB NOT NULL DEFAULT '[]'.
+    final_phase_kpis JSONB NOT NULL DEFAULT '[]',
+    info JSONB NOT NULL DEFAULT '[]'
   );
 
 CREATE TABLE

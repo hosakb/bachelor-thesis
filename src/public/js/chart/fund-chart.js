@@ -23,7 +23,7 @@ window.onload = function () {
           },
         },
       };
-      
+
       // eslint-disable-next-line no-undef
       new Chart(document.querySelector("#npm-chart"), config);
     });

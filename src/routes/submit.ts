@@ -119,20 +119,21 @@ router.post("/kpis", async (req, res) => {
   };
 
   deleteSpreadsheets(UPLOAD_PATH); // TODO: error handling
-  await updateKpis(kpis, req.session.startupId); // TODO: error handling
+  await updateKpis(kpis, req.session.startupId, req.session.phase); // TODO: error handling
 
   res.redirect("/startup");
 });
 
 router.post("/kpi-form", async (req, res) => {
   const { netProfitMargin, cashFlowRate, liquidity } = req.body;
+
   const kpis: Kpis = {
     date: getTodaysDate(),
     netProfitMargin: netProfitMargin,
     cashFlowRate: cashFlowRate,
     liquidity: liquidity,
   };
-  await updateKpis(kpis, req.session.startupId);
+  await updateKpis(kpis, req.session.startupId, req.session.phase);
 
   res.redirect("/startup");
 });

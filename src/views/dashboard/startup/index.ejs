@@ -1,46 +1,279 @@
-<div class="cards">
-    <div class="card-single-kpi">
-        <div>
-            <h3>
-                <%= locals.netProfitMargin %>
-            </h3>
-            <span>Net Profit Margin</span>
+<% if(locals.phase == "seed") { %>
+    <h3>Seed Phase</h3>
+    <div class="cards">
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.netProfitMargin %>
+                </h3>
+                <span>Net Profit Margin</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
         </div>
-        <div>
-            <span class="las la-clipboard"></span>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.cashFlowRate %>
+                </h3>
+                <span>Cash-Flow Rate</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.liquidity %>
+                </h3>
+                <span>Liquidity</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="npm-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="cfr-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="liq-chart"></canvas>
         </div>
     </div>
-    <div class="card-single-kpi">
-        <div>
-            <h3>
-                <%= locals.cashFlowRate %>
-            </h3>
-            <span>Cash-Flow Rate</span>
+<% } else if(locals.phase == "startup") { %>
+    <h3>Startup Phase</h3>
+    <div class="cards">
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.netProfitMargin %>
+                </h3>
+                <span>Net Profit Margin</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
         </div>
-        <div>
-            <span class="las la-clipboard"></span>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.cashFlowRate %>
+                </h3>
+                <span>Cash-Flow Rate</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.liquidity %>
+                </h3>
+                <span>Liquidity</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="npm-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="cfr-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="liq-chart"></canvas>
         </div>
     </div>
-    <div class="card-single-kpi">
-        <div>
-            <h3>
-                <%= locals.liquidity %>
-            </h3>
-            <span>Liquidity</span>
+<% } else if(locals.phase == "first_stage") { %>
+    <h3>First Stage Phase</h3>
+    <div class="cards">
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.netProfitMargin %>
+                </h3>
+                <span>Net Profit Margin</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
         </div>
-        <div>
-            <span class="las la-clipboard"></span>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.cashFlowRate %>
+                </h3>
+                <span>Cash-Flow Rate</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.liquidity %>
+                </h3>
+                <span>Liquidity</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="npm-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="cfr-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="liq-chart"></canvas>
         </div>
     </div>
-    <div class="card-single-kpi">
-        <canvas id="npm-chart"></canvas>
+<% } else if(locals.phase == "second_stage") { %>
+    <h3>Second Stage Phase</h3>
+    <div class="cards">
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.netProfitMargin %>
+                </h3>
+                <span>Net Profit Margin</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.cashFlowRate %>
+                </h3>
+                <span>Cash-Flow Rate</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.liquidity %>
+                </h3>
+                <span>Liquidity</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="npm-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="cfr-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="liq-chart"></canvas>
+        </div>
     </div>
-    <div class="card-single-kpi">
-        <canvas id="cfr-chart"></canvas>
+<% } else if(locals.phase == "third_stage") { %>
+    <h3>Third Stage Phase</h3>
+    <div class="cards">
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.netProfitMargin %>
+                </h3>
+                <span>Net Profit Margin</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.cashFlowRate %>
+                </h3>
+                <span>Cash-Flow Rate</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.liquidity %>
+                </h3>
+                <span>Liquidity</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="npm-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="cfr-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="liq-chart"></canvas>
+        </div>
     </div>
-    <div class="card-single-kpi">
-        <canvas id="liq-chart"></canvas>
+<% } else if(locals.phase == "final") { %>
+    <h3>Final Phase</h3>
+    <div class="cards">
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.netProfitMargin %>
+                </h3>
+                <span>Net Profit Margin</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.cashFlowRate %>
+                </h3>
+                <span>Cash-Flow Rate</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= locals.kpis.liquidity %>
+                </h3>
+                <span>Liquidity</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="npm-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="cfr-chart"></canvas>
+        </div>
+        <div class="card-single-kpi">
+            <canvas id="liq-chart"></canvas>
+        </div>
     </div>
-</div>
+<% } %>               
 <script src="/js/chart/startup-chart.js"></script>
 <script  src="/js/chart/chart.min.js"></script>

@@ -1,11 +1,54 @@
-import { TimeSeriesKpis } from "../../../models/startup";
+import { InvestmentPhase, TimeSeriesKpis } from "../../../models/startup";
+
+interface SeedKpis {
+  netProfitMargin: number;
+  cashFlowRate: number;
+  liquidity: number;
+}
+
+interface StartupKpis {
+  netProfitMargin: number;
+  cashFlowRate: number;
+  liquidity: number;
+}
+
+interface FirstStageKpis {
+  netProfitMargin: number;
+  cashFlowRate: number;
+  liquidity: number;
+}
+
+interface SecondStageKpis {
+  netProfitMargin: number;
+  cashFlowRate: number;
+  liquidity: number;
+}
+
+interface ThirdStageKpis {
+  netProfitMargin: number;
+  cashFlowRate: number;
+  liquidity: number;
+}
+
+interface FinalStageKpis {
+  netProfitMargin: number;
+  cashFlowRate: number;
+  liquidity: number;
+}
+
+export type Kpis =
+  | SeedKpis
+  | StartupKpis
+  | FirstStageKpis
+  | SecondStageKpis
+  | ThirdStageKpis
+  | FinalStageKpis;
 
 declare global {
   namespace Express {
     export interface Request {
-      netProfitMargin?: number;
-      cashFlowRate?: number;
-      liquidity?: number;
+      kpis: Kpis;
+      phase: string;
       user?: User;
       startupName: string;
       fundName: string;
@@ -34,5 +77,6 @@ declare module "express-session" {
     cashFlowRateTs?: TimeSeriesKpis;
     liquidityTs?: TimeSeriesKpis;
     startupTable: Startup[];
+    phase: InvestmentPhase;
   }
 }
