@@ -107,7 +107,7 @@ const getFirstLoginByEmail = async (email: string): Promise<boolean> => {
       throw new Error("No user found for email: " + email);
     }
 
-    return result.rows[0].id;
+    return result.rows[0].first_login;
   } catch (err) {
     throw new Error(
       `  "Failed query the users role after login for user with email: ${email}. Error:  ${err}`
@@ -235,7 +235,6 @@ const insertTrackRecord = async (
       `UPDATE users SET track_record = $1, first_login = $2 WHERE id = $3`,
       [id, false, userId]
     );
-
   } catch (err) {
     throw new Error(
       `Failed to add track record user with id ${userId}. Error: ${err}`

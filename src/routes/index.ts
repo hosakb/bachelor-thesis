@@ -36,20 +36,22 @@ router.post(
         return res.redirect("/admin");
       case Role.Startup:
         try {
-          const firstLogin: boolean = await getFirstLoginByEmail(email);
+          const firstLogin = await getFirstLoginByEmail(email);
+
+          console.log(firstLogin)
           req.session.startupId = userRole.id;
 
-          if (firstLogin == false) {
-            console.log(
-              `Logged in as startup with id ${userRole.id} and redirected to /startup/${userRole.id}`
-            );
-            return res.redirect("/startup/" + userRole.id);
-          } else {
+          if (firstLogin == true) {
             console.log(
               `Logged in as startup with id ${userRole.id} and redirected to /onboarding due to first login.}`
             );
             return res.redirect("/onboarding/");
           }
+
+          console.log(
+            `Logged in as startup with id ${userRole.id} and redirected to /startup/${userRole.id}`
+          );
+          return res.redirect("/startup/" + userRole.id);
         } catch (error) {
           throw new Error("Failed to query first login attempt from db.");
         }
