@@ -3,8 +3,9 @@ import { PassportStatic } from "passport";
 import bcrypt from "bcryptjs";
 import {
   User,
-  getUserByEmail,
-  getUserById,
+  LoginUser,
+  getLoginUserByEmail,
+  getLoginUserById,
   emailRegistered,
 } from "../models/users";
 
@@ -21,17 +22,29 @@ export default function initPassport(passport: PassportStatic) {
       async (email: string, password: string, done) => {
         try {
           if (await emailRegistered(email)) {
-            const user: User = await getUserByEmail(email);
+            const loginUser: LoginUser = await getLoginUserByEmail(email);
 
             bcrypt.compare(
               password,
-              user.password,
+              loginUser.password,
               (err: Error, isMatch: boolean) => {
                 if (err) {
                   throw new Error("User authentication failed. " + err);
                 }
 
                 if (isMatch) {
+                  const user: User = {
+                    id: loginUser.id,
+                    firstName: loginUser.firstName,
+                    lastName: loginUser.lastName,
+                    email: loginUser.email,
+                    role: loginUser.role,
+                    created_at: loginUser.created_at,
+                    updated_at: loginUser.updated_at,
+                    startup: loginUser.startup,
+                    fund: loginUser.fund,
+                  };
+
                   return done(null, user);
                 } else {
                   return done(null, false, {
@@ -54,8 +67,8 @@ export default function initPassport(passport: PassportStatic) {
 
   passport.deserializeUser(async (id: string, done) => {
     try {
-      const user: User = await getUserById(id);
-      return done(null, user);
+      const loginUser: LoginUser = await getLoginUserById(id);
+      return done(null, loginUser);
     } catch (err) {
       return done(err);
     }

@@ -2,7 +2,12 @@ import express, { Router } from "express";
 import { checkAuthenticated } from "../middleware/check-auth";
 import passport from "passport";
 
-import { Role, UserRole, getUserRole } from "../models/users";
+import {
+  Role,
+  UserRole,
+  getUserRole,
+  getFirstLoginByEmail,
+} from "../models/users";
 
 const router: Router = express.Router();
 
@@ -28,35 +33,32 @@ router.post(
           ${userRole.id}
             and redirected to /admin/`
         );
-        console.log(
-          "-------- Session ------------------\n" +
-            JSON.stringify(req.session) +
-            "\n-----------------------"
-        );
         return res.redirect("/admin");
       case Role.Startup:
-        console.log(
-          `Logged in as startup with id ${userRole.id} and redirected to /startup/${userRole.id}`
-        );
-        req.session.startupId = userRole.id;
-        console.log(
-          "-------- Session ------------------\n" +
-            JSON.stringify(req.session) +
-            "\n-----------------------"
-        );
-        return res.redirect("/startup/" + userRole.id);
+        try {
+          const firstLogin: boolean = await getFirstLoginByEmail(email);
+          req.session.startupId = userRole.id;
+
+          if (firstLogin == false) {
+            console.log(
+              `Logged in as startup with id ${userRole.id} and redirected to /startup/${userRole.id}`
+            );
+            return res.redirect("/startup/" + userRole.id);
+          } else {
+            console.log(
+              `Logged in as startup with id ${userRole.id} and redirected to /onboarding due to first login.}`
+            );
+            return res.redirect("/onboarding/");
+          }
+        } catch (error) {
+          throw new Error("Failed to query first login attempt from db.");
+        }
       case Role.Fund:
         console.log(
           `Logged in as fund with id ${userRole.id} and redirected to /fund/${userRole.id}`
         );
         req.session.fundId = userRole.id;
-        console.log(
-          "-------- Session ------------------\n" +
-            JSON.stringify(req.session) +
-            "\n-----------------------"
-        );
         return res.redirect("/fund/" + userRole.id);
-        return;
       default:
         console.log("No role assigned to user. Please contact the admin.");
         return res.redirect("/");

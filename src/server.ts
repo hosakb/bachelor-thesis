@@ -11,6 +11,8 @@ import submitRouter from "./routes/submit";
 import fundDashboardRouter from "./routes/fund";
 import startupDashboardRouter from "./routes/startup";
 import adminRouter from "./routes/admin";
+import onboardingRouter from "./routes/onboarding";
+import { checkNotAuthenticated } from "./middleware/check-auth";
 
 const app = express();
 
@@ -48,9 +50,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
+
+app.use(checkNotAuthenticated);
+
 app.use("/submit", submitRouter);
 app.use("/fund", fundDashboardRouter);
 app.use("/admin", adminRouter);
 app.use("/startup", startupDashboardRouter);
+app.use("/onboarding", onboardingRouter);
 
 app.listen(process.env.PORT || 3000);

@@ -18,5 +18,7 @@ export function checkNotAuthenticated(
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect("/login");
+
+  console.log("User not authenticated. Redirect to login.");
+  res.redirect("/");
 }

@@ -5,6 +5,18 @@ interface User {
   firstName: string;
   lastName: string;
   email: string;
+  role: string;
+  created_at: string;
+  updated_at: string;
+  startup?: string;
+  fund?: string;
+}
+
+interface LoginUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
   password: string;
   role: string;
   created_at: string;
@@ -21,6 +33,19 @@ enum Role {
   Admin = "Admin",
   Startup = "Startup",
   Fund = "Fund",
+}
+
+interface PreviousVenture {
+  ventureName: string;
+  foundingDate: string;
+  coFounders: number;
+  lastValuation: number;
+  inBusiness: boolean;
+}
+
+interface TrackRecord {
+  expertise: number;
+  ventures: PreviousVenture[];
 }
 
 const getUserRole = async (email: string): Promise<UserRole> => {
@@ -68,7 +93,31 @@ const getUserRole = async (email: string): Promise<UserRole> => {
   }
 };
 
-const getUserByEmail = async (email: string) => {
+const getFirstLoginByEmail = async (email: string): Promise<boolean> => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      `SELECT first_login FROM users
+      WHERE email = $1`,
+      [email]
+    );
+
+    if (result.rowCount === 0) {
+      throw new Error("No user found for email: " + email);
+    }
+
+    return result.rows[0].id;
+  } catch (err) {
+    throw new Error(
+      `  "Failed query the users role after login for user with email: ${email}. Error:  ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const getLoginUserByEmail = async (email: string) => {
   const client = await pool.connect();
 
   try {
@@ -80,7 +129,7 @@ const getUserByEmail = async (email: string) => {
       throw new Error("No user found for email: " + email);
     }
 
-    const user: User = result.rows[0];
+    const user: LoginUser = result.rows[0];
 
     return user;
   } catch (err) {
@@ -90,7 +139,7 @@ const getUserByEmail = async (email: string) => {
   }
 };
 
-const getUserById = async (id: string) => {
+const getLoginUserById = async (id: string) => {
   const client = await pool.connect();
 
   try {
@@ -102,7 +151,7 @@ const getUserById = async (id: string) => {
       throw new Error("No user found for id: " + id);
     }
 
-    const user: User = {
+    const user: LoginUser = {
       id: result.rows[0].id,
       firstName: result.rows[0].first_name,
       lastName: result.rows[0].last_name,
@@ -167,13 +216,46 @@ const insertUser = async (
   }
 };
 
+const insertTrackRecord = async (
+  userId: string,
+  expertise: string,
+  ventures: PreviousVenture[]
+) => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      `INSERT INTO track_record (expertise, ventures) VALUES ($1, $2) RETURNING id`,
+      [expertise, JSON.stringify(ventures)]
+    );
+
+    const id = result.rows[0].id;
+
+    await client.query(
+      `UPDATE users SET track_record = $1, first_login = $2 WHERE id = $3`,
+      [id, false, userId]
+    );
+
+  } catch (err) {
+    throw new Error(
+      `Failed to add track record user with id ${userId}. Error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
 export {
+  LoginUser,
   User,
   Role,
   UserRole,
+  PreviousVenture,
   getUserRole,
-  getUserByEmail,
-  getUserById,
+  getLoginUserByEmail,
+  getLoginUserById,
   emailRegistered,
   insertUser,
+  insertTrackRecord,
+  getFirstLoginByEmail,
 };
