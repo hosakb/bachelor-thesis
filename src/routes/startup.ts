@@ -35,15 +35,17 @@ router.get("/:startupId/", (req, res) => {
 });
 
 router.param("startupId", async (req, res, next, startupId) => {
+  let phase;
   try {
     await getStartupKpiRequestData(req, startupId);
-    req.session.phase = await getInvestmentPhase(startupId);
+    console.log("-----");
+    phase = await getInvestmentPhase(startupId);
   } catch (error) {
     throw new Error(
       `Failed to fetch startup kpi request data for startup with id ${startupId}`
     );
   }
-
+  req.session.phase = phase;
   next();
 });
 
@@ -52,7 +54,6 @@ export async function getStartupKpiRequestData(
   startupId: string
 ) {
   req.startupName = await getStartupNameById(startupId);
-
   const investmentPhaseKpis: InvestmentPhaseKpis = await getKpis(startupId);
   const { phase, kpis } = investmentPhaseKpis;
 
@@ -60,7 +61,6 @@ export async function getStartupKpiRequestData(
     returnEmptyKpiRequestData(phase, req, kpis);
     return;
   }
-
   returnKpiRequestData(phase, req, kpis);
 }
 
@@ -89,6 +89,7 @@ function returnKpiRequestData(
       toPeriodDataKpis(kpis, req);
       break;
     case InvestmentPhase.FirstStage:
+
       (req.phase = phase),
         (req.kpis = {
           netProfitMargin: kpis[kpis.length - 1].netProfitMargin,

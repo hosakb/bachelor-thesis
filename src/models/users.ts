@@ -35,19 +35,6 @@ enum Role {
   Fund = "Fund",
 }
 
-interface PreviousVenture {
-  ventureName: string;
-  foundingDate: string;
-  coFounders: number;
-  lastValuation: number;
-  inBusiness: boolean;
-}
-
-interface TrackRecord {
-  expertise: number;
-  ventures: PreviousVenture[];
-}
-
 const getUserRole = async (email: string): Promise<UserRole> => {
   const client = await pool.connect();
 
@@ -216,45 +203,15 @@ const insertUser = async (
   }
 };
 
-const insertTrackRecord = async (
-  userId: string,
-  expertise: string,
-  ventures: PreviousVenture[]
-) => {
-  const client = await pool.connect();
-
-  try {
-    const result = await client.query(
-      `INSERT INTO track_record (expertise, ventures) VALUES ($1, $2) RETURNING id`,
-      [expertise, JSON.stringify(ventures)]
-    );
-
-    const id = result.rows[0].id;
-
-    await client.query(
-      `UPDATE users SET track_record = $1, first_login = $2 WHERE id = $3`,
-      [id, false, userId]
-    );
-  } catch (err) {
-    throw new Error(
-      `Failed to add track record user with id ${userId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
 export {
   LoginUser,
   User,
   Role,
   UserRole,
-  PreviousVenture,
   getUserRole,
   getLoginUserByEmail,
   getLoginUserById,
   emailRegistered,
   insertUser,
-  insertTrackRecord,
   getFirstLoginByEmail,
 };

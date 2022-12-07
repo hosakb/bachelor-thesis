@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { getStartupById } from "../models/startup";
-import { PreviousVenture, insertTrackRecord } from "../models/users";
+import { PreviousVenture, insertTrackRecord } from "../models/track_record";
 
 const router: Router = express.Router();
 

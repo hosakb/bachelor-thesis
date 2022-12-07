@@ -357,7 +357,6 @@ const updateKpis = async (
 
 const getInvestmentPhase = async (startupId: string) => {
   const client = await pool.connect();
-
   try {
     const result = await client.query("SELECT stage FROM startup WHERE id=$1", [
       startupId,
@@ -374,6 +373,8 @@ const getInvestmentPhase = async (startupId: string) => {
     client.release();
   }
 };
+
+
 export {
   Startup,
   Kpis,

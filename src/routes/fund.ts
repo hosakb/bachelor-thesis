@@ -1,7 +1,9 @@
-import express, { Router } from "express";
+import express, { Router, Request } from "express";
 import { getFundNameById } from "../models/fund";
 
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
+import { getStartupNameById } from "../models/startup";
+import { Founder, getFoundersByStartupId } from "../models/track_record";
 import { getStartupKpiRequestData } from "./startup";
 
 const router: Router = express.Router();
@@ -58,13 +60,24 @@ router.post("/startup", (req, res) => {
   res.redirect(`startup/${req.body.id}`);
 });
 
+router.get("/startup/:startupId/founders", (req, res) => {
+  res.render("dashboard/founders/index", {
+    layout: "../views/layouts/fund.ejs",
+    title: req.startupName,
+    name: req.user?.firstName + " " + req.user?.lastName,
+    founders: req.founders,
+    startup: req.params.startupId,
+  });
+});
+
 router.get("/startup/:startupId/", (req, res) => {
   res.render("dashboard/startup/index", {
     layout: "../views/layouts/fund.ejs",
-    phase: req.phase,
     kpis: req.kpis,
     title: req.startupName,
     name: req.user?.firstName + " " + req.user?.lastName,
+    founders: req.founders,
+    startup: req.params.startupId,
   });
 });
 
@@ -83,13 +96,20 @@ router.get("/chart/liq", (req, res) => {
 router.param("startupId", async (req, res, next, startupId) => {
   try {
     await getStartupKpiRequestData(req, startupId);
+    await getFounderRequestData(req, startupId);
   } catch (error) {
     throw new Error(
-      `Failed to fetch startup kpi request data for startup with id ${startupId}`
+      `Failed to fetch startup request data for startup with id ${startupId} due to: ${error}`
     );
   }
 
   next();
 });
+
+async function getFounderRequestData(req: Request, startupId: string) {
+  const founderData: Founder[] = await getFoundersByStartupId(startupId);
+  req.founders = founderData;
+
+  }
 
 export default router;

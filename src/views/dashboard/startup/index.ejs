@@ -41,59 +41,6 @@
     <div class="card-single-kpi">
         <canvas id="liq-chart"></canvas>
     </div>
-    <div id="founders" class="card">
-        <h2>Founders</h2>
-        <div>
-            <table>
-                <% for(founder of locals.founders) {%> 
-                <tr><td>Name</td><td></td><%= founder.firstName %> <%= founder.lastName %> </tr>
-                <tr><td>Age</td><td>><%= founder.age %></td></tr>
-                <tr><td>Domain of Expertise</td><td><%= founder.domainOfExpertise %></td></tr>
-                <tr>
-                    <td>Previous Ventures</td>
-                    <td>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Still in Business
-                                    </th>
-                                    <th>
-                                        Founding Date
-                                    </th>
-                                    <th>
-                                        Number Co-Founders
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% for(venture of locals.founders.ventures) {%>
-                                    <tr>
-                                        <th>
-                                            <%= venture.name %> 
-                                        </th>
-                                        <th>
-                                            <%= venture.inBusiness %> 
-                                        </th>
-                                        <th>
-                                            <%= venture.foundingDate %> 
-                                        </th>
-                                        <th>
-                                            <%= venture.coFounders %> 
-                                        </th>
-                                    </tr>
-                                <% } %> 
-                            </tbody>
-                     </table>
-                    </td>
-                </tr>
-                <% }%>
-            </table>
-         </div>
-    </div>
-    </div>
+</div>
 <script src="/js/chart/startup-chart.js"></script>
 <script  src="/js/chart/chart.min.js"></script>
