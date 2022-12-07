@@ -48,7 +48,19 @@ CREATE TABLE
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     startup uuid,
     fund uuid,
+    track_record uuid,
+    first_login BOOLEAN DEFAULT true;
+
+  
     FOREIGN KEY(startup) REFERENCES startup(id),
     FOREIGN KEY(fund) REFERENCES fund(id)
+    FOREIGN KEY(track_record) REFERENCES track_record(id)
+  );
+
+  CREATE TABLE
+  IF NOT EXISTS track_record (
+    id UUID NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
+    expertise TEXT NOT NULL,
+    ventures UUID JSONB NOT NULL DEFAULT '[]',
   );
 

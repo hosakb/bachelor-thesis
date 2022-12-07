@@ -38,7 +38,7 @@ router.post(
         try {
           const firstLogin = await getFirstLoginByEmail(email);
 
-          console.log(firstLogin)
+          console.log(firstLogin);
           req.session.startupId = userRole.id;
 
           if (firstLogin == true) {
