@@ -54,4 +54,28 @@ const getStartupsForFund = async (fundId: string): Promise<Startup[]> => {
   }
 };
 
+const getFundsEmailsByStartupId = async (startupId: string): Promise<string[]> => { {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      `SELECT fund_id FROM fund_startup_map WHERE startup_id=$1`,
+      [startupId]
+    );
+
+    const fundIds = [];
+
+    for (const fund of result.rows) {
+      fundIds.push(await getStartupById(fund.id));
+    }
+
+    return startups;
+  } catch (err) {
+    throw new Error(
+      `Failed to query startups for fund with id ${fundId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+}
+
 export { getStartupsForFund, fundIdExists };

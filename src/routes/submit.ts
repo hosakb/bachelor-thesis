@@ -5,6 +5,7 @@ import fs from "fs";
 import path from "path";
 import { Kpis, updateKpis } from "../models/startup";
 import getTodaysDate from "../util/date";
+import notifyFund from "../util/mail";
 
 const router = express.Router();
 
@@ -121,6 +122,14 @@ router.post("/kpis", async (req, res) => {
   deleteSpreadsheets(UPLOAD_PATH); // TODO: error handling
   await updateKpis(kpis, req.session.startupId, req.session.phase); // TODO: error handling
 
+  if(req.user === undefined) {
+    throw new Error("Cannot access user info in session.");
+  }
+ 
+  const fundMails: string[] = await getFundsByStartupId(req.session.startupId);
+
+  fundMails.forEach(fundMail => notifyFund(fundMail));
+
   res.redirect("/startup");
 });
 
@@ -134,6 +143,10 @@ router.post("/kpi-form", async (req, res) => {
     liquidity: liquidity,
   };
   await updateKpis(kpis, req.session.startupId, req.session.phase);
+ 
+  const fundMails: string[] = await getFundsByStartupId(req.session.startupId);
+
+  fundMails.forEach(fundMail => notifyFund(fundMail));
 
   res.redirect("/startup");
 });
