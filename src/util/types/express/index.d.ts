@@ -36,7 +36,6 @@ interface FinalStageKpis {
   liquidity: number;
 }
 
-
 export type Kpis =
   | SeedKpis
   | StartupKpis
@@ -45,26 +44,25 @@ export type Kpis =
   | ThirdStageKpis
   | FinalStageKpis;
 
+interface Founder {
+  firstName: string;
+  lastName: string;
+  age: number;
+  trackRecord: TrackRecord;
+}
 
-  interface Founder {
-    firstName: string;
-    lastName: string;
-    age: number;
-    trackRecord: TrackRecord;
-  }
-  
-  interface TrackRecord {
-    expertise: number;
-    ventures: PreviousVenture[];
-  }
+interface TrackRecord {
+  expertise: number;
+  ventures: PreviousVenture[];
+}
 
-  interface PreviousVenture {
-    name: string;
-    foundingDate: string;
-    coFounders: number;
-    lastValuation: number;
-    inBusiness: boolean;
-  }
+interface PreviousVenture {
+  name: string;
+  foundingDate: string;
+  coFounders: number;
+  lastValuation: number;
+  inBusiness: boolean;
+}
 
 declare global {
   namespace Express {
@@ -74,7 +72,6 @@ declare global {
       user?: User;
       startupName: string;
       fundName: string;
-      founders: Founder[]
     }
     export interface User {
       id: string;
@@ -100,5 +97,6 @@ declare module "express-session" {
     liquidityTs?: TimeSeriesKpis;
     startupTable: Startup[];
     phase: InvestmentPhase;
+    selectedStartup: string;
   }
 }

@@ -38,7 +38,6 @@ router.post(
         try {
           const firstLogin = await getFirstLoginByEmail(email);
 
-          console.log(firstLogin);
           req.session.startupId = userRole.id;
 
           if (firstLogin == true) {
@@ -51,7 +50,7 @@ router.post(
           console.log(
             `Logged in as startup with id ${userRole.id} and redirected to /startup/${userRole.id}`
           );
-          return res.redirect("/startup/" + userRole.id);
+          return res.redirect("/startup");
         } catch (error) {
           throw new Error("Failed to query first login attempt from db.");
         }
@@ -60,7 +59,7 @@ router.post(
           `Logged in as fund with id ${userRole.id} and redirected to /fund/${userRole.id}`
         );
         req.session.fundId = userRole.id;
-        return res.redirect("/fund/" + userRole.id);
+        return res.redirect("/fund");
       default:
         console.log("No role assigned to user. Please contact the admin.");
         return res.redirect("/");

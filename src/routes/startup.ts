@@ -11,42 +11,40 @@ import {
 
 const router: Router = express.Router();
 
-router.get("/", (req, res) => {
-  console.log("fund: " + req.session.fundId);
-  console.log("startup: " + req.session.startupId);
-  if (req.session.fundId !== undefined) {
-    res.redirect("/fund/" + req.session.fundId);
-  } else if (req.session.startupId !== undefined) {
-    res.redirect("/startup/" + req.session.startupId);
+router.get("/", async (req, res) => {
+  const startupId = req.user?.startup;
+
+  if (startupId === undefined) {
+    if (req.user?.fund !== undefined) {
+      console.log(
+        `Redirecting user ${req.user?.id} to fund screen since no startup id is assigned.`
+      );
+      res.redirect("/startup");
+    } else {
+      console.log(
+        `Redirecting user ${req.user?.id} to login screen since no fund id or startup id are assigned.`
+      );
+      res.redirect("/");
+    }
   } else {
-    res.redirect("/");
-  }
-});
+    try {
+      await getStartupKpiRequestData(req, startupId);
 
-router.get("/:startupId/", (req, res) => {
-  res.render("dashboard/startup/index", {
-    layout: "../views/layouts/startup.ejs",
-    phase: req.phase,
-    kpis: req.kpis,
-    page: "dashboard",
-    title: req.startupName,
-    name: req.user?.firstName + " " + req.user?.lastName,
-  });
-});
-
-router.param("startupId", async (req, res, next, startupId) => {
-  let phase;
-  try {
-    await getStartupKpiRequestData(req, startupId);
-    console.log("-----");
-    phase = await getInvestmentPhase(startupId);
-  } catch (error) {
-    throw new Error(
-      `Failed to fetch startup kpi request data for startup with id ${startupId}`
-    );
+      res.render("dashboard/startup/index", {
+        layout: "../views/layouts/startup.ejs",
+        phase: await getInvestmentPhase(startupId),
+        kpis: req.kpis,
+        page: "dashboard",
+        title: req.startupName,
+        name: req.user?.firstName + " " + req.user?.lastName,
+      });
+    } catch (error) {
+      console.log(
+        `Failed to fetch startup data for startup with id ${startupId} due to:\n${error}.\nRedirecting to login screen.`
+      );
+      res.redirect("/");
+    }
   }
-  req.session.phase = phase;
-  next();
 });
 
 export async function getStartupKpiRequestData(
@@ -89,7 +87,6 @@ function returnKpiRequestData(
       toPeriodDataKpis(kpis, req);
       break;
     case InvestmentPhase.FirstStage:
-
       (req.phase = phase),
         (req.kpis = {
           netProfitMargin: kpis[kpis.length - 1].netProfitMargin,

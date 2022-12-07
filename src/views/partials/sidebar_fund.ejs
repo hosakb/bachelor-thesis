@@ -8,8 +8,8 @@
             <li><a href="/fund" id="side-dashboard" class="active"  ><span class="las la-chart-bar"></span>
                 <span>Dashboard</span></a>
             </li>
-            <% if(locals.founders != undefined) {%>
-            <li><a href="/fund/startup/<%= locals.startup %>/founders" id="side-dashboard"  ><span class="las la-handshake"></span>
+            <% if(locals.startup !== undefined) {%>
+            <li><a href="/fund/startup/founders" id="side-dashboard"  ><span class="las la-handshake"></span>
                 <span>Founders</span></a>
             </li>
             <% } %>  

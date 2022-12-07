@@ -2,7 +2,7 @@
     <h2>Founders</h2>
     <div>
         <table>
-            <% locals.founders.forEach(founder => { %> 
+            <% founders.forEach(founder => { %> 
             <tr><td>Name</td><td><%= founder.firstName %> <%= founder.lastName %></td> </tr>
             <tr><td>Age</td><td><%= founder.age %></td></tr>
             <tr><td>Domain of Expertise</td><td><%= founder.trackRecord.expertise %></td></tr>

@@ -303,11 +303,24 @@ const getKpis = async (startupId: string): Promise<InvestmentPhaseKpis> => {
 const updateKpis = async (
   kpis: Kpis,
   startupId: string,
-  phase: InvestmentPhase
 ) => {
   const client = await pool.connect();
-
+  let phase;
   try {
+
+    const result = await client.query(
+      `SELECT stage from startup WHERE id = $1`,
+      [startupId]
+    );
+
+    if (result.rowCount != 1) {
+      throw new Error(`Unable to identify phase for startup with id ${startupId}`);  
+    }
+
+    phase = result.rows[0].stage;
+
+    console.log(`${kpis.cashFlowRate} ${startupId} ${phase}`)
+
     switch (phase) {
       case InvestmentPhase.Seed:
         await client.query(
@@ -373,7 +386,6 @@ const getInvestmentPhase = async (startupId: string) => {
     client.release();
   }
 };
-
 
 export {
   Startup,

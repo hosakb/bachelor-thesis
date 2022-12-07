@@ -10,17 +10,27 @@ const router = express.Router();
 
 const UPLOAD_PATH = path.join(__dirname, "..", "public", "uploads");
 
-router.get("/:startupId", (req, res) => {
-  res.render("submit/index", {
-    layout: "../views/layouts/startup.ejs",
-    page: "submit",
-    title: "Finvia", // TODO: make dynamic
-    name: req.user?.firstName + " " + req.user?.lastName,
-  });
-});
-
 router.get("/", (req, res) => {
-  res.redirect("/submit/" + req.session.startupId);
+  if (req.user?.startup === undefined) {
+    if (req.user?.fund !== undefined) {
+      console.log(
+        `Redirecting user ${req.user?.id} to fund screen since no startup id is assigned.`
+      );
+      res.redirect("/startup");
+    } else {
+      console.log(
+        `Redirecting user ${req.user?.id} to login screen since no fund id or startup id are assigned.`
+      );
+      res.redirect("/");
+    }
+  } else {
+    res.render("submit/index", {
+      layout: "../views/layouts/startup.ejs",
+      page: "submit",
+      title: "Finvia", // TODO: make dynamic
+      name: req.user?.firstName + " " + req.user?.lastName,
+    });
+  }
 });
 
 const storage: StorageEngine = multer.diskStorage({
@@ -76,13 +86,14 @@ function uploadFiles(req: Request, res: Response) {
   };
 
   const filePath = path.join(UPLOAD_PATH, filename);
+  console.log(filePath)
 
   readXlsxFile(fs.createReadStream(filePath), {
     schema,
   }).then(({ rows, errors }) => {
     if (errors.length === 0) {
-      const json = JSON.stringify(rows[rows.length - 1]);
-      const kpis: Kpis = JSON.parse(json);
+      console.log(rows[rows.length - 1]);
+      const kpis: Kpis = JSON.parse(JSON.stringify(rows[rows.length - 1]));
 
       kpis.date = kpis.date.substring(0, 10);
       kpis.cashFlowRate = Math.round(kpis.cashFlowRate * 100);
@@ -105,7 +116,7 @@ function uploadFiles(req: Request, res: Response) {
 
 router.post("/reupload", (req, res) => {
   deleteSpreadsheets(UPLOAD_PATH);
-  res.redirect("/submit/" + req.session.startupId);
+  res.redirect("/submit");
 });
 
 router.post("/kpis", async (req, res) => {
@@ -119,9 +130,19 @@ router.post("/kpis", async (req, res) => {
   };
 
   deleteSpreadsheets(UPLOAD_PATH); // TODO: error handling
-  await updateKpis(kpis, req.session.startupId, req.session.phase); // TODO: error handling
-
-  res.redirect("/startup");
+  const startupId = req.user?.startup;
+  if (startupId === undefined) {
+    console.log(`Redirecting to login screen since no startup is assigned to user with id ${req.user?.id}`);
+    res.redirect("/");
+  } else {
+    try {
+      await updateKpis(kpis, startupId);
+      res.redirect("/startup");
+    } catch (error) {
+      console.log(`Failed to update kpis due to ${error}. Redirect to startup screen.`)
+      res.redirect("/startup");
+    }
+  }
 });
 
 router.post("/kpi-form", async (req, res) => {
@@ -133,9 +154,19 @@ router.post("/kpi-form", async (req, res) => {
     cashFlowRate: cashFlowRate,
     liquidity: liquidity,
   };
-  await updateKpis(kpis, req.session.startupId, req.session.phase);
-
-  res.redirect("/startup");
+  const startupId = req.user?.startup;
+  if (startupId === undefined) {
+    console.log(`Redirecting to login screen since no startup is assigned to user with id ${req.user?.id}`);
+    res.redirect("/");
+  } else {
+    try {
+      await updateKpis(kpis, req.session.startupId);
+      res.redirect("/startup");
+    } catch (error) {
+      console.log(`Failed to update kpis due to ${error}. Redirect to startup screen.`)
+      res.redirect("/startup");
+    }
+  }
 });
 
 function deleteSpreadsheets(uploadPath: string) {
