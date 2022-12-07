@@ -39,9 +39,12 @@ router.post("/track-record", async (req, res) => {
     const previousVenture: PreviousVenture[] = ventures;
 
     await insertTrackRecord(userId, expertise, previousVenture);
-    res.redirect(`/startup/${req.user?.startup}`);
+    res.redirect("/startup");
   } catch (error) {
-    console.log(error); // TODO:
+    console.log(
+      `Failed to submit track record due to: ${error}. Redirect to login screen.`
+    );
+    res.redirect("/");
   }
 });
 

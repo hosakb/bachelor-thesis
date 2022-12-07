@@ -86,7 +86,7 @@ function uploadFiles(req: Request, res: Response) {
   };
 
   const filePath = path.join(UPLOAD_PATH, filename);
-  console.log(filePath)
+  console.log(filePath);
 
   readXlsxFile(fs.createReadStream(filePath), {
     schema,
@@ -132,14 +132,18 @@ router.post("/kpis", async (req, res) => {
   deleteSpreadsheets(UPLOAD_PATH); // TODO: error handling
   const startupId = req.user?.startup;
   if (startupId === undefined) {
-    console.log(`Redirecting to login screen since no startup is assigned to user with id ${req.user?.id}`);
+    console.log(
+      `Redirecting to login screen since no startup is assigned to user with id ${req.user?.id}`
+    );
     res.redirect("/");
   } else {
     try {
       await updateKpis(kpis, startupId);
       res.redirect("/startup");
     } catch (error) {
-      console.log(`Failed to update kpis due to ${error}. Redirect to startup screen.`)
+      console.log(
+        `Failed to update kpis due to ${error}. Redirect to startup screen.`
+      );
       res.redirect("/startup");
     }
   }
@@ -156,14 +160,18 @@ router.post("/kpi-form", async (req, res) => {
   };
   const startupId = req.user?.startup;
   if (startupId === undefined) {
-    console.log(`Redirecting to login screen since no startup is assigned to user with id ${req.user?.id}`);
+    console.log(
+      `Redirecting to login screen since no startup is assigned to user with id ${req.user?.id}`
+    );
     res.redirect("/");
   } else {
     try {
       await updateKpis(kpis, req.session.startupId);
       res.redirect("/startup");
     } catch (error) {
-      console.log(`Failed to update kpis due to ${error}. Redirect to startup screen.`)
+      console.log(
+        `Failed to update kpis due to ${error}. Redirect to startup screen.`
+      );
       res.redirect("/startup");
     }
   }
