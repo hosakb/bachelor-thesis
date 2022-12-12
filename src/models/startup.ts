@@ -24,42 +24,42 @@ interface InvestmentPhaseKpis {
 
 interface SeedKpis {
   date: string;
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
 }
 
 interface StartupKpis {
   date: string;
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
 }
 
 interface FirstStageKpis {
   date: string;
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
 }
 
 interface SecondStageKpis {
   date: string;
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
 }
 
 interface ThirdStageKpis {
   date: string;
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
 }
 
 interface FinalKpis {
   date: string;
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
 }
@@ -77,6 +77,45 @@ enum InvestmentPhase {
   ThirdStage = "third_stage",
   Final = "final",
 }
+
+interface StartupInfo {
+  phase: string;
+  revenue: string;
+  productToMarket: string;
+  timeToMarket: number;
+  sector: string;
+}
+
+const getFirstStartupLoginById = async (startUpId: string) => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      `SELECT info FROM startup
+      WHERE id = $1`,
+      [startUpId]
+    );
+
+    if (result.rowCount === 0) {
+      throw new Error("No startup found for id: " + startUpId);
+    }
+
+    const infoJson = result.rows[0].info;
+    const info: StartupInfo[] = JSON.parse(JSON.stringify(infoJson));
+
+    if (info.length == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    throw new Error(
+      `  "Failed query for first login for startup with email: ${startUpId}. Error:  ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
 
 const getStartupById = async (startupId: string) => {
   const client = await pool.connect();
@@ -383,16 +422,71 @@ const getInvestmentPhase = async (startupId: string) => {
   }
 };
 
+const persistCapTable = async (capTable: string, startupId: string) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      "UPDATE startup SET cap_table = $1 WHERE id = $2",
+      [capTable, startupId]
+    );
+  } catch (err) {
+    throw new Error(
+      `Failed to persist cap table for startup id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const getCapTable = async (startupId: string) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      "SELECT cap_table FROM startup WHERE id = $1",
+      [startupId]
+    );
+
+    return JSON.parse(result.rows[0].cap_table);
+  } catch (err) {
+    throw new Error(
+      `Failed to fetch cap table for startup id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const persistInfo = async (startupInfo: StartupInfo, startupId: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query("UPDATE startup SET info = $1 WHERE id = $2", [
+      JSON.stringify(startupInfo),
+      startupId,
+    ]);
+  } catch (err) {
+    throw new Error(
+      `Failed to persist startup info for startup id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
 export {
   Startup,
   Kpis,
   TimeSeriesKpis,
   InvestmentPhase,
   InvestmentPhaseKpis,
+  StartupInfo,
+  getFirstStartupLoginById,
   getStartupById,
   getStartupNameById,
   getStartups,
   getKpis,
   updateKpis,
   getInvestmentPhase,
+  persistCapTable,
+  getCapTable,
+  persistInfo,
 };

@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function submitKpiData() {
   const date = document.querySelector("#date").innerHTML;
-  const netProfitMargin =
-    document.querySelector("#netProfitMargin").children[0].innerHTML;
+  const numberOfEmployees =
+    document.querySelector("#numberOfEmployees").children[0].innerHTML;
   const cashFlowRate =
     document.querySelector("#cashFlowRate").children[0].innerHTML;
   const liquidity = document.querySelector("#liquidity").children[0].innerHTML;
@@ -16,7 +16,7 @@ function submitKpiData() {
     body: JSON.stringify({
       kpis: {
         date: date,
-        netProfitMargin: netProfitMargin,
+        numberOfEmployees: numberOfEmployees,
         cashFlowRate: cashFlowRate,
         liquidity: liquidity,
       },

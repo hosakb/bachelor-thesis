@@ -1,12 +1,12 @@
 window.onload = function () {
-  fetch("/startup/chart/npm")
+  fetch("/startup/chart/noe")
     .then((res) => res.json())
     .then((tsData) => {
       const data = {
         labels: tsData.months,
         datasets: [
           {
-            label: "Net Profit Margin",
+            label: "Number of Employees",
             backgroundColor: "rgb(49, 175, 212)",
             borderColor: "rgb(49, 175, 212)",
             data: tsData.periodData,
@@ -25,7 +25,7 @@ window.onload = function () {
       };
 
       // eslint-disable-next-line no-undef
-      new Chart(document.querySelector("#npm-chart"), config);
+      new Chart(document.querySelector("#noe-chart"), config);
     });
 
   fetch("/startup/chart/cfr")
@@ -84,5 +84,45 @@ window.onload = function () {
 
       // eslint-disable-next-line no-undef
       new Chart(document.querySelector("#liq-chart"), config);
+    });
+
+  fetch("/fund/chart/expertise")
+    .then((res) => res.json())
+    .then((expertiseData) => {
+      const data = {
+        labels: expertiseData.name,
+        datasets: [
+          {
+            label: "Expertise",
+            backgroundColor: [
+              "#3e45cd",
+              "#4e5ea2",
+              "#3c5a5f",
+              "#e8c334",
+              "#888850",
+              "#3wddcd",
+              "#54fda2",
+              "#3fef5f",
+              "#e33334",
+              "#666850",
+            ],
+            borderColor: "#ffffff",
+            data: expertiseData.amount,
+          },
+        ],
+      };
+
+      const config = {
+        type: "doughnut",
+        data: data,
+        options: {
+          layout: {
+            autoPadding: true,
+          },
+        },
+      };
+
+      // eslint-disable-next-line no-undef
+      new Chart(document.querySelector("#expertise-chart"), config);
     });
 };

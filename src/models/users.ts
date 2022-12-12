@@ -80,12 +80,12 @@ const getUserRole = async (email: string): Promise<UserRole> => {
   }
 };
 
-const getFirstLoginByEmail = async (email: string): Promise<boolean> => {
+const getFirstUserLoginByEmail = async (email: string): Promise<boolean> => {
   const client = await pool.connect();
 
   try {
     const result = await client.query(
-      `SELECT first_login FROM users
+      `SELECT track_record FROM users
       WHERE email = $1`,
       [email]
     );
@@ -94,10 +94,14 @@ const getFirstLoginByEmail = async (email: string): Promise<boolean> => {
       throw new Error("No user found for email: " + email);
     }
 
-    return result.rows[0].first_login;
+    if (result.rows[0].track_record == null) {
+      return true;
+    } else {
+      return false;
+    }
   } catch (err) {
     throw new Error(
-      `  "Failed query the users role after login for user with email: ${email}. Error:  ${err}`
+      `  "Failed query for first login for user with email: ${email}. Error:  ${err}`
     );
   } finally {
     client.release();
@@ -213,5 +217,5 @@ export {
   getLoginUserById,
   emailRegistered,
   insertUser,
-  getFirstLoginByEmail,
+  getFirstUserLoginByEmail,
 };

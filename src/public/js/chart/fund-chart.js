@@ -1,5 +1,5 @@
 window.onload = function () {
-  fetch("/fund/chart/npm")
+  fetch("/fund/chart/noe")
     .then((res) => res.json())
     .then((tsData) => {
       const data = {

@@ -1,0 +1,77 @@
+<div>
+    <h2>Welcome <%= startupName %> </h2>
+    <p>Please provide some details about your startup.</p>
+</div>
+<br>
+<div>
+    <p>What investment phase are you is <%= startupName %> currently in?</p>
+    <select name="phase" id="phase">
+        <option value="pre-seed">Pre-Seed</option>
+        <option value="seed">Seed</option>
+        <option value="series-a">Series A</option>
+        <option value="series-b">Series B</option>
+        <option value="series-c">Series C</option>
+        <option value="series-d">Series D</option>
+        <option value="later">Later</option>
+    </select>
+</div>
+<br>
+<div>
+    <p>Has <%= startupName %> generated revenue yet? </p>
+    <select name="revenue" id="revenue">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+    </select>
+</div>
+<br>
+<div>
+    <p>What sector is <%= startupName %> in? </p>
+    <input id="sector" type="text" placeholder="Sector">
+</div>
+<br>
+<div>
+    <p>Has <%= startupName %> brought a product to market yet?</p>
+    <select name="product-to-market" id="product-to-market">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+    </select>
+    <br>
+    <br>
+    <div id="est-time-to-market" class="hidden">
+        <p>If no, what is your estimated time to market?</p>
+        <input id="time-to-market" type="number"><span> Months</span>
+    </div>
+</div>
+<br>
+<div>
+    <h4>Please upload the current capitalization table in Xcel Format.</h4>
+
+   <form action="/onboarding/cap-table" enctype="multipart/form-data" method="post">
+        <input type="file" name="cap-table" />
+        <input type="submit" value="Submit Cap Table">
+    </form>
+</div>
+<br>
+<% if(locals.capTable != undefined) { %> 
+    <div>
+        <h3>Cap-Table</h3>
+        <table id="cap-table">
+            <% for(const row of locals.capTable) {%>
+                <tr>
+                    <% for(const cell of row) {%>
+                        <td>
+                            <%= cell %> 
+                        </td>
+                    <% } %> 
+                </tr>
+            <% } %> 
+        </table>
+    </div>
+    <br>
+    <div>
+        <button onclick="submitStartupData()">Submit Startup Information</button>
+    </div>
+<% } %> 
+<br>
+
+<script src="/js/onboarding-startup.js"></script>

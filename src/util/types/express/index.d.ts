@@ -1,39 +1,45 @@
 import { InvestmentPhase, TimeSeriesKpis } from "../../../models/startup";
+import { Expertise } from "../../../models/track_record";
 
 interface SeedKpis {
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
 }
 
 interface StartupKpis {
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
 }
 
 interface FirstStageKpis {
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
 }
 
 interface SecondStageKpis {
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
 }
 
 interface ThirdStageKpis {
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
 }
 
 interface FinalStageKpis {
-  netProfitMargin: number;
+  numberOfEmployees: number;
   cashFlowRate: number;
   liquidity: number;
+}
+
+interface Expertise {
+  name: string[];
+  amount: number[];
 }
 
 export type Kpis =
@@ -92,11 +98,14 @@ declare module "express-session" {
     startupId: string;
     fundId: string;
     admin: boolean;
-    netProfitMarginTs?: TimeSeriesKpis;
+    numberOfEmployeesTs?: TimeSeriesKpis;
     cashFlowRateTs?: TimeSeriesKpis;
     liquidityTs?: TimeSeriesKpis;
     startupTable: Startup[];
     phase: InvestmentPhase;
     selectedStartup: string;
+    expertise: Expertise;
+    startupName: string;
+    capTable: Row[];
   }
 }

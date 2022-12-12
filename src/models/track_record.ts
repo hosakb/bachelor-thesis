@@ -35,10 +35,10 @@ const insertTrackRecord = async (
 
     const id = result.rows[0].id;
 
-    await client.query(
-      `UPDATE users SET track_record = $1, first_login = $2 WHERE id = $3`,
-      [id, false, userId]
-    );
+    await client.query(`UPDATE users SET track_record = $1 WHERE id = $2`, [
+      id,
+      userId,
+    ]);
   } catch (err) {
     throw new Error(
       `Failed to add track record user with id ${userId}. Error: ${err}`
@@ -82,4 +82,30 @@ const getFoundersByStartupId = async (
   }
 };
 
-export { Founder, PreviousVenture, insertTrackRecord, getFoundersByStartupId };
+const getExpertiseByStartup = async (startupId: string): Promise<string[]> => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      "SELECT track_record.expertise FROM users JOIN track_record on users.track_record = track_record.id WHERE users.startup=$1",
+      [startupId]
+    );
+
+    return result.rows.map((row) => {
+      return String(row.expertise);
+    });
+  } catch (err) {
+    throw new Error(
+      `Failed to query expertise of owners for startup id ${startupId} due to: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+export {
+  Founder,
+  PreviousVenture,
+  insertTrackRecord,
+  getFoundersByStartupId,
+  getExpertiseByStartup,
+};

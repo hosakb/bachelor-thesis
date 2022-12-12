@@ -1,4 +1,5 @@
 import express, { Router, Request } from "express";
+// import { fetchBusinessCentralData } from "../api/business-central";
 import {
   getKpis,
   getStartupNameById,
@@ -28,6 +29,7 @@ router.get("/", async (req, res) => {
     }
   } else {
     try {
+      // await fetchBusinessCentralData();
       await getStartupKpiRequestData(req, startupId);
 
       res.render("dashboard/startup/index", {
@@ -71,7 +73,7 @@ function returnKpiRequestData(
     case InvestmentPhase.Seed:
       (req.phase = phase),
         (req.kpis = {
-          netProfitMargin: kpis[kpis.length - 1].netProfitMargin,
+          numberOfEmployees: kpis[kpis.length - 1].numberOfEmployees,
           cashFlowRate: kpis[kpis.length - 1].cashFlowRate,
           liquidity: kpis[kpis.length - 1].liquidity,
         });
@@ -80,7 +82,7 @@ function returnKpiRequestData(
     case InvestmentPhase.Startup:
       (req.phase = phase),
         (req.kpis = {
-          netProfitMargin: kpis[kpis.length - 1].netProfitMargin,
+          numberOfEmployees: kpis[kpis.length - 1].numberOfEmployees,
           cashFlowRate: kpis[kpis.length - 1].cashFlowRate,
           liquidity: kpis[kpis.length - 1].liquidity,
         });
@@ -89,7 +91,7 @@ function returnKpiRequestData(
     case InvestmentPhase.FirstStage:
       (req.phase = phase),
         (req.kpis = {
-          netProfitMargin: kpis[kpis.length - 1].netProfitMargin,
+          numberOfEmployees: kpis[kpis.length - 1].numberOfEmployees,
           cashFlowRate: kpis[kpis.length - 1].cashFlowRate,
           liquidity: kpis[kpis.length - 1].liquidity,
         });
@@ -98,7 +100,7 @@ function returnKpiRequestData(
     case InvestmentPhase.SecondStage:
       (req.phase = phase),
         (req.kpis = {
-          netProfitMargin: kpis[kpis.length - 1].netProfitMargin,
+          numberOfEmployees: kpis[kpis.length - 1].numberOfEmployees,
           cashFlowRate: kpis[kpis.length - 1].cashFlowRate,
           liquidity: kpis[kpis.length - 1].liquidity,
         });
@@ -107,7 +109,7 @@ function returnKpiRequestData(
     case InvestmentPhase.ThirdStage:
       (req.phase = phase),
         (req.kpis = {
-          netProfitMargin: kpis[kpis.length - 1].netProfitMargin,
+          numberOfEmployees: kpis[kpis.length - 1].numberOfEmployees,
           cashFlowRate: kpis[kpis.length - 1].cashFlowRate,
           liquidity: kpis[kpis.length - 1].liquidity,
         });
@@ -116,7 +118,7 @@ function returnKpiRequestData(
     case InvestmentPhase.Final:
       (req.phase = phase),
         (req.kpis = {
-          netProfitMargin: kpis[kpis.length - 1].netProfitMargin,
+          numberOfEmployees: kpis[kpis.length - 1].numberOfEmployees,
           cashFlowRate: kpis[kpis.length - 1].cashFlowRate,
           liquidity: kpis[kpis.length - 1].liquidity,
         });
@@ -134,7 +136,7 @@ function returnEmptyKpiRequestData(
     case InvestmentPhase.Seed:
       (req.phase = phase),
         (req.kpis = {
-          netProfitMargin: -1,
+          numberOfEmployees: -1,
           cashFlowRate: -1,
           liquidity: -1,
         });
@@ -142,7 +144,7 @@ function returnEmptyKpiRequestData(
       break;
     case InvestmentPhase.Startup:
       req.kpis = {
-        netProfitMargin: -1,
+        numberOfEmployees: -1,
         cashFlowRate: -1,
         liquidity: -1,
       };
@@ -150,7 +152,7 @@ function returnEmptyKpiRequestData(
       break;
     case InvestmentPhase.FirstStage:
       req.kpis = {
-        netProfitMargin: -1,
+        numberOfEmployees: -1,
         cashFlowRate: -1,
         liquidity: -1,
       };
@@ -158,7 +160,7 @@ function returnEmptyKpiRequestData(
       break;
     case InvestmentPhase.SecondStage:
       req.kpis = {
-        netProfitMargin: -1,
+        numberOfEmployees: -1,
         cashFlowRate: -1,
         liquidity: -1,
       };
@@ -166,7 +168,7 @@ function returnEmptyKpiRequestData(
       break;
     case InvestmentPhase.ThirdStage:
       req.kpis = {
-        netProfitMargin: -1,
+        numberOfEmployees: -1,
         cashFlowRate: -1,
         liquidity: -1,
       };
@@ -174,7 +176,7 @@ function returnEmptyKpiRequestData(
       break;
     case InvestmentPhase.Final:
       req.kpis = {
-        netProfitMargin: -1,
+        numberOfEmployees: -1,
         cashFlowRate: -1,
         liquidity: -1,
       };
@@ -182,7 +184,7 @@ function returnEmptyKpiRequestData(
       break;
   }
 
-  const netProfitMarginTs: TimeSeriesKpis = {
+  const numberOfEmployeesTs: TimeSeriesKpis = {
     months: [],
     periodData: [],
   };
@@ -197,27 +199,27 @@ function returnEmptyKpiRequestData(
     periodData: [],
   };
 
-  req.session.netProfitMarginTs = netProfitMarginTs;
+  req.session.numberOfEmployeesTs = numberOfEmployeesTs;
   req.session.cashFlowRateTs = cashFlowRateTs;
   req.session.liquidityTs = liquidityTs;
 }
 
 function toPeriodDataKpis(kpis: Kpis[], req: Request) {
   const months: string[] = [];
-  const netProfitMargin: number[] = [];
+  const numberOfEmployees: number[] = [];
   const cashFlowRate: number[] = [];
   const liquidity: number[] = [];
 
   kpis.forEach((i) => {
     months.push(i.date);
-    netProfitMargin.push(i.netProfitMargin);
+    numberOfEmployees.push(i.numberOfEmployees);
     cashFlowRate.push(i.cashFlowRate);
     liquidity.push(i.liquidity);
   });
 
-  const netProfitMarginTs: TimeSeriesKpis = {
+  const numberOfEmployeesTs: TimeSeriesKpis = {
     months: months,
-    periodData: netProfitMargin,
+    periodData: numberOfEmployees,
   };
 
   const cashFlowRateTs: TimeSeriesKpis = {
@@ -230,13 +232,13 @@ function toPeriodDataKpis(kpis: Kpis[], req: Request) {
     periodData: liquidity,
   };
 
-  req.session.netProfitMarginTs = netProfitMarginTs;
+  req.session.numberOfEmployeesTs = numberOfEmployeesTs;
   req.session.cashFlowRateTs = cashFlowRateTs;
   req.session.liquidityTs = liquidityTs;
 }
 
-router.get("/chart/npm", (req, res) => {
-  res.status(200).json(req.session.netProfitMarginTs);
+router.get("/chart/noe", (req, res) => {
+  res.status(200).json(req.session.numberOfEmployeesTs);
 });
 
 router.get("/chart/cfr", (req, res) => {
@@ -248,4 +250,4 @@ router.get("/chart/liq", (req, res) => {
 });
 
 export default router;
-// [{"date":"2022-09-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-10-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-11-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-12-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"netProfitMargin":90},{"date":"2022-01-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"netProfitMargin":70},{"date":"2022-02-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"netProfitMargin":90},{"date":"2022-03-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70}, {"date":"2022-04-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-05-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"netProfitMargin":90},{"date":"2022-06-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"netProfitMargin":70},{"date":"2022-07-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"netProfitMargin":90},{"date":"2022-08-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70}]
+// [{"date":"2022-09-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70},{"date":"2022-10-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70},{"date":"2022-11-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70},{"date":"2022-12-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"numberOfEmployees":90},{"date":"2022-01-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"numberOfEmployees":70},{"date":"2022-02-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"numberOfEmployees":90},{"date":"2022-03-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70}, {"date":"2022-04-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70},{"date":"2022-05-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"numberOfEmployees":90},{"date":"2022-06-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"numberOfEmployees":70},{"date":"2022-07-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"numberOfEmployees":90},{"date":"2022-08-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70}]

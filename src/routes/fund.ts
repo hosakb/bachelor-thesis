@@ -1,9 +1,14 @@
 import express, { Router, Request } from "express";
+import { Row } from "read-excel-file";
 import { getFundNameById } from "../models/fund";
 
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
-import { getStartupNameById } from "../models/startup";
-import { Founder, getFoundersByStartupId } from "../models/track_record";
+import { getCapTable } from "../models/startup";
+import {
+  getExpertiseByStartup,
+  getFoundersByStartupId,
+} from "../models/track_record";
+import { Expertise } from "../util/types/express";
 import { getStartupKpiRequestData } from "./startup";
 
 const router: Router = express.Router();
@@ -74,6 +79,7 @@ router.get("/startup/founders", async (req, res) => {
       layout: "../views/layouts/fund.ejs",
       title: req.startupName,
       name: req.user?.firstName + " " + req.user?.lastName,
+      page: "founder",
       founders: await getFoundersByStartupId(startupId),
       startup: req.session.selectedStartup,
     });
@@ -97,13 +103,17 @@ router.get("/startup/", async (req, res) => {
 
   try {
     await getStartupKpiRequestData(req, startupId);
+    await extractExpertise(startupId, req);
+    const capTable: Row[] = await getCapTable(startupId);
 
     res.render("dashboard/startup/index", {
       layout: "../views/layouts/fund.ejs",
       kpis: req.kpis,
       title: req.startupName,
+      page: "dashboard",
       name: req.user?.firstName + " " + req.user?.lastName,
       startup: req.session.selectedStartup,
+      capTable,
     });
   } catch (error) {
     console.log(
@@ -113,8 +123,8 @@ router.get("/startup/", async (req, res) => {
   }
 });
 
-router.get("/chart/npm", (req, res) => {
-  res.status(200).json(req.session.netProfitMarginTs);
+router.get("/chart/noe", (req, res) => {
+  res.status(200).json(req.session.numberOfEmployeesTs);
 });
 
 router.get("/chart/cfr", (req, res) => {
@@ -125,4 +135,27 @@ router.get("/chart/liq", (req, res) => {
   res.status(200).json(req.session.liquidityTs);
 });
 
+router.get("/chart/expertise", (req, res) => {
+  res.status(200).json(req.session.expertise);
+});
+
 export default router;
+
+async function extractExpertise(startupId: string, req: Request) {
+  const expertiseValues = await getExpertiseByStartup(startupId);
+
+  const expertise: Expertise = {
+    name: [],
+    amount: [],
+  };
+
+  for (const i of expertiseValues) {
+    if (!expertise.name.includes(i)) {
+      expertise.name.push(i);
+      const amount = expertiseValues.filter((x) => x == i);
+      expertise.amount.push(amount.length);
+    }
+  }
+
+  req.session.expertise = expertise;
+}

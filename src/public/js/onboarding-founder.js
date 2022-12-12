@@ -8,6 +8,37 @@ let coFounders;
 let ventureInBusiness;
 let lastValuation;
 
+// ----------------- Expertise Selection ---------------------
+
+let expertiseSelect = document.querySelector("#expertise");
+let otherExpertise = document.querySelector("#other-expertise");
+
+if (expertiseSelect.value == "other") {
+  if (otherExpertise.classList.contains("hidden")) {
+    otherExpertise.classList.remove("hidden");
+  }
+} else {
+  if (!otherExpertise.classList.contains("hidden")) {
+    otherExpertise.classList.add("hidden");
+  }
+}
+
+expertiseSelect.addEventListener("change", () => {
+  let otherExpertise = document.querySelector("#other-expertise");
+
+  if (expertiseSelect.value == "other") {
+    if (otherExpertise.classList.contains("hidden")) {
+      otherExpertise.classList.remove("hidden");
+    }
+  } else {
+    if (!otherExpertise.classList.contains("hidden")) {
+      otherExpertise.classList.add("hidden");
+    }
+  }
+});
+
+// ----------------- Previous Ventures ---------------------
+
 let firstVentureSelect = document.querySelector("#first-venture");
 
 firstVentureSelect.addEventListener("change", () => {
@@ -84,9 +115,14 @@ submitVentureBtn.addEventListener("click", () => {
 
 function areTrackRecordsInputsEmpty() {
   let inputs = [];
-  var expertise = document.querySelectorAll("#expertise");
-  inputs.push(expertise.textContent);
-  for (const inputVal of inputs) if (inputVal === "") return true;
+  var expertise = document.querySelector("#expertise");
+  var otherExpertise = document.querySelector("#other-expertise");
+  if (expertise.value == "other") {
+    inputs.push(otherExpertise.value);
+  } else {
+    inputs.push(expertise.value);
+  }
+  for (const val of inputs) if (val === "") return true;
 
   return false;
 }
@@ -113,6 +149,11 @@ submitBtn.addEventListener("click", () => {
     }
 
     let expertise = document.querySelector("#expertise").value;
+
+    if (expertise == "other") {
+      let otherExpertise = document.querySelector("#other-expertise").value;
+      expertise = otherExpertise;
+    }
 
     console.log(
       JSON.parse(

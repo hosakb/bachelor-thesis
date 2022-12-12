@@ -6,8 +6,9 @@ import {
   Role,
   UserRole,
   getUserRole,
-  getFirstLoginByEmail,
+  getFirstUserLoginByEmail,
 } from "../models/users";
+import { getFirstStartupLoginById } from "../models/startup";
 
 const router: Router = express.Router();
 
@@ -23,7 +24,6 @@ router.post(
   }),
   async (req, res) => {
     const { email } = req.body;
-
     const userRole: UserRole = await getUserRole(email);
 
     switch (userRole.role) {
@@ -36,15 +36,24 @@ router.post(
         return res.redirect("/admin");
       case Role.Startup:
         try {
-          const firstLogin = await getFirstLoginByEmail(email);
+          const firstStartupLogin = await getFirstStartupLoginById(userRole.id);
+          console.log("-------------------");
+          if (firstStartupLogin) {
+            console.log(
+              `First login as startup with id ${userRole.id} and redirected to /onboarding/startup due to first login.}`
+            );
+            return res.redirect("/onboarding/startup");
+          }
+
+          const firstUserLogin = await getFirstUserLoginByEmail(email);
 
           req.session.startupId = userRole.id;
 
-          if (firstLogin == true) {
+          if (firstUserLogin) {
             console.log(
-              `Logged in as startup with id ${userRole.id} and redirected to /onboarding due to first login.}`
+              `First login as user with id ${userRole.id} and redirected to /onboarding/ due to first login.}`
             );
-            return res.redirect("/onboarding/");
+            return res.redirect("/onboarding");
           }
 
           console.log(

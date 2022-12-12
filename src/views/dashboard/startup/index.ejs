@@ -1,10 +1,17 @@
+<!-- <div>
+    <h4>Milestones</h4>
+    <div id="visualization"></div>
+</div> -->
 <div class="cards">
+    <div class="card-single-kpi">
+       
+    </div>
     <div class="card-single-kpi">
         <div>
             <h3>
-                <%= locals.kpis.netProfitMargin %>
+                <%= locals.kpis.numberOfEmployees %>
             </h3>
-            <span>Net Profit Margin</span>
+            <span>Number of Employees</span>
         </div>
         <div>
             <span class="las la-clipboard"></span>
@@ -33,7 +40,7 @@
         </div>
     </div>
     <div class="card-single-kpi">
-        <canvas id="npm-chart"></canvas>
+        <canvas id="noe-chart"></canvas>
     </div>
     <div class="card-single-kpi">
         <canvas id="cfr-chart"></canvas>
@@ -41,6 +48,34 @@
     <div class="card-single-kpi">
         <canvas id="liq-chart"></canvas>
     </div>
+    <% if(locals.startup != undefined) {%>
+        <div class="card-single-kpi">
+            <h3>Expertise</h3>
+           <div>
+            <canvas id="expertise-chart"></canvas>
+           </div>
+        </div> 
+    <% } %>
+    <% if(locals.capTable != undefined) { %> 
+        <div class="card-single-kpi">
+            <h3>Cap-Table</h3>
+            <table id="cap-table">
+                <% for(const row of locals.capTable) {%>
+                    <tr>
+                        <% for(const cell of row) {%>
+                            <td>
+                                <%= cell %> 
+                            </td>
+                        <% } %> 
+                    </tr>
+                <% } %> 
+            </table>
+        </div>
+        <br>
+    <% } %> 
 </div>
+<!-- <script src="/js/timeline/vis-timeline-graph2d.min.js"></script>
+<script src="/js/timeline/timeline.js"></script> -->
 <script src="/js/chart/startup-chart.js"></script>
-<script  src="/js/chart/chart.min.js"></script>
+<script src="/js/chart/chart.min.js"></script>
+ 

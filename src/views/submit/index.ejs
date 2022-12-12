@@ -4,8 +4,8 @@
         <h3>Manuel Input</h3>
         <form action="/submit/kpi-form" method="POST">
             <div>
-                <label for="netProfitMargin">Net Profit Margin</label>
-                <input name="netProfitMargin" type="number" name="">
+                <label for="numberOfEmployees">Number of Employees</label>
+                <input name="numberOfEmployees" type="number" name="">
             </div>
             <div>
                 <label for="cashFlowRate">Cash-Flow-Rate</label>
@@ -33,7 +33,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Date</th>
-                        <th scope="col">Net Profit Margin</th>
+                        <th scope="col">Number of Employees</th>
                         <th scope="col">Cash Flow Rate</th>
                         <th scope="col">Liquidity</th>
                     </tr>
@@ -41,7 +41,7 @@
                 <tbody>
                     <tr>
                         <td id="date" scope="row"><%= locals.kpis.date %></td>
-                        <td id="netProfitMargin"><label><%= locals.kpis.netProfitMargin %></label><label>%</label></td>
+                        <td id="numberOfEmployees"><label><%= locals.kpis.numberOfEmployees %></label><label>%</label></td>
                         <td id="cashFlowRate"><label><%= locals.kpis.cashFlowRate %></label><label>%</label></td>
                         <td id="liquidity"><label><%= locals.kpis.liquidity %></label><label>%</label></td>
                     </tr>
@@ -56,6 +56,29 @@
             </div>
             <% } %>
         <label name="success"><%= locals.success %></label>
+    </div>
+    <div class="submit-card">
+        <h4>Capitalization Table</h4>
+       <form action="/submit/cap-table" enctype="multipart/form-data" method="post">
+            <input type="file" name="cap-table" />
+            <input type="submit" value="Submit Cap Table">
+        </form>
+        <br>
+        <% if(locals.capTable != undefined) { %> 
+            <div>
+                <table id="cap-table">
+                    <% for(const row of locals.capTable) {%>
+                        <tr>
+                            <% for(const cell of row) {%>
+                                <td>
+                                    <%= cell %> 
+                                </td>
+                            <% } %> 
+                        </tr>
+                    <% } %> 
+                </table>
+            </div>
+        <% } %> 
     </div>
 </div>
 
