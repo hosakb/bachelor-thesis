@@ -177,6 +177,20 @@ main {
   background: #fff;
 }
 
+.milestone-card {
+  backdrop-filter: blur(10px);
+  box-shadow: 7px 5px 16px 1px rgb(82 82 82 / 40%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2rem;
+  border-radius: 10px;
+  background: #fafafa; /* Color */
+  grid-column: 1/4;
+  grid-row: span 1;
+  width: 100%;
+}
+
 .card-single-kpi {
   display: flex;
   justify-content: space-between;
@@ -566,4 +580,8 @@ th {
 #startup-users thead th {
   position: sticky;
   top: 0;
+}
+
+.overflow-chart {
+  overflow: scroll;
 }

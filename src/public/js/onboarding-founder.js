@@ -131,7 +131,7 @@ let submitBtn = document.querySelector("#submit-track-record-btn");
 
 submitBtn.addEventListener("click", () => {
   if (areTrackRecordsInputsEmpty()) {
-    alert("Please fill out allthe track record details.");
+    alert("Please fill out all the track record details.");
   } else {
     var tbl = document.querySelector("#ventures");
     var tds = tbl.getElementsByTagName("td");

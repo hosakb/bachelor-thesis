@@ -1,10 +1,15 @@
-<!-- <div>
-    <h4>Milestones</h4>
-    <div id="visualization"></div>
-</div> -->
 <div class="cards">
-    <div class="card-single-kpi">
-       
+    <div class="milestone-card">
+        <h4>Milestones</h4>
+       <div class="overflow-chart">
+            <svg id="gantt"></svg>
+       </div>
+       <div>
+            <button>Day</button>
+            <button>Week</button>
+            <button>Month</button>
+            <button>Year</button>
+        </div>
     </div>
     <div class="card-single-kpi">
         <div>
@@ -12,6 +17,7 @@
                 <%= locals.kpis.numberOfEmployees %>
             </h3>
             <span>Number of Employees</span>
+            <canvas id="noe-chart"></canvas>
         </div>
         <div>
             <span class="las la-clipboard"></span>
@@ -23,6 +29,7 @@
                 <%= locals.kpis.cashFlowRate %>
             </h3>
             <span>Cash-Flow Rate</span>
+            <canvas id="cfr-chart"></canvas>
         </div>
         <div>
             <span class="las la-clipboard"></span>
@@ -34,19 +41,11 @@
                 <%= locals.kpis.liquidity %>
             </h3>
             <span>Liquidity</span>
+            <canvas id="liq-chart"></canvas>
         </div>
         <div>
             <span class="las la-clipboard"></span>
         </div>
-    </div>
-    <div class="card-single-kpi">
-        <canvas id="noe-chart"></canvas>
-    </div>
-    <div class="card-single-kpi">
-        <canvas id="cfr-chart"></canvas>
-    </div>
-    <div class="card-single-kpi">
-        <canvas id="liq-chart"></canvas>
     </div>
     <% if(locals.startup != undefined) {%>
         <div class="card-single-kpi">
@@ -74,8 +73,4 @@
         <br>
     <% } %> 
 </div>
-<!-- <script src="/js/timeline/vis-timeline-graph2d.min.js"></script>
-<script src="/js/timeline/timeline.js"></script> -->
-<script src="/js/chart/startup-chart.js"></script>
-<script src="/js/chart/chart.min.js"></script>
  

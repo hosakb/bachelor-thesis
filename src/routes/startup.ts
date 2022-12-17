@@ -1,5 +1,5 @@
 import express, { Router, Request } from "express";
-// import { fetchBusinessCentralData } from "../api/business-central";
+import { BusinessCentral } from "../api/business-central";
 import {
   getKpis,
   getStartupNameById,
@@ -8,6 +8,8 @@ import {
   TimeSeriesKpis,
   InvestmentPhase,
   getInvestmentPhase,
+  getInfoByStartupId,
+  StartupInfo,
 } from "../models/startup";
 
 const router: Router = express.Router();
@@ -29,7 +31,13 @@ router.get("/", async (req, res) => {
     }
   } else {
     try {
-      // await fetchBusinessCentralData();
+      const bc = new BusinessCentral(
+        "http://navsrv-2020.lutz.local:18058/BC180-Demo/ODataV4/",
+        "CRONUS AG",
+        "student",
+        "lutzGast_21!"
+      ); // TODO: ENV
+      bc.queryBusinessCentral();
       await getStartupKpiRequestData(req, startupId);
 
       res.render("dashboard/startup/index", {
@@ -247,6 +255,39 @@ router.get("/chart/cfr", (req, res) => {
 
 router.get("/chart/liq", (req, res) => {
   res.status(200).json(req.session.liquidityTs);
+});
+
+router.get("/chart/gantt", async (req, res) => {
+  try {
+    const info: StartupInfo = await getInfoByStartupId(req.session.startupId);
+    const milestones = [];
+
+    milestones.push({
+      id: info.phase.toLowerCase(),
+      name: info.phase,
+      start: info.startDatePhase,
+      end: info.dueDatePhase,
+      progress: info.progress,
+    });
+
+    const tasks = info.milestoneData.map((m) => {
+      return {
+        id: m.milestone.toLowerCase(),
+        name: m.milestone,
+        start: m.startDate,
+        end: m.dueDate,
+        progress: m.progress,
+      };
+    });
+
+    const milestoneData = milestones.concat(tasks);
+
+    console.log(milestoneData);
+
+    res.status(200).json(milestoneData);
+  } catch (error) {
+    res.status(200).json([]);
+  }
 });
 
 export default router;

@@ -1,4 +1,4 @@
-window.onload = function () {
+// window.onload = function () {
   fetch("/startup/chart/noe")
     .then((res) => res.json())
     .then((tsData) => {
@@ -125,4 +125,32 @@ window.onload = function () {
       // eslint-disable-next-line no-undef
       new Chart(document.querySelector("#expertise-chart"), config);
     });
-};
+
+    var gantt;
+    fetch("/startup/chart/gantt")
+      .then((res) => res.json())
+      .then((tasks) => {
+        console.log(tasks);
+        // eslint-disable-next-line no-undef
+        gantt = new Gantt("#gantt", tasks, {
+          // can be a function that returns html
+          // or a simple html string
+          custom_popup_html: function (task) {
+            // the task object will contain the updated
+            // dates and progress value
+            const end_date = task.end;
+            return `
+            <div class="details-container">
+              <h5>${task.name}</h5>
+              <p>Expected to finish by ${end_date}</p>
+              <p>${task.progress}% completed!</p>
+            </div>
+            `;
+          },
+        });
+      });
+  
+    function change_view_mode(period) {
+      gantt.change_view_mode(period);
+    }
+// };

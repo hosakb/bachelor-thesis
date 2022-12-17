@@ -80,10 +80,21 @@ enum InvestmentPhase {
 
 interface StartupInfo {
   phase: string;
-  revenue: string;
-  productToMarket: string;
-  timeToMarket: number;
   sector: string;
+  timeToMarket: number;
+  productToMarket: string;
+  startDatePhase: string;
+  dueDatePhase: string;
+  progress: number;
+  milestoneData: Milestone[];
+}
+
+interface Milestone {
+  milestone: string;
+  description: string;
+  startDate: string;
+  dueDate: string;
+  progress: number;
 }
 
 const getFirstStartupLoginById = async (startUpId: string) => {
@@ -425,10 +436,10 @@ const getInvestmentPhase = async (startupId: string) => {
 const persistCapTable = async (capTable: string, startupId: string) => {
   const client = await pool.connect();
   try {
-    const result = await client.query(
-      "UPDATE startup SET cap_table = $1 WHERE id = $2",
-      [capTable, startupId]
-    );
+    await client.query("UPDATE startup SET cap_table = $1 WHERE id = $2", [
+      capTable,
+      startupId,
+    ]);
   } catch (err) {
     throw new Error(
       `Failed to persist cap table for startup id ${startupId} with the following error: ${err}`
@@ -472,6 +483,26 @@ const persistInfo = async (startupInfo: StartupInfo, startupId: string) => {
   }
 };
 
+const getInfoByStartupId = async (startupId: string) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      "SELECT info FROM startup WHERE id = $1",
+      [startupId]
+    );
+
+    const info: StartupInfo = result.rows[0].info;
+    console.log(info);
+    return info;
+  } catch (err) {
+    throw new Error(
+      `Failed to query startup info for startup id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
 export {
   Startup,
   Kpis,
@@ -489,4 +520,5 @@ export {
   persistCapTable,
   getCapTable,
   persistInfo,
+  getInfoByStartupId,
 };

@@ -112,14 +112,7 @@ router.post(
 
       const capTable = formatCapTable(rows);
       req.session.capTable = capTable;
-
-      res.render("onboarding/startup", {
-        layout: "../views/layouts/onboarding.ejs",
-        title: req.session.startupName,
-        name: req.user?.firstName + " " + req.user?.lastName,
-        startupName: req.session.startupName,
-        capTable,
-      });
+      res.json(JSON.stringify({ capTable: capTable }));
 
       return;
     } catch (error) {
@@ -137,15 +130,26 @@ router.post("/reupload", (req, res) => {
 });
 
 router.post("/startup", async (req, res) => {
-  const { phase, revenue, productToMarket, timeToMarket, sector } =
-    req.body.startupInfo;
-
-  const startupInfo: StartupInfo = {
+  const {
     phase,
-    revenue,
+    startDatePhase,
+    dueDatePhase,
+    progress,
     productToMarket,
     timeToMarket,
     sector,
+    milestoneData,
+  } = req.body.startupInfo;
+
+  const startupInfo: StartupInfo = {
+    phase,
+    startDatePhase,
+    dueDatePhase,
+    productToMarket,
+    timeToMarket,
+    progress,
+    sector,
+    milestoneData,
   };
 
   const startupId = req.user?.startup;
