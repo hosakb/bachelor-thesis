@@ -1,15 +1,50 @@
-// window.onload = function () {
-  fetch("/startup/chart/noe")
-    .then((res) => res.json())
-    .then((tsData) => {
+document.addEventListener("DOMContentLoaded", async function() {
+    loadChartData()
+  });
+
+ // ----------------------- Sidebar Startup --------------------
+ let submit = document.querySelector("#side-submit").childNodes[0];
+ let dashboard = document.querySelector("#side-dashboard").childNodes[0];
+
+ submit.onclick = function () {
+   submit.classList.add("active");
+   dashboard.classList.remove("active");
+ };
+
+ dashboard.onclick = function () {
+   submit.classList.remove("active");
+   dashboard.classList.add("active");
+ };
+
+async function loadChartData() {
+  const noe = "/startup/chart/noe";
+  const cfr = "/startup/chart/cfr";
+  const liq = "/startup/chart/liq";
+  const gantt = "/startup/chart/gantt";
+
+  // const expertise = "/fund/chart/expertise";
+
+  const responses = await Promise.all([fetch(noe), fetch(cfr), fetch(liq), fetch(gantt)]);
+
+  const noeData = await responses[0].json()
+  renderNoe(noeData);
+  const cfrData = await responses[1].json()
+  renderCfr(cfrData)
+  const liqData = await responses[2].json()
+  renderLiq(liqData)
+  const ganttData = await responses[3].json()
+  renderGantt(ganttData)
+
+}
+  function renderNoe(noeData) {
       const data = {
-        labels: tsData.months,
+        labels: noeData.months,
         datasets: [
           {
             label: "Number of Employees",
             backgroundColor: "rgb(49, 175, 212)",
             borderColor: "rgb(49, 175, 212)",
-            data: tsData.periodData,
+            data: noeData.periodData,
           },
         ],
       };
@@ -26,19 +61,17 @@
 
       // eslint-disable-next-line no-undef
       new Chart(document.querySelector("#noe-chart"), config);
-    });
+    }
 
-  fetch("/startup/chart/cfr")
-    .then((res) => res.json())
-    .then((tsData) => {
+    function renderCfr(cfrData) {
       const data = {
-        labels: tsData.months,
+        labels: cfrData.months,
         datasets: [
           {
             label: "Cash-Flow Rate",
             backgroundColor: "rgb(166, 28, 60)",
             borderColor: "rgb(166, 28, 60)",
-            data: tsData.periodData,
+            data: cfrData.periodData,
           },
         ],
       };
@@ -55,19 +88,17 @@
 
       // eslint-disable-next-line no-undef
       new Chart(document.querySelector("#cfr-chart"), config);
-    });
+    }
 
-  fetch("/startup/chart/liq")
-    .then((res) => res.json())
-    .then((tsData) => {
+    function renderLiq(liqData) {
       const data = {
-        labels: tsData.months,
+        labels: liqData.months,
         datasets: [
           {
             label: "Liquidity",
             backgroundColor: "rgb(237, 184, 139)",
             borderColor: "rgb(237, 184, 139)",
-            data: tsData.periodData,
+            data: liqData.periodData,
           },
         ],
       };
@@ -84,73 +115,69 @@
 
       // eslint-disable-next-line no-undef
       new Chart(document.querySelector("#liq-chart"), config);
-    });
-
-  fetch("/fund/chart/expertise")
-    .then((res) => res.json())
-    .then((expertiseData) => {
-      const data = {
-        labels: expertiseData.name,
-        datasets: [
-          {
-            label: "Expertise",
-            backgroundColor: [
-              "#3e45cd",
-              "#4e5ea2",
-              "#3c5a5f",
-              "#e8c334",
-              "#888850",
-              "#3wddcd",
-              "#54fda2",
-              "#3fef5f",
-              "#e33334",
-              "#666850",
-            ],
-            borderColor: "#ffffff",
-            data: expertiseData.amount,
-          },
-        ],
-      };
-
-      const config = {
-        type: "doughnut",
-        data: data,
-        options: {
-          layout: {
-            autoPadding: true,
-          },
-        },
-      };
-
-      // eslint-disable-next-line no-undef
-      new Chart(document.querySelector("#expertise-chart"), config);
-    });
-
-    var gantt;
-    fetch("/startup/chart/gantt")
-      .then((res) => res.json())
-      .then((tasks) => {
-        console.log(tasks);
-        // eslint-disable-next-line no-undef
-        gantt = new Gantt("#gantt", tasks, {
-          // can be a function that returns html
-          // or a simple html string
-          custom_popup_html: function (task) {
-            // the task object will contain the updated
-            // dates and progress value
-            const end_date = task.end;
-            return `
-            <div class="details-container">
-              <h5>${task.name}</h5>
-              <p>Expected to finish by ${end_date}</p>
-              <p>${task.progress}% completed!</p>
-            </div>
-            `;
-          },
-        });
-      });
-  
-    function change_view_mode(period) {
-      gantt.change_view_mode(period);
     }
-// };
+
+    function renderGantt(tasks) {
+       // eslint-disable-next-line no-undef
+       var gantt = new Gantt("#gantt", tasks, {
+        // can be a function that returns html
+        // or a simple html string
+        custom_popup_html: function (task) {
+          // the task object will contain the updated
+          // dates and progress value
+          const end_date = task.end;
+          return `
+          <div class="details-container">
+            <h5>${task.name}</h5>
+            <p>Expected to finish by ${end_date}</p>
+            <p>${task.progress}% completed!</p>
+          </div>
+          `;
+        },
+      });
+
+      function change_view_mode(period) {
+        gantt.change_view_mode(period);
+      }
+
+    }
+
+  // fetch("/fund/chart/expertise")
+  //   .then((res) => res.json())
+  //   .then((expertiseData) => {
+  //     const data = {
+  //       labels: expertiseData.name,
+  //       datasets: [
+  //         {
+  //           label: "Expertise",
+  //           backgroundColor: [
+  //             "#3e45cd",
+  //             "#4e5ea2",
+  //             "#3c5a5f",
+  //             "#e8c334",
+  //             "#888850",
+  //             "#3wddcd",
+  //             "#54fda2",
+  //             "#3fef5f",
+  //             "#e33334",
+  //             "#666850",
+  //           ],
+  //           borderColor: "#ffffff",
+  //           data: expertiseData.amount,
+  //         },
+  //       ],
+  //     };
+
+  //     const config = {
+  //       type: "doughnut",
+  //       data: data,
+  //       options: {
+  //         layout: {
+  //           autoPadding: true,
+  //         },
+  //       },
+  //     };
+
+  //     // eslint-disable-next-line no-undef
+  //     new Chart(document.querySelector("#expertise-chart"), config);
+  //   });
