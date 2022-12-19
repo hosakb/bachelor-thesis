@@ -2,13 +2,23 @@
     <div class="milestone-card">
         <h4>Milestones</h4>
        <div class="overflow-chart">
+        <% if(dashboard == "fund") { %>
+            <svg id="gantt" class="disable-interaction"></svg>
+        <% } else if(dashboard == "startup") {%>
             <svg id="gantt"></svg>
+        <% } %>
        </div>
        <div>
-            <button>Day</button>
-            <button>Week</button>
-            <button>Month</button>
-            <button>Year</button>
+            <button onclick="change_view_mode('Day')">Day</button>
+            <button onclick="change_view_mode('Week')">Week</button>
+            <button onclick="change_view_mode('Month')">Month</button>
+            <button onclick="change_view_mode('Year')">Year</button>
+        </div>
+        <div id="gantt-changes" class="hidden">
+            <% if(dashboard == "startup") {%>
+                <button id="gantt-changes-ok-btn">Ok</button>
+                <button id="gantt-changes-cancel-btn">Cancel</button>
+            <% } %>
         </div>
     </div>
     <div class="card-single-kpi">

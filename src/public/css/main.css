@@ -582,6 +582,16 @@ th {
   top: 0;
 }
 
+/* Gantt-Chart */
+
 .overflow-chart {
   overflow: scroll;
+}
+
+.disable-interaction {
+  pointer-events: none;
+}
+
+.hidden {
+  display: none;
 }

@@ -1,3 +1,5 @@
+let gridOptions;
+
 // setup the grid after the page has finished loading
 document.addEventListener("DOMContentLoaded", async () => {
   const columnDefs = [

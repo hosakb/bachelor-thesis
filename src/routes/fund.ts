@@ -3,7 +3,7 @@ import { Row } from "read-excel-file";
 import { getFundNameById } from "../models/fund";
 
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
-import { getCapTable } from "../models/startup";
+import { getCapTable, getInfoByStartupId, StartupInfo } from "../models/startup";
 import {
   getExpertiseByStartup,
   getFoundersByStartupId,
@@ -38,13 +38,16 @@ router.get("/", async (req, res) => {
       req.session.startupTable = await getStartupsForFund(fundId);
 
       res.render("dashboard/fund/index", {
-        layout: "../views/layouts/fund.ejs",
+        layout: "../views/layouts/dashboard.ejs",
+        dashboard: "fund",
+        scripts: ["/js/table/table", "/js/table/ag-grid-community.min"],
         kpiI: 55,
         kpiII: 33,
         kpiIII: 66,
         page: "dashboard",
         title: await getFundNameById(fundId),
         name: req.user?.firstName + " " + req.user?.lastName,
+        view: "fund",
       });
     } catch (error) {
       console.log(
@@ -76,7 +79,9 @@ router.get("/startup/founders", async (req, res) => {
   }
   try {
     res.render("dashboard/founders/index", {
-      layout: "../views/layouts/fund.ejs",
+      layout: "../views/layouts/dashboard.ejs",
+      dashboard: "fund",
+      scripts: [],
       title: req.startupName,
       name: req.user?.firstName + " " + req.user?.lastName,
       page: "founder",
@@ -107,10 +112,13 @@ router.get("/startup/", async (req, res) => {
     const capTable: Row[] = await getCapTable(startupId);
 
     res.render("dashboard/startup/index", {
-      layout: "../views/layouts/fund.ejs",
+      layout: "../views/layouts/dashboard.ejs",
+      scripts: ["/js/gantt/frappe-gantt.min", "/js/chart/chart.min", "/js/fund"],
+      dashboard: "fund",
       kpis: req.kpis,
       title: req.startupName,
       page: "dashboard",
+      view: "startup",
       name: req.user?.firstName + " " + req.user?.lastName,
       startup: req.session.selectedStartup,
       capTable,
@@ -137,6 +145,47 @@ router.get("/chart/liq", (req, res) => {
 
 router.get("/chart/expertise", (req, res) => {
   res.status(200).json(req.session.expertise);
+});
+
+router.get("/chart/gantt", async (req, res) => {
+  try {
+
+    const startupId = req.session.selectedStartup;
+
+  if (startupId === undefined) {
+    console.log(
+      `Redirecting user ${req.user?.id} to fund screen since no selected startup was found.`
+    );
+    res.redirect("/fund/");
+  }
+
+    const info: StartupInfo = await getInfoByStartupId(startupId);
+    const milestones = [];
+
+    milestones.push({
+      id: info.phase.toLowerCase(),
+      name: info.phase,
+      start: info.startDatePhase,
+      end: info.dueDatePhase,
+      progress: info.progress,
+    });
+
+    const tasks = info.milestoneData.map((m) => {
+      return {
+        id: m.milestone.toLowerCase(),
+        name: m.milestone,
+        start: m.startDate,
+        end: m.dueDate,
+        progress: m.progress,
+      };
+    });
+
+    const milestoneData = milestones.concat(tasks);
+
+    res.status(200).json(milestoneData);
+  } catch (error) {
+    res.status(200).json([]);
+  }
 });
 
 export default router;

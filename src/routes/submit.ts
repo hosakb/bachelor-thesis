@@ -26,7 +26,9 @@ router.get("/", (req, res) => {
     }
   } else {
     res.render("submit/index", {
-      layout: "../views/layouts/startup.ejs",
+      layout: "../views/layouts/dashboard.ejs",
+      dashboard: "startup",
+      scripts: ["/js/submit"],
       page: "submit",
       title: "Finvia", // TODO: make dynamic
       name: req.user?.firstName + " " + req.user?.lastName,

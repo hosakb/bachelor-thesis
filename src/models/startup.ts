@@ -457,7 +457,9 @@ const getCapTable = async (startupId: string) => {
       [startupId]
     );
 
-    return JSON.parse(result.rows[0].cap_table);
+    const capTable = result.rows[0].cap_table;
+
+    return capTable;
   } catch (err) {
     throw new Error(
       `Failed to fetch cap table for startup id ${startupId} with the following error: ${err}`
@@ -504,12 +506,13 @@ const getInfoByStartupId = async (startupId: string) => {
 };
 
 export {
-  Startup,
-  Kpis,
-  TimeSeriesKpis,
   InvestmentPhase,
   InvestmentPhaseKpis,
+  Kpis,
+  Milestone,
+  Startup,
   StartupInfo,
+  TimeSeriesKpis,
   getFirstStartupLoginById,
   getStartupById,
   getStartupNameById,

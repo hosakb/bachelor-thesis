@@ -10,6 +10,7 @@ import {
   getInvestmentPhase,
   getInfoByStartupId,
   StartupInfo,
+  Milestone,
 } from "../models/startup";
 
 const router: Router = express.Router();
@@ -41,7 +42,9 @@ router.get("/", async (req, res) => {
       await getStartupKpiRequestData(req, startupId);
 
       res.render("dashboard/startup/index", {
-        layout: "../views/layouts/startup.ejs",
+        layout: "../views/layouts/dashboard.ejs",
+        dashboard: "startup",
+        scripts: ["/js/gantt/frappe-gantt.min", "/js/chart/chart.min", "/js/startup"],
         phase: await getInvestmentPhase(startupId),
         kpis: req.kpis,
         page: "dashboard",
@@ -282,12 +285,20 @@ router.get("/chart/gantt", async (req, res) => {
 
     const milestoneData = milestones.concat(tasks);
 
-    console.log(milestoneData);
-
     res.status(200).json(milestoneData);
   } catch (error) {
     res.status(200).json([]);
   }
+});
+
+router.put("/gantt/period", async (req, res) => {
+  const milestone: Milestone = req.body;
+  console.log(milestone);
+});
+
+router.put("/gantt/progress", async (req, res) => {
+  const milestone: Milestone = req.body;
+   console.log(milestone);
 });
 
 export default router;

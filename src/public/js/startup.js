@@ -116,10 +116,11 @@ async function loadChartData() {
       // eslint-disable-next-line no-undef
       new Chart(document.querySelector("#liq-chart"), config);
     }
-
+    var gantt;
     function renderGantt(tasks) {
+      sessionStorage.setItem("tasks", JSON.stringify(tasks));
        // eslint-disable-next-line no-undef
-       var gantt = new Gantt("#gantt", tasks, {
+       gantt = new Gantt("#gantt", tasks, {
         // can be a function that returns html
         // or a simple html string
         custom_popup_html: function (task) {
@@ -134,50 +135,62 @@ async function loadChartData() {
           </div>
           `;
         },
+        on_date_change: function(task, start, end) {
+          document.querySelector("#gantt-changes").classList.remove("hidden");
+          updatePeriod(task, start, end);
+        },
+        on_progress_change: function(task, progress) {
+          document.querySelector("#gantt-changes").classList.remove("hidden");
+          updateProgress(task, progress);
+        },
       });
-
-      function change_view_mode(period) {
-        gantt.change_view_mode(period);
-      }
-
     }
 
-  // fetch("/fund/chart/expertise")
-  //   .then((res) => res.json())
-  //   .then((expertiseData) => {
-  //     const data = {
-  //       labels: expertiseData.name,
-  //       datasets: [
-  //         {
-  //           label: "Expertise",
-  //           backgroundColor: [
-  //             "#3e45cd",
-  //             "#4e5ea2",
-  //             "#3c5a5f",
-  //             "#e8c334",
-  //             "#888850",
-  //             "#3wddcd",
-  //             "#54fda2",
-  //             "#3fef5f",
-  //             "#e33334",
-  //             "#666850",
-  //           ],
-  //           borderColor: "#ffffff",
-  //           data: expertiseData.amount,
-  //         },
-  //       ],
-  //     };
+    function change_view_mode(period) {
+      gantt.change_view_mode(period);
+    }
 
-  //     const config = {
-  //       type: "doughnut",
-  //       data: data,
-  //       options: {
-  //         layout: {
-  //           autoPadding: true,
-  //         },
-  //       },
-  //     };
+    function updatePeriod(task, start, end) {
+      document.querySelector("#gantt-changes-ok-btn").addEventListener("click", () => {
+        document.querySelector("#gantt-changes").classList.add("hidden");
+        fetch("/startup/gantt/period", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          redirect: "follow",
+          body: JSON.stringify(task),
+        }).catch(function (err) {
+            console.error(err); //TODO:
+        });
+      });
+      document.querySelector("#gantt-changes-cancel-btn").addEventListener("click", () => {
+        cancelGanttChanges();
+      });
+    }
 
-  //     // eslint-disable-next-line no-undef
-  //     new Chart(document.querySelector("#expertise-chart"), config);
-  //   });
+    function updateProgress(task, progress) {
+      document.querySelector("#gantt-changes-ok-btn").addEventListener("click", () => {
+        document.querySelector("#gantt-changes").classList.add("hidden");
+        fetch("/startup/gantt/progress", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          redirect: "follow",
+          body: JSON.stringify(task),
+
+        }).catch(function (err) {
+            console.error(err); //TODO:
+        });
+      });
+      document.querySelector("#gantt-changes-cancel-btn").addEventListener("click", () => {
+        cancelGanttChanges();
+      });
+    }
+
+    function cancelGanttChanges() {
+      let tasks = JSON.parse(sessionStorage.getItem("tasks"));
+      gantt.refresh(tasks);
+      document.querySelector("#gantt-changes").classList.add("hidden");
+    }
