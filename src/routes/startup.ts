@@ -8,9 +8,10 @@ import {
   TimeSeriesKpis,
   InvestmentPhase,
   getInvestmentPhase,
-  getInfoByStartupId,
-  StartupInfo,
   Milestone,
+  getMilestones,
+  updateMilestoneDuration,
+  updateMilestoneProgress,
 } from "../models/startup";
 
 const router: Router = express.Router();
@@ -20,12 +21,12 @@ router.get("/", async (req, res) => {
 
   if (startupId === undefined) {
     if (req.user?.fund !== undefined) {
-      console.log(
+      console.info(
         `Redirecting user ${req.user?.id} to fund screen since no startup id is assigned.`
       );
       res.redirect("/startup");
     } else {
-      console.log(
+      console.info(
         `Redirecting user ${req.user?.id} to login screen since no fund id or startup id are assigned.`
       );
       res.redirect("/");
@@ -52,7 +53,7 @@ router.get("/", async (req, res) => {
         name: req.user?.firstName + " " + req.user?.lastName,
       });
     } catch (error) {
-      console.log(
+      console.error(
         `Failed to fetch startup data for startup with id ${startupId} due to:\n${error}.\nRedirecting to login screen.`
       );
       res.redirect("/");
@@ -262,44 +263,31 @@ router.get("/chart/liq", (req, res) => {
 
 router.get("/chart/gantt", async (req, res) => {
   try {
-    const info: StartupInfo = await getInfoByStartupId(req.session.startupId);
-    const milestones = [];
-
-    milestones.push({
-      id: info.phase.toLowerCase(),
-      name: info.phase,
-      start: info.startDatePhase,
-      end: info.dueDatePhase,
-      progress: info.progress,
-    });
-
-    const tasks = info.milestoneData.map((m) => {
-      return {
-        id: m.milestone.toLowerCase(),
-        name: m.milestone,
-        start: m.startDate,
-        end: m.dueDate,
-        progress: m.progress,
-      };
-    });
-
-    const milestoneData = milestones.concat(tasks);
-
-    res.status(200).json(milestoneData);
+    const milestones: Milestone[] = await getMilestones(req.session.startupId);
+    res.status(200).json(milestones);
   } catch (error) {
     res.status(200).json([]);
   }
 });
 
 router.put("/gantt/period", async (req, res) => {
-  const milestone: Milestone = req.body;
-  console.log(milestone);
+  const {taskId, start, end} = req.body;
+
+  try {
+    await updateMilestoneDuration(taskId, start, end);
+  } catch (error) {
+    console.error(`Failed to update Milestone duration due to ${error}.`)
+  }
 });
 
 router.put("/gantt/progress", async (req, res) => {
-  const milestone: Milestone = req.body;
-   console.log(milestone);
+  const {taskId, progress} = req.body;
+
+  try {
+    await updateMilestoneProgress(taskId, progress);
+  } catch (error) {
+    console.error(`Failed to update Milestone progress due to ${error}.`)
+  }
 });
 
 export default router;
-// [{"date":"2022-09-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70},{"date":"2022-10-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70},{"date":"2022-11-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70},{"date":"2022-12-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"numberOfEmployees":90},{"date":"2022-01-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"numberOfEmployees":70},{"date":"2022-02-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"numberOfEmployees":90},{"date":"2022-03-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70}, {"date":"2022-04-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70},{"date":"2022-05-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"numberOfEmployees":90},{"date":"2022-06-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"numberOfEmployees":70},{"date":"2022-07-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"numberOfEmployees":90},{"date":"2022-08-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"numberOfEmployees":70}]

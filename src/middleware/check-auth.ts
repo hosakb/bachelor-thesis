@@ -19,6 +19,6 @@ export function checkNotAuthenticated(
     return next();
   }
 
-  console.log("User not authenticated. Redirect to login.");
+  console.error("User not authenticated. Redirect to login.");
   res.redirect("/");
 }

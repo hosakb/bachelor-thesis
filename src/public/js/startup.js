@@ -22,8 +22,6 @@ async function loadChartData() {
   const liq = "/startup/chart/liq";
   const gantt = "/startup/chart/gantt";
 
-  // const expertise = "/fund/chart/expertise";
-
   const responses = await Promise.all([fetch(noe), fetch(cfr), fetch(liq), fetch(gantt)]);
 
   const noeData = await responses[0].json()
@@ -116,9 +114,24 @@ async function loadChartData() {
       // eslint-disable-next-line no-undef
       new Chart(document.querySelector("#liq-chart"), config);
     }
+
+    // ----------------- Gantt Chart ------------------------------
     var gantt;
-    function renderGantt(tasks) {
+    function renderGantt(data) {
+
+      const tasks = data.map((t) => {
+        return {
+          id: t.id,
+          name: t.name,
+          start: t.start,
+          end: t.end,
+          progress: t.progress,
+          dependencies: '',
+        }
+      });
+
       sessionStorage.setItem("tasks", JSON.stringify(tasks));
+     
        // eslint-disable-next-line no-undef
        gantt = new Gantt("#gantt", tasks, {
         // can be a function that returns html
@@ -153,13 +166,16 @@ async function loadChartData() {
     function updatePeriod(task, start, end) {
       document.querySelector("#gantt-changes-ok-btn").addEventListener("click", () => {
         document.querySelector("#gantt-changes").classList.add("hidden");
+
+        const taskDuration = {taskId: task.id, start: start, end: end};
+
         fetch("/startup/gantt/period", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           redirect: "follow",
-          body: JSON.stringify(task),
+          body: JSON.stringify(taskDuration),
         }).catch(function (err) {
             console.error(err); //TODO:
         });
@@ -170,6 +186,9 @@ async function loadChartData() {
     }
 
     function updateProgress(task, progress) {
+
+      const taskProgress = {taskId: task.id, progress: progress};
+      
       document.querySelector("#gantt-changes-ok-btn").addEventListener("click", () => {
         document.querySelector("#gantt-changes").classList.add("hidden");
         fetch("/startup/gantt/progress", {
@@ -178,7 +197,7 @@ async function loadChartData() {
             "Content-Type": "application/json",
           },
           redirect: "follow",
-          body: JSON.stringify(task),
+          body: JSON.stringify(taskProgress),
 
         }).catch(function (err) {
             console.error(err); //TODO:

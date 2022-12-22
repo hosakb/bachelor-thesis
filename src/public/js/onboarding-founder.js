@@ -155,15 +155,6 @@ submitBtn.addEventListener("click", () => {
       expertise = otherExpertise;
     }
 
-    console.log(
-      JSON.parse(
-        JSON.stringify({
-          expertise: expertise,
-          ventures: ventures,
-        })
-      )
-    );
-
     fetch("/onboarding/track-record", {
       method: "POST",
       headers: {

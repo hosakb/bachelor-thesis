@@ -14,12 +14,12 @@ const router = express.Router();
 router.get("/", (req, res) => {
   if (req.user?.startup === undefined) {
     if (req.user?.fund !== undefined) {
-      console.log(
+      console.info(
         `Redirecting user ${req.user?.id} to fund screen since no startup id is assigned.`
       );
       res.redirect("/startup");
     } else {
-      console.log(
+      console.info(
         `Redirecting user ${req.user?.id} to login screen since no fund id or startup id are assigned.`
       );
       res.redirect("/");
@@ -57,7 +57,7 @@ router.post("/", multerUpload.single("kpis"), async (req, res) => {
 
     return;
   } catch (error) {
-    console.log(
+    console.error(
       `The following error occurred during upload of kpis. Redirecting to /submit ${error}`
     );
     res.redirect("/");
@@ -82,7 +82,7 @@ router.post("/kpis", async (req, res) => {
   deleteSpreadsheets(); // TODO: error handling
   const startupId = req.user?.startup;
   if (startupId === undefined) {
-    console.log(
+    console.info(
       `Redirecting to login screen since no startup is assigned to user with id ${req.user?.id}`
     );
     res.redirect("/");
@@ -91,7 +91,7 @@ router.post("/kpis", async (req, res) => {
       await updateKpis(kpis, startupId);
       res.redirect("/startup");
     } catch (error) {
-      console.log(
+      console.error(
         `Failed to update kpis due to ${error}. Redirect to startup screen.`
       );
       res.redirect("/startup");
@@ -110,7 +110,7 @@ router.post("/kpi-form", async (req, res) => {
   };
   const startupId = req.user?.startup;
   if (startupId === undefined) {
-    console.log(
+    console.info(
       `Redirecting to login screen since no startup is assigned to user with id ${req.user?.id}`
     );
     res.redirect("/");
@@ -119,7 +119,7 @@ router.post("/kpi-form", async (req, res) => {
       await updateKpis(kpis, req.session.startupId);
       res.redirect("/startup");
     } catch (error) {
-      console.log(
+      console.error(
         `Failed to update kpis due to ${error}. Redirect to startup screen.`
       );
       res.redirect("/startup");
@@ -154,7 +154,7 @@ router.post(
 
       return;
     } catch (error) {
-      console.log(
+      console.error(
         `The following error occurred during upload of a cap table. Redirecting to /submit ${error}`
       );
       res.redirect("/");

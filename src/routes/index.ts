@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import express, { Router, Response, Request } from "express";
 import { checkAuthenticated } from "../middleware/check-auth";
 import passport from "passport";
 
@@ -8,7 +8,7 @@ import {
   getUserRole,
   getFirstUserLoginByEmail,
 } from "../models/users";
-import { getFirstStartupLoginById } from "../models/startup";
+import { getFirstStartupLoginById, /*getTrlAvailable*/ } from "../models/startup";
 
 const router: Router = express.Router();
 
@@ -28,49 +28,13 @@ router.post(
 
     switch (userRole.role) {
       case Role.Admin:
-        console.log(
-          `Logged in as admin with id
-          ${userRole.id}
-            and redirected to /admin/`
-        );
-        return res.redirect("/admin");
+        return loginAdmin(userRole, res);
       case Role.Startup:
-        try {
-          const firstStartupLogin = await getFirstStartupLoginById(userRole.id);
-          console.log("-------------------");
-          if (firstStartupLogin) {
-            console.log(
-              `First login as startup with id ${userRole.id} and redirected to /onboarding/startup due to first login.}`
-            );
-            return res.redirect("/onboarding/startup");
-          }
-
-          const firstUserLogin = await getFirstUserLoginByEmail(email);
-
-          req.session.startupId = userRole.id;
-
-          if (firstUserLogin) {
-            console.log(
-              `First login as user with id ${userRole.id} and redirected to /onboarding/ due to first login.}`
-            );
-            return res.redirect("/onboarding");
-          }
-
-          console.log(
-            `Logged in as startup with id ${userRole.id} and redirected to /startup/${userRole.id}`
-          );
-          return res.redirect("/startup");
-        } catch (error) {
-          throw new Error("Failed to query first login attempt from db.");
-        }
+        return loginOrOnboardStartupUser(userRole, email, res, req)
       case Role.Fund:
-        console.log(
-          `Logged in as fund with id ${userRole.id} and redirected to /fund/${userRole.id}`
-        );
-        req.session.fundId = userRole.id;
-        return res.redirect("/fund");
+        return loginFund(userRole, req, res);
       default:
-        console.log("No role assigned to user. Please contact the admin.");
+        console.info("No role assigned to user. Redirect to login page.");
         return res.redirect("/");
     }
   }
@@ -88,3 +52,54 @@ router.get("/logout", (req, res) => {
 });
 
 export default router;
+function loginFund(userRole: UserRole, req: Request, res: Response) {
+  console.log(
+    `Logged in as fund with id ${userRole.id} and redirected to /fund/${userRole.id}`
+  );
+  req.session.fundId = userRole.id;
+  return res.redirect("/fund");
+}
+
+function loginAdmin(userRole: UserRole, res: Response) {
+  console.info(
+    `Logged in as admin with id
+          ${userRole.id}
+            and redirected to /admin/`
+  );
+  return res.redirect("/admin");
+}
+
+async function loginOrOnboardStartupUser(userRole: UserRole,email: string, res: Response, req: Request) {
+  try {
+    if (await getFirstStartupLoginById(userRole.id)) {
+      console.info(
+        `First login as startup with id ${userRole.id} and redirected to /onboarding/startup due to first login.}`
+      );
+      return res.redirect("/onboarding/startup");
+    }
+
+    // if (!await getTrlAvailable(userRole.id)) {
+    //   console.info(
+    //     `TRL Information missing for startup with id ${userRole.id}. Redirecting to /onboarding/product due to first login.}`
+    //   );
+    //   return res.redirect("/onboarding/product");
+    // }
+
+    req.session.startupId = userRole.id;
+
+    if (await getFirstUserLoginByEmail(email)) {
+      console.info(
+        `First login as user with id ${userRole.id} and redirected to /onboarding/ due to first login.}`
+      );
+      return res.redirect("/onboarding/track-record");
+    }
+
+    console.info(
+      `Logged in as startup with id ${userRole.id} and redirected to /startup/${userRole.id}`
+    );
+    return res.redirect("/startup");
+  } catch (error) {
+    throw new Error("Failed to query first login attempt from db.");
+  }
+}
+

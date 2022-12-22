@@ -12,7 +12,6 @@ async function loadChartData() {
   const responses = await Promise.all([fetch(noe), fetch(cfr), fetch(liq), fetch(gantt), fetch(expertise)]);
 
   const noeData = await responses[0].json()
-  console.log(noeData)
   renderNoe(noeData);
   const cfrData = await responses[1].json()
   renderCfr(cfrData)

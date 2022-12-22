@@ -3,7 +3,7 @@ import pool from "../config/db";
 interface Startup {
   id: string;
   name: string;
-  stage: string;
+  stage?: string;
   totalInvestment?: number;
   share?: number;
   sector?: string;
@@ -86,14 +86,13 @@ interface StartupInfo {
   startDatePhase: string;
   dueDatePhase: string;
   progress: number;
-  milestoneData: Milestone[];
 }
 
 interface Milestone {
-  milestone: string;
-  description: string;
-  startDate: string;
-  dueDate: string;
+  id: string;
+  name: string;
+  start: string;
+  end: string;
   progress: number;
 }
 
@@ -111,10 +110,7 @@ const getFirstStartupLoginById = async (startUpId: string) => {
       throw new Error("No startup found for id: " + startUpId);
     }
 
-    const infoJson = result.rows[0].info;
-    const info: StartupInfo[] = JSON.parse(JSON.stringify(infoJson));
-
-    if (info.length == 0) {
+    if (result.rows[0].info == undefined) {
       return true;
     } else {
       return false;
@@ -122,6 +118,35 @@ const getFirstStartupLoginById = async (startUpId: string) => {
   } catch (err) {
     throw new Error(
       `  "Failed query for first login for startup with email: ${startUpId}. Error:  ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const getNewStartupById = async (startupId: string) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      "SELECT id, name FROM startup WHERE id=$1",
+      [startupId]
+    );
+
+    const {id, name} = result.rows[0];
+
+    const s: Startup = {
+      id,
+      name: name,
+      stage: undefined,
+      share: undefined,
+      sector: undefined,
+      totalInvestment: undefined,
+    };
+
+    return s;
+  } catch (err) {
+    throw new Error(
+      `Failed to query startup infos with the following error: ${err}`
     );
   } finally {
     client.release();
@@ -494,7 +519,6 @@ const getInfoByStartupId = async (startupId: string) => {
     );
 
     const info: StartupInfo = result.rows[0].info;
-    console.log(info);
     return info;
   } catch (err) {
     throw new Error(
@@ -505,6 +529,90 @@ const getInfoByStartupId = async (startupId: string) => {
   }
 };
 
+
+const persistMilestones = async (milestones: Milestone[], startupId: string) => {
+  const client = await pool.connect();
+  try {
+    
+    for (const milestone of milestones) {
+      await client.query(
+        "INSERT INTO milestones (name, start_date, end_date, progress, startup_id) VALUES ($1, $2, $3, $4, $5)",
+        [milestone.name, milestone.start, milestone.end, milestone.progress, startupId]
+      );
+    }
+  } catch (err) {
+    throw new Error(
+      `Failed to insert startup milestones for startup id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+}
+
+const getMilestones = async (startupId: string) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      "SELECT id, name, start_date, end_date, progress FROM milestones WHERE startup_id = $1",
+      [startupId]
+    );
+
+    const milestones: Milestone[] = result.rows.map((row) => {
+      return {
+        id: row.id,
+        name: row.name,
+        start: row.start_date,
+        end: row.end_date,
+        progress: row.progress,
+      }
+    });
+
+    return milestones;
+  } catch (err) {
+    throw new Error(
+      `Failed to query milestones for startup id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+}
+
+const updateMilestoneProgress = async (taskId: string, progress: number) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      "UPDATE milestones SET progress = $1 WHERE id = $2",
+      [progress, taskId]
+    );
+  } catch (err) {
+    throw new Error(
+      `Failed to update milestones progress with id ${taskId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+}
+
+const updateMilestoneDuration = async (taskId: string, start: string, end: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      "UPDATE milestones SET start_date = $1, end_date = $2 WHERE id = $3",
+      [start, end, taskId]
+    );
+  } catch (err) {
+    throw new Error(
+      `Failed to update milestone with id ${taskId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+}
+
+// const getTrlAvailable = async (startupId: string) => {
+//   return false;
+// }
+
 export {
   InvestmentPhase,
   InvestmentPhaseKpis,
@@ -513,15 +621,21 @@ export {
   Startup,
   StartupInfo,
   TimeSeriesKpis,
+  getCapTable,
   getFirstStartupLoginById,
+  getInfoByStartupId,
+  getInvestmentPhase,
+  getKpis,
+  getMilestones,
+  getNewStartupById,
   getStartupById,
   getStartupNameById,
   getStartups,
-  getKpis,
-  updateKpis,
-  getInvestmentPhase,
+  // getTrlAvailable,
   persistCapTable,
-  getCapTable,
   persistInfo,
-  getInfoByStartupId,
+  persistMilestones,
+  updateKpis,
+  updateMilestoneDuration,
+  updateMilestoneProgress
 };

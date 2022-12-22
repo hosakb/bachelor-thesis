@@ -83,7 +83,6 @@ router.get("/onboarding", (req, res) => {
 });
 
 router.post("/new-startup", async (req) => {
-  console.log(req.body);
 
   const { name, phase, users } = req.body;
 

@@ -29,7 +29,6 @@ const addMilestoneBtn = document.querySelector("#add-milestone-btn");
 
 addMilestoneBtn.addEventListener("click", () => {
   const milestone = document.querySelector("#milestone");
-  const milestoneDescription = document.querySelector("#milestone-description");
   const startDate = document.querySelector("#start-date-milestone");
   const dueDate = document.querySelector("#due-date-milestone");
   const milestoneCompletion = document.querySelector("#milestone-completion");
@@ -39,15 +38,11 @@ addMilestoneBtn.addEventListener("click", () => {
   let tr = document.createElement("tr");
 
   let tdFirstName = document.createElement("td");
-  let tdMilestoneDescription = document.createElement("td");
   let tdStartDate = document.createElement("td");
   let tdDueDate = document.createElement("td");
   let tdMilestoneCompletion = document.createElement("td");
 
   tdFirstName.appendChild(document.createTextNode(milestone.value));
-  tdMilestoneDescription.appendChild(
-    document.createTextNode(milestoneDescription.value)
-  );
   tdStartDate.appendChild(document.createTextNode(startDate.value));
   tdDueDate.appendChild(document.createTextNode(dueDate.value));
   tdMilestoneCompletion.appendChild(
@@ -55,7 +50,6 @@ addMilestoneBtn.addEventListener("click", () => {
   );
 
   tr.appendChild(tdFirstName);
-  tr.appendChild(tdMilestoneDescription);
   tr.appendChild(tdStartDate);
   tr.appendChild(tdDueDate);
   tr.appendChild(tdMilestoneCompletion);
@@ -63,7 +57,6 @@ addMilestoneBtn.addEventListener("click", () => {
   milestonesTbody.appendChild(tr);
 
   milestone.value = "";
-  milestoneDescription.value = "";
   startDate.value = "";
   dueDate.value = "";
   milestoneCompletion.value = "";
@@ -113,11 +106,10 @@ function submitStartupData() {
 
   for (const tr of milestonesTbody.children) {
     milestoneData.push({
-      milestone: tr.children[0].innerHTML,
-      description: tr.children[1].innerHTML,
-      startDate: tr.children[2].innerHTML,
-      dueDate: tr.children[3].innerHTML,
-      progress: tr.children[4].innerHTML,
+      name: tr.children[0].innerHTML,
+      start: tr.children[1].innerHTML,
+      end: tr.children[2].innerHTML,
+      progress: tr.children[3].innerHTML,
     });
   }
 

@@ -16,6 +16,18 @@ CREATE TABLE
     info JSONB NOT NULL DEFAULT '[]'
   );
 
+CREATE TABLE IF NOT EXISTS milestones (
+	id UUID NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
+    name TEXT NOT NULL, 
+  	start_date TEXT NOT NULL,
+  	end_date TEXT NOT NULL,
+  	progress INT NOT NULL,
+  	description TEXT,
+  	startup_id UUID NOT NULL,
+  
+  	FOREIGN KEY(startup_id) REFERENCES startup(id)
+);
+
 CREATE TABLE
   IF NOT EXISTS fund (
     id UUID NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,

@@ -3,7 +3,7 @@ import { Row } from "read-excel-file";
 import { getFundNameById } from "../models/fund";
 
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
-import { getCapTable, getInfoByStartupId, StartupInfo } from "../models/startup";
+import { getCapTable, getMilestones } from "../models/startup";
 import {
   getExpertiseByStartup,
   getFoundersByStartupId,
@@ -50,7 +50,7 @@ router.get("/", async (req, res) => {
         view: "fund",
       });
     } catch (error) {
-      console.log(
+      console.error(
         `Failed to fetch fund data for startup with id ${fundId} due to:\n${error}.\nRedirecting to login screen.`
       );
       res.redirect("/");
@@ -89,7 +89,7 @@ router.get("/startup/founders", async (req, res) => {
       startup: req.session.selectedStartup,
     });
   } catch (error) {
-    console.log(
+    console.error(
       `Failed to fetch startup request data for startup with id ${startupId} due to:\n${error}.\nRedirecting to fund dashboard.`
     );
     res.redirect("/fund/");
@@ -124,7 +124,7 @@ router.get("/startup/", async (req, res) => {
       capTable,
     });
   } catch (error) {
-    console.log(
+    console.error(
       `Failed to fetch startup request data for startup with id ${startupId} due to:\n${error}.\nRedirecting to fund dashboard.`
     );
     res.redirect("/fund/");
@@ -159,30 +159,8 @@ router.get("/chart/gantt", async (req, res) => {
     res.redirect("/fund/");
   }
 
-    const info: StartupInfo = await getInfoByStartupId(startupId);
-    const milestones = [];
-
-    milestones.push({
-      id: info.phase.toLowerCase(),
-      name: info.phase,
-      start: info.startDatePhase,
-      end: info.dueDatePhase,
-      progress: info.progress,
-    });
-
-    const tasks = info.milestoneData.map((m) => {
-      return {
-        id: m.milestone.toLowerCase(),
-        name: m.milestone,
-        start: m.startDate,
-        end: m.dueDate,
-        progress: m.progress,
-      };
-    });
-
-    const milestoneData = milestones.concat(tasks);
-
-    res.status(200).json(milestoneData);
+  const milestones = await getMilestones(startupId);
+  res.status(200).json(milestones);
   } catch (error) {
     res.status(200).json([]);
   }

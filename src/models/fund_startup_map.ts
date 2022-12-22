@@ -11,12 +11,12 @@ const fundIdExists = async (fundId: string) => {
     ]);
 
     if (result.rowCount > 1) {
-      console.log(
+      console.error(
         `Multiple funds received for fund id: ${fundId}. Expected one.`
       );
       return false;
     } else if (result.rowCount === 0) {
-      console.log(`Fund with fund id ${fundId} does not exists.`);
+      console.error(`Fund with fund id ${fundId} does not exists.`);
       return false;
     } else {
       return true;
@@ -32,26 +32,33 @@ const fundIdExists = async (fundId: string) => {
 
 const getStartupsForFund = async (fundId: string): Promise<Startup[]> => {
   const client = await pool.connect();
+  let result;
   try {
-    const result = await client.query(
+    result = await client.query(
       `SELECT startup_id FROM fund_startup_map WHERE fund_id=$1`,
       [fundId]
     );
+  } catch (err) {
+    throw new Error(
+      `Failed to query startup ids for fund with id ${fundId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
 
     const startups = [];
 
+   try {
     for (const startup of result.rows) {
       startups.push(await getStartupById(startup.startup_id));
     }
 
     return startups;
-  } catch (err) {
+   } catch (err) {
     throw new Error(
       `Failed to query startups for fund with id ${fundId} with the following error: ${err}`
     );
-  } finally {
-    client.release();
-  }
+   }
 };
 
 export { getStartupsForFund, fundIdExists };

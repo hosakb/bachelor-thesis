@@ -1,8 +1,10 @@
 import express, { Router } from "express";
 import {
-  getStartupById,
+  getNewStartupById,
+  Milestone,
   persistCapTable,
   persistInfo,
+  persistMilestones,
   StartupInfo,
 } from "../models/startup";
 import { PreviousVenture, insertTrackRecord } from "../models/track_record";
@@ -15,50 +17,6 @@ import {
 
 const router: Router = express.Router();
 
-router.get("/", async (req, res) => {
-  let newStartup;
-  const startupId = req.user?.startup;
-
-  if (startupId == undefined) {
-    throw new Error("Failed to fetch startup id.");
-  }
-
-  try {
-    newStartup = await getStartupById(startupId);
-  } catch (e) {
-    throw new Error("Failed to fetch startup from database.");
-  }
-
-  res.render("onboarding/track_record", {
-    layout: "../views/layouts/onboarding.ejs",
-    title: req.startupName,
-    name: req.user?.firstName + " " + req.user?.lastName,
-    startupName: newStartup.name,
-    founder: req.user?.firstName + " " + req.user?.lastName,
-  });
-});
-
-router.post("/track-record", async (req, res) => {
-  const { expertise, ventures } = req.body.trackRecord;
-
-  try {
-    if (req.user?.id == undefined) {
-      throw new Error("Failed use read user_id");
-    }
-
-    const userId = req.user?.id;
-    const previousVenture: PreviousVenture[] = ventures;
-
-    await insertTrackRecord(userId, expertise, previousVenture);
-    res.redirect("/startup");
-  } catch (error) {
-    console.log(
-      `Failed to submit track record due to: ${error}. Redirect to login screen.`
-    );
-    res.redirect("/onboarding");
-  }
-});
-
 router.get("/startup", async (req, res) => {
   let newStartup;
   const startupId = req.user?.startup;
@@ -68,7 +26,7 @@ router.get("/startup", async (req, res) => {
   }
 
   try {
-    newStartup = await getStartupById(startupId);
+    newStartup = await getNewStartupById(startupId);
     req.session.startupName = newStartup.name;
   } catch (e) {
     throw new Error("Failed to fetch startup from database.");
@@ -80,27 +38,6 @@ router.get("/startup", async (req, res) => {
     name: req.user?.firstName + " " + req.user?.lastName,
     startupName: req.session.startupName,
   });
-});
-
-router.post("/track-record", async (req, res) => {
-  const { expertise, ventures } = req.body.trackRecord;
-
-  try {
-    if (req.user?.id == undefined) {
-      throw new Error("Failed use read user_id");
-    }
-
-    const userId = req.user?.id;
-    const previousVenture: PreviousVenture[] = ventures;
-
-    await insertTrackRecord(userId, expertise, previousVenture);
-    res.redirect("/startup");
-  } catch (error) {
-    console.log(
-      `Failed to submit track record due to: ${error}. Redirect to login screen.`
-    );
-    res.redirect("/");
-  }
 });
 
 router.post(
@@ -116,7 +53,7 @@ router.post(
 
       return;
     } catch (error) {
-      console.log(
+      console.error(
         `The following error occurred during upload of a cap table. Redirecting to /submit ${error}`
       );
       res.redirect("/");
@@ -149,15 +86,16 @@ router.post("/startup", async (req, res) => {
     timeToMarket,
     progress,
     sector,
-    milestoneData,
   };
+
+  const milestones: Milestone[] = milestoneData;
 
   const startupId = req.user?.startup;
 
   deleteSpreadsheets(); // TODO: error handling
 
   if (startupId === undefined) {
-    console.log(
+    console.error(
       `Redirecting to login screen since no startup is assigned to user with id ${req.user?.id}`
     );
     res.redirect("/");
@@ -165,13 +103,79 @@ router.post("/startup", async (req, res) => {
     try {
       await persistCapTable(JSON.stringify(req.session.capTable), startupId);
       await persistInfo(startupInfo, startupId);
-      res.redirect("/onboarding");
+      await persistMilestones(milestones, startupId);
+      req.session.startupId = startupId;
+      // res.redirect("/onboarding/product");
+      res.redirect("/onboarding/track-record");
     } catch (error) {
-      console.log(
+      console.error(
         `Failed to update kpis due to ${error}. Redirect to startup screen.`
       );
       res.redirect("/onboarding/startup");
     }
+  }
+});
+
+// router.get("/technology", async (req, res) => {
+//   const startupId = req.user?.startup;
+
+//   if (startupId == undefined) {
+//     console.error("Failed to fetch startup id. Redirect to login screen.");
+//     res.redirect("/");
+//     return;
+//   }
+
+//   res.render("onboarding/startup", {
+//     layout: "../views/layouts/product.ejs",
+//     title: req.session.startupName,
+//     name: req.user?.firstName + " " + req.user?.lastName,
+//     startupName: req.session.startupName,
+//   });
+// });
+
+router.get("/track-record", async (req, res) => {
+  let newStartup;
+  const startupId = req.user?.startup;
+
+  if (startupId == undefined) {
+    throw new Error("Failed to fetch startup id.");
+  }
+
+  try {
+    newStartup = await getNewStartupById(startupId);
+  } catch (e) {
+    throw new Error("Failed to fetch startup from database.");
+  }
+
+  res.render("onboarding/track_record", {
+    layout: "../views/layouts/onboarding.ejs",
+    title: req.startupName,
+    name: req.user?.firstName + " " + req.user?.lastName,
+    startupName: newStartup.name,
+    founder: req.user?.firstName + " " + req.user?.lastName,
+  });
+});
+
+router.post("/track-record", async (req, res) => {
+  const { expertise, ventures } = req.body.trackRecord;
+
+  try {
+    if (req.user?.id == undefined) {
+      console.error("Failed to fetch user id. Redirect to login screen.");
+      res.redirect("/");
+      return;
+    }
+
+    const userId = req.user?.id;
+    const previousVenture: PreviousVenture[] = ventures;
+
+    await insertTrackRecord(userId, expertise, previousVenture);
+    res.redirect("/startup");
+  } catch (error) {
+    console.error(
+      `Failed to submit track record due to: ${error}. Redirect to login screen.`
+    );
+    res.redirect("/");
   }
 });
 
