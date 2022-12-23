@@ -82,5 +82,44 @@
         </div>
         <br>
     <% } %> 
+   
+    <div class="card-single-kpi">
+        <div>
+            <h3>
+                <%= locals.trl.trlProd %>
+            </h3>
+            <span>TRL(PROD) of <%= locals.trl.product%> </span>
+        </div>
+        <br>
+        <table id="ctrl-prod-tbl">
+            <thead>
+                <tr>
+                    <th>
+                        Technology 
+                    </th>
+                    <th>
+                        TRL 
+                    </th>
+                    <th>
+                        Criticality 
+                    </th>
+                </tr>
+            </thead>
+            <% for(const i of locals.trl.trlData) {%>
+                <tr>
+                    <td>
+                        <%= i.technology %> 
+                    </td>
+                    <td>
+                        <%= i.trl %> 
+                    </td>
+                    <td>
+                        <%= i.criticality %> 
+                    </td>
+                </tr>
+            <% } %>
+        </table>
+    </div>
+    <br>
 </div>
  

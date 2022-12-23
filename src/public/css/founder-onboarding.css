@@ -468,3 +468,23 @@ th {
 .hidden {
   display: none;
 }
+
+/* Product */
+#trl-div {
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+#trl-input {
+  width: 30%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+#trl-table {
+  width: 60%;
+  display: inline-block;
+  margin-right: 20px;
+  margin-left: 40px;
+}

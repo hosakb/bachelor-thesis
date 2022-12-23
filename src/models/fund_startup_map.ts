@@ -46,19 +46,19 @@ const getStartupsForFund = async (fundId: string): Promise<Startup[]> => {
     client.release();
   }
 
-    const startups = [];
+  const startups = [];
 
-   try {
+  try {
     for (const startup of result.rows) {
       startups.push(await getStartupById(startup.startup_id));
     }
 
     return startups;
-   } catch (err) {
+  } catch (err) {
     throw new Error(
       `Failed to query startups for fund with id ${fundId} with the following error: ${err}`
     );
-   }
+  }
 };
 
 export { getStartupsForFund, fundIdExists };

@@ -1,4 +1,5 @@
 import pool from "../config/db";
+import { calcTrlProd } from "../util/calc/trl";
 
 interface Startup {
   id: string;
@@ -96,11 +97,23 @@ interface Milestone {
   progress: number;
 }
 
+interface Trl {
+  product: string;
+  trlProd: number;
+  trlData: TrlData[];
+}
+
+interface TrlData {
+  technology: string;
+  trl: number;
+  criticality: number;
+}
+
 const getFirstStartupLoginById = async (startUpId: string) => {
   const client = await pool.connect();
-
+  let result;
   try {
-    const result = await client.query(
+    result = await client.query(
       `SELECT info FROM startup
       WHERE id = $1`,
       [startUpId]
@@ -109,12 +122,6 @@ const getFirstStartupLoginById = async (startUpId: string) => {
     if (result.rowCount === 0) {
       throw new Error("No startup found for id: " + startUpId);
     }
-
-    if (result.rows[0].info == undefined) {
-      return true;
-    } else {
-      return false;
-    }
   } catch (err) {
     throw new Error(
       `  "Failed query for first login for startup with email: ${startUpId}. Error:  ${err}`
@@ -122,28 +129,21 @@ const getFirstStartupLoginById = async (startUpId: string) => {
   } finally {
     client.release();
   }
+
+  if (result.rows[0].info == undefined) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 const getNewStartupById = async (startupId: string) => {
   const client = await pool.connect();
+  let result;
   try {
-    const result = await client.query(
-      "SELECT id, name FROM startup WHERE id=$1",
-      [startupId]
-    );
-
-    const {id, name} = result.rows[0];
-
-    const s: Startup = {
-      id,
-      name: name,
-      stage: undefined,
-      share: undefined,
-      sector: undefined,
-      totalInvestment: undefined,
-    };
-
-    return s;
+    result = await client.query("SELECT id, name FROM startup WHERE id=$1", [
+      startupId,
+    ]);
   } catch (err) {
     throw new Error(
       `Failed to query startup infos with the following error: ${err}`
@@ -151,34 +151,29 @@ const getNewStartupById = async (startupId: string) => {
   } finally {
     client.release();
   }
+
+  const { id, name } = result.rows[0];
+
+  const s: Startup = {
+    id,
+    name: name,
+    stage: undefined,
+    share: undefined,
+    sector: undefined,
+    totalInvestment: undefined,
+  };
+
+  return s;
 };
 
 const getStartupById = async (startupId: string) => {
   const client = await pool.connect();
-
+  let result;
   try {
-    const result = await client.query(
+    result = await client.query(
       "SELECT id, name, stage, info FROM startup WHERE id=$1",
       [startupId]
     );
-
-    const { id, name, stage, info } = result.rows[0];
-
-    const share = info[0] === undefined ? "Not available" : info[0].share; //TODO: Fallback?
-    const sector = info[0] === undefined ? "Not available" : info[0].sector; //TODO: Fallback?
-    const totalInvestment =
-      info[0] === undefined ? "Not available" : info[0].totalInvestment; //TODO: Fallback?
-
-    const s: Startup = {
-      id,
-      name: name,
-      stage: stage,
-      share: share,
-      sector: sector,
-      totalInvestment: totalInvestment,
-    };
-
-    return s;
   } catch (err) {
     throw new Error(
       `Failed to query startup infos with the following error: ${err}`
@@ -186,23 +181,32 @@ const getStartupById = async (startupId: string) => {
   } finally {
     client.release();
   }
+
+  const { id, name, stage, info } = result.rows[0];
+
+  const share = info[0] === undefined ? "Not available" : info[0].share; //TODO: Fallback?
+  const sector = info[0] === undefined ? "Not available" : info[0].sector; //TODO: Fallback?
+  const totalInvestment =
+    info[0] === undefined ? "Not available" : info[0].totalInvestment; //TODO: Fallback?
+
+  const s: Startup = {
+    id,
+    name: name,
+    stage: stage,
+    share: share,
+    sector: sector,
+    totalInvestment: totalInvestment,
+  };
+
+  return s;
 };
 
 const getStartups = async () => {
   const client = await pool.connect();
+  let result;
 
   try {
-    const result = await client.query("SELECT name, stage FROM startup");
-
-    if (result.rowCount === 0) {
-      throw new Error(`No startups found found in db.`);
-    }
-
-    const startups: Startup[] = result.rows.map((row) => {
-      return { id: row.id, name: row.name, stage: row.stage };
-    });
-
-    return startups;
+    result = await client.query("SELECT name, stage FROM startup");
   } catch (err) {
     throw new Error(
       `Failed to fetch all startups due to the following error: ${err}`
@@ -210,22 +214,29 @@ const getStartups = async () => {
   } finally {
     client.release();
   }
+
+  if (result.rowCount === 0) {
+    throw new Error(`No startups found found in db.`);
+  }
+
+  const startups: Startup[] = result.rows.map((row) => {
+    return { id: row.id, name: row.name, stage: row.stage };
+  });
+
+  return startups;
 };
 
 const getStartupNameById = async (startupId: string) => {
   const client = await pool.connect();
-
+  let result;
   try {
-    const result = await client.query(
-      "SELECT name FROM startup WHERE id = $1",
-      [startupId]
-    );
+    result = await client.query("SELECT name FROM startup WHERE id = $1", [
+      startupId,
+    ]);
 
     if (result.rowCount === 0) {
       throw new Error(`No startups found found for id ${startupId}.`);
     }
-
-    return result.rows[0].name;
   } catch (err) {
     throw new Error(
       `Failed to query startup with id ${startupId} due to the following error: ${err}`
@@ -233,17 +244,19 @@ const getStartupNameById = async (startupId: string) => {
   } finally {
     client.release();
   }
+
+  return result.rows[0].name;
 };
 
 const getKpis = async (startupId: string): Promise<InvestmentPhaseKpis> => {
   const client = await pool.connect();
+  let investmentPhaseKpis: InvestmentPhaseKpis;
 
   try {
     const result = await client.query(`SELECT stage FROM startup WHERE id=$1`, [
       startupId,
     ]);
 
-    let investmentPhaseKpis: InvestmentPhaseKpis;
     let kpis: Kpis[];
     let kpiResult;
 
@@ -366,13 +379,12 @@ const getKpis = async (startupId: string): Promise<InvestmentPhaseKpis> => {
       default:
         throw new Error("Failed to match startup investment phase.");
     }
-
-    return investmentPhaseKpis;
   } catch (err) {
     throw new Error(`Failed to query kpis with the following error: ${err}`);
   } finally {
     client.release();
   }
+  return investmentPhaseKpis;
 };
 
 const updateKpis = async (kpis: Kpis, startupId: string) => {
@@ -441,14 +453,11 @@ const updateKpis = async (kpis: Kpis, startupId: string) => {
 
 const getInvestmentPhase = async (startupId: string) => {
   const client = await pool.connect();
+  let result;
   try {
-    const result = await client.query("SELECT stage FROM startup WHERE id=$1", [
+    result = await client.query("SELECT stage FROM startup WHERE id=$1", [
       startupId,
     ]);
-
-    const phase: InvestmentPhase = result.rows[0].stage;
-
-    return phase;
   } catch (err) {
     throw new Error(
       `Failed to query investment phase for startup id ${startupId} with the following error: ${err}`
@@ -456,6 +465,10 @@ const getInvestmentPhase = async (startupId: string) => {
   } finally {
     client.release();
   }
+
+  const phase: InvestmentPhase = result.rows[0].stage;
+
+  return phase;
 };
 
 const persistCapTable = async (capTable: string, startupId: string) => {
@@ -476,15 +489,11 @@ const persistCapTable = async (capTable: string, startupId: string) => {
 
 const getCapTable = async (startupId: string) => {
   const client = await pool.connect();
+  let result;
   try {
-    const result = await client.query(
-      "SELECT cap_table FROM startup WHERE id = $1",
-      [startupId]
-    );
-
-    const capTable = result.rows[0].cap_table;
-
-    return capTable;
+    result = await client.query("SELECT cap_table FROM startup WHERE id = $1", [
+      startupId,
+    ]);
   } catch (err) {
     throw new Error(
       `Failed to fetch cap table for startup id ${startupId} with the following error: ${err}`
@@ -492,6 +501,10 @@ const getCapTable = async (startupId: string) => {
   } finally {
     client.release();
   }
+
+  const capTable = result.rows[0].cap_table;
+
+  return capTable;
 };
 
 const persistInfo = async (startupInfo: StartupInfo, startupId: string) => {
@@ -512,14 +525,11 @@ const persistInfo = async (startupInfo: StartupInfo, startupId: string) => {
 
 const getInfoByStartupId = async (startupId: string) => {
   const client = await pool.connect();
+  let result;
   try {
-    const result = await client.query(
-      "SELECT info FROM startup WHERE id = $1",
-      [startupId]
-    );
-
-    const info: StartupInfo = result.rows[0].info;
-    return info;
+    result = await client.query("SELECT info FROM startup WHERE id = $1", [
+      startupId,
+    ]);
   } catch (err) {
     throw new Error(
       `Failed to query startup info for startup id ${startupId} with the following error: ${err}`
@@ -527,17 +537,27 @@ const getInfoByStartupId = async (startupId: string) => {
   } finally {
     client.release();
   }
+
+  const info: StartupInfo = result.rows[0].info;
+  return info;
 };
 
-
-const persistMilestones = async (milestones: Milestone[], startupId: string) => {
+const persistMilestones = async (
+  milestones: Milestone[],
+  startupId: string
+) => {
   const client = await pool.connect();
   try {
-    
     for (const milestone of milestones) {
       await client.query(
         "INSERT INTO milestones (name, start_date, end_date, progress, startup_id) VALUES ($1, $2, $3, $4, $5)",
-        [milestone.name, milestone.start, milestone.end, milestone.progress, startupId]
+        [
+          milestone.name,
+          milestone.start,
+          milestone.end,
+          milestone.progress,
+          startupId,
+        ]
       );
     }
   } catch (err) {
@@ -547,27 +567,16 @@ const persistMilestones = async (milestones: Milestone[], startupId: string) => 
   } finally {
     client.release();
   }
-}
+};
 
 const getMilestones = async (startupId: string) => {
   const client = await pool.connect();
+  let result;
   try {
-    const result = await client.query(
+    result = await client.query(
       "SELECT id, name, start_date, end_date, progress FROM milestones WHERE startup_id = $1",
       [startupId]
     );
-
-    const milestones: Milestone[] = result.rows.map((row) => {
-      return {
-        id: row.id,
-        name: row.name,
-        start: row.start_date,
-        end: row.end_date,
-        progress: row.progress,
-      }
-    });
-
-    return milestones;
   } catch (err) {
     throw new Error(
       `Failed to query milestones for startup id ${startupId} with the following error: ${err}`
@@ -575,15 +584,27 @@ const getMilestones = async (startupId: string) => {
   } finally {
     client.release();
   }
-}
+
+  const milestones: Milestone[] = result.rows.map((row) => {
+    return {
+      id: row.id,
+      name: row.name,
+      start: row.start_date,
+      end: row.end_date,
+      progress: row.progress,
+    };
+  });
+
+  return milestones;
+};
 
 const updateMilestoneProgress = async (taskId: string, progress: number) => {
   const client = await pool.connect();
   try {
-    await client.query(
-      "UPDATE milestones SET progress = $1 WHERE id = $2",
-      [progress, taskId]
-    );
+    await client.query("UPDATE milestones SET progress = $1 WHERE id = $2", [
+      progress,
+      taskId,
+    ]);
   } catch (err) {
     throw new Error(
       `Failed to update milestones progress with id ${taskId} with the following error: ${err}`
@@ -591,9 +612,13 @@ const updateMilestoneProgress = async (taskId: string, progress: number) => {
   } finally {
     client.release();
   }
-}
+};
 
-const updateMilestoneDuration = async (taskId: string, start: string, end: string) => {
+const updateMilestoneDuration = async (
+  taskId: string,
+  start: string,
+  end: string
+) => {
   const client = await pool.connect();
   try {
     await client.query(
@@ -607,11 +632,95 @@ const updateMilestoneDuration = async (taskId: string, start: string, end: strin
   } finally {
     client.release();
   }
-}
+};
 
-// const getTrlAvailable = async (startupId: string) => {
-//   return false;
-// }
+const getTrlAvailable = async (startupId: string) => {
+  const client = await pool.connect();
+  let result;
+  try {
+    result = await client.query("SELECT id FROM trl WHERE startup_id = $1;", [
+      startupId,
+    ]);
+  } catch (err) {
+    throw new Error(
+      `Failed to query availability of trl data for startup with id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+  if (result.rowCount == 0) {
+    return false;
+  }
+
+  return true;
+};
+
+const getTrl = async (startupId: string) => {
+  const client = await pool.connect();
+  let result;
+  try {
+    result = await client.query(
+      "SELECT startup.product, trl.technology, trl.trl, trl.criticality FROM trl JOIN startup ON trl.startup_id = startup.id WHERE startup.id = $1;",
+      [startupId]
+    );
+  } catch (err) {
+    throw new Error(
+      `Failed to query trl data for startup with id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+
+  const trlData: TrlData[] = result.rows.map((trl) => {
+    return {
+      technology: trl.technology,
+      trl: trl.trl,
+      criticality: trl.criticality,
+    };
+  });
+
+  const trl: Trl = {
+    product: result.rows[0].product,
+    trlProd: calcTrlProd(trlData),
+    trlData: trlData,
+  };
+
+  return trl;
+};
+
+const persistTrlData = async (startupId: string, trlData: TrlData[]) => {
+  const client = await pool.connect();
+  try {
+    for (const trl of trlData) {
+      await client.query(
+        "INSERT INTO trl (technology, trl, criticality, startup_id) VALUES ($1, $2, $3, $4);",
+        [trl.technology, trl.trl, trl.criticality, startupId]
+      );
+    }
+  } catch (err) {
+    throw new Error(
+      `Failed to persist trl data for startup with id with id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const persistCoreTechnology = async (startupId: string, product: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query("UPDATE startup SET product = $1 WHERE id = $2;", [
+      product,
+      startupId,
+    ]);
+  } catch (err) {
+    throw new Error(
+      `Failed to persist product for startup with id with id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
 
 export {
   InvestmentPhase,
@@ -621,6 +730,7 @@ export {
   Startup,
   StartupInfo,
   TimeSeriesKpis,
+  TrlData,
   getCapTable,
   getFirstStartupLoginById,
   getInfoByStartupId,
@@ -631,11 +741,14 @@ export {
   getStartupById,
   getStartupNameById,
   getStartups,
-  // getTrlAvailable,
+  getTrlAvailable,
   persistCapTable,
   persistInfo,
+  persistTrlData,
   persistMilestones,
+  persistCoreTechnology,
   updateKpis,
   updateMilestoneDuration,
-  updateMilestoneProgress
+  updateMilestoneProgress,
+  getTrl,
 };

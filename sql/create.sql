@@ -13,7 +13,9 @@ CREATE TABLE
     second_stage_kpis JSONB NOT NULL DEFAULT '[]',
     third_stage_kpis JSONB NOT NULL DEFAULT '[]',
     final_phase_kpis JSONB NOT NULL DEFAULT '[]',
-    info JSONB NOT NULL DEFAULT '[]'
+    info JSONB,
+    cap_table JSONB
+    product TEXT
   );
 
 CREATE TABLE IF NOT EXISTS milestones (
@@ -27,6 +29,19 @@ CREATE TABLE IF NOT EXISTS milestones (
   
   	FOREIGN KEY(startup_id) REFERENCES startup(id)
 );
+
+CREATE TABLE IF NOT EXISTS trl  (
+id UUID NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
+technology TEXT NOT NULL, 
+trl INT NOT NULL, 
+criticality INT NOT NULL, 
+startup_id UUID NOT NULL,
+  
+FOREIGN KEY(startup_id) REFERENCES startup(id)
+
+
+)
+
 
 CREATE TABLE
   IF NOT EXISTS fund (

@@ -8,7 +8,7 @@ import {
   getUserRole,
   getFirstUserLoginByEmail,
 } from "../models/users";
-import { getFirstStartupLoginById, /*getTrlAvailable*/ } from "../models/startup";
+import { getFirstStartupLoginById, getTrlAvailable } from "../models/startup";
 
 const router: Router = express.Router();
 
@@ -30,7 +30,7 @@ router.post(
       case Role.Admin:
         return loginAdmin(userRole, res);
       case Role.Startup:
-        return loginOrOnboardStartupUser(userRole, email, res, req)
+        return loginOrOnboardStartupUser(userRole, email, res, req);
       case Role.Fund:
         return loginFund(userRole, req, res);
       default:
@@ -53,7 +53,7 @@ router.get("/logout", (req, res) => {
 
 export default router;
 function loginFund(userRole: UserRole, req: Request, res: Response) {
-  console.log(
+  console.info(
     `Logged in as fund with id ${userRole.id} and redirected to /fund/${userRole.id}`
   );
   req.session.fundId = userRole.id;
@@ -69,7 +69,12 @@ function loginAdmin(userRole: UserRole, res: Response) {
   return res.redirect("/admin");
 }
 
-async function loginOrOnboardStartupUser(userRole: UserRole,email: string, res: Response, req: Request) {
+async function loginOrOnboardStartupUser(
+  userRole: UserRole,
+  email: string,
+  res: Response,
+  req: Request
+) {
   try {
     if (await getFirstStartupLoginById(userRole.id)) {
       console.info(
@@ -78,12 +83,12 @@ async function loginOrOnboardStartupUser(userRole: UserRole,email: string, res: 
       return res.redirect("/onboarding/startup");
     }
 
-    // if (!await getTrlAvailable(userRole.id)) {
-    //   console.info(
-    //     `TRL Information missing for startup with id ${userRole.id}. Redirecting to /onboarding/product due to first login.}`
-    //   );
-    //   return res.redirect("/onboarding/product");
-    // }
+    if (!(await getTrlAvailable(userRole.id))) {
+      console.info(
+        `TRL Information missing for startup with id ${userRole.id}. Redirecting to /onboarding/product due to first login.}`
+      );
+      return res.redirect("/onboarding/product");
+    }
 
     req.session.startupId = userRole.id;
 
@@ -102,4 +107,3 @@ async function loginOrOnboardStartupUser(userRole: UserRole,email: string, res: 
     throw new Error("Failed to query first login attempt from db.");
   }
 }
-

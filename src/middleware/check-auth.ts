@@ -5,7 +5,7 @@ export function checkAuthenticated(
   next: () => void
 ) {
   if (req.isAuthenticated()) {
-    return res.redirect("/dashboard");
+    return res.redirect("/");
   }
   next();
 }

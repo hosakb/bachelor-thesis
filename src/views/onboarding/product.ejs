@@ -1,0 +1,147 @@
+<div>
+    <p>Please state the core product or technology under development.</p>
+<div>
+    <label for="core-technology">Core Product or Technology</label>
+    <input type="text" id="core-technology" name="coreTechnology" form="trl-form">
+</div>
+
+<br>
+
+<p>Please list the technologies that contribute to the functionality of the core product or technology and assign each a TRL and a value of criticality as defined on the right.</p>
+<br>
+<div id="trl-div">
+    <div id="trl-input">
+        <div>
+            <label for="trl">Technology</label>
+            <input type="text" id="technology">
+        </div>
+        <div>
+            <label for="trl">TRL</label>
+            <select name="trl" id="trl">
+                <option value="1" default>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+            </select>
+        </div>
+        <div>
+            <div>
+                <label for="criticality">Criticality</label>
+                <select name="criticality" id="criticality">
+                    <option value="1" default>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+        </div>
+        <button id="add-technology-btn">Add Technology</button>
+        <br>
+        <br>
+        <div id="trl-prod-values-tbl">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Technology
+                        </th>
+                        <th>
+                            TRL
+                        </th>
+                        <th>
+                            Criticality
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="trl-prod-values">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <form id="trl-form" action="/onboarding/trl" method="POST">
+            <input type="hidden" name="trlData" id="trl-data">
+            <input type="submit" class="hidden" id="submit-technolgies-btn" value="Submit technologies">
+        </form>
+    </div>
+    <div id="trl-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>TRL</th>
+                    <th>Definition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Principal research into the core properties of the technology.</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>'Invention' of a concept or application for the technology. Shift from principle to applied research.</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Initial 'proof of concept' of critical functionality through active R&D (Analytical and laboratory studies in appropriate context to validate previous analytical precondition).</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Low-fidelity validation in laboratory environment. Technological advancement now focussed on meeting project requirements..</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Validation of basic technological elements in a relevant environment. Test 'set-up' to be of higher fidelity than TRL 4.</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>High-fidelity 'alpha' prototype demonstrated in a relevant environment.</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>'Beta' prototype (Of appropriate or full scale) demonstrated in an operational environment.</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Complete component, sub-system or system qualified to relevant project requirements and/or regulatory standards.</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>Verified component, sub-system or system proven to meet all project requirements through 'real world' operation.</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>Criticality Value</th>
+                    <th>Definition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>3</td>
+                    <td>Technology is 'enabling' to the core functionality of the product. No work-around or substitution possible.</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Technology fulfils a vital role in the product's core functionality. However, a work-around may be possible using substitute technology that will incur an acceptable penalty.</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Technology is 'enhancing' to the products performance, cost, etc. Several alternative technologies exist that could be substituted and incur a minimal penalty.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>

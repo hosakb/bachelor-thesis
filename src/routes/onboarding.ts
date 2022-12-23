@@ -6,6 +6,9 @@ import {
   persistInfo,
   persistMilestones,
   StartupInfo,
+  TrlData,
+  persistTrlData,
+  persistCoreTechnology,
 } from "../models/startup";
 import { PreviousVenture, insertTrackRecord } from "../models/track_record";
 import {
@@ -37,6 +40,7 @@ router.get("/startup", async (req, res) => {
     title: req.session.startupName,
     name: req.user?.firstName + " " + req.user?.lastName,
     startupName: req.session.startupName,
+    scripts: ["/js/onboarding/startup"],
   });
 });
 
@@ -105,8 +109,7 @@ router.post("/startup", async (req, res) => {
       await persistInfo(startupInfo, startupId);
       await persistMilestones(milestones, startupId);
       req.session.startupId = startupId;
-      // res.redirect("/onboarding/product");
-      res.redirect("/onboarding/track-record");
+      res.redirect("/onboarding/product");
     } catch (error) {
       console.error(
         `Failed to update kpis due to ${error}. Redirect to startup screen.`
@@ -116,22 +119,45 @@ router.post("/startup", async (req, res) => {
   }
 });
 
-// router.get("/technology", async (req, res) => {
-//   const startupId = req.user?.startup;
+router.get("/product", async (req, res) => {
+  const startupId = req.user?.startup;
 
-//   if (startupId == undefined) {
-//     console.error("Failed to fetch startup id. Redirect to login screen.");
-//     res.redirect("/");
-//     return;
-//   }
+  if (startupId == undefined) {
+    console.error("Failed to fetch startup id. Redirect to login screen.");
+    res.redirect("/");
+    return;
+  }
 
-//   res.render("onboarding/startup", {
-//     layout: "../views/layouts/product.ejs",
-//     title: req.session.startupName,
-//     name: req.user?.firstName + " " + req.user?.lastName,
-//     startupName: req.session.startupName,
-//   });
-// });
+  res.render("onboarding/product", {
+    layout: "../views/layouts/onboarding.ejs",
+    title: req.session.startupName,
+    name: req.user?.firstName + " " + req.user?.lastName,
+    startupName: req.session.startupName,
+    scripts: ["/js/onboarding/product"],
+  });
+});
+
+router.post("/trl", async (req, res) => {
+  const { trlData, coreTechnology } = req.body;
+
+  const newTrlData: TrlData[] = JSON.parse(trlData);
+  const startupId = req.user?.startup;
+
+  if (startupId == undefined) {
+    throw new Error("Failed to fetch startup id.");
+  }
+
+  try {
+    await persistTrlData(startupId, newTrlData);
+    await persistCoreTechnology(startupId, coreTechnology);
+    res.redirect("/onboarding/track-record");
+  } catch (error) {
+    console.error(
+      `Failed to submit trl for startup with id ${startupId} due to: ${error}. Redirect to login screen.`
+    );
+    res.redirect("/");
+  }
+});
 
 router.get("/track-record", async (req, res) => {
   let newStartup;
@@ -153,6 +179,7 @@ router.get("/track-record", async (req, res) => {
     name: req.user?.firstName + " " + req.user?.lastName,
     startupName: newStartup.name,
     founder: req.user?.firstName + " " + req.user?.lastName,
+    scripts: ["/js/onboarding/founder"],
   });
 });
 
@@ -170,6 +197,14 @@ router.post("/track-record", async (req, res) => {
     const previousVenture: PreviousVenture[] = ventures;
 
     await insertTrackRecord(userId, expertise, previousVenture);
+
+    const startupId = req.user.startup;
+
+    if (startupId == undefined) {
+      throw new Error("Failed to fetch startup id.");
+    }
+
+    req.session.startupId = startupId;
     res.redirect("/startup");
   } catch (error) {
     console.error(

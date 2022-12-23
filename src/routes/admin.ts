@@ -83,7 +83,6 @@ router.get("/onboarding", (req, res) => {
 });
 
 router.post("/new-startup", async (req) => {
-
   const { name, phase, users } = req.body;
 
   const startupUsers: User[] = JSON.parse(users);

@@ -3,7 +3,7 @@ import { Row } from "read-excel-file";
 import { getFundNameById } from "../models/fund";
 
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
-import { getCapTable, getMilestones } from "../models/startup";
+import { getCapTable, getMilestones, getTrl } from "../models/startup";
 import {
   getExpertiseByStartup,
   getFoundersByStartupId,
@@ -109,11 +109,17 @@ router.get("/startup/", async (req, res) => {
   try {
     await getStartupKpiRequestData(req, startupId);
     await extractExpertise(startupId, req);
+    const trl = await getTrl(startupId);
+
     const capTable: Row[] = await getCapTable(startupId);
 
     res.render("dashboard/startup/index", {
       layout: "../views/layouts/dashboard.ejs",
-      scripts: ["/js/gantt/frappe-gantt.min", "/js/chart/chart.min", "/js/fund"],
+      scripts: [
+        "/js/gantt/frappe-gantt.min",
+        "/js/chart/chart.min",
+        "/js/fund",
+      ],
       dashboard: "fund",
       kpis: req.kpis,
       title: req.startupName,
@@ -122,6 +128,7 @@ router.get("/startup/", async (req, res) => {
       name: req.user?.firstName + " " + req.user?.lastName,
       startup: req.session.selectedStartup,
       capTable,
+      trl: trl,
     });
   } catch (error) {
     console.error(
@@ -149,18 +156,17 @@ router.get("/chart/expertise", (req, res) => {
 
 router.get("/chart/gantt", async (req, res) => {
   try {
-
     const startupId = req.session.selectedStartup;
 
-  if (startupId === undefined) {
-    console.log(
-      `Redirecting user ${req.user?.id} to fund screen since no selected startup was found.`
-    );
-    res.redirect("/fund/");
-  }
+    if (startupId === undefined) {
+      console.log(
+        `Redirecting user ${req.user?.id} to fund screen since no selected startup was found.`
+      );
+      res.redirect("/fund/");
+    }
 
-  const milestones = await getMilestones(startupId);
-  res.status(200).json(milestones);
+    const milestones = await getMilestones(startupId);
+    res.status(200).json(milestones);
   } catch (error) {
     res.status(200).json([]);
   }

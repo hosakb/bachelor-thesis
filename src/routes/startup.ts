@@ -12,6 +12,7 @@ import {
   getMilestones,
   updateMilestoneDuration,
   updateMilestoneProgress,
+  getTrl,
 } from "../models/startup";
 
 const router: Router = express.Router();
@@ -41,16 +42,22 @@ router.get("/", async (req, res) => {
       ); // TODO: ENV
       bc.queryBusinessCentral();
       await getStartupKpiRequestData(req, startupId);
+      const trl = await getTrl(startupId);
 
       res.render("dashboard/startup/index", {
         layout: "../views/layouts/dashboard.ejs",
         dashboard: "startup",
-        scripts: ["/js/gantt/frappe-gantt.min", "/js/chart/chart.min", "/js/startup"],
+        scripts: [
+          "/js/gantt/frappe-gantt.min",
+          "/js/chart/chart.min",
+          "/js/startup",
+        ],
         phase: await getInvestmentPhase(startupId),
         kpis: req.kpis,
         page: "dashboard",
         title: req.startupName,
         name: req.user?.firstName + " " + req.user?.lastName,
+        trl: trl,
       });
     } catch (error) {
       console.error(
@@ -271,22 +278,22 @@ router.get("/chart/gantt", async (req, res) => {
 });
 
 router.put("/gantt/period", async (req, res) => {
-  const {taskId, start, end} = req.body;
+  const { taskId, start, end } = req.body;
 
   try {
     await updateMilestoneDuration(taskId, start, end);
   } catch (error) {
-    console.error(`Failed to update Milestone duration due to ${error}.`)
+    console.error(`Failed to update Milestone duration due to ${error}.`);
   }
 });
 
 router.put("/gantt/progress", async (req, res) => {
-  const {taskId, progress} = req.body;
+  const { taskId, progress } = req.body;
 
   try {
     await updateMilestoneProgress(taskId, progress);
   } catch (error) {
-    console.error(`Failed to update Milestone progress due to ${error}.`)
+    console.error(`Failed to update Milestone progress due to ${error}.`);
   }
 });
 
