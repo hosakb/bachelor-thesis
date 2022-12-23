@@ -80,4 +80,55 @@
             </div>
         <% } %> 
     </div>
+    <div class="submit-card">
+        <table id="ctrl-prod-tbl">
+            <thead>
+                <tr>
+                    <th>
+                        Technology 
+                    </th>
+                    <th>
+                        TRL 
+                    </th>
+                    <th>
+                        Criticality 
+                    </th>
+                    <th>
+                        Options
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="trl-tbody">
+                <% let c = 0; %>
+                <% for(const i of locals.trl.trlData) {%>
+                    <tr class="trl-<%= c %>">
+                        <td>
+                            <%= i.technology %> 
+                        </td>
+                        <td>
+                            <%= i.trl %> 
+                        </td>
+                        <td>
+                            <%= i.criticality %> 
+                        </td>
+                        <td>
+                            <div id="option-btn-<%= c %>">
+                                <input type="hidden" value="<%= i.id %>" id="id-<%= c %>">
+                                <button onclick="editRow('<%= c %>')">
+                                    <span><i class="las la-edit"></i></span>
+                                </button>
+                                <button onclick="deleteRow('<%= c %>')">
+                                    <span><i class="las la-trash-alt"></i></span>
+                                </button>
+                            </div>
+                            <button id="ok-btn-<%= c %>" class="hidden" onclick="saveTrl('<%= c %>')"><i class="las la-check-circle"></i></button>
+                            <button id="cancel-btn-<%= c %>" class="hidden" onclick="cancelTrlEdit('<%= c %>')"><i class="las la-times"></i></button>
+                        </td>
+                    </tr>
+                    <% c++; %> 
+                <% } %>
+            </tbody>
+            </table>
+            <br>
+        <button id="add-technology-btn">Add Technology</button>
 </div>

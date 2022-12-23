@@ -1,5 +1,14 @@
 import express from "express";
-import { Kpis, persistCapTable, updateKpis } from "../models/startup";
+import {
+  deleteTrl,
+  getTrl,
+  Kpis,
+  persistCapTable,
+  persistTrlData,
+  TrlData,
+  updateKpis,
+  updateTrl,
+} from "../models/startup";
 import getTodaysDate from "../util/date";
 import {
   deleteSpreadsheets,
@@ -11,7 +20,7 @@ import {
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   if (req.user?.startup === undefined) {
     if (req.user?.fund !== undefined) {
       console.info(
@@ -25,6 +34,7 @@ router.get("/", (req, res) => {
       res.redirect("/");
     }
   } else {
+    const trl = await getTrl(req.user?.startup);
     res.render("submit/index", {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "startup",
@@ -32,6 +42,7 @@ router.get("/", (req, res) => {
       page: "submit",
       title: "Finvia", // TODO: make dynamic
       name: req.user?.firstName + " " + req.user?.lastName,
+      trl: trl,
     });
   }
 });
@@ -157,9 +168,60 @@ router.post(
       console.error(
         `The following error occurred during upload of a cap table. Redirecting to /submit ${error}`
       );
-      res.redirect("/");
+      res.redirect("/submit");
     }
   }
 );
+
+router.post("/update-trl", async (req, res) => {
+  const { id, technology, trl, criticality } = req.body.trlData;
+  try {
+    const trlData: TrlData = {
+      id,
+      technology,
+      trl,
+      criticality,
+    };
+
+    await updateTrl(trlData);
+  } catch (error) {
+    console.error(
+      `The following error occurred during update of a technology trl with id ${id}. Redirecting to /submit ${error}`
+    );
+    res.redirect("/submit");
+  }
+});
+
+router.post("/delete-trl", async (req, res) => {
+  const { id } = req.body.id;
+  try {
+    await deleteTrl(id);
+  } catch (error) {
+    console.error(
+      `The following error occurred during deletion of a technology trl with id ${id}. Redirecting to /submit ${error}`
+    );
+    res.redirect("/submit");
+  }
+});
+
+router.post("/add-trl", async (req, res) => {
+  const { technology, trl, criticality } = req.body.trlData;
+  try {
+    const trlData: TrlData = {
+      id: "",
+      technology,
+      trl,
+      criticality,
+    };
+
+    await persistTrlData(req.session.startupId, [trlData]);
+    res.redirect("/submit");
+  } catch (error) {
+    console.error(
+      `The following error occurred during adding of a new technology trl to startup with id ${req.session.startupId} to the db. Redirecting to /submit ${error}`
+    );
+    res.redirect("/submit");
+  }
+});
 
 export default router;

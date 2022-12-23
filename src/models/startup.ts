@@ -104,6 +104,7 @@ interface Trl {
 }
 
 interface TrlData {
+  id: string;
   technology: string;
   trl: number;
   criticality: number;
@@ -660,7 +661,7 @@ const getTrl = async (startupId: string) => {
   let result;
   try {
     result = await client.query(
-      "SELECT startup.product, trl.technology, trl.trl, trl.criticality FROM trl JOIN startup ON trl.startup_id = startup.id WHERE startup.id = $1;",
+      "SELECT startup.product, trl.id, trl.technology, trl.trl, trl.criticality FROM trl JOIN startup ON trl.startup_id = startup.id WHERE startup.id = $1;",
       [startupId]
     );
   } catch (err) {
@@ -673,6 +674,7 @@ const getTrl = async (startupId: string) => {
 
   const trlData: TrlData[] = result.rows.map((trl) => {
     return {
+      id: trl.id,
       technology: trl.technology,
       trl: trl.trl,
       criticality: trl.criticality,
@@ -722,6 +724,31 @@ const persistCoreTechnology = async (startupId: string, product: string) => {
   }
 };
 
+const updateTrl = async (trlData: TrlData) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      "UPDATE trl SET technology = $1, trl = $2, criticality = $3 WHERE id = $4;",
+      [trlData.technology, trlData.trl, trlData.criticality, trlData.id]
+    );
+  } catch (err) {
+    throw new Error(`${err}`);
+  } finally {
+    client.release();
+  }
+};
+
+const deleteTrl = async (id: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query("DELETE FROM trl WHERE id = $1;", [id]);
+  } catch (err) {
+    throw new Error(`${err}`);
+  } finally {
+    client.release();
+  }
+};
+
 export {
   InvestmentPhase,
   InvestmentPhaseKpis,
@@ -748,7 +775,9 @@ export {
   persistMilestones,
   persistCoreTechnology,
   updateKpis,
+  updateTrl,
   updateMilestoneDuration,
   updateMilestoneProgress,
   getTrl,
+  deleteTrl,
 };
