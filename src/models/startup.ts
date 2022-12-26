@@ -110,6 +110,218 @@ interface TrlData {
   criticality: number;
 }
 
+interface Questionnaire {
+  q1_1_1: number;
+  q1_2_1: number;
+  q1_2_2: number;
+  q1_2_3: number;
+  q1_2_4: number;
+  q1_2_5: number;
+  q1_2_6: number;
+  q1_2_7: number;
+  q1_2_8: number;
+  q1_2_9: number;
+  q1_2_10: number;
+  q1_2_11: number;
+  q1_2_12: number;
+  q1_2_13: number;
+  q1_2_14: number;
+  q1_2_15: number;
+  q1_2_16: number;
+  q1_2_17: number;
+  q1_2_18: number;
+  q1_2_19: number;
+  q1_2_20: number;
+  q1_2_21: number;
+  q1_2_22: number;
+  q1_2_23: number;
+  q1_2_24: number;
+  q1_3_1: number;
+  q1_3_2: number;
+  q1_4_1: number;
+  q1_4_2: number;
+  q1_4_3: number;
+  q1_4_4: number;
+  q1_5_1: number;
+  q1_5_2: number;
+  q1_5_3: number;
+  q1_5_4: number;
+  q1_5_5: number;
+  q1_5_6: number;
+  q1_5_7: number;
+  q2_1_1: number;
+  q2_1_2: number;
+  q2_1_3: number;
+  q2_1_4: number;
+  q2_1_5: number;
+  q2_1_6: number;
+  q2_1_7: number;
+  q2_1_8: number;
+  q2_1_9: number;
+  q2_1_10: number;
+  q2_2_1: number;
+  q2_2_2: number;
+  q2_2_3: number;
+  q2_3_1: number;
+  q2_3_2: number;
+  q2_3_3: number;
+  q2_3_4: number;
+  q2_3_5: number;
+  q2_3_6: number;
+  q2_4_1: number;
+  q2_4_2: number;
+  q2_4_3: number;
+  q2_4_4: number;
+  q2_4_5: number;
+  q2_4_6: number;
+  q2_4_7: number;
+  q2_5_1: number;
+  q2_5_2: number;
+  q2_5_3: number;
+  q2_5_4: number;
+  q2_5_5: number;
+  q2_5_6: number;
+  q2_5_7: number;
+  q2_5_8: number;
+  q3_1_1: number;
+  q3_1_2: number;
+  q3_1_3: number;
+  q3_1_4: number;
+  q3_2_1: number;
+  q3_2_2: number;
+  q3_2_3: number;
+  q3_2_4: number;
+  q4_1_1: number;
+  q4_1_2: number;
+  q4_2_1: number;
+  q4_2_2: number;
+  q4_2_3: number;
+  q4_2_4: number;
+  q5_1_1: number;
+  q5_1_2: number;
+  q5_1_3: number;
+  q5_1_4: number;
+  q6_1_1: number;
+  q6_1_2: number;
+  q6_1_3: number;
+  q6_1_4: number;
+  q6_1_5: number;
+  q6_2_1: number;
+  q6_2_2: number;
+  q6_3_1: number;
+  q6_3_2: number;
+  q6_3_3: number;
+  q6_3_4: number;
+  q6_3_5: number;
+  q6_4_1: number;
+  q6_4_2: number;
+  q6_4_3: number;
+  q6_4_4: number;
+  q6_5_1: number;
+  q6_5_2: number;
+  q6_5_3: number;
+  q7_1_1: number;
+  q7_1_2: number;
+  q7_1_3: number;
+  q7_1_4: number;
+  q7_1_5: number;
+  q7_2_1: number;
+  q7_2_2: number;
+  q7_3_1: number;
+  q7_3_2: number;
+  q7_3_3: number;
+  q7_4_1: number;
+  q7_5_1: number;
+  q8_1_1: number;
+  q8_1_2: number;
+  q8_1_3: number;
+  q8_1_4: number;
+  q8_1_5: number;
+  q8_1_6: number;
+}
+
+interface QuestionnaireAvg {
+  h1: number;
+  h1_2: number;
+  q1_2_4_block_1: number;
+  q1_2_block_2: number;
+  q1_2_block_3: number;
+  h1_3: number;
+  h1_4: number;
+  h1_5: number;
+  h2: number;
+  h2_1: number;
+  h2_2: number;
+  h2_3: number;
+  h2_4: number;
+  h2_5: number;
+  h3: number;
+  h3_1: number;
+  h3_2: number;
+  h4: number;
+  h4_1: number;
+  h4_2: number;
+  h5: number;
+  h6: number;
+  h6_1: number;
+  h6_2: number;
+  h6_3: number;
+  h6_4: number;
+  h6_5: number;
+  h7: number;
+  h7_1: number;
+  h7_2: number;
+  h7_3: number;
+  h7_4: number;
+  h7_5: number;
+  h8: number;
+}
+
+interface Rating {
+  h1: number;
+  h1_2: number;
+  h1_3: number;
+  h1_4: number;
+  h1_5: number;
+  h2: number;
+  h2_1: number;
+  h2_2: number;
+  h2_3: number;
+  h2_4: number;
+  h2_5: number;
+  h3: number;
+  h3_1: number;
+  h3_2: number;
+  h4: number;
+  h4_1: number;
+  h4_2: number;
+  h5: number;
+  h6: number;
+  h6_1: number;
+  h6_2: number;
+  h6_3: number;
+  h6_4: number;
+  h6_5: number;
+  h7: number;
+  h7_1: number;
+  h7_2: number;
+  h7_3: number;
+  h7_4: number;
+  h7_5: number;
+  h8: number;
+}
+
+interface Weighting {
+  h1: number;
+  h2: number;
+  h3: number;
+  h4: number;
+  h5: number;
+  h6: number;
+  h7: number;
+  h8: number;
+}
+
 const getFirstStartupLoginById = async (startUpId: string) => {
   const client = await pool.connect();
   let result;
@@ -749,22 +961,66 @@ const deleteTrl = async (id: string) => {
   }
 };
 
+const persistQuestionnaire = async (
+  startupId: string,
+  questionnaire: Questionnaire
+) => {
+  const client = await pool.connect();
+  try {
+    await client.query("UPDATE startup SET questionnaire = $1 WHERE id = $2;", [
+      JSON.stringify(questionnaire),
+      startupId,
+    ]);
+  } catch (err) {
+    throw new Error(
+      `Failed to persist questionnaire data for startup with id with id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const getQuestionnaire = async (startupId: string) => {
+  const client = await pool.connect();
+  let result;
+  try {
+    result = await client.query(
+      "SELECT questionnaire FROM startup WHERE id = $1;",
+      [startupId]
+    );
+  } catch (err) {
+    throw new Error(
+      `Failed to persist questionnaire data for startup with id with id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+  const questionnaire: Questionnaire = JSON.parse(result.rows[0]);
+  return questionnaire;
+};
+
 export {
   InvestmentPhase,
   InvestmentPhaseKpis,
   Kpis,
   Milestone,
   Startup,
+  Rating,
   StartupInfo,
+  QuestionnaireAvg,
   TimeSeriesKpis,
   TrlData,
+  Questionnaire,
+  Weighting,
   getCapTable,
   getFirstStartupLoginById,
   getInfoByStartupId,
   getInvestmentPhase,
   getKpis,
   getMilestones,
+  persistQuestionnaire,
   getNewStartupById,
+  getQuestionnaire,
   getStartupById,
   getStartupNameById,
   getStartups,

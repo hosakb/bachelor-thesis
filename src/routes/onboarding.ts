@@ -9,6 +9,8 @@ import {
   TrlData,
   persistTrlData,
   persistCoreTechnology,
+  Questionnaire,
+  persistQuestionnaire,
 } from "../models/startup";
 import { PreviousVenture, insertTrackRecord } from "../models/track_record";
 import {
@@ -150,10 +152,47 @@ router.post("/trl", async (req, res) => {
   try {
     await persistTrlData(startupId, newTrlData);
     await persistCoreTechnology(startupId, coreTechnology);
-    res.redirect("/onboarding/track-record");
+    res.redirect("/onboarding/questionnaire");
   } catch (error) {
     console.error(
       `Failed to submit trl for startup with id ${startupId} due to: ${error}. Redirect to login screen.`
+    );
+    res.redirect("/");
+  }
+});
+
+router.get("/questionnaire", async (req, res) => {
+  const startupId = req.user?.startup;
+
+  if (startupId == undefined) {
+    console.error("Failed to fetch startup id. Redirect to login screen.");
+    res.redirect("/");
+    return;
+  }
+
+  res.render("onboarding/questionnaire", {
+    layout: "../views/layouts/onboarding.ejs",
+    title: req.session.startupName,
+    name: req.user?.firstName + " " + req.user?.lastName,
+    startupName: req.session.startupName,
+    scripts: ["/js/onboarding/questionnaire"],
+  });
+});
+
+router.post("/questionnaire", async (req, res) => {
+  const questionnaire: Questionnaire = JSON.parse(req.body);
+  const startupId = req.user?.startup;
+
+  if (startupId == undefined) {
+    throw new Error("Failed to fetch startup id.");
+  }
+
+  try {
+    await persistQuestionnaire(startupId, questionnaire);
+    res.redirect("/onboarding/track-record");
+  } catch (error) {
+    console.error(
+      `Failed to upload questionnaire for startup with id ${startupId} due to: ${error}. Redirect to login screen.`
     );
     res.redirect("/");
   }
