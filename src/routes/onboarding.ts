@@ -180,7 +180,7 @@ router.get("/questionnaire", async (req, res) => {
 });
 
 router.post("/questionnaire", async (req, res) => {
-  const questionnaire: Questionnaire = JSON.parse(req.body);
+  const body = req.body;
   const startupId = req.user?.startup;
 
   if (startupId == undefined) {
@@ -188,6 +188,12 @@ router.post("/questionnaire", async (req, res) => {
   }
 
   try {
+    Object.keys(body).forEach(function (el) {
+      body[el] = parseInt(body[el]);
+    });
+
+    const questionnaire: Questionnaire = body;
+
     await persistQuestionnaire(startupId, questionnaire);
     res.redirect("/onboarding/track-record");
   } catch (error) {

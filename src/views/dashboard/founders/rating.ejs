@@ -17,83 +17,83 @@
                 <tr>
                     <td>1.</td>
                     <td>Corporate governance and strategy</td>
-                    <td><%= locals.questionnaireAvg.h1 %></td>
-                    <td><input type="number" defaultValue="1" min="1" max="12"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><%= weightedRating.questionnaireAvg.h1 %></td>
+                    <td><input type="number" value="<%= weightedRating.weights.h1 %>" min="1" max="18" id="input-h1" class="weighting-input"><button class="submit-weighting-btn hidden"><i class="las la-check-circle"></i></button><button class="cancel-weighting-btn hidden"><i class="las la-times"></i></button></td>
+                    <td><%= weightedRating.weightedPoints.h1 %></td>
+                    <td><%= weightedRating.weights.h1 * 5 %></td>
+                    <td><%= weightedRating.rating.h1 %></td>
                 </tr>
                 <tr>
                     <td>2.</td>
                     <td>Business environment and product</td>
-                    <td><%= locals.questionnaireAvg.h2 %></td>
-                    <td><input type="number" defaultValue="1" min="1" max="12"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><%= weightedRating.questionnaireAvg.h2 %></td>
+                    <td><input type="number" value="<%= weightedRating.weights.h2 %>" min="1" max="18" id="input-h2" class="weighting-input"><button class="submit-weighting-btn hidden"><i class="las la-check-circle"></i></button><button class="cancel-weighting-btn hidden"><i class="las la-times"></i></td>
+                    <td><%= weightedRating.weightedPoints.h2 %></td>
+                    <td><%= weightedRating.weights.h2 * 5 %></td>
+                    <td><%= weightedRating.rating.h2 %></td>
                 </tr> 
                 <tr>
                     <td>3.</td>
                     <td>Planning & Control</td>
-                    <td><%= locals.questionnaireAvg.h3 %></td>
-                    <td><input type="number" defaultValue="1" min="1" max="12"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><%= weightedRating.questionnaireAvg.h3 %></td>
+                    <td><input type="number" value="<%= weightedRating.weights.h3 %>" min="1" max="18" id="input-h3" class="weighting-input"><button class="submit-weighting-btn hidden"><i class="las la-check-circle"></i></button><button class="cancel-weighting-btn hidden"><i class="las la-times"></i></td>
+                    <td><%= weightedRating.weightedPoints.h3 %></td>
+                    <td><%= weightedRating.weights.h3 * 5 %></td>
+                    <td><%= weightedRating.rating.h3 %></td>
                 </tr> 
                 <tr>
                     <td>4.</td>
                     <td>Process and Organization</td>
-                    <td><%= locals.questionnaireAvg.h4 %></td>
-                    <td><input type="number" defaultValue="1" min="1" max="12"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><%= weightedRating.questionnaireAvg.h4 %></td>
+                    <td><input type="number" value="<%= weightedRating.weights.h4 %>" min="1" max="18" id="input-h4" class="weighting-input"><button class="submit-weighting-btn hidden"><i class="las la-check-circle"></i></button><button class="cancel-weighting-btn hidden"><i class="las la-times"></i></td>
+                    <td><%= weightedRating.weightedPoints.h4 %></td>
+                    <td><%= weightedRating.weights.h4 * 5 %></td>
+                    <td><%= weightedRating.rating.h4 %></td>
                 </tr> 
                 <tr>
                     <td>5.</td>
                     <td>Risk Control and Risk Management</td>
-                    <td><%= locals.questionnaireAvg.h5 %></td>
-                    <td><input type="number" defaultValue="1" min="1" max="12"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><%= weightedRating.questionnaireAvg.h5 %></td>
+                    <td><input type="number" value="<%= weightedRating.weights.h5 %>" min="1" max="18" id="input-h5" class="weighting-input"><button class="submit-weighting-btn hidden"><i class="las la-check-circle"></i></button><button class="cancel-weighting-btn hidden"><i class="las la-times"></i></td>
+                    <td><%= weightedRating.weightedPoints.h5 %></td>
+                    <td><%= weightedRating.weights.h5 * 5 %></td>
+                    <td><%= weightedRating.rating.h5 %></td>
                 </tr> 
                 <tr>
                     <td>6.</td>
                     <td>Process (Value Chain)</td>
-                    <td><%= locals.questionnaireAvg.h6 %></td>
-                    <td><input type="number" defaultValue="1" min="1" max="12"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><%= weightedRating.questionnaireAvg.h6 %></td>
+                    <td><input type="number" value="<%= weightedRating.weights.h6 %>" min="1" max="18" id="input-h6" class="weighting-input"><button class="submit-weighting-btn hidden"><i class="las la-check-circle"></i></button><button class="cancel-weighting-btn hidden"><i class="las la-times"></i></td>
+                    <td><%= weightedRating.weightedPoints.h6 %></td>
+                    <td><%= weightedRating.weights.h6 * 5 %></td>
+                    <td><%= weightedRating.rating.h6 %></td>
                 </tr> 
                 <tr>
                     <td>7.</td>
                     <td>Accounting and relationship with the bank</td>
-                    <td><%= locals.questionnaireAvg.h7 %></td>
-                    <td><input type="number" defaultValue="1" min="1" max="12"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><%= weightedRating.questionnaireAvg.h7 %></td>
+                    <td><input type="number" value="<%= weightedRating.weights.h7 %>" min="1" max="18" id="input-h7" class="weighting-input"><button class="submit-weighting-btn hidden"><i class="las la-check-circle"></i></button><button class="cancel-weighting-btn hidden"><i class="las la-times"></i></td>
+                    <td><%= weightedRating.weightedPoints.h7 %></td>
+                    <td><%= weightedRating.weights.h7 * 5 %></td>
+                    <td><%= weightedRating.rating.h7 %></td>
                 </tr> 
                 <tr>
                     <td>8.</td>
                     <td>Current company development/company situation</td>
-                    <td><%= locals.questionnaireAvg.h8 %></td>
-                    <td><input type="number" defaultValue="1" min="1" max="12"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><%= weightedRating.questionnaireAvg.h8 %></td>
+                    <td><input type="number" value="<%= weightedRating.weights.h8 %>" min="1" max="18" id="input-h8" class="weighting-input"><button class="submit-weighting-btn hidden"><i class="las la-check-circle"></i></button><button class="cancel-weighting-btn hidden"><i class="las la-times"></i></td>
+                    <td><%= weightedRating.weightedPoints.h8 %></td>
+                    <td><%= weightedRating.weights.h8 * 5 %></td>
+                    <td><%= weightedRating.rating.h8 %></td>
                 </tr> 
                 <tr>
-                    <td>9.</td>
-                    <td>Sum Points 1. - 8. (<%=  %> of <span></span> Points)</td>
-                    <td><%= locals.questionnaireAvg.h1 + locals.questionnaireAvg.h2 + locals.questionnaireAvg.h3 + locals.questionnaireAvg.h4 + locals.questionnaireAvg.h5 + locals.questionnaireAvg.h6 + locals.questionnaireAvg.h7 + locals.questionnaireAvg.h8 %></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>Sum Points 1. - 8. (<%= weightedRating.weightedPoints.sum %> of <span>55,0</span> Points)</td>
+                    <td><%= weightedRating.questionnaireAvg.sum %></td>
+                    <td><%= weightedRating.weights.sum %> </td>
+                    <td><%= weightedRating.weightedPoints.sum %></td>
+                    <td><%= weightedRating.weights.sum * 5%></td>
+                    <td><%= weightedRating.rating.total %></td>
                 </tr>
             </tbody>
         </table>
@@ -108,1269 +108,1285 @@
                     <th>Category</th>
                     <th>Subpoints</th>
                     <th>Points</th>
+                    <th>Category Points</th>
                     <th>Max. Points</th>
                     <th>Rating</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="header1">
                 <tr>
-                    <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 1.</td>
+                    <td><span onclick="showSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSection(this)"><i class="las la-angle-down"></i></span> 1.</td>
                     <td>Corporate governance and strategy</td>
                     <td></td>
                     <td></td>
-                    <td><%= locals.questionnaireAvg.h1 %> </td>
+                    <td><%= weightedRating.questionnaireAvg.h1 %> </td>
                     <td>5</td>
-                    <td><%= locals.rating.h1 %></td>
+                    <td><%= weightedRating.rating.h1 %></td>
                 </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 1.1</td>
+                    <tr class="hidden h1-1 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 1.1</td>
                         <td>Entrepreneurial stability</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.q1_1_1 %></td>
+                        <td><%= weightedRating.questionnaireAvg.q1_1_1 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.q1_1_1 %></td>
+                        <td><%= weightedRating.rating.q1_1_1 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h1-1">
                             <td></td>
                             <td>Reasons for recent changes/upheaval that have taken place in the business</td>
-                            <td><%= locals.questionnaire.q1_1_1 %></td>
+                            <td><%= weightedRating.questionnaire.q1_1_1 %></td>
                             <td></td>
                             <td></td>
                             <td>5</td>
-                            <td><%= locals.rating.q1_1_1 %></td>
+                            <td><%= weightedRating.rating.q1_1_1 %></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 1.2</td>
+                    <tr class="hidden h1-2 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 1.2</td>
                         <td>Management</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.q1_2 %> </td>
+                        <td><%= weightedRating.questionnaireAvg.q1_2 %> </td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.q1_1_2 %></td>
+                        <td><%= weightedRating.rating.q1_1_2 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h1-2">
                             <td></td>
                             <td>Technical competence</td>
-                            <td><%= locals.questionnaire.q1_2_1 %></td>
+                            <td><%= weightedRating.questionnaire.q1_2_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-2">
                             <td></td>
                             <td>Business competence</td>
-                            <td><%= locals.questionnaire.q1_2_2 %></td>
+                            <td><%= weightedRating.questionnaire.q1_2_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-2">
                             <td></td>
                             <td>Industry experience</td>
-                            <td><%= locals.questionnaire.q1_2_3 %></td>
+                            <td><%= weightedRating.questionnaire.q1_2_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-2">
                             <td></td>
                             <td>General personal Propertie</td>
-                            <td><%= locals.questionnaireAvg.q1_2_4_block_1 %></td>
+                            <td><%= weightedRating.questionnaireAvg.q1_2_4_block_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td><td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-2">
                             <td></td>
                             <td>Entrepreneurial competence</td>
-                            <td><%= locals.questionnaireAvg.q1_2_block_2 %></td>
+                            <td><%= weightedRating.questionnaireAvg.q1_2_block_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td><td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-2">
                             <td></td>
                             <td>Social competence</td>
-                            <td><%= locals.questionnaireAvg.q1_2_block_3 %></td>
+                            <td><%= weightedRating.questionnaireAvg.q1_2_block_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td><td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-2">
                             <td></td>
                             <td>Current mood among Business leaders</td>
-                            <td><%= locals.questionnaire.q1_2_23 %></td>
+                            <td><%= weightedRating.questionnaire.q1_2_23 %></td>
                             <td></td>
                             <td></td><td></td>
                             <td></td>
                         </tr> 
-                        <tr>
+                        <tr class="hidden h1-2">
                             <td></td>
                             <td>External Appearance of the managing directors   </td>
-                            <td><%= locals.questionnaire.q1_2_24 %></td>
+                            <td><%= weightedRating.questionnaire.q1_2_24 %></td>
                             <td></td>
                             <td></td><td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 1.3</td>
+                    <tr class="hidden h1-3 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 1.3</td>
                         <td>Succession planning</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h1_3 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h1_3 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h1_3 %></td>
+                        <td><%= weightedRating.rating.h1_3 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h1-3">
                             <td></td>
                             <td>Succession Arrangement</td>
-                            <td><%= locals.questionnaire.q1_3_1 %></td>
+                            <td><%= weightedRating.questionnaire.q1_3_1 %></td>
                             <td></td>
                             <td></td><td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-3">
                             <td></td>
                             <td>Emergency planning</td>
-                            <td><%= locals.questionnaire.q1_3_2 %></td>
+                            <td><%= weightedRating.questionnaire.q1_3_2 %></td>
                             <td></td>
                             <td></td><td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 1.4</td>
+                    <tr class="hidden h1-4 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 1.4</td>
                         <td>corporate strategy</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h1_4 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h1_4 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h1_4 %></td>
+                        <td><%= weightedRating.rating.h1_4 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h1-4">
                             <td></td>
                             <td>Foundation of Strategy</td>
-                            <td><%= locals.questionnaire.q1_4_1 %></td>
+                            <td><%= weightedRating.questionnaire.q1_4_1 %></td>
                             <td></td>
                             <td></td><td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-4">
                             <td></td>
                             <td>Strategy monitoring</td>
-                            <td><%= locals.questionnaire.q1_4_2 %></td>
+                            <td><%= weightedRating.questionnaire.q1_4_2 %></td>
                             <td></td>
                             <td></td><td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-4">
                             <td></td>
                             <td>Degree of target achievement</td>
-                            <td><%= locals.questionnaire.q1_4_3 %></td>
+                            <td><%= weightedRating.questionnaire.q1_4_3 %></td>
                             <td></td>
                             <td></td><td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-4">
                             <td></td>
                             <td>Communication of the strategies</td>
-                            <td><%= locals.questionnaire.q1_4_4 %></td>
+                            <td><%= weightedRating.questionnaire.q1_4_4 %></td>
                             <td></td>
                             <td></td><td></td>
                             <td></td>
                         </tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 1.5</td>
+                    <tr class="hidden h1-5 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 1.5</td>
                         <td>Staff/Employees</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h1_5 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h1_5 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h1_5  %></td>
+                        <td><%= weightedRating.rating.h1_5  %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h1-5">
                             <td></td>
                             <td>Number and dependencies of key people</td>
-                            <td><%= locals.questionnaire.q1_5_1 %></td>
+                            <td><%= weightedRating.questionnaire.q1_5_1 %></td>
                             <td></td>
                             <td></td>   <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-5">
                             <td></td>
                             <td>Risk of fluctuation</td>
-                            <td><%= locals.questionnaire.q1_5_2 %></td>
+                            <td><%= weightedRating.questionnaire.q1_5_2 %></td>
                             <td></td>
                             <td></td>   <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-5">
                             <td></td>
                             <td>Shortage of specialists on the market</td>
-                            <td><%= locals.questionnaire.q1_5_3 %></td>
+                            <td><%= weightedRating.questionnaire.q1_5_3 %></td>
                             <td></td>
                             <td></td>   <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-5">
                             <td></td>
                             <td>Age structure (average age of employees)</td>
-                            <td><%= locals.questionnaire.q1_5_4 %></td>
+                            <td><%= weightedRating.questionnaire.q1_5_4 %></td>
                             <td></td>
                             <td></td>   <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-5">
                             <td></td>
                             <td>Working atmosphere/ employees motivation</td>
-                            <td><%= locals.questionnaire.q1_5_5 %></td>
+                            <td><%= weightedRating.questionnaire.q1_5_5 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-5">
                             <td></td>
                             <td>Readiness to perform</td>
-                            <td><%= locals.questionnaire.q1_5_6 %></td>
+                            <td><%= weightedRating.questionnaire.q1_5_6 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h1-5">
                             <td></td>
                             <td>Training and further education/Further training</td>
-                            <td><%= locals.questionnaire.q1_5_7 %></td>
+                            <td><%= weightedRating.questionnaire.q1_5_7 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
+            </tbody>
+            <tbody id="header2">
                 <tr>
-                    <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 2.</td>
+                    <td><span onclick="showSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSection(this)"><i class="las la-angle-down"></i></span> 2.</td>
                     <td>Business environment and product</td>
                     <td></td>
-                    <td><%= locals.questionnaireAvg.h2 %> </td>
                     <td></td>
+                    <td><%= weightedRating.questionnaireAvg.h2 %></td>
                     <td>5</td>
-                    <td><%= locals.rating.h2 %></td>
+                    <td><%= weightedRating.rating.h2 %></td>
                 </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 2.1</td>
+                    <tr class="hidden h2-1 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 2.1</td>
                         <td>Market</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h2_1 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h2_1 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h2_1 %></td>
+                        <td><%= weightedRating.rating.h2_1 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h2-1">
                             <td></td>
                             <td>Market share</td>
-                            <td><%= locals.questionnaire.q2_1_1 %></td>
+                            <td><%= weightedRating.questionnaire.q2_1_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-1">
                             <td></td>
                             <td>Market volume</td>
-                            <td><%= locals.questionnaire.q2_1_2 %></td>
+                            <td><%= weightedRating.questionnaire.q2_1_2 %></td>
                             <td></td>
                             <td></td> <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-1">
                             <td></td>
                             <td>Sales profitability</td>
-                            <td><%= locals.questionnaire.q2_1_3 %></td>
+                            <td><%= weightedRating.questionnaire.q2_1_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td> <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-1">
                             <td></td>
                             <td>Market position compared to competitors in terms of quality,  price, Service</td>
-                            <td><%= locals.questionnaire.q2_1_4 %></td>
+                            <td><%= weightedRating.questionnaire.q2_1_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td> <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-1">
                             <td></td>
                             <td>Market growth for the future</td>
-                            <td><%= locals.questionnaire.q2_1_5 %></td>
+                            <td><%= weightedRating.questionnaire.q2_1_5 %></td>
                             <td></td>
                             <td></td> <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-1">
                             <td></td>
                             <td>Power to make changes on market</td>
-                            <td><%= locals.questionnaire.q2_1_6 %></td>
+                            <td><%= weightedRating.questionnaire.q2_1_6 %></td>
                             <td></td>
                             <td></td> <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-1">
                             <td></td>
                             <td>Competitive pressure</td>
-                            <td><%= locals.questionnaire.q2_1_7 %></td>
+                            <td><%= weightedRating.questionnaire.q2_1_7 %></td>
                             <td></td>
                             <td></td> <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-1">
                             <td></td>
                             <td>Awareness level</td>
-                            <td><%= locals.questionnaire.q2_1_8 %></td>
+                            <td><%= weightedRating.questionnaire.q2_1_8 %></td>
                             <td></td>
                             <td></td>
                             <td></td> <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-1">
                             <td></td>
                             <td>Securing the market position</td>
-                            <td><%= locals.questionnaire.q2_1_9 %></td>
+                            <td><%= weightedRating.questionnaire.q2_1_9 %></td>
                             <td></td> <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-1">
+                            <td></td>
                             <td>Market entry and exit barriers</td>
-                            <td><%= locals.questionnaire.q2_1_10 %></td>
-                            <td></td>
+                            <td><%= weightedRating.questionnaire.q2_1_10 %></td>
                             <td></td>
                             <td></td> <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 2.2</td>
+                    <tr class="hidden h2-2 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down" onclick="hideSubSection(this)"></i></span> 2.2</td>
                         <td>Sales Market</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h2_1 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h2_1 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h2_1 %></td>
+                        <td><%= weightedRating.rating.h2_1 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h2-2">
                             <td></td>
                             <td>Order volume</td>
-                            <td><%= locals.questionnaire.q2_2_1 %></td>
+                            <td><%= weightedRating.questionnaire.q2_2_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td><td></td>
                             
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-2">
                             <td></td>
                             <td>Capacity utilization</td>
-                            <td><%= locals.questionnaire.q2_2_2 %></td>
+                            <td><%= weightedRating.questionnaire.q2_2_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-2">
                             <td></td>
                             <td>Economic situation of the Customer</td>
-                            <td><%= locals.questionnaire.q2_2_3 %></td>
+                            <td><%= weightedRating.questionnaire.q2_2_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 2.3</td>
+                    <tr class="hidden h2-3 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 2.3</td>
                         <td>Product</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h2_3 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h2_3 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h2_3 %></td>
+                        <td><%= weightedRating.rating.h2_3 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h2-3">
                             <td></td>
                             <td>Assortment composition</td>
-                            <td><%= locals.questionnaire.q2_3_1 %></td>
+                            <td><%= weightedRating.questionnaire.q2_3_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-3">
                             <td></td>
                             <td>Product life (PLC) and age of the products</td>
-                            <td><%= locals.questionnaire.q2_3_2 %></td>
+                            <td><%= weightedRating.questionnaire.q2_3_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-3">
                             <td></td>
                             <td>Quality/Quality criteria</td>
-                            <td><%= locals.questionnaire.q2_3_3 %></td>
+                            <td><%= weightedRating.questionnaire.q2_3_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-3">
                             <td></td>
                             <td>Service, warranties, rights of return, claims management</td>
-                            <td><%= locals.questionnaire.q2_3_4 %></td>
+                            <td><%= weightedRating.questionnaire.q2_3_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-3">
                             <td></td>
                             <td>Response rates complaint management</td>
-                            <td><%= locals.questionnaire.q2_3_5 %></td>
+                            <td><%= weightedRating.questionnaire.q2_3_5 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-3">
                             <td></td>
                             <td>Environmental and product liabilities</td>
-                            <td><%= locals.questionnaire.q2_3_6 %></td>
+                            <td><%= weightedRating.questionnaire.q2_3_6 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 2.4</td>
+                    <tr class="hidden h2-4 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 2.4</td>
                         <td>Customer and Supplier relationship</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h2_4 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h2_4 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%=  locals.rating.h2_4 %></td>
+                        <td><%=  weightedRating.rating.h2_4 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h2-4">
                             <td></td>
                             <td>Dependence on suppliers</td>
-                            <td><%= locals.questionnaire.q2_4_1 %></td>
+                            <td><%= weightedRating.questionnaire.q2_4_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-4">
                             <td></td>
                             <td>Substitutability from the main supplier(s) (with high dependency)</td>
-                            <td><%= locals.questionnaire.q2_4_2 %></td>
+                            <td><%= weightedRating.questionnaire.q2_4_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-4">
                             <td></td>
                             <td>Percentage of products/precursor s/goods/materials from suppliers that cannot be quickly replaced (Related to on entirety)</td>
-                            <td><%= locals.questionnaire.q2_4_3 %></td>
+                            <td><%= weightedRating.questionnaire.q2_4_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-4">
                             <td></td>
                             <td>Duration of the business relationship (hedging)</td>
-                            <td><%= locals.questionnaire.q2_4_4 %></td>
+                            <td><%= weightedRating.questionnaire.q2_4_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-4">
                             <td></td>
                             <td>Solvency of suppliers</td>
-                            <td><%= locals.questionnaire.q2_4_5 %></td>
+                            <td><%= weightedRating.questionnaire.q2_4_5 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-4">
                             <td></td>
                             <td>Dependence on the largest customer</td>
-                            <td><%= locals.questionnaire.q2_4_6 %></td>
+                            <td><%= weightedRating.questionnaire.q2_4_6 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-4">
                             <td></td>
                             <td>Duration of customer relations</td>
-                            <td><%=  locals.questionnaire.q2_4_7  %></td>
+                            <td><%=  weightedRating.questionnaire.q2_4_7  %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 2.5</td>
+                    <tr class="hidden h2-5 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 2.5</td>
                         <td>General environment and specific risks</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h2_5 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h2_5 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.questionnaireAvg.h2_5 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h2_5 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h2-5">
                             <td></td>
                             <td>Cyclical dependence/ dependencies and fluctuations</td>
-                            <td><%= locals.questionnaire.q2_5_1 %></td>
+                            <td><%= weightedRating.questionnaire.q2_5_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-5">
                             <td></td>
                             <td>Political and legal framework</td>
-                            <td><%= locals.questionnaire.q2_5_2 %></td>
+                            <td><%= weightedRating.questionnaire.q2_5_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-5">
                             <td></td>
                             <td>Technological developments</td>
-                            <td><%= locals.questionnaire.q2_5_3 %></td>
+                            <td><%= weightedRating.questionnaire.q2_5_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-5">
                             <td></td>
                             <td>Societal trends/attitudes</td>
-                            <td><%= locals.questionnaire.q2_5_4 %></td>
+                            <td><%= weightedRating.questionnaire.q2_5_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-5">
                             <td></td>
                             <td>Country risks</td>
-                            <td><%= locals.questionnaire.q2_5_5 %></td>
+                            <td><%= weightedRating.questionnaire.q2_5_5 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-5">
                             <td></td>
                             <td>Substitution products</td>
-                            <td><%= locals.questionnaire.q2_5_6 %></td>
+                            <td><%= weightedRating.questionnaire.q2_5_6 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-5">
                             <td></td>
                             <td>Risks in the export and import markets</td>
-                            <td><%= locals.questionnaire.q2_5_7 %></td>
+                            <td><%= weightedRating.questionnaire.q2_5_7 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h2-5">
                             <td></td>
                             <td>Evaluations in crisis situations</td>
-                            <td><%= locals.questionnaire.q2_5_8 %></td>
+                            <td><%= weightedRating.questionnaire.q2_5_8 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
+            </tbody>
+            <tbody id="header3">
                 <tr>
-                    <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 3.</td>
+                    <td><span onclick="showSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSection(this)"><i class="las la-angle-down"></i></span> 3.</td>
                     <td>Planning & Control</td>
                     <td></td>
                     <td></td>
-                    <td><%= locals.questionnaireAvg.h3 %> </td>
+                    <td><%= weightedRating.questionnaireAvg.h3 %> </td>
                     <td>5</td>
-                    <td><%= locals.rating.h3 %></td>
+                    <td><%= weightedRating.rating.h3 %></td>
                     
                 </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 3.1</td>
+                    <tr class="hidden h3-1 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 3.1</td>
                         <td>Planing / Planing Instruments</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h3_1 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h3_1 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h3_1 %></td>
+                        <td><%= weightedRating.rating.h3_1 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h3-1">
                             <td></td>
                             <td>Scope of plans/planning instruments</td>
-                            <td><%= locals.questionnaire.q3_1_1 %></td>
+                            <td><%= weightedRating.questionnaire.q3_1_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h3-1">
                             <td></td>
                             <td>Subplans</td>
-                            <td><%= locals.questionnaire.q3_1_2 %></td>
+                            <td><%= weightedRating.questionnaire.q3_1_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h3-1">
                             <td></td>
                             <td>Base</td>
-                            <td><%= locals.questionnaire.q3_1_3 %></td>
+                            <td><%= weightedRating.questionnaire.q3_1_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h3-1">
                             <td></td>
                             <td>Monitoring and adjustment</td>
-                            <td><%= locals.questionnaire.q3_1_4 %></td>
+                            <td><%= weightedRating.questionnaire.q3_1_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 3.2</td>
+                    <tr class="hidden h3-2 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 3.2</td>
                         <td>Controlling</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h3_2 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h3_2 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h3_2 %></td>
+                        <td><%= weightedRating.rating.h3_2 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h3-2">
                             <td></td>
                             <td>A controlling system is anchored in an enterprise</td>
-                            <td><%= locals.questionnaire.q3_2_1 %></td>
+                            <td><%= weightedRating.questionnaire.q3_2_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h3-2">
                             <td></td>
                             <td>Powerfulness of controlling tools and data access</td>
-                            <td><%= locals.questionnaire.q3_2_2 %></td>
+                            <td><%= weightedRating.questionnaire.q3_2_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h3-2">
                             <td></td>
                             <td>Instruments and their scope as well as time reference</td>
-                            <td><%= locals.questionnaire.q3_2_3 %></td>
+                            <td><%= weightedRating.questionnaire.q3_2_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h3-2">
                             <td></td>
                             <td>Control and monitoring of deviations (target-actual, plan etc.)</td>
-                            <td><%= locals.questionnaire.q3_2_4 %></td>
+                            <td><%= weightedRating.questionnaire.q3_2_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
+            </tbody>
+            <tbody id="header4">
                 <tr>
-                    <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 4.</td>
+                    <td><span onclick="showSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSection(this)"><i class="las la-angle-down"></i></span> 4.</td>
                     <td>Process and Organization</td>
                     <td></td>
                     <td></td>
-                    <td><%= locals.questionnaireAvg.h4 %> </td>
+                    <td><%= weightedRating.questionnaireAvg.h4 %> </td>
                     <td>5</td>
-                    <td><%= locals.rating.h4 %></td>
+                    <td><%= weightedRating.rating.h4 %></td>
                 </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 4.1</td>
+                    <tr class="hidden h4-1 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 4.1</td>
                         <td>Organization</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h4_1 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h4_1 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h4_1 %></td>
+                        <td><%= weightedRating.rating.h4_1 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h4-1">
                             <td></td>
                             <td>Organization/Organization </td>
-                            <td><%= locals.questionnaire.q4_1_1 %></td>
+                            <td><%= weightedRating.questionnaire.q4_1_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h4-1">
                             <td></td>
                             <td>Monitoring/adjustment of the organization/task areas</td>
-                            <td><%= locals.questionnaire.q4_1_2 %></td>
+                            <td><%= weightedRating.questionnaire.q4_1_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 4.2</td>
+                    <tr class="hidden h4-2 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 4.2</td>
                         <td>Quality management</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h4_2 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h4_2 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h4_2 %></td>
+                        <td><%= weightedRating.rating.h4_2 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h4-2">
                             <td></td>
                             <td>Quality criteria</td>
-                            <td><%= locals.questionnaire.q4_2_1 %></td>
+                            <td><%= weightedRating.questionnaire.q4_2_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h4-2">
                             <td></td>
                             <td>Certifications</td>
-                            <td><%= locals.questionnaire.q4_2_2 %></td>
+                            <td><%= weightedRating.questionnaire.q4_2_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h4-2">
                             <td></td>
                             <td>Scrap rates/reclamation odds</td>
-                            <td><%= locals.questionnaire.q4_2_3 %></td>
+                            <td><%= weightedRating.questionnaire.q4_2_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h4-2">
                             <td></td>
                             <td>Development of reject rates/Complaints</td>
-                            <td><%= locals.questionnaire.q4_2_4 %></td>
+                            <td><%= weightedRating.questionnaire.q4_2_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                <tr>
-                    <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 5.</td>
+            </tbody>
+            <tbody id="header5">
+                <tr class="h5">
+                    <td><span onclick="showSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSection(this)"><i class="las la-angle-down"></i></span> 5.</td>
                     <td>Risk Control and Risk Management</td>
                     <td></td>
                     <td></td>
-                    <td><%= locals.questionnaireAvg.h5 %></td>
+                    <td><%= weightedRating.questionnaireAvg.h5 %></td>
                     <td>5</td>
-                    <td><%= locals.rating.h5 %></td>
+                    <td><%= weightedRating.rating.h5 %></td>
                 </tr>
-                        <tr>
+                        <tr class="hidden h5 subLine">
                             <td></td>
                             <td>Protection (insurance protection)</td>
-                            <td><%= locals.questionnaire.q5_1_1 %></td>
+                            <td><%= weightedRating.questionnaire.q5_1_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h5 subLine">
                             <td></td>
                             <td>Listing of possible risks and their assessment</td>
-                            <td><%= locals.questionnaire.q5_1_2 %></td>
+                            <td><%= weightedRating.questionnaire.q5_1_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h5 subLine">
                             <td></td>
                             <td>Risk management information policy</td>
-                            <td><%= locals.questionnaire.q5_1_3 %></td>
+                            <td><%= weightedRating.questionnaire.q5_1_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h5 subLine">
                             <td></td>
                             <td>Risk</td>
-                            <td><%= locals.questionnaire.q5_1_4 %></td>
+                            <td><%= weightedRating.questionnaire.q5_1_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
+            </tbody>
+            <tbody>
                 <tr>
-                    <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 6.</td>
+                    <td><span onclick="showSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSection(this)"><i class="las la-angle-down"></i></span> 6.</td>
                     <td>Process (Value Chain)</td>
                     <td></td>
                     <td></td>
-                    <td><%= locals.questionnaireAvg.h6 %></td>
+                    <td><%= weightedRating.questionnaireAvg.h6 %></td>
                     <td>5</td>
-                    <td><%= locals.rating.h6 %></td>
+                    <td><%= weightedRating.rating.h6 %></td>
                 </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 6.1</td>
+                    <tr class="hidden h6-1 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 6.1</td>
                         <td>Research and development (R&D)</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h6_1 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h6_1 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h6_1 %></td>
+                        <td><%= weightedRating.rating.h6_1 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h6-1">
                             <td></td>
                             <td>R&D - ratio</td>
-                            <td><%= locals.questionnaire.q6_1_1 %></td>
+                            <td><%= weightedRating.questionnaire.q6_1_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-1">
                             <td></td>
                             <td>Development of R&D ratio in the younger years</td>
-                            <td><%= locals.questionnaire.q6_1_2 %></td>
+                            <td><%= weightedRating.questionnaire.q6_1_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-1">
                             <td></td>
                             <td>Control of R&D</td>
-                            <td><%= locals.questionnaire.q6_1_3 %></td>
+                            <td><%= weightedRating.questionnaire.q6_1_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-1">
                             <td></td>
                             <td>Imported products</td>
-                            <td><%= locals.questionnaire.q6_1_4 %></td>
+                            <td><%= weightedRating.questionnaire.q6_1_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-1">
                             <td></td>
                             <td>Degree of innovation/innovativeness</td>
-                            <td><%= locals.questionnaire.q6_1_5 %></td>
+                            <td><%= weightedRating.questionnaire.q6_1_5 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 6.2</td>
+                    <tr class="hidden h6-2 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 6.2</td>
                         <td>Procurement/Purchasing</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h6_2 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h6_2 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h6_2 %></td>
+                        <td><%= weightedRating.rating.h6_2 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h6-2">
                             <td></td>
                             <td>Management of purchasing conditions/purchasing</td>
-                            <td><%= locals.questionnaire.q6_2_1 %></td>
+                            <td><%= weightedRating.questionnaire.q6_2_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-2">
                             <td></td>
                             <td>Purchasing department</td>
-                            <td><%= locals.questionnaire.q6_2_2 %></td>
+                            <td><%= weightedRating.questionnaire.q6_2_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 6.3</td>
+                    <tr class="hidden h6-3 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 6.3</td>
                         <td>Production and technologies</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h6_3 %></td>   
+                        <td><%= weightedRating.questionnaireAvg.h6_3 %></td>   
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h6_3 %></td>
+                        <td><%= weightedRating.rating.h6_3 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h6-3">
                             <td></td>
                             <td>Condition of the production equipment</td>
-                            <td><%= locals.questionnaire.q6_3_1 %></td>
+                            <td><%= weightedRating.questionnaire.q6_3_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-3">
                             <td></td>
                             <td>State of the technology processes</td>
-                            <td><%= locals.questionnaire.q6_3_2 %></td>
+                            <td><%= weightedRating.questionnaire.q6_3_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-3">
                             <td></td>
                             <td>Site conditions</td>
-                            <td><%= locals.questionnaire.q6_3_3 %></td>
+                            <td><%= weightedRating.questionnaire.q6_3_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-3">
                             <td></td>
                             <td>Capacities</td>
-                            <td><%= locals.questionnaire.q6_3_4 %></td>
+                            <td><%= weightedRating.questionnaire.q6_3_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-3">
                             <td></td>
                             <td>Plans</td>
-                            <td><%= locals.questionnaire.q6_3_5 %></td>
+                            <td><%= weightedRating.questionnaire.q6_3_5 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 6.4</td>
+                    <tr class="hidden h6-4 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 6.4</td>
                         <td>Stock</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h6_4 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h6_4 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h6_4 %></td>
+                        <td><%= weightedRating.rating.h6_4 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h6-4">
                             <td></td>
                             <td>Storage capacities</td>
-                            <td><%= locals.questionnaire.q6_4_1 %></td>
+                            <td><%= weightedRating.questionnaire.q6_4_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-4">
                             <td></td>
                             <td>Incidents</td>
-                            <td><%= locals.questionnaire.q6_4_2 %></td>
+                            <td><%= weightedRating.questionnaire.q6_4_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-4">
                             <td></td>
                             <td>Warehouse management</td>
-                            <td><%= locals.questionnaire.q6_4_3 %></td>
+                            <td><%= weightedRating.questionnaire.q6_4_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-4">
                             <td></td>
                             <td>Control</td>
-                            <td><%= locals.questionnaire.q6_4_4 %></td>
+                            <td><%= weightedRating.questionnaire.q6_4_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 6.5</td>
+                    <tr class="hidden h6-5 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 6.5</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h6_5 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h6_5 %></td>
                         <td></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h6_5 %></td>
+                        <td><%= weightedRating.rating.h6_5 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h6-5">
                             <td></td>
                             <td>Market Research</td>
-                            <td><%= locals.questionnaire.q6_5_1 %></td>
+                            <td><%= weightedRating.questionnaire.q6_5_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-5">
                             <td></td>
                             <td>Distributors and distribution channels</td>
-                            <td><%= locals.questionnaire.q6_5_2 %></td>
+                            <td><%= weightedRating.questionnaire.q6_5_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h6-5">
                             <td></td>
                             <td>Distribution network</td>
-                            <td><%= locals.questionnaire.q6_5_3 %></td>
+                            <td><%= weightedRating.questionnaire.q6_5_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
+            </tbody>
+            <tbody>
                 <tr>
-                    <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 7.</td>
+                    <td><span onclick="showSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSection(this)"><i class="las la-angle-down"></i></span> 7.</td>
                     <td>Accounting and relationship with the bank</td>
                     <td></td>
                     <td></td>
-                    <td><%= locals.questionnaireAvg.h7 %></td>
+                    <td><%= weightedRating.questionnaireAvg.h7 %></td>
                     <td>5</td>
-                    <td><%= locals.rating.h7 %></td>
+                    <td><%= weightedRating.rating.h7 %></td>
                 </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 7.1</td>
+                    <tr class="hidden h7-1 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 7.1</td>
                         <td>Information behavior and communication</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h7_1 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h7_1 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h7_1 %></td>
+                        <td><%= weightedRating.rating.h7_1 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h7-1">
                             <td></td>
                             <td>How often do you communicate with the bank?</td>
-                            <td><%= locals.questionnaire.q7_1_1 %></td>
+                            <td><%= weightedRating.questionnaire.q7_1_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h7-1">
                             <td></td>
                             <td>When does communication take place?</td>
-                            <td><%= locals.questionnaire.q7_1_2 %></td>
+                            <td><%= weightedRating.questionnaire.q7_1_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h7-1">
                             <td></td>
                             <td>To what extent is information transparent to the bank?</td>
-                            <td><%= locals.questionnaire.q7_1_3 %></td>
+                            <td><%= weightedRating.questionnaire.q7_1_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h7-1">
                             <td></td>
                             <td>Documents are not provided</td>
-                            <td><%= locals.questionnaire.q7_1_4 %></td>
+                            <td><%= weightedRating.questionnaire.q7_1_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h7-1">
                             <td></td>
                             <td>How detailed are documents?</td>
-                            <td><%= locals.questionnaire.q7_1_5 %></td>
+                            <td><%= weightedRating.questionnaire.q7_1_5 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 7.2</td>
+                    <tr class="hidden h7-2 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 7.2</td>
                         <td>Account management and payment method (for existing customers)</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h7_2 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h7_2 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h7_2 %></td>
+                        <td><%= weightedRating.rating.h7_2 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h7-2">
                             <td></td>
                             <td>Overdrafts</td>
-                            <td><%= locals.questionnaire.q7_2_1 %></td>
+                            <td><%= weightedRating.questionnaire.q7_2_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h7-2">
                             <td></td>
                             <td>Payment method</td>
-                            <td><%= locals.questionnaire.q7_2_2 %></td>
+                            <td><%= weightedRating.questionnaire.q7_2_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 7.3</td>
+                    <tr class="hidden h7-3 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 7.3</td>
                         <td>Account history of the last years</td>
                         <td></td>
-                        <td><%= locals.questionnaireAvg.h7_3 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h7_3 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.h7_3 %></td>
+                        <td><%= weightedRating.rating.h7_3 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h7-3">
                             <td></td>
                             <td>Development of the account history; changes/Deviations</td>
-                            <td><%= locals.questionnaire.q7_3_1 %></td>
+                            <td><%= weightedRating.questionnaire.q7_3_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h7-3">
                             <td></td>
                             <td>Average balance</td>
-                            <td><%= locals.questionnaire.q7_3_2 %></td>
+                            <td><%= weightedRating.questionnaire.q7_3_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h7-3">
                             <td></td>
                             <td>Credit to debit sales</td>
-                            <td><%= locals.questionnaire.q7_3_3 %></td>
+                            <td><%= weightedRating.questionnaire.q7_3_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 7.4</td>
+                    <tr class="hidden h7-4 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 7.4</td>
                         <td>Duration of the business relationship</td>
                         <td></td>
-                        <td><%= locals.questionnaire.q7_4 %></td>
+                        <td><%= weightedRating.questionnaire.q7_4 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.q7_4 %></td>
+                        <td><%= weightedRating.rating.q7_4 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h7-4">
                             <td></td>
                             <td>Duration of the relationship</td>
-                            <td><%= locals.questionnaire.q7_4_1 %></td>
+                            <td><%= weightedRating.questionnaire.q7_4_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    <tr>
-                        <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 7.5</td>
+                    <tr class="hidden h7-5 subLine">
+                        <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 7.5</td>
                         <td>Interface</td>
                         <td></td>
-                        <td><%= locals.questionnaire.q7_5 %></td>
+                        <td><%= weightedRating.questionnaire.q7_5 %></td>
                         <td></td>
                         <td>5</td>
-                        <td><%= locals.rating.q7_5 %></td>
+                        <td><%= weightedRating.rating.q7_5 %></td>
                     </tr>
-                        <tr>
+                        <tr class="hidden h7-5">
                             <td></td>
                             <td>Interface</td>
-                            <td><%= locals.questionnaire.q7_5_1 %></td>
+                            <td><%= weightedRating.questionnaire.q7_5_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                <tr>
-                    <td><span onclick="toggleSection()"><i class="las la-angle-right"></i><i class="las la-angle-down hidden"></i></span> 8.</td>
+            </tbody>
+            <tbody id="header8">
+                <tr class="h8">
+                    <td><span onclick="showSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSection(this)"><i class="las la-angle-down"></i></span> 8.</td>
                     <td>Current company development/company situation</td>
                     <td></td>
-                    <td><%= locals.questionnaireAvg.h8 %></td>
                     <td></td>
+                    <td><%= weightedRating.questionnaireAvg.h8 %></td>
                     <td>5</td>
-                    <td><%= locals.rating.h8 %></td>
+                    <td><%= weightedRating.rating.h8 %></td>
                 </tr>
-                        <tr>
+                        <tr class="hidden h8 subLine">
                             <td></td>
                             <td>Development of the company since the last Balance</td>
-                            <td><%= locals.questionnaire.q8_1_1 %></td>
+                            <td><%= weightedRating.questionnaire.q8_1_1 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h8 subLine">
                             <td></td>
                             <td>Current up carrying position</td>
-                            <td><%= locals.questionnaire.q8_1_2 %></td>
+                            <td><%= weightedRating.questionnaire.q8_1_2 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h8 subLine">
                             <td></td>
                             <td>Outstanding Receivables</td>
-                            <td><%= locals.questionnaire.q8_1_3 %></td>
+                            <td><%= weightedRating.questionnaire.q8_1_3 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h8 subLine">
                             <td></td>
                             <td>Outstanding liabilities</td>
-                            <td><%= locals.questionnaire.q8_1_4 %></td>
+                            <td><%= weightedRating.questionnaire.q8_1_4 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h8 subLine">
                             <td></td>
                             <td>Presentation of new/ planned investments</td>
-                            <td><%= locals.questionnaire.q8_1_5 %></td>
+                            <td><%= weightedRating.questionnaire.q8_1_5 %></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="hidden h8 subLine">
                             <td></td>
                             <td>New regulations/ ordinances/laws that can be influenced and that are about to be introduced<</td>
-                            <td><%= locals.questionnaire.q8_1_6 %></td>
+                            <td><%= weightedRating.questionnaire.q8_1_6 %></td>
                             <td></td>
                             <td></td>
                             <td></td>

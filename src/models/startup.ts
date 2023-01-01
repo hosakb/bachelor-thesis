@@ -275,6 +275,7 @@ interface QuestionnaireAvg {
   h7_4: number;
   h7_5: number;
   h8: number;
+  sum: number;
 }
 
 interface Rating {
@@ -309,9 +310,10 @@ interface Rating {
   h7_4: number;
   h7_5: number;
   h8: number;
+  total: number;
 }
 
-interface Weighting {
+interface Weights {
   h1: number;
   h2: number;
   h3: number;
@@ -320,6 +322,19 @@ interface Weighting {
   h6: number;
   h7: number;
   h8: number;
+  sum: number;
+}
+
+interface WeightedPoints {
+  h1: number;
+  h2: number;
+  h3: number;
+  h4: number;
+  h5: number;
+  h6: number;
+  h7: number;
+  h8: number;
+  sum: number;
 }
 
 const getFirstStartupLoginById = async (startUpId: string) => {
@@ -980,7 +995,7 @@ const persistQuestionnaire = async (
   }
 };
 
-const getQuestionnaire = async (startupId: string) => {
+const getQuestionnaire = async (startupId: string): Promise<Questionnaire> => {
   const client = await pool.connect();
   let result;
   try {
@@ -990,13 +1005,67 @@ const getQuestionnaire = async (startupId: string) => {
     );
   } catch (err) {
     throw new Error(
-      `Failed to persist questionnaire data for startup with id with id ${startupId} with the following error: ${err}`
+      `Failed to query questionnaire data for startup with id with id ${startupId} with the following error: ${err}`
     );
   } finally {
     client.release();
   }
-  const questionnaire: Questionnaire = JSON.parse(result.rows[0]);
-  return questionnaire;
+  return result.rows[0].questionnaire;
+};
+
+const updateWeights = async (startupId: string, weights: Weights) => {
+  const client = await pool.connect();
+  try {
+    await client.query("UPDATE startup SET weights = $1 WHERE id = $2;", [
+      JSON.stringify(weights),
+      startupId,
+    ]);
+  } catch (err) {
+    throw new Error(
+      `Failed to update weights data for startup with id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const getWeights = async (startupId: string): Promise<Weights> => {
+  const client = await pool.connect();
+  let result;
+  try {
+    result = await client.query("SELECT weights FROM startup WHERE id = $1;", [
+      startupId,
+    ]);
+  } catch (err) {
+    throw new Error(
+      `Failed to query questionnaire data for startup with id with id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+  return result.rows[0].weights;
+};
+
+const getQuestionnaireFilledOut = async (startupId: string) => {
+  const client = await pool.connect();
+  let result;
+  try {
+    result = await client.query(
+      "SELECT questionnaire FROM startup WHERE id = $1;",
+      [startupId]
+    );
+  } catch (err) {
+    throw new Error(
+      `Failed to query questionnaire data for startup with id with id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+  if (result.rows[0].questionnaire == undefined) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 export {
@@ -1011,7 +1080,8 @@ export {
   TimeSeriesKpis,
   TrlData,
   Questionnaire,
-  Weighting,
+  Weights,
+  WeightedPoints,
   getCapTable,
   getFirstStartupLoginById,
   getInfoByStartupId,
@@ -1020,13 +1090,16 @@ export {
   getMilestones,
   persistQuestionnaire,
   getNewStartupById,
+  getQuestionnaireFilledOut,
   getQuestionnaire,
   getStartupById,
   getStartupNameById,
   getStartups,
+  updateWeights,
   getTrlAvailable,
   persistCapTable,
   persistInfo,
+  getWeights,
   persistTrlData,
   persistMilestones,
   persistCoreTechnology,

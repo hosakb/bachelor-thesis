@@ -3,11 +3,27 @@ import { Row } from "read-excel-file";
 import { getFundNameById } from "../models/fund";
 
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
-import { getCapTable, getMilestones, getTrl } from "../models/startup";
+import {
+  getCapTable,
+  getMilestones,
+  getQuestionnaire,
+  getTrl,
+  getWeights,
+  Questionnaire,
+  QuestionnaireAvg,
+  updateWeights,
+  Weights,
+} from "../models/startup";
 import {
   getExpertiseByStartup,
   getFoundersByStartupId,
 } from "../models/track_record";
+import {
+  getQuestionnaireAverages,
+  getRating,
+  getRoundedQuestionnaireAverages,
+  getWeightedPoints,
+} from "../util/calc/rating";
 import { Expertise } from "../util/types/express";
 import { getStartupKpiRequestData } from "./startup";
 
@@ -84,7 +100,6 @@ router.get("/startup/founders", async (req, res) => {
       scripts: [],
       title: req.startupName,
       name: req.user?.firstName + " " + req.user?.lastName,
-      page: "founder",
       founders: await getFoundersByStartupId(startupId),
       startup: req.session.selectedStartup,
     });
@@ -135,6 +150,68 @@ router.get("/startup/", async (req, res) => {
       `Failed to fetch startup request data for startup with id ${startupId} due to:\n${error}.\nRedirecting to fund dashboard.`
     );
     res.redirect("/fund/");
+  }
+});
+
+router.get("/startup/rating", async (req, res) => {
+  const startupId = req.session.selectedStartup;
+
+  if (startupId === undefined) {
+    console.log(
+      `Redirecting user ${req.user?.id} to fund screen since no selected startup was found.`
+    );
+    res.redirect("/fund/");
+  }
+  try {
+    const questionnaire: Questionnaire = await getQuestionnaire(startupId);
+    const questionnaireAvg: QuestionnaireAvg =
+      getQuestionnaireAverages(questionnaire);
+    const weights: Weights = await getWeights(startupId);
+    const rating = getRating(questionnaireAvg, weights);
+    const weightedPoints = getWeightedPoints(questionnaireAvg, weights);
+    const questionnaireAvgRounded: QuestionnaireAvg =
+      getRoundedQuestionnaireAverages(questionnaireAvg);
+
+    const weightedRating = {
+      questionnaire,
+      questionnaireAvg: questionnaireAvgRounded,
+      weights,
+      rating,
+      weightedPoints,
+    };
+
+    res.render("dashboard/founders/rating", {
+      layout: "../views/layouts/dashboard.ejs",
+      dashboard: "fund",
+      scripts: ["/js/rating"],
+      title: req.startupName,
+      name: req.user?.firstName + " " + req.user?.lastName,
+      startup: req.session.selectedStartup,
+      weightedRating: weightedRating,
+    });
+  } catch (error) {
+    console.error(
+      `Failed to fetch startup request data for startup with id ${startupId} due to:\n${error}.\nRedirecting to fund dashboard.`
+    );
+    res.redirect("/fund/");
+  }
+});
+
+router.post("/update-weights", async (req, res) => {
+  const { weights } = req.body;
+
+  const newWeights: Weights = weights;
+
+   const startupId = req.session.selectedStartup;
+
+  try {
+    await updateWeights(startupId, newWeights);
+    res.redirect("/fund/startup/rating");
+  } catch (error) {
+    console.error(
+      `Failed to update weights for startup with id ${startupId} due to: ${error}. Redirect to login screen.`
+    );
+    res.redirect("/");
   }
 });
 

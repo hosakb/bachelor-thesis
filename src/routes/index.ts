@@ -8,7 +8,11 @@ import {
   getUserRole,
   getFirstUserLoginByEmail,
 } from "../models/users";
-import { getFirstStartupLoginById, getTrlAvailable } from "../models/startup";
+import {
+  getFirstStartupLoginById,
+  getTrlAvailable,
+  getQuestionnaireFilledOut,
+} from "../models/startup";
 
 const router: Router = express.Router();
 
@@ -85,9 +89,16 @@ async function loginOrOnboardStartupUser(
 
     if (!(await getTrlAvailable(userRole.id))) {
       console.info(
-        `TRL Information missing for startup with id ${userRole.id}. Redirecting to /onboarding/product due to first login.}`
+        `TRL information missing for startup with id ${userRole.id}. Redirecting to /onboarding/product due to first login.}`
       );
       return res.redirect("/onboarding/product");
+    }
+
+    if (!(await getQuestionnaireFilledOut(userRole.id))) {
+      console.info(
+        `Rating information missing for startup with id ${userRole.id}. Redirecting to /onboarding/questionnaire due to first login.}`
+      );
+      return res.redirect("/onboarding/questionnaire");
     }
 
     req.session.startupId = userRole.id;
@@ -104,6 +115,8 @@ async function loginOrOnboardStartupUser(
     );
     return res.redirect("/startup");
   } catch (error) {
-    throw new Error("Failed to query first login attempt from db.");
+    throw new Error(
+      `Failed to query first login attempt from db due to ${error}.`
+    );
   }
 }
