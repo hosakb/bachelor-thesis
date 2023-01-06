@@ -3,16 +3,19 @@ import { Row } from "read-excel-file";
 import { getFundNameById } from "../models/fund";
 
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
+import {   getWeights,
+  updateWeights,
+  Weights } from "../models/fund";
 import {
   getCapTable,
+  getMetrics,
   getMilestones,
   getQuestionnaire,
   getTrl,
-  getWeights,
+  Metrics,
+  Milestone,
   Questionnaire,
   QuestionnaireAvg,
-  updateWeights,
-  Weights,
 } from "../models/startup";
 import {
   getExpertiseByStartup,
@@ -24,8 +27,8 @@ import {
   getRoundedQuestionnaireAverages,
   getWeightedPoints,
 } from "../util/calc/rating";
+import { getMonth } from "../util/date";
 import { Expertise } from "../util/types/express";
-import { getStartupKpiRequestData } from "./startup";
 
 const router: Router = express.Router();
 
@@ -45,6 +48,9 @@ router.get("/", async (req, res) => {
       res.redirect("/");
     }
   } else {
+
+    req.session.fundId = fundId;
+
     try {
       if (await !fundIdExists(fundId)) {
         res.redirect("/"); // invalid query result for fundId
@@ -94,6 +100,8 @@ router.get("/startup/founders", async (req, res) => {
     res.redirect("/fund/");
   }
   try {
+    const capTable: Row[] = await getCapTable(startupId);
+
     res.render("dashboard/founders/index", {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "fund",
@@ -102,6 +110,8 @@ router.get("/startup/founders", async (req, res) => {
       name: req.user?.firstName + " " + req.user?.lastName,
       founders: await getFoundersByStartupId(startupId),
       startup: req.session.selectedStartup,
+      page: "founders",
+      capTable,
     });
   } catch (error) {
     console.error(
@@ -122,11 +132,8 @@ router.get("/startup/", async (req, res) => {
   }
 
   try {
-    await getStartupKpiRequestData(req, startupId);
-    await extractExpertise(startupId, req);
     const trl = await getTrl(startupId);
 
-    const capTable: Row[] = await getCapTable(startupId);
 
     res.render("dashboard/startup/index", {
       layout: "../views/layouts/dashboard.ejs",
@@ -138,11 +145,10 @@ router.get("/startup/", async (req, res) => {
       dashboard: "fund",
       kpis: req.kpis,
       title: req.startupName,
-      page: "dashboard",
+      page: "startup",
       view: "startup",
       name: req.user?.firstName + " " + req.user?.lastName,
       startup: req.session.selectedStartup,
-      capTable,
       trl: trl,
     });
   } catch (error) {
@@ -155,6 +161,7 @@ router.get("/startup/", async (req, res) => {
 
 router.get("/startup/rating", async (req, res) => {
   const startupId = req.session.selectedStartup;
+  const fundId = req.session.fundId;
 
   if (startupId === undefined) {
     console.log(
@@ -166,7 +173,7 @@ router.get("/startup/rating", async (req, res) => {
     const questionnaire: Questionnaire = await getQuestionnaire(startupId);
     const questionnaireAvg: QuestionnaireAvg =
       getQuestionnaireAverages(questionnaire);
-    const weights: Weights = await getWeights(startupId);
+    const weights: Weights = await getWeights(fundId);
     const rating = getRating(questionnaireAvg, weights);
     const weightedPoints = getWeightedPoints(questionnaireAvg, weights);
     const questionnaireAvgRounded: QuestionnaireAvg =
@@ -188,6 +195,7 @@ router.get("/startup/rating", async (req, res) => {
       name: req.user?.firstName + " " + req.user?.lastName,
       startup: req.session.selectedStartup,
       weightedRating: weightedRating,
+      page: "rating"
     });
   } catch (error) {
     console.error(
@@ -202,70 +210,77 @@ router.post("/update-weights", async (req, res) => {
 
   const newWeights: Weights = weights;
 
-   const startupId = req.session.selectedStartup;
+   const fundId = req.session.fundId;
 
   try {
-    await updateWeights(startupId, newWeights);
+    await updateWeights(fundId, newWeights);
     res.redirect("/fund/startup/rating");
   } catch (error) {
     console.error(
-      `Failed to update weights for startup with id ${startupId} due to: ${error}. Redirect to login screen.`
+      `Failed to update weights for fund with id ${fundId} due to: ${error}. Redirect to login screen.`
     );
     res.redirect("/");
   }
 });
 
-router.get("/chart/noe", (req, res) => {
-  res.status(200).json(req.session.numberOfEmployeesTs);
-});
-
-router.get("/chart/cfr", (req, res) => {
-  res.status(200).json(req.session.cashFlowRateTs);
-});
-
-router.get("/chart/liq", (req, res) => {
-  res.status(200).json(req.session.liquidityTs);
-});
-
-router.get("/chart/expertise", (req, res) => {
-  res.status(200).json(req.session.expertise);
-});
-
-router.get("/chart/gantt", async (req, res) => {
+router.get("/chart/data", async (req, res) => {
   try {
+
     const startupId = req.session.selectedStartup;
 
-    if (startupId === undefined) {
-      console.log(
-        `Redirecting user ${req.user?.id} to fund screen since no selected startup was found.`
-      );
-      res.redirect("/fund/");
+    const milestones: Milestone[] = await getMilestones(startupId);
+    const metrics: Metrics[] = await getMetrics(startupId);
+
+    const months = metrics.map((x) => {
+      return getMonth(x.date);
+    });
+
+    const burnRate =  metrics.map((x) => {
+      return x.burnRate;
+    });
+    const runway =  metrics.map((x) => {
+      return x.runway;
+    });
+    const liquidity  =  metrics.map((x) => {
+      return x.liquidity;
+    });
+
+    const expertiseValues = await getExpertiseByStartup(startupId);
+
+    const expertise: Expertise = {
+      name: [],
+      amount: [],
+    };
+
+    for (const i of expertiseValues) {
+      if (!expertise.name.includes(i)) {
+        expertise.name.push(i);
+        const amount = expertiseValues.filter((x) => x == i);
+        expertise.amount.push(amount.length);
+      }
     }
 
-    const milestones = await getMilestones(startupId);
-    res.status(200).json(milestones);
+    const chartData = {
+      milestones,
+      burnRate: {
+        months,
+        periodData: burnRate
+      },
+      runway: {
+        months,
+        periodData: runway
+      },
+      liquidity: {
+        months,
+        periodData: liquidity
+      },
+      expertise,
+    }
+
+    res.status(200).json(chartData);
   } catch (error) {
     res.status(200).json([]);
   }
 });
 
 export default router;
-
-async function extractExpertise(startupId: string, req: Request) {
-  const expertiseValues = await getExpertiseByStartup(startupId);
-
-  const expertise: Expertise = {
-    name: [],
-    amount: [],
-  };
-
-  for (const i of expertiseValues) {
-    if (!expertise.name.includes(i)) {
-      expertise.name.push(i);
-      const amount = expertiseValues.filter((x) => x == i);
-      expertise.amount.push(amount.length);
-    }
-  }
-
-  req.session.expertise = expertise;
-}

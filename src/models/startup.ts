@@ -10,66 +10,6 @@ interface Startup {
   sector?: string;
 }
 
-type Kpis =
-  | SeedKpis
-  | StartupKpis
-  | FirstStageKpis
-  | SecondStageKpis
-  | ThirdStageKpis
-  | FinalKpis;
-
-interface InvestmentPhaseKpis {
-  phase: InvestmentPhase;
-  kpis: Kpis[];
-}
-
-interface SeedKpis {
-  date: string;
-  numberOfEmployees: number;
-  cashFlowRate: number;
-  liquidity: number;
-}
-
-interface StartupKpis {
-  date: string;
-  numberOfEmployees: number;
-  cashFlowRate: number;
-  liquidity: number;
-}
-
-interface FirstStageKpis {
-  date: string;
-  numberOfEmployees: number;
-  cashFlowRate: number;
-  liquidity: number;
-}
-
-interface SecondStageKpis {
-  date: string;
-  numberOfEmployees: number;
-  cashFlowRate: number;
-  liquidity: number;
-}
-
-interface ThirdStageKpis {
-  date: string;
-  numberOfEmployees: number;
-  cashFlowRate: number;
-  liquidity: number;
-}
-
-interface FinalKpis {
-  date: string;
-  numberOfEmployees: number;
-  cashFlowRate: number;
-  liquidity: number;
-}
-
-interface TimeSeriesKpis {
-  months: string[];
-  periodData: number[];
-}
-
 enum InvestmentPhase {
   Seed = "seed",
   Startup = "startup",
@@ -108,6 +48,13 @@ interface TrlData {
   technology: string;
   trl: number;
   criticality: number;
+}
+
+interface Metrics {
+  date: Date;
+  burnRate: number;
+  runway: number;
+  liquidity: number;
 }
 
 interface Questionnaire {
@@ -313,18 +260,6 @@ interface Rating {
   total: number;
 }
 
-interface Weights {
-  h1: number;
-  h2: number;
-  h3: number;
-  h4: number;
-  h5: number;
-  h6: number;
-  h7: number;
-  h8: number;
-  sum: number;
-}
-
 interface WeightedPoints {
   h1: number;
   h2: number;
@@ -474,209 +409,6 @@ const getStartupNameById = async (startupId: string) => {
   }
 
   return result.rows[0].name;
-};
-
-const getKpis = async (startupId: string): Promise<InvestmentPhaseKpis> => {
-  const client = await pool.connect();
-  let investmentPhaseKpis: InvestmentPhaseKpis;
-
-  try {
-    const result = await client.query(`SELECT stage FROM startup WHERE id=$1`, [
-      startupId,
-    ]);
-
-    let kpis: Kpis[];
-    let kpiResult;
-
-    switch (result.rows[0].stage) {
-      case InvestmentPhase.Seed:
-        kpiResult = await client.query(
-          "SELECT seed_phase_kpis FROM startup WHERE id = $1",
-          [startupId]
-        );
-
-        if (kpiResult.rowCount === 0) {
-          throw new Error(
-            `No seed phase kpis found for startup with startup id: ${startupId}.`
-          );
-        }
-
-        kpis = kpiResult.rows[0].seed_phase_kpis;
-
-        investmentPhaseKpis = {
-          kpis,
-          phase: InvestmentPhase.Seed,
-        };
-
-        break;
-      case InvestmentPhase.Startup:
-        kpiResult = await client.query(
-          "SELECT startup_phase_kpis FROM startup WHERE id = $1",
-          [startupId]
-        );
-
-        if (kpiResult.rowCount === 0) {
-          throw new Error(
-            `No startup phase kpis found for startup with startup id: ${startupId}.`
-          );
-        }
-
-        kpis = kpiResult.rows[0].startup_phase_kpis;
-
-        investmentPhaseKpis = {
-          kpis,
-          phase: InvestmentPhase.Startup,
-        };
-        break;
-      case InvestmentPhase.FirstStage:
-        kpiResult = await client.query(
-          "SELECT first_stage_kpis FROM startup WHERE id = $1",
-          [startupId]
-        );
-
-        if (kpiResult.rowCount === 0) {
-          throw new Error(
-            `No first stage phase kpis found for startup with startup id: ${startupId}.`
-          );
-        }
-
-        kpis = kpiResult.rows[0].first_stage_kpis;
-
-        investmentPhaseKpis = {
-          kpis,
-          phase: InvestmentPhase.FirstStage,
-        };
-        break;
-      case InvestmentPhase.SecondStage:
-        kpiResult = await client.query(
-          "SELECT second_stage_kpis FROM startup WHERE id = $1",
-          [startupId]
-        );
-
-        if (kpiResult.rowCount === 0) {
-          throw new Error(
-            `No second stage phase kpis found for startup with startup id: ${startupId}.`
-          );
-        }
-
-        kpis = kpiResult.rows[0].second_stage_kpis;
-
-        investmentPhaseKpis = {
-          kpis,
-          phase: InvestmentPhase.SecondStage,
-        };
-        break;
-      case InvestmentPhase.ThirdStage:
-        kpiResult = await client.query(
-          "SELECT third_stage_kpis FROM startup WHERE id = $1",
-          [startupId]
-        );
-
-        if (kpiResult.rowCount === 0) {
-          throw new Error(
-            `No third stage phase kpis found for startup with startup id: ${startupId}.`
-          );
-        }
-
-        kpis = kpiResult.rows[0].third_stage_kpis;
-
-        investmentPhaseKpis = {
-          kpis,
-          phase: InvestmentPhase.ThirdStage,
-        };
-        break;
-      case InvestmentPhase.Final:
-        kpiResult = await client.query(
-          "SELECT final_phase_kpis FROM startup WHERE id = $1",
-          [startupId]
-        );
-
-        if (kpiResult.rowCount === 0) {
-          throw new Error(
-            `No final phase kpis found for startup with startup id: ${startupId}.`
-          );
-        }
-
-        kpis = kpiResult.rows[0].final_phase_kpis;
-
-        investmentPhaseKpis = {
-          kpis,
-          phase: InvestmentPhase.Final,
-        };
-        break;
-      default:
-        throw new Error("Failed to match startup investment phase.");
-    }
-  } catch (err) {
-    throw new Error(`Failed to query kpis with the following error: ${err}`);
-  } finally {
-    client.release();
-  }
-  return investmentPhaseKpis;
-};
-
-const updateKpis = async (kpis: Kpis, startupId: string) => {
-  const client = await pool.connect();
-  let phase;
-  try {
-    const result = await client.query(
-      `SELECT stage from startup WHERE id = $1`,
-      [startupId]
-    );
-
-    if (result.rowCount != 1) {
-      throw new Error(
-        `Unable to identify phase for startup with id ${startupId}`
-      );
-    }
-
-    phase = result.rows[0].stage;
-
-    switch (phase) {
-      case InvestmentPhase.Seed:
-        await client.query(
-          `UPDATE startup SET updated_at = NOW(), seed_phase_kpis = seed_phase_kpis || $1::jsonb WHERE id = $2;`,
-          [kpis, startupId]
-        );
-        break;
-      case InvestmentPhase.Startup:
-        await client.query(
-          `UPDATE startup SET updated_at = NOW(), startup_phase_kpis = startup_phase_kpis || $1::jsonb WHERE id = $2;`,
-          [kpis, startupId]
-        );
-        break;
-      case InvestmentPhase.FirstStage:
-        await client.query(
-          `UPDATE startup SET updated_at = NOW(), first_stage_kpis = first_stage_kpis || $1::jsonb WHERE id = $2;`,
-          [kpis, startupId]
-        );
-        break;
-      case InvestmentPhase.SecondStage:
-        await client.query(
-          `UPDATE startup SET updated_at = NOW(), second_stage_kpis = second_stage_kpis || $1::jsonb WHERE id = $2;`,
-          [kpis, startupId]
-        );
-        break;
-      case InvestmentPhase.ThirdStage:
-        await client.query(
-          `UPDATE startup SET updated_at = NOW(), third_stage_kpis = third_stage_kpis || $1::jsonb WHERE id = $2;`,
-          [kpis, startupId]
-        );
-        break;
-      case InvestmentPhase.Final:
-        await client.query(
-          `UPDATE startup SET updated_at = NOW(), final_phase_kpis = final_phase_kpis || $1::jsonb WHERE id = $2;`,
-          [kpis, startupId]
-        );
-        break;
-    }
-  } catch (err) {
-    throw new Error(
-      `Failed to update ${phase} kpis due to the following error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
 };
 
 const getInvestmentPhase = async (startupId: string) => {
@@ -883,7 +615,7 @@ const getTrlAvailable = async (startupId: string) => {
   return true;
 };
 
-const getTrl = async (startupId: string) => {
+const getTrl = async (startupId: string): Promise<Trl> => {
   const client = await pool.connect();
   let result;
   try {
@@ -928,7 +660,7 @@ const persistTrlData = async (startupId: string, trlData: TrlData[]) => {
     }
   } catch (err) {
     throw new Error(
-      `Failed to persist trl data for startup with id with id ${startupId} with the following error: ${err}`
+      `Failed to persist trl data for startup with id ${startupId} with the following error: ${err}`
     );
   } finally {
     client.release();
@@ -944,7 +676,7 @@ const persistCoreTechnology = async (startupId: string, product: string) => {
     ]);
   } catch (err) {
     throw new Error(
-      `Failed to persist product for startup with id with id ${startupId} with the following error: ${err}`
+      `Failed to persist product for startup with id ${startupId} with the following error: ${err}`
     );
   } finally {
     client.release();
@@ -988,7 +720,7 @@ const persistQuestionnaire = async (
     ]);
   } catch (err) {
     throw new Error(
-      `Failed to persist questionnaire data for startup with id with id ${startupId} with the following error: ${err}`
+      `Failed to persist questionnaire data for startup with id ${startupId} with the following error: ${err}`
     );
   } finally {
     client.release();
@@ -1005,45 +737,12 @@ const getQuestionnaire = async (startupId: string): Promise<Questionnaire> => {
     );
   } catch (err) {
     throw new Error(
-      `Failed to query questionnaire data for startup with id with id ${startupId} with the following error: ${err}`
+      `Failed to query questionnaire data for startup with id ${startupId} with the following error: ${err}`
     );
   } finally {
     client.release();
   }
   return result.rows[0].questionnaire;
-};
-
-const updateWeights = async (startupId: string, weights: Weights) => {
-  const client = await pool.connect();
-  try {
-    await client.query("UPDATE startup SET weights = $1 WHERE id = $2;", [
-      JSON.stringify(weights),
-      startupId,
-    ]);
-  } catch (err) {
-    throw new Error(
-      `Failed to update weights data for startup with id ${startupId} with the following error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const getWeights = async (startupId: string): Promise<Weights> => {
-  const client = await pool.connect();
-  let result;
-  try {
-    result = await client.query("SELECT weights FROM startup WHERE id = $1;", [
-      startupId,
-    ]);
-  } catch (err) {
-    throw new Error(
-      `Failed to query questionnaire data for startup with id with id ${startupId} with the following error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-  return result.rows[0].weights;
 };
 
 const getQuestionnaireFilledOut = async (startupId: string) => {
@@ -1056,7 +755,7 @@ const getQuestionnaireFilledOut = async (startupId: string) => {
     );
   } catch (err) {
     throw new Error(
-      `Failed to query questionnaire data for startup with id with id ${startupId} with the following error: ${err}`
+      `Failed to query questionnaire data for startup with id ${startupId} with the following error: ${err}`
     );
   } finally {
     client.release();
@@ -1068,25 +767,52 @@ const getQuestionnaireFilledOut = async (startupId: string) => {
   }
 };
 
+const getMetrics = async (startupId: string): Promise<Metrics[]> => {
+  const client = await pool.connect();
+  let result;
+  try {
+    result = await client.query(
+      "SELECT date, burn_rate, runway, liquidity FROM metrics WHERE startup = $1;",
+      [startupId]
+    );
+
+  } catch (err) {
+    throw new Error(
+      `Failed to query metrics data for startup with id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+
+  const metrics: Metrics[] = result.rows.map((row) => {
+    return {
+      date: row.date,
+      burnRate: row.burn_rate,
+      runway: row.runway,
+      liquidity: row.liquidity,
+    }
+  })
+
+  return metrics;
+ }
+
 export {
   InvestmentPhase,
-  InvestmentPhaseKpis,
-  Kpis,
+  Metrics,
   Milestone,
   Startup,
   Rating,
   StartupInfo,
   QuestionnaireAvg,
-  TimeSeriesKpis,
   TrlData,
   Questionnaire,
-  Weights,
+
   WeightedPoints,
   getCapTable,
   getFirstStartupLoginById,
   getInfoByStartupId,
   getInvestmentPhase,
-  getKpis,
+  getMetrics,
   getMilestones,
   persistQuestionnaire,
   getNewStartupById,
@@ -1095,15 +821,14 @@ export {
   getStartupById,
   getStartupNameById,
   getStartups,
-  updateWeights,
+
   getTrlAvailable,
   persistCapTable,
   persistInfo,
-  getWeights,
+
   persistTrlData,
   persistMilestones,
   persistCoreTechnology,
-  updateKpis,
   updateTrl,
   updateMilestoneDuration,
   updateMilestoneProgress,

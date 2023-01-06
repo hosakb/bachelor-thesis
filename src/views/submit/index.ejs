@@ -1,63 +1,6 @@
 
 <div class="submit-cards">
     <div class="submit-card">
-        <h3>Manuel Input</h3>
-        <form action="/submit/kpi-form" method="POST">
-            <div>
-                <label for="numberOfEmployees">Number of Employees</label>
-                <input name="numberOfEmployees" type="number" name="">
-            </div>
-            <div>
-                <label for="cashFlowRate">Cash-Flow-Rate</label>
-                <input name="cashFlowRate" type="number">
-            </div>
-            <div>
-                <label for="liquidity">Liquidity</label>
-                <input name="liquidity" type="number">
-            </div>
-            <div>
-                <input type="submit">
-            </div>
-        </form>
-    </div>
-    <div class="submit-card">
-        <h3>Upload Excel</h3>
-        <% if (locals.kpis === undefined) { %>
-        <form action="/submit" enctype="multipart/form-data" method="post">
-            <input type="file" name="kpis" />
-            <input type="submit">  
-        </form>
-        <% } else { %>
-            <br>
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Number of Employees</th>
-                        <th scope="col">Cash Flow Rate</th>
-                        <th scope="col">Liquidity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td id="date" scope="row"><%= locals.kpis.date %></td>
-                        <td id="numberOfEmployees"><label><%= locals.kpis.numberOfEmployees %></label><label>%</label></td>
-                        <td id="cashFlowRate"><label><%= locals.kpis.cashFlowRate %></label><label>%</label></td>
-                        <td id="liquidity"><label><%= locals.kpis.liquidity %></label><label>%</label></td>
-                    </tr>
-                </tbody>
-            </table>
-            <br>
-            <div>
-                <label>Data correct?</label>
-                <br>
-                <button onclick="submitKpiData()">Yes</button>
-                <button onclick="reuploadKpiData()">No</button>
-            </div>
-            <% } %>
-        <label name="success"><%= locals.success %></label>
-    </div>
-    <div class="submit-card">
         <h4>Capitalization Table</h4>
        <form action="/submit/cap-table" enctype="multipart/form-data" method="post">
             <input type="file" name="cap-table" />

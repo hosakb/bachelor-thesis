@@ -7,12 +7,6 @@ CREATE TABLE
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     stage VARCHAR(255) NOT NULL,
-    seed_phase_kpis JSONB NOT NULL DEFAULT '[]',
-    startup_phase_kpis JSONB NOT NULL DEFAULT '[]',
-    first_stage_kpis JSONB NOT NULL DEFAULT '[]',
-    second_stage_kpis JSONB NOT NULL DEFAULT '[]',
-    third_stage_kpis JSONB NOT NULL DEFAULT '[]',
-    final_phase_kpis JSONB NOT NULL DEFAULT '[]',
     info JSONB,
     cap_table JSONB
     product TEXT
@@ -90,4 +84,16 @@ CREATE TABLE
     expertise TEXT NOT NULL,
     ventures UUID JSONB NOT NULL DEFAULT '[]',
   );
+
+  CREATE TABLE IF NOT EXISTS metrics (
+    id UUID NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
+	date DATE NOT NULL,
+    burn_rate FLOAT NOT NULL,
+    runway FLOAT NOT NULL,
+    liquidity FLOAT NOT NULL,
+    startup uuid,
+    
+    FOREIGN KEY(startup) REFERENCES startup(id)
+);
+
 

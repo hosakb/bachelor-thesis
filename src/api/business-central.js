@@ -12,11 +12,11 @@ export class BusinessCentral {
     this.username = username;
     this.password = password;
   }
-
-  queryBusinessCentral() {
+  // http://navsrv-2020.lutz.local:18058/BC180-Demo/ODataV4/Company('CRONUS%20AG')/G_LEntries?$filter=G_L_Account_Name eq 'Kommandit-Kapital'  -> Einzahlungen
+  getCurrentEquity() {
     httpntlm.get(
       {
-        url: this.baseUrl + this.company + "ExcelTemplateBalanceSheet",
+        url: this.baseUrl + this.company + "G_LEntries?$filter=G_L_Account_Name eq 'Kommandit-Kapital'",
         username: this.username,
         password: this.password,
         workstation: "anything",
@@ -25,8 +25,22 @@ export class BusinessCentral {
       function (err, res) {
         if (err) return err;
         const value = JSON.parse(res.body).value;
-        // console.log(value)
+        
+        let currentEuqity = 0;
+
+        for (const v of value) {
+         currentEuqity += v.Credit_Amount;
+        }
+        console.log(currentEuqity)
       }
     );
   }
 }
+
+// const bc = new BusinessCentral(
+//   "http://navsrv-2020.lutz.local:18058/BC180-Demo/ODataV4/",
+//   "CRONUS AG",
+//   "student",
+//   "lutzGast_21!"
+// ); // TODO: ENV
+// bc.getCurrentEquity();

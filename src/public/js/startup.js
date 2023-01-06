@@ -17,63 +17,27 @@ dashboard.onclick = function () {
 };
 
 async function loadChartData() {
-  const noe = "/startup/chart/noe";
-  const cfr = "/startup/chart/cfr";
-  const liq = "/startup/chart/liq";
-  const gantt = "/startup/chart/gantt";
-
-  const responses = await Promise.all([
-    fetch(noe),
-    fetch(cfr),
-    fetch(liq),
-    fetch(gantt),
-  ]);
-
-  const noeData = await responses[0].json();
-  renderNoe(noeData);
-  const cfrData = await responses[1].json();
-  renderCfr(cfrData);
-  const liqData = await responses[2].json();
+ const responses = await fetch("/startup/chart/data");
+const responserJson = await responses.json();
+  const burnRateData = responserJson.burnRate;
+  renderBurnRate(burnRateData);
+  const runwayData = responserJson.runway;
+  renderRunway(runwayData);
+  const liqData = responserJson.liquidity;
   renderLiq(liqData);
-  const ganttData = await responses[3].json();
+  const ganttData = responserJson.milestones;
   renderGantt(ganttData);
 }
-function renderNoe(noeData) {
+
+function renderBurnRate(burnRateData) {
   const data = {
-    labels: noeData.months,
+    labels: burnRateData.months,
     datasets: [
       {
-        label: "Number of Employees",
-        backgroundColor: "rgb(49, 175, 212)",
-        borderColor: "rgb(49, 175, 212)",
-        data: noeData.periodData,
-      },
-    ],
-  };
-
-  const config = {
-    type: "line",
-    data: data,
-    options: {
-      layout: {
-        autoPadding: true,
-      },
-    },
-  };
-
-  // eslint-disable-next-line no-undef
-  new Chart(document.querySelector("#noe-chart"), config);
-}
-
-function renderCfr(cfrData) {
-  const data = {
-    labels: cfrData.months,
-    datasets: [
-      {
-        label: "Cash-Flow Rate",
+        label: "Burn Rate",
         backgroundColor: "rgb(166, 28, 60)",
         borderColor: "rgb(166, 28, 60)",
-        data: cfrData.periodData,
+        data: burnRateData.periodData,
       },
     ],
   };
@@ -89,7 +53,34 @@ function renderCfr(cfrData) {
   };
 
   // eslint-disable-next-line no-undef
-  new Chart(document.querySelector("#cfr-chart"), config);
+  new Chart(document.querySelector("#burn-rate-chart"), config);
+}
+
+function renderRunway(burnRateData) {
+  const data = {
+    labels: burnRateData.months,
+    datasets: [
+      {
+        label: "Cash Runway",
+        backgroundColor: "rgb(166, 28, 60)",
+        borderColor: "rgb(166, 28, 60)",
+        data: burnRateData.periodData,
+      },
+    ],
+  };
+
+  const config = {
+    type: "line",
+    data: data,
+    options: {
+      layout: {
+        autoPadding: true,
+      },
+    },
+  };
+
+  // eslint-disable-next-line no-undef
+  new Chart(document.querySelector("#runway-chart"), config);
 }
 
 function renderLiq(liqData) {

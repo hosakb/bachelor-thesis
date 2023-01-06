@@ -70,6 +70,12 @@ interface PreviousVenture {
   inBusiness: boolean;
 }
 
+interface Trl {
+  product: string;
+  trlProd: number;
+  trlData: TrlData[];
+}
+
 declare global {
   namespace Express {
     export interface Request {
@@ -107,5 +113,6 @@ declare module "express-session" {
     expertise: Expertise;
     startupName: string;
     capTable: Row[];
+    trl: Trl
   }
 }

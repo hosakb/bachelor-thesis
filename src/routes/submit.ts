@@ -2,20 +2,16 @@ import express from "express";
 import {
   deleteTrl,
   getTrl,
-  Kpis,
   persistCapTable,
   persistTrlData,
   TrlData,
-  updateKpis,
   updateTrl,
 } from "../models/startup";
-import getTodaysDate from "../util/date";
 import {
   deleteSpreadsheets,
   formatCapTable,
   multerUpload,
   uploadCapTable,
-  uploadKpis,
 } from "../util/excel";
 
 const router = express.Router();
@@ -35,6 +31,7 @@ router.get("/", async (req, res) => {
     }
   } else {
     const trl = await getTrl(req.user?.startup);
+    req.session.trl = trl;
     res.render("submit/index", {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "startup",
@@ -47,33 +44,33 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", multerUpload.single("kpis"), async (req, res) => {
-  try {
-    const rows = await uploadKpis();
+// router.post("/", multerUpload.single("kpis"), async (req, res) => {
+//   try {
+//     const rows = await uploadKpis();
 
-    const kpis: Kpis = JSON.parse(JSON.stringify(rows[rows.length - 1]));
+//     const kpis: Kpis = JSON.parse(JSON.stringify(rows[rows.length - 1]));
 
-    kpis.date = kpis.date.substring(0, 10);
-    kpis.cashFlowRate = Math.round(kpis.cashFlowRate * 100);
-    kpis.numberOfEmployees = Math.round(kpis.numberOfEmployees * 100);
-    kpis.liquidity = Math.round(kpis.liquidity * 100);
+//     kpis.date = kpis.date.substring(0, 10);
+//     kpis.cashFlowRate = Math.round(kpis.cashFlowRate * 100);
+//     kpis.numberOfEmployees = Math.round(kpis.numberOfEmployees * 100);
+//     kpis.liquidity = Math.round(kpis.liquidity * 100);
 
-    res.render("submit/index", {
-      layout: "../views/layouts/startup.ejs",
-      page: "submit",
-      kpis,
-      title: "Finvia", // TODO: make dynamic
-      name: req.user?.firstName + " " + req.user?.lastName,
-    });
+//     res.render("submit/index", {
+//       layout: "../views/layouts/startup.ejs",
+//       page: "submit",
+//       kpis,
+//       title: "Finvia", // TODO: make dynamic
+//       name: req.user?.firstName + " " + req.user?.lastName,
+//     });
 
-    return;
-  } catch (error) {
-    console.error(
-      `The following error occurred during upload of kpis. Redirecting to /submit ${error}`
-    );
-    res.redirect("/");
-  }
-});
+//     return;
+//   } catch (error) {
+//     console.error(
+//       `The following error occurred during upload of kpis. Redirecting to /submit ${error}`
+//     );
+//     res.redirect("/");
+//   }
+// });
 
 router.post("/reupload", (req, res) => {
   deleteSpreadsheets();
@@ -110,68 +107,69 @@ router.post("/kpis", async (req, res) => {
   }
 });
 
-router.post("/kpi-form", async (req, res) => {
-  const { numberOfEmployees, cashFlowRate, liquidity } = req.body;
+// router.post("/kpi-form", async (req, res) => {
+//   const { numberOfEmployees, cashFlowRate, liquidity } = req.body;
 
-  const kpis: Kpis = {
-    date: getTodaysDate(),
-    numberOfEmployees: numberOfEmployees,
-    cashFlowRate: cashFlowRate,
-    liquidity: liquidity,
-  };
-  const startupId = req.user?.startup;
-  if (startupId === undefined) {
-    console.info(
-      `Redirecting to login screen since no startup is assigned to user with id ${req.user?.id}`
-    );
-    res.redirect("/");
-  } else {
-    try {
-      await updateKpis(kpis, req.session.startupId);
-      res.redirect("/startup");
-    } catch (error) {
-      console.error(
-        `Failed to update kpis due to ${error}. Redirect to startup screen.`
-      );
-      res.redirect("/startup");
-    }
-  }
-});
+//   const kpis: Kpis = {
+//     date: getTodaysDate(),
+//     numberOfEmployees: numberOfEmployees,
+//     cashFlowRate: cashFlowRate,
+//     liquidity: liquidity,
+//   };
+//   const startupId = req.user?.startup;
+//   if (startupId === undefined) {
+//     console.info(
+//       `Redirecting to login screen since no startup is assigned to user with id ${req.user?.id}`
+//     );
+//     res.redirect("/");
+//   } else {
+//     try {
+//       await updateKpis(kpis, req.session.startupId);
+//       res.redirect("/startup");
+//     } catch (error) {
+//       console.error(
+//         `Failed to update kpis due to ${error}. Redirect to startup screen.`
+//       );
+//       res.redirect("/startup");
+//     }
+//   }
+// });
 
-router.post(
-  "/cap-table",
-  multerUpload.single("cap-table"),
-  async (req, res) => {
-    try {
-      const rows = await uploadCapTable();
+// router.post(
+//   "/cap-table",
+//   multerUpload.single("cap-table"),
+//   async (req, res) => {
+//     try {
+//       const rows = await uploadCapTable();
 
-      const capTable = formatCapTable(rows);
+//       const capTable = formatCapTable(rows);
 
-      const startupId = req.user?.startup;
+//       const startupId = req.user?.startup;
 
-      if (startupId == undefined) {
-        throw new Error("Failed to fetch startup id.");
-      }
+//       if (startupId == undefined) {
+//         throw new Error("Failed to fetch startup id.");
+//       }
 
-      await persistCapTable(JSON.stringify(capTable), startupId);
+//       await persistCapTable(JSON.stringify(capTable), startupId);
 
-      res.render("submit/index", {
-        layout: "../views/layouts/startup.ejs",
-        page: "submit",
-        title: "Finvia", // TODO: make dynamic
-        name: req.user?.firstName + " " + req.user?.lastName,
-        capTable,
-      });
+//       res.render("submit/index", {
+//         layout: "../views/layouts/startup.ejs",
+//         page: "submit",
+//         title: "Finvia", // TODO: make dynamic
+//         name: req.user?.firstName + " " + req.user?.lastName,
+//         capTable,
+//         trl: req.session.trl,
+//       });
 
-      return;
-    } catch (error) {
-      console.error(
-        `The following error occurred during upload of a cap table. Redirecting to /submit ${error}`
-      );
-      res.redirect("/submit");
-    }
-  }
-);
+//       return;
+//     } catch (error) {
+//       console.error(
+//         `The following error occurred during upload of a cap table. Redirecting to /submit ${error}`
+//       );
+//       res.redirect("/submit");
+//     }
+//   }
+// );
 
 router.post("/update-trl", async (req, res) => {
   const { id, technology, trl, criticality } = req.body.trlData;

@@ -1,8 +1,10 @@
 <div id="founders" class="card">
     <h2>Founders</h2>
+    <br>
     <div>
-        <table>
+       
             <% founders.forEach(founder => { %> 
+            <table>
             <tr><td>Name</td><td><%= founder.firstName %> <%= founder.lastName %></td> </tr>
             <tr><td>Age</td><td><%= founder.age %></td></tr>
             <tr><td>Domain of Expertise</td><td><%= founder.trackRecord.expertise %></td></tr>
@@ -47,6 +49,29 @@
                 </table>
                 </td>
             </tr>
-            <% }); %>
         </table>
+        <br>
+            <% }); %>
     </div>
+</div>
+    <br>
+    
+<% if(locals.capTable != undefined) { %> 
+    <div id="founders" class="card"></div>
+        <div class="card-single-kpi">
+            <h3>Cap-Table</h3>
+            <table id="cap-table">
+                <% for(const row of locals.capTable) {%>
+                    <tr>
+                        <% for(const cell of row) {%>
+                            <td>
+                                <%= cell %> 
+                            </td>
+                        <% } %> 
+                    </tr>
+                <% } %> 
+            </table>
+        </div>
+        <br>
+    </div>
+    <% } %> 

@@ -1,9 +1,9 @@
+import { Weights } from "../../models/fund";
 import {
   Questionnaire,
   QuestionnaireAvg,
   Rating,
   WeightedPoints,
-  Weights,
 } from "../../models/startup";
 
 export function getQuestionnaireAverages(
@@ -256,7 +256,6 @@ export function getRating(qAvg: QuestionnaireAvg, weighting: Weights): Rating {
   const h1_5 = parseFloat(getStandardRating(qAvg.h1_5).toFixed(1));
 
   const h1 = parseFloat(getWeightedRating(qAvg.h1, weighting.h1).toFixed(1));
-  console.log(h1)
 
   const h2_1 = parseFloat(getStandardRating(qAvg.h2_1).toFixed(1));
 

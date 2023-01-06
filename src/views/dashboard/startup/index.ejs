@@ -24,10 +24,10 @@
     <div class="card-single-kpi">
         <div>
             <h3>
-                <%= locals.kpis.numberOfEmployees %>
+                <!-- KPIS  -->
             </h3>
-            <span>Number of Employees</span>
-            <canvas id="noe-chart"></canvas>
+            <span>Cash Runway</span>
+            <canvas id="runway-chart"></canvas>
         </div>
         <div>
             <span class="las la-clipboard"></span>
@@ -36,10 +36,14 @@
     <div class="card-single-kpi">
         <div>
             <h3>
-                <%= locals.kpis.cashFlowRate %>
+                <!--  KPIS -->
             </h3>
-            <span>Cash-Flow Rate</span>
-            <canvas id="cfr-chart"></canvas>
+            <span>Burn Rate</span>
+            <canvas id="burn-rate-chart"></canvas>
+        </div>
+        <div>
+            <h4>Last Cash Inflow: </h4>
+            <span>Date</span>
         </div>
         <div>
             <span class="las la-clipboard"></span>
@@ -48,7 +52,7 @@
     <div class="card-single-kpi">
         <div>
             <h3>
-                <%= locals.kpis.liquidity %>
+                <!--  KPIS -->
             </h3>
             <span>Liquidity</span>
             <canvas id="liq-chart"></canvas>
@@ -65,23 +69,6 @@
            </div>
         </div> 
     <% } %>
-    <% if(locals.capTable != undefined) { %> 
-        <div class="card-single-kpi">
-            <h3>Cap-Table</h3>
-            <table id="cap-table">
-                <% for(const row of locals.capTable) {%>
-                    <tr>
-                        <% for(const cell of row) {%>
-                            <td>
-                                <%= cell %> 
-                            </td>
-                        <% } %> 
-                    </tr>
-                <% } %> 
-            </table>
-        </div>
-        <br>
-    <% } %> 
    
     <div class="card-single-kpi">
         <div>
