@@ -1,46 +1,75 @@
 import httpntlm from "httpntlm";
+import { promisify } from "util";
+
+const httpntlmGetAsync = promisify(httpntlm.get);
 
 export class BusinessCentral {
   baseUrl;
   company;
   username;
-  password;
+  lmPassword;
+  ntPassword;
 
-  constructor(baseUrl, company, username, password) {
-    this.baseUrl = baseUrl;
-    this.company = `Company('${company}')/`;
+  constructor(company, username, ntPassword, lmPassword) {
+    (this.baseUrl = process.env.BUSINESS_CENTRAL),
+      (this.company = `Company('${company}')/`);
     this.username = username;
-    this.password = password;
+    // this.ntPassword = ntPassword;
+    // this.lmPassword = lmPassword;
+
+    // TODO: -------------------------- TMP ---------------------
+    var ntlm = httpntlm.ntlm;
+    var lm = ntlm.create_LM_hashed_password("lutzGast_21!");
+    var nt = ntlm.create_NT_hashed_password("lutzGast_21!");
+
+    this.ntPassword = nt;
+    this.lmPassword = lm;
+
+    // TODO: -------------------------- TMP ---------------------
   }
-  // http://navsrv-2020.lutz.local:18058/BC180-Demo/ODataV4/Company('CRONUS%20AG')/G_LEntries?$filter=G_L_Account_Name eq 'Kommandit-Kapital'  -> Einzahlungen
-  getCurrentEquity() {
-    httpntlm.get(
-      {
-        url: this.baseUrl + this.company + "G_LEntries?$filter=G_L_Account_Name eq 'Kommandit-Kapital'",
+
+  async getBalance() {
+    try {
+      const res = await httpntlmGetAsync({
+        url: this.baseUrl + this.company + "testtest?$filter=No eq '1331'",
         username: this.username,
-        password: this.password,
+        lm_password: this.lmPassword,
+        nt_password: this.ntPassword,
         workstation: "anything",
         domain: "",
-      },
-      function (err, res) {
-        if (err) return err;
-        const value = JSON.parse(res.body).value;
-        
-        let currentEuqity = 0;
+      });
 
-        for (const v of value) {
-         currentEuqity += v.Credit_Amount;
-        }
-        console.log(currentEuqity)
-      }
-    );
+      return JSON.parse(res.body).value[0].Balance;
+    } catch (err) {
+      throw new Error(
+        `Failed to fetch balance for startup ${this.company} due to ${err}`
+      );
+    }
+  }
+  async getShortTermLiabilities() {
+    try {
+      const res = await httpntlmGetAsync({
+        url:
+          this.baseUrl +
+          this.company +
+          "testtest?$filter=No eq '1601' or No eq '1602'",
+        username: this.username,
+        lm_password: this.lmPassword,
+        nt_password: this.ntPassword,
+        workstation: "anything",
+        domain: "",
+      });
+
+      let balance = 0;
+      JSON.parse(res.body).value.forEach((val) => {
+        balance += val.Balance;
+      });
+
+      return balance;
+    } catch (err) {
+      throw new Error(
+        `Failed to fetch short term liabilities for startup ${this.company} due to ${err}`
+      );
+    }
   }
 }
-
-// const bc = new BusinessCentral(
-//   "http://navsrv-2020.lutz.local:18058/BC180-Demo/ODataV4/",
-//   "CRONUS AG",
-//   "student",
-//   "lutzGast_21!"
-// ); // TODO: ENV
-// bc.getCurrentEquity();

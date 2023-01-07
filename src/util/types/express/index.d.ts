@@ -113,6 +113,6 @@ declare module "express-session" {
     expertise: Expertise;
     startupName: string;
     capTable: Row[];
-    trl: Trl
+    trl: Trl;
   }
 }

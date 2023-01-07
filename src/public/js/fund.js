@@ -3,101 +3,100 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 async function loadChartData() {
-    const responses = await fetch("/fund/chart/data");
-    const responserJson = await responses.json();
-    const burnRateData = responserJson.burnRate;
-    renderBurnRate(burnRateData);
-    const runwayData = responserJson.runway;
-    renderRunway(runwayData);
-    const liqData = responserJson.liquidity;
-    renderLiq(liqData);
-    const ganttData = responserJson.milestones;
-    renderGantt(ganttData);
-    const expertiseData = responserJson.expertise;
-    renderExpertise(expertiseData);
-   }
-   
-   function renderBurnRate(burnRateData) {
-     const data = {
-       labels: burnRateData.months,
-       datasets: [
-         {
-           label: "Burn Rate",
-           backgroundColor: "rgb(166, 28, 60)",
-           borderColor: "rgb(166, 28, 60)",
-           data: burnRateData.periodData,
-         },
-       ],
-     };
-   
-     const config = {
-       type: "line",
-       data: data,
-       options: {
-         layout: {
-           autoPadding: true,
-         },
-       },
-     };
-   
-     // eslint-disable-next-line no-undef
-     new Chart(document.querySelector("#burn-rate-chart"), config);
-   }
-   
-   function renderRunway(burnRateData) {
-     const data = {
-       labels: burnRateData.months,
-       datasets: [
-         {
-           label: "Cash Runway",
-           backgroundColor: "rgb(166, 28, 60)",
-           borderColor: "rgb(166, 28, 60)",
-           data: burnRateData.periodData,
-         },
-       ],
-     };
-   
-     const config = {
-       type: "line",
-       data: data,
-       options: {
-         layout: {
-           autoPadding: true,
-         },
-       },
-     };
-   
-     // eslint-disable-next-line no-undef
-     new Chart(document.querySelector("#runway-chart"), config);
-   }
-   
-   function renderLiq(liqData) {
-     const data = {
-       labels: liqData.months,
-       datasets: [
-         {
-           label: "Liquidity",
-           backgroundColor: "rgb(237, 184, 139)",
-           borderColor: "rgb(237, 184, 139)",
-           data: liqData.periodData,
-         },
-       ],
-     };
-   
-     const config = {
-       type: "line",
-       data: data,
-       options: {
-         layout: {
-           autoPadding: true,
-         },
-       },
-     };
-   
-     // eslint-disable-next-line no-undef
-     new Chart(document.querySelector("#liq-chart"), config);
-   }
-  
+  const responses = await fetch("/fund/chart/data");
+  const responserJson = await responses.json();
+  const burnRateData = responserJson.burnRate;
+  renderBurnRate(burnRateData);
+  const runwayData = responserJson.cashRunway;
+  renderRunway(runwayData);
+  const liqData = responserJson.liquidity;
+  renderLiq(liqData);
+  const ganttData = responserJson.milestones;
+  renderGantt(ganttData);
+  const expertiseData = responserJson.expertise;
+  renderExpertise(expertiseData);
+}
+
+function renderBurnRate(burnRateData) {
+  const data = {
+    labels: burnRateData.months,
+    datasets: [
+      {
+        label: "Burn Rate",
+        backgroundColor: "rgb(166, 28, 60)",
+        borderColor: "rgb(166, 28, 60)",
+        data: burnRateData.periodData,
+      },
+    ],
+  };
+
+  const config = {
+    type: "line",
+    data: data,
+    options: {
+      layout: {
+        autoPadding: true,
+      },
+    },
+  };
+
+  // eslint-disable-next-line no-undef
+  new Chart(document.querySelector("#burn-rate-chart"), config);
+}
+
+function renderRunway(burnRateData) {
+  const data = {
+    labels: burnRateData.months,
+    datasets: [
+      {
+        label: "Cash Runway",
+        backgroundColor: "rgb(166, 28, 60)",
+        borderColor: "rgb(166, 28, 60)",
+        data: burnRateData.periodData,
+      },
+    ],
+  };
+
+  const config = {
+    type: "line",
+    data: data,
+    options: {
+      layout: {
+        autoPadding: true,
+      },
+    },
+  };
+
+  // eslint-disable-next-line no-undef
+  new Chart(document.querySelector("#runway-chart"), config);
+}
+
+function renderLiq(liqData) {
+  const data = {
+    labels: liqData.months,
+    datasets: [
+      {
+        label: "Liquidity",
+        backgroundColor: "rgb(237, 184, 139)",
+        borderColor: "rgb(237, 184, 139)",
+        data: liqData.periodData,
+      },
+    ],
+  };
+
+  const config = {
+    type: "line",
+    data: data,
+    options: {
+      layout: {
+        autoPadding: true,
+      },
+    },
+  };
+
+  // eslint-disable-next-line no-undef
+  new Chart(document.querySelector("#liq-chart"), config);
+}
 
 var gantt;
 function renderGantt(tasks) {

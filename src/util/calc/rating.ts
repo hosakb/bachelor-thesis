@@ -416,9 +416,9 @@ export function getRoundedQuestionnaireAverages(
 }
 
 function getWeightedRating(points: number, weighting: number): number {
-  return (18 - (17 * points * weighting) / (5 * weighting));
+  return 18 - (17 * points * weighting) / (5 * weighting);
 }
 
 function getStandardRating(points: number): number {
-  return (18 - (17 * points) / 5);
+  return 18 - (17 * points) / 5;
 }

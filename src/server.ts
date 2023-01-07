@@ -13,6 +13,7 @@ import startupDashboardRouter from "./routes/startup";
 import adminRouter from "./routes/admin";
 import onboardingRouter from "./routes/onboarding";
 import { checkNotAuthenticated } from "./middleware/check-auth";
+import { startJob } from "./api/job";
 
 const app = express();
 
@@ -59,5 +60,7 @@ app.use("/fund", fundDashboardRouter);
 app.use("/admin", adminRouter);
 app.use("/startup", startupDashboardRouter);
 app.use("/onboarding", onboardingRouter);
+
+startJob();
 
 app.listen(process.env.PORT || 3000);

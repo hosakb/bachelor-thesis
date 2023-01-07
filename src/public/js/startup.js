@@ -17,11 +17,11 @@ dashboard.onclick = function () {
 };
 
 async function loadChartData() {
- const responses = await fetch("/startup/chart/data");
-const responserJson = await responses.json();
+  const responses = await fetch("/startup/chart/data");
+  const responserJson = await responses.json();
   const burnRateData = responserJson.burnRate;
   renderBurnRate(burnRateData);
-  const runwayData = responserJson.runway;
+  const runwayData = responserJson.cashRunway;
   renderRunway(runwayData);
   const liqData = responserJson.liquidity;
   renderLiq(liqData);

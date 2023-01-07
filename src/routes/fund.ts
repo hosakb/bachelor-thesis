@@ -1,11 +1,9 @@
-import express, { Router, Request } from "express";
+import express, { Router } from "express";
 import { Row } from "read-excel-file";
 import { getFundNameById } from "../models/fund";
 
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
-import {   getWeights,
-  updateWeights,
-  Weights } from "../models/fund";
+import { getWeights, updateWeights, Weights } from "../models/fund";
 import {
   getCapTable,
   getMetrics,
@@ -48,7 +46,6 @@ router.get("/", async (req, res) => {
       res.redirect("/");
     }
   } else {
-
     req.session.fundId = fundId;
 
     try {
@@ -134,7 +131,6 @@ router.get("/startup/", async (req, res) => {
   try {
     const trl = await getTrl(startupId);
 
-
     res.render("dashboard/startup/index", {
       layout: "../views/layouts/dashboard.ejs",
       scripts: [
@@ -195,7 +191,7 @@ router.get("/startup/rating", async (req, res) => {
       name: req.user?.firstName + " " + req.user?.lastName,
       startup: req.session.selectedStartup,
       weightedRating: weightedRating,
-      page: "rating"
+      page: "rating",
     });
   } catch (error) {
     console.error(
@@ -210,7 +206,7 @@ router.post("/update-weights", async (req, res) => {
 
   const newWeights: Weights = weights;
 
-   const fundId = req.session.fundId;
+  const fundId = req.session.fundId;
 
   try {
     await updateWeights(fundId, newWeights);
@@ -225,7 +221,6 @@ router.post("/update-weights", async (req, res) => {
 
 router.get("/chart/data", async (req, res) => {
   try {
-
     const startupId = req.session.selectedStartup;
 
     const milestones: Milestone[] = await getMilestones(startupId);
@@ -235,13 +230,13 @@ router.get("/chart/data", async (req, res) => {
       return getMonth(x.date);
     });
 
-    const burnRate =  metrics.map((x) => {
+    const burnRate = metrics.map((x) => {
       return x.burnRate;
     });
-    const runway =  metrics.map((x) => {
-      return x.runway;
+    const cashRunway = metrics.map((x) => {
+      return x.cashRunway;
     });
-    const liquidity  =  metrics.map((x) => {
+    const liquidity = metrics.map((x) => {
       return x.liquidity;
     });
 
@@ -264,18 +259,18 @@ router.get("/chart/data", async (req, res) => {
       milestones,
       burnRate: {
         months,
-        periodData: burnRate
+        periodData: burnRate,
       },
-      runway: {
+      cashRunway: {
         months,
-        periodData: runway
+        periodData: cashRunway,
       },
       liquidity: {
         months,
-        periodData: liquidity
+        periodData: liquidity,
       },
       expertise,
-    }
+    };
 
     res.status(200).json(chartData);
   } catch (error) {

@@ -1,5 +1,4 @@
-import express, { Router, Request } from "express";
-import { BusinessCentral } from "../api/business-central";
+import express, { Router } from "express";
 import {
   getInvestmentPhase,
   Milestone,
@@ -31,7 +30,6 @@ router.get("/", async (req, res) => {
     }
   } else {
     try {
-
       const trl = await getTrl(startupId);
 
       res.render("dashboard/startup/index", {
@@ -67,13 +65,13 @@ router.get("/chart/data", async (req, res) => {
       return getMonth(x.date);
     });
 
-    const burnRate =  metrics.map((x) => {
+    const burnRate = metrics.map((x) => {
       return x.burnRate;
     });
-    const runway =  metrics.map((x) => {
-      return x.runway;
+    const cashRunway = metrics.map((x) => {
+      return x.cashRunway;
     });
-    const liquidity  =  metrics.map((x) => {
+    const liquidity = metrics.map((x) => {
       return x.liquidity;
     });
 
@@ -81,17 +79,17 @@ router.get("/chart/data", async (req, res) => {
       milestones,
       burnRate: {
         months,
-        periodData: burnRate
+        periodData: burnRate,
       },
-      runway: {
+      cashRunway: {
         months,
-        periodData: runway
+        periodData: cashRunway,
       },
       liquidity: {
         months,
-        periodData: liquidity
-      }
-    }
+        periodData: liquidity,
+      },
+    };
 
     res.status(200).json(chartData);
   } catch (error) {
@@ -99,7 +97,7 @@ router.get("/chart/data", async (req, res) => {
   }
 });
 
-router.put("/gantt/period", async (req, res) => {
+router.put("/gantt/period", async (req) => {
   const { taskId, start, end } = req.body;
 
   try {
@@ -109,7 +107,7 @@ router.put("/gantt/period", async (req, res) => {
   }
 });
 
-router.put("/gantt/progress", async (req, res) => {
+router.put("/gantt/progress", async (req) => {
   const { taskId, progress } = req.body;
 
   try {

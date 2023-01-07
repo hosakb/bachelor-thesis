@@ -4,5 +4,5 @@ export function getTodaysDate() {
 }
 
 export function getMonth(date: Date) {
-  return date.getMonth()  + "-" + date.getFullYear();
+  return date.getMonth() + "-" + date.getFullYear();
 }

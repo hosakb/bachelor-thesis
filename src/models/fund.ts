@@ -67,6 +67,4 @@ const getWeights = async (fundId: string): Promise<Weights> => {
   return result.rows[0].weights;
 };
 
-export {   Weights,
-  updateWeights,
-  getWeights,getFundNameById };
+export { Weights, updateWeights, getWeights, getFundNameById };

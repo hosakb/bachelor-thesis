@@ -3,7 +3,7 @@ import multer, { FileFilterCallback, StorageEngine } from "multer";
 import readXlsxFile, { Row } from "read-excel-file/node";
 import fs from "fs";
 import path from "path";
-import {getTodaysDate} from "./date";
+import { getTodaysDate } from "./date";
 
 const FILENAME_KPIS =
   "kpis-" + getTodaysDate() + Math.round(Math.random() * 1e9) + ".xlsx";

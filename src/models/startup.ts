@@ -53,7 +53,7 @@ interface TrlData {
 interface Metrics {
   date: Date;
   burnRate: number;
-  runway: number;
+  cashRunway: number;
   liquidity: number;
 }
 
@@ -271,6 +271,21 @@ interface WeightedPoints {
   h8: number;
   sum: number;
 }
+
+const getStartupIds = async (): Promise<string[]> => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(`SELECT id FROM startup`, []);
+
+    return result.rows.map((row) => {
+      return row.id;
+    });
+  } catch (err) {
+    throw new Error(`Failed query Startup Ids. Error: ${err}`);
+  } finally {
+    client.release();
+  }
+};
 
 const getFirstStartupLoginById = async (startUpId: string) => {
   const client = await pool.connect();
@@ -772,10 +787,9 @@ const getMetrics = async (startupId: string): Promise<Metrics[]> => {
   let result;
   try {
     result = await client.query(
-      "SELECT date, burn_rate, runway, liquidity FROM metrics WHERE startup = $1;",
+      "SELECT date, burn_rate, cash_runway, liquidity FROM metrics WHERE startup = $1;",
       [startupId]
     );
-
   } catch (err) {
     throw new Error(
       `Failed to query metrics data for startup with id ${startupId} with the following error: ${err}`
@@ -788,13 +802,35 @@ const getMetrics = async (startupId: string): Promise<Metrics[]> => {
     return {
       date: row.date,
       burnRate: row.burn_rate,
-      runway: row.runway,
+      cashRunway: row.cash_runway,
       liquidity: row.liquidity,
-    }
-  })
+    };
+  });
 
   return metrics;
- }
+};
+
+const persistMetrics = async (metrics: Metrics, startupId: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      "INSERT INTO metrics (date, burn_rate, cash_runway, liquidity, startup) VALUES ($1, $2, $3, $4, $5)",
+      [
+        metrics.date,
+        metrics.burnRate,
+        metrics.cashRunway,
+        metrics.liquidity,
+        startupId,
+      ]
+    );
+  } catch (err) {
+    throw new Error(
+      `Failed to persist metrics data for startup with id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
 
 export {
   InvestmentPhase,
@@ -806,8 +842,8 @@ export {
   QuestionnaireAvg,
   TrlData,
   Questionnaire,
-
   WeightedPoints,
+  getStartupIds,
   getCapTable,
   getFirstStartupLoginById,
   getInfoByStartupId,
@@ -821,11 +857,10 @@ export {
   getStartupById,
   getStartupNameById,
   getStartups,
-
+  persistMetrics,
   getTrlAvailable,
   persistCapTable,
   persistInfo,
-
   persistTrlData,
   persistMilestones,
   persistCoreTechnology,
