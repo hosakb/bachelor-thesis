@@ -1,0 +1,25 @@
+<input type="checkbox" id="nav-toggle" checked>
+<div class="sidebar">
+    <div class="sidebar-brand">
+        <h1><a href=""><span class="las la-dice-d20"></span><span></span></a></h1>
+    </div>
+    <div class="sidebar-menu">
+        <ul>
+            <li><a href="/admin" id="side-dashboard" <% if (page === "admin" ) { %>  class="active"<% }%>  ><span class="las la-address-card"></span>
+                <span>Dashboard</span></a>
+            </li>
+            <li><a href="/admin/add-users" id="side-funds" <% if (page === "add-users" )  { %> class="active"<%  }%> ><span class="las la-address-book"></span>
+                <span>Add Fund</span></a>
+            </li>
+            <li><a href="/admin/add-startups" id="side-startups" <% if (page === "add-startups" )  { %> class="active"<%  }%> ><span class="las la-rocket"></span>
+                <span>Add Startup</span></a>
+            </li>
+            <li><a href="/admin/add-funds" id="side-funds" <% if (page === "add-funds" )  { %> class="active"<%  }%> ><span class="las la-university"></span>
+                <span>Add Fund</span></a>
+            </li>
+            <li><a href="/logout"><span class="las la-power-off"></span>
+                <span>Log Out</span></a>
+             </li>
+        </ul>
+    </div>
+</div>

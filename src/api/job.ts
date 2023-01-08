@@ -12,7 +12,7 @@ import { BusinessCentral } from "./business-central";
 
 export const startJob = () => {
   new CronJob(
-    "5 * * * * *",
+    "* * 1 * * *",
     async function () {
       console.info("Scraping Financial Data from Business Central");
       const startupIds: string[] = await getStartupIds();

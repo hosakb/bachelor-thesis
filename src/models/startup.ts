@@ -10,6 +10,13 @@ interface Startup {
   sector?: string;
 }
 
+interface AdminStartup {
+  name: string;
+  stage: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 enum InvestmentPhase {
   Seed = "seed",
   Startup = "startup",
@@ -384,7 +391,7 @@ const getStartups = async () => {
   let result;
 
   try {
-    result = await client.query("SELECT name, stage FROM startup");
+    result = await client.query("SELECT id, name, stage FROM startup");
   } catch (err) {
     throw new Error(
       `Failed to fetch all startups due to the following error: ${err}`
@@ -402,6 +409,31 @@ const getStartups = async () => {
   });
 
   return startups;
+};
+
+const getAllStartups = async (): Promise<AdminStartup[]> => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      "SELECT name, stage, created_at, updated_at  FROM startup"
+    );
+
+    return result.rows.map((startup) => {
+      return {
+        name: startup.name,
+        stage: startup.stage,
+        createdAt: startup.created_at,
+        updatedAt: startup.updated_at,
+      };
+    });
+  } catch (err) {
+    throw new Error(
+      `Failed to fetch all startups due to the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
 };
 
 const getStartupNameById = async (startupId: string) => {
@@ -860,6 +892,7 @@ export {
   persistMetrics,
   getTrlAvailable,
   persistCapTable,
+  getAllStartups,
   persistInfo,
   persistTrlData,
   persistMilestones,

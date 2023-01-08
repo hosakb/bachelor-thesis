@@ -45,6 +45,6 @@ function onSelectionChanged() {
       }
     })
     .catch(function (err) {
-       //TODO:
+      //TODO:
     });
 }

@@ -12,6 +12,18 @@ interface User {
   fund?: string;
 }
 
+interface AdminUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string;
+  startup?: string;
+  fund?: string;
+}
+
 interface LoginUser {
   id: string;
   firstName: string;
@@ -34,6 +46,90 @@ enum Role {
   Startup = "Startup",
   Fund = "Fund",
 }
+
+const getUsers = async (): Promise<AdminUser[]> => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      "SELECT id, first_name, last_name, email, role, created_at, updated_at, startup, fund FROM users",
+      []
+    );
+
+    const users: AdminUser[] = [];
+
+    for (const user of result.rows) {
+      if (user.startup !== null) {
+        try {
+          const result = await client.query(
+            "SELECT name FROM startup WHERE id = $1;",
+            [user.startup]
+          );
+          const startup = result.rows[0].name;
+          users.push({
+            id: user.id,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            role: user.role,
+            createdAt: user.created_at,
+            updatedAt: user.updated_at,
+            startup,
+            fund: user.fund,
+          });
+        } catch (error) {
+          throw new Error(
+            `Failed to query startup name for startup id user.startup. Error: ${error}`
+          );
+        }
+      } else if (user.fund !== null) {
+        try {
+          const result = await client.query(
+            "SELECT name FROM fund WHERE id = $1;",
+            [user.fund]
+          );
+          const fund = result.rows[0].name;
+          users.push({
+            id: user.id,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            role: user.role,
+            createdAt: user.created_at,
+            updatedAt: user.updated_at,
+            startup: user.startup,
+            fund,
+          });
+        } catch (error) {
+          throw new Error(
+            `Failed to query startup name for startup id user.startup. Error: ${error}`
+          );
+        }
+      } else {
+        console.error(
+          `Could not find assigned startup or fund for user with id ${user.id}`
+        );
+        users.push({
+          id: user.id,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          email: user.email,
+          role: user.role,
+          createdAt: user.created_at,
+          updatedAt: user.updated_at,
+          startup: user.startup,
+          fund: user.fund,
+        });
+      }
+    }
+
+    return users;
+  } catch (err) {
+    throw new Error(`Failed query the users. Error: ${err}`);
+  } finally {
+    client.release();
+  }
+};
 
 const getUserRole = async (email: string): Promise<UserRole> => {
   const client = await pool.connect();
@@ -212,6 +308,7 @@ export {
   User,
   Role,
   UserRole,
+  getUsers,
   getUserRole,
   getLoginUserByEmail,
   getLoginUserById,

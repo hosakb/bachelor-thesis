@@ -1,175 +1,89 @@
-<div class="admin">
-    <ul>
-        <% if(typeof errors != 'undefined') { %>
-            <% errors.forEach( error => {%>
-        <li><%= error.message %></li>
-        <% })}; %>
-    </ul>
-    
-    <div class="onboarding-container">
-        <div class="onboarding-pane" id="register-fund">
-            <h2>Register Fund</h2>
-            <form action="/admin/fund-registration" method="post">
-                <div>
-                    <label for="name" >Fund Name:</label>
-                    <input class="form-input" type="text" name="name" id="name" required>
-                </div>
-                <div>
-                    <label for="sector" >Investment Sector:</label>
-                    <input class="form-input" type="text" name="sector" id="sector" required>
-                </div>
-                <div>
-                    <label for="size" >Fund Size:</label>
-                    <input class="form-input" type="text" name="size" id="size" required>
-                </div>
-                <div>
-                    <label>General Partner:</label>
-                    <button type="button" class="form-btn" onclick="toggleRegisterPartners()"> + Add General Partner</button>
-                    <input type="hidden" id="gp">
-                    <input type="hidden" id="partners">
-                </div>
-                <div>
-                    <label for="startups">Add Startups of Fund</label>
-                    <div id="startup-selection-parent">
-                        <div class="startup-selection-child">
-                            <span>Added Startups</span>
-                            <ul class="startup-list" id="added-startup"></ul>
-                        </div>
-                        <div class="startup-selection-child" id="startup-controls">
-                            <button id="add-startup-btn">+</button>
-                            <br>
-                            <button id="remove-startup-btn">-</button>
-                        </div>
-                        <div class="startup-selection-child" id="existing-startups">
-                            <span>Available Startups</span>
-                            <ul class="startup-list"  id="existing-startup">  <!-- TODO: Add elems from Backend  -->
-                                <% startups.forEach( startup => {%>
-                                    <li value="<%= startup.id %>"><%= startup.name %></li>
-                                    <% }); %>
-                            </ul>
-                        </div>
-                    </div>
-                    <button id= "add-startups" class="form-btn" onclick="toggleRegisterStartup()"> + Add Startups</button>
-                    <input id="startup-input" type="hidden" required> <!-- TODO: Startups to input  -->
-                </div> 
-                <div class="submit">
-                    <input type="submit" value="Create Fund">
-                </div>
-            </form>
-            <form action="" metod="">
-                <label for=""></label>
-                <input type="file" name="import">
-            </form>
+<div>
+    <div>
+        <h2>Overview</h2>
+    </div>
+    <br>
+    <div>
+        <h3>Funds</h3>
+       <div>
+        <table>
+          <thead>
+              <tr>
+                <th>Name</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+              </tr>
+          </thead>
+          <tbody>
+           <% for (const fund of funds) { %> 
+            <tr>
+                <td><%= fund.name %> </td>
+                <td><%= fund.createdAt.getDate() + "-" + fund.createdAt.getMonth() + "-" + fund.createdAt.getFullYear() %></td>
+                <td><%= fund.updatedAt.getDate() + "-" + fund.updatedAt.getMonth() + "-" + fund.updatedAt.getFullYear() %></td>
+            </tr>
+            <% } %> 
+          </tbody>
+        </table>
+       </div>
+    </div>
+    <br>
+    <div>
+        <h3>Startups</h3>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Investment Phase</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (const startup of startups) { %> 
+                        <tr>
+                            <td><%= startup.name %> </td>
+                            <td><%= startup.stage %> </td>
+                            <td><%= startup.createdAt.getDate() + "-" + startup.createdAt.getMonth() + "-" + startup.createdAt.getFullYear() %></td>
+                            <td><%= startup.updatedAt.getDate() + "-" + startup.updatedAt.getMonth() + "-" + startup.updatedAt.getFullYear() %></td>
+                        </tr>
+                        <% } %> 
+                </tbody>
+            </table>
         </div>
-
-        <div class="variable-pane" id="register-gp">
-            <div class="variable-pane-box">
-                <h3>Register General Partner</h3>
-                
-                <div>
-                    <label>Name:</label>
-                    <input type="text" id="gp-name" required>
-                </div>    
-                <div id="partner-selection-parent">
-                    <div id="partner-selection-child">
-                        <label>Partners:</label>
-                        <ul id="partner-list"></ul>
-                    </div>
-                    <div>
-                        <div>
-                            <label for="partner-first-name">First Name:</label>
-                            <input type="text" id="partner-first-name">
-                        </div>
-                        <div>
-                            <label for="partner-last-name">Last Name:</label>
-                            <input type="text" id="partner-last-name">
-                        </div>
-                        <div>
-                            <label for="partner-email">Email:</label>
-                            <input type="email" id="partner-email">
-                        </div>
-                        <div>
-                            <label for="partner-password">Password:</label>
-                            <input type="password" id="partner-password">
-                        </div>
-                        <div>
-                            <button id="remove-partner-btn">Remove Partner</button>
-                            <button onclick="addPartner()">Add partner</button>
-                        </div>
-                    </div>
-                </div>
-                    <button onclick="createGp()">Create</button>
-                    <button onclick="toggleRegisterPartners()">Back</button>
-            </div>
-        </div>
-
-        <div class="variable-pane" id="register-startup">
-            <div class="variable-pane-box">
-                <h3>Register Startups</h3>
-                <div>
-                    <label for="name">Startup Name</label>
-                    <input type="text" id="startup-name" required>
-                </div>    
-                <div>
-                    <label>Investment Phase</label>
-                    <select name="phase" id="phase" required>
-                        <option value="seed" selected="selected">Seed Phase</option>
-                        <option value="startup">Startup Phase</option>
-                        <option value="first_stage">First Stage Phase</option>
-                        <option value="second_stage">Second Stage Phase</option>
-                        <option value="third_stage">Third Stage Phase</option>
-                        <option value="later">Later Stage Phase</option>
-                    </select>
-                    <br>
-                    <div id="startup-users-parent">
-                        <div class="startup-users-child">
-                            <label>Users</label>
-                            <div id="startup-users">
-                                <table id="startup-user-table">
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Role</th>
-                                            <th>Email Address</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="startup-user-tbody"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="new-startup-users" class="startup-users-child">
-                            <div>
-                                <label for="user-first-name">First Name:</label>
-                                <input type="text" id="user-first-name">
-                            </div>
-                            <div>
-                                <label for="user-last-name">Last Name:</label>
-                                <input type="text" id="user-last-name">
-                            </div>
-                            <div>
-                                <label for="user-email">Email:</label>
-                                <input type="email" id="user-email">
-                            </div>
-                            <div>
-                                <label for="user-password">Password:</label>
-                                <input type="password" id="user-password">
-                            </div>
-                            <div>
-                                <label for="user-role">Role:</label>
-                                <input type="text" id="user-role">
-                            </div>
-                            <div>
-                                <button id="remove-startup-user-btn" onclick="removeStartupUser()">Remove User</button>
-                                <button  id="add-startup-user-btn" onclick="addStartupUser()">Add User</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button onclick="toggleRegisterStartup()">Back</button>
-                <button onclick="registerNewStartup()">Create</button>
-            </div>
+    <br>
+    <div>
+        <h3>Users</h3>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Startup</th>
+                        <th>Fund</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (const user of users) { %> 
+                        <tr>
+                            <td><%= user.firstName + " " + user.lastName %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.role %></td>
+                            <td><%= user.createdAt.getDate() + "-" + user.createdAt.getMonth() + "-" + user.createdAt.getFullYear() %></td>
+                            <td><%= user.updatedAt.getDate() + "-" + user.updatedAt.getMonth() + "-" + user.updatedAt.getFullYear() %></td>
+                            <td><%= user.startup %></td>
+                            <td><%= user.fund %></td>
+                        </tr>
+                        <% } %> 
+                </tbody>
+            </table>
         </div>
     </div>
-    <script src="js/onboarding.js"></script> 
+    </div>
+    <br>
+ 
 </div>
