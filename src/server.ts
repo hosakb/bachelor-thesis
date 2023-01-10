@@ -43,10 +43,6 @@ app.set("layout", "layouts/login");
 app.use(expressLayouts);
 
 app.use(express.static(__dirname + "/public"));
-// app.use("/css", express.static(__dirname + "/public/css"));
-// app.use("/js", express.static(__dirname + "/public/js"));
-// app.use("/node-modules", express.static(__dirname + "/../node_modules"));
-// app.use("/img", express.static(__dirname + "/public/img"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

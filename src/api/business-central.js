@@ -1,7 +1,25 @@
 import httpntlm from "httpntlm";
 import { promisify } from "util";
 
+// lutzGast_21!
+
 const httpntlmGetAsync = promisify(httpntlm.get);
+
+export const getHashedPassword = (password) => {
+  var lm = JSON.stringify(
+    Array.prototype.slice.call(
+      httpntlm.ntlm.create_LM_hashed_password(password),
+      0
+    )
+  );
+  var nt = JSON.stringify(
+    Array.prototype.slice.call(
+      httpntlm.ntlm.create_NT_hashed_password(password),
+      0
+    )
+  );
+  return { lm, nt };
+};
 
 export class BusinessCentral {
   baseUrl;
@@ -14,18 +32,8 @@ export class BusinessCentral {
     (this.baseUrl = process.env.BUSINESS_CENTRAL),
       (this.company = `Company('${company}')/`);
     this.username = username;
-    // this.ntPassword = ntPassword;
-    // this.lmPassword = lmPassword;
-
-    // TODO: -------------------------- TMP ---------------------
-    var ntlm = httpntlm.ntlm;
-    var lm = ntlm.create_LM_hashed_password("lutzGast_21!");
-    var nt = ntlm.create_NT_hashed_password("lutzGast_21!");
-
-    this.ntPassword = nt;
-    this.lmPassword = lm;
-
-    // TODO: -------------------------- TMP ---------------------
+    this.ntPassword = new Buffer.from(ntPassword);
+    this.lmPassword = new Buffer.from(lmPassword);
   }
 
   async getBalance() {

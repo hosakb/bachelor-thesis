@@ -41,10 +41,34 @@ interface UserRole {
   role: Role;
 }
 
+interface NewUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+  hashedPassword: string;
+  role: string;
+  startup?: string;
+  fund?: string;
+}
+
+interface UpdatedUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  hashedPassword: string;
+}
+
 enum Role {
   Admin = "Admin",
   Startup = "Startup",
   Fund = "Fund",
+}
+
+interface Founder {
+  id: string;
+  firstName: string;
+  lastName: string;
 }
 
 const getUsers = async (): Promise<AdminUser[]> => {
@@ -281,23 +305,93 @@ const emailRegistered = async (email: string) => {
   }
 };
 
-const insertUser = async (
-  firstName: string,
-  lastName: string,
-  email: string,
-  hashedPassword: string
-) => {
+const insertUser = async (user: NewUser) => {
+  const client = await pool.connect();
+
+  try {
+    if (user.fund !== undefined) {
+      await client.query(
+        `INSERT INTO users (first_name, last_name, email, password, role, fund) VALUES ($1, $2, $3, $4, $5, $6)`,
+        [
+          user.firstName,
+          user.lastName,
+          user.email,
+          user.hashedPassword,
+          user.role,
+          user.fund,
+        ]
+      );
+    } else {
+      await client.query(
+        `INSERT INTO users (first_name, last_name, email, password, role, startup) VALUES ($1, $2, $3, $4, $5, $6)`,
+        [
+          user.firstName,
+          user.lastName,
+          user.email,
+          user.hashedPassword,
+          user.role,
+          user.startup,
+        ]
+      );
+    }
+  } catch (err) {
+    throw new Error("Failed to create new user due to: " + err);
+  } finally {
+    client.release();
+  }
+};
+
+const updateUser = async (updatedUser: UpdatedUser) => {
   const client = await pool.connect();
 
   try {
     await client.query(
-      `INSERT INTO users (first_name, last_name, email, password, role) VALUES ($1, $2, $3, $4, $5)`,
-      [firstName, lastName, email, hashedPassword, ""]
+      `UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE id = $5`,
+      [
+        updatedUser.firstName,
+        updatedUser.lastName,
+        updatedUser.email,
+        updatedUser.hashedPassword,
+        updatedUser.id,
+      ]
     );
   } catch (err) {
-    throw new Error(
-      "Failed to create new user due to the following error: " + err
+    throw new Error(`Failed to update user with id: ${updatedUser.id}` + err);
+  } finally {
+    client.release();
+  }
+};
+
+const deleteUser = async (id: string) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query(`DELETE FROM users WHERE id = $1`, [id]);
+  } catch (err) {
+    throw new Error(`Failed to delete user with id: ${id}` + err);
+  } finally {
+    client.release();
+  }
+};
+
+const getFounders = async (): Promise<Founder[]> => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      `SELECT id, first_name, last_name from users WHERE startup IS NOT NULL;`,
+      []
     );
+
+    return result.rows.map((founder) => {
+      return {
+        id: founder.id,
+        firstName: founder.first_name,
+        lastName: founder.last_name,
+      };
+    });
+  } catch (err) {
+    throw new Error(`Failed to query founders. Error:` + err);
   } finally {
     client.release();
   }
@@ -308,6 +402,8 @@ export {
   User,
   Role,
   UserRole,
+  NewUser,
+  UpdatedUser,
   getUsers,
   getUserRole,
   getLoginUserByEmail,
@@ -315,4 +411,7 @@ export {
   emailRegistered,
   insertUser,
   getFirstUserLoginByEmail,
+  updateUser,
+  deleteUser,
+  getFounders,
 };

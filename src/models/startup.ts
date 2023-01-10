@@ -279,6 +279,26 @@ interface WeightedPoints {
   sum: number;
 }
 
+const insertNewStartup = async (startupName: string): Promise<string> => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      `INSERT INTO startup (name) VALUES ($1) RETURNING id;`,
+      [startupName]
+    );
+    if (result.rows[0].id == undefined || result.rows[0].id == null) {
+      throw new Error(
+        `Expected value for id after inserting. Received ${result.rows[0].id}.`
+      );
+    }
+    return result.rows[0].id;
+  } catch (err) {
+    throw new Error(`Failed insert new startup. Error: ${err}`);
+  } finally {
+    client.release();
+  }
+};
+
 const getStartupIds = async (): Promise<string[]> => {
   const client = await pool.connect();
   try {
@@ -488,6 +508,22 @@ const persistCapTable = async (capTable: string, startupId: string) => {
   } catch (err) {
     throw new Error(
       `Failed to persist cap table for startup id ${startupId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const updateStartupName = async (name: string, startupId: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query("UPDATE startup SET name = $1 WHERE id = $2", [
+      name,
+      startupId,
+    ]);
+  } catch (err) {
+    throw new Error(
+      `Failed to update startup name for startup id ${startupId} with the following error: ${err}`
     );
   } finally {
     client.release();
@@ -749,7 +785,18 @@ const deleteTrl = async (id: string) => {
   try {
     await client.query("DELETE FROM trl WHERE id = $1;", [id]);
   } catch (err) {
-    throw new Error(`${err}`);
+    throw new Error(`Failed to delete trl with id ${id}. Error: ${err}`);
+  } finally {
+    client.release();
+  }
+};
+
+const deleteStartup = async (id: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query("DELETE FROM startup WHERE id = $1;", [id]);
+  } catch (err) {
+    throw new Error(`Failed to delete startup with id ${id}. Error: ${err}`);
   } finally {
     client.release();
   }
@@ -875,6 +922,7 @@ export {
   TrlData,
   Questionnaire,
   WeightedPoints,
+  insertNewStartup,
   getStartupIds,
   getCapTable,
   getFirstStartupLoginById,
@@ -900,6 +948,8 @@ export {
   updateTrl,
   updateMilestoneDuration,
   updateMilestoneProgress,
+  updateStartupName,
   getTrl,
   deleteTrl,
+  deleteStartup,
 };

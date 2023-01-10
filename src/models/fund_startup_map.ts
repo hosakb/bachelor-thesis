@@ -61,4 +61,40 @@ const getStartupsForFund = async (fundId: string): Promise<Startup[]> => {
   }
 };
 
-export { getStartupsForFund, fundIdExists };
+const insertFundStartupRelation = async (fundId: string, startupId: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      "INSERT INTO fund_startup_map (fund_id, startup_id) VALUES ($1, $2);",
+      [fundId, startupId]
+    );
+  } catch (err) {
+    throw new Error(
+      `Failed to insert fund startup relationship for startup with id ${startupId} and fund with id ${fundId}. Error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const deleteStartupFundRelationship = async (startupId: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query("DELETE FROM fund_startup_map WHERE startup_id = $1;", [
+      startupId,
+    ]);
+  } catch (err) {
+    throw new Error(
+      `Failed to delete startup fund relationship user with id ${startupId}. Error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+export {
+  getStartupsForFund,
+  fundIdExists,
+  insertFundStartupRelation,
+  deleteStartupFundRelationship,
+};
