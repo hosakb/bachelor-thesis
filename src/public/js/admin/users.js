@@ -43,7 +43,7 @@ document.querySelector("#role").addEventListener("change", (e) => {
     if (startup.classList.contains("hidden")) {
       startup.classList.remove("hidden");
     }
-  } else if (e.target.value == "fund") {
+  } else if (e.target.value == "fund" || e.target.value == "stakeholder") {
     let startup = document.querySelector("#startup-input");
     if (!startup.classList.contains("hidden")) {
       startup.classList.add("hidden");

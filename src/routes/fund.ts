@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { Row } from "read-excel-file";
-import { getFundNameById } from "../models/fund";
+import { getFundById, getFundNameById } from "../models/fund";
 
 import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
 import { getWeights, updateWeights, Weights } from "../models/fund";
@@ -55,14 +55,12 @@ router.get("/", async (req, res) => {
       }
 
       req.session.startupTable = await getStartupsForFund(fundId);
-
+      const portfolio = await getFundById(fundId);
       res.render("dashboard/fund/index", {
         layout: "../views/layouts/dashboard.ejs",
         dashboard: "fund",
         scripts: ["/js/table/table", "/js/table/ag-grid-community.min"],
-        kpiI: 55,
-        kpiII: 33,
-        kpiIII: 66,
+        portfolio,
         page: "dashboard",
         title: await getFundNameById(fundId),
         name: req.user?.firstName + " " + req.user?.lastName,

@@ -3,13 +3,11 @@ document.getElementById("submit-new-startup").addEventListener("click", () => {
   let bcCompany = document.getElementById("company").value;
   let bcUsername = document.getElementById("bc-username").value;
   let bcPassword = document.getElementById("bc-password").value;
-  let fund = document.getElementById("fund").value;
 
   if (
     name == "" ||
     bcUsername == "" ||
     bcPassword == "" ||
-    fund == "" ||
     bcCompany == ""
   ) {
     alert("Please fill out all fields.");
@@ -19,7 +17,6 @@ document.getElementById("submit-new-startup").addEventListener("click", () => {
       bcCompany,
       bcUsername,
       bcPassword,
-      fund,
     };
 
     fetch("/admin/add-startup", {
@@ -35,7 +32,6 @@ document.getElementById("submit-new-startup").addEventListener("click", () => {
         document.getElementById("company").value = "";
         document.getElementById("bc-username").value = "";
         document.getElementById("bc-password").value = "";
-        document.getElementById("fund").value = "";
         alert("Successfully added new Startup");
       })
       .catch(() => {
@@ -53,7 +49,7 @@ document.getElementById("startups").addEventListener("change", async (e) => {
     redirect: "follow",
     body: JSON.stringify({ id: e.target.value }),
   }).catch(() => {
-    alert("Failed to add new Startup. Please try again.");
+    alert("Failed to fetch Startup. Please try again.");
   });
 
   const startup = await res.json();

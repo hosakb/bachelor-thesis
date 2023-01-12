@@ -1,10 +1,15 @@
 import express from "express";
 import {
   deleteTrl,
+  getInvestors,
+  getStartupNameById,
   getTrl,
+  insertInvestor,
+  NewInvestor,
   persistCapTable,
   persistTrlData,
   TrlData,
+  updateInvestorStatus,
   updateTrl,
 } from "../models/startup";
 import {
@@ -17,31 +22,24 @@ import {
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  if (req.user?.startup === undefined) {
-    if (req.user?.fund !== undefined) {
-      console.info(
-        `Redirecting user ${req.user?.id} to fund screen since no startup id is assigned.`
-      );
-      res.redirect("/startup");
-    } else {
-      console.info(
-        `Redirecting user ${req.user?.id} to login screen since no fund id or startup id are assigned.`
-      );
-      res.redirect("/");
-    }
-  } else {
-    const trl = await getTrl(req.user?.startup);
+    const trl = await getTrl(req.session.startupId);
     req.session.trl = trl;
+    const investors = await getInvestors(req.session.startupId);
+    req.session.investors = investors;
+
+    const startupName: string = await getStartupNameById(req.session.startupId);
+    req.session.startupName = startupName;
+    
     res.render("submit/index", {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "startup",
       scripts: ["/js/submit"],
       page: "submit",
-      title: "Finvia", // TODO: make dynamic
+      title: startupName,
       name: req.user?.firstName + " " + req.user?.lastName,
       trl: trl,
+      investors,
     });
-  }
 });
 
 // router.post("/", multerUpload.single("kpis"), async (req, res) => {
@@ -59,7 +57,7 @@ router.get("/", async (req, res) => {
 //       layout: "../views/layouts/startup.ejs",
 //       page: "submit",
 //       kpis,
-//       title: "Finvia", // TODO: make dynamic
+//       title: req.session.startupName,
 //       name: req.user?.firstName + " " + req.user?.lastName,
 //     });
 
@@ -153,12 +151,15 @@ router.post(
       await persistCapTable(JSON.stringify(capTable), startupId);
 
       res.render("submit/index", {
-        layout: "../views/layouts/startup.ejs",
+        layout: "../views/layouts/dashboard.ejs",
+        dashboard: "startup",
+        scripts: ["/js/submit"],
         page: "submit",
-        title: "Finvia", // TODO: make dynamic
+        title: req.session.startupName,
         name: req.user?.firstName + " " + req.user?.lastName,
         capTable,
         trl: req.session.trl,
+        investors: req.session.investors,
       });
 
       return;
@@ -216,7 +217,35 @@ router.post("/add-trl", async (req, res) => {
     res.redirect("/submit");
   } catch (error) {
     console.error(
-      `The following error occurred during adding of a new technology trl to startup with id ${req.session.startupId} to the db. Redirecting to /submit ${error}`
+      `Failed to persist new trl startup with id ${req.session.startupId}. Error: ${error}. Redirecting to /submit `
+    );
+    res.redirect("/submit");
+  }
+});
+
+router.post("/new-investor", async (req, res) => {
+  const { name, type, email, number, url, country, notes, contactDate } = req.body;
+  try {
+    const newInvestor: NewInvestor = { name, type, email, number, url, country, notes, contactDate, startupId: req.session.startupId };
+    await insertInvestor(newInvestor);
+    res.status(200).json();
+  } catch (error) {
+    console.error(
+      `Failed to add new investors contact to startup with id ${req.session.startupId}. Error: ${error}. Redirecting to /submit ${error}`
+    );
+    res.status(500).json();
+    res.redirect("/submit");
+  }
+});
+
+router.post("/update-investor-status", async (req, res) => {
+  const { id, status } = req.body;
+  try {
+    await updateInvestorStatus(status, id);
+    res.status(200).json();
+  } catch (error) {
+    console.error(
+      `Failed to update investors status. Error: ${error}. Redirecting to /submit ${error}`
     );
     res.redirect("/submit");
   }

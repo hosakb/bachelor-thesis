@@ -27,10 +27,11 @@
                         <option value="admin">Admin</option>
                         <option value="fund">Fund</option>
                         <option value="startup">Startup</option>
+                        <option value="stakeholder">Stakeholder</option>
                     </select>
                 </div>
                 <div id="fund-input" class="hidden">
-                    <label for="fund">Fund:</label>
+                    <label for="fund">Fund/Stakeholder:</label>
                     <select name="fund" id="fund" required>
                         <% for (const fund of funds) { %>
                             <option value="<%= fund.id %>"><%= fund.name %></option>

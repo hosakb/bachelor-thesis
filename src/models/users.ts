@@ -60,12 +60,19 @@ interface UpdatedUser {
 }
 
 enum Role {
-  Admin = "Admin",
-  Startup = "Startup",
-  Fund = "Fund",
+  Admin = "admin",
+  Startup = "startup",
+  Fund = "fund",
+  Stakeholder = "stakeholder"
 }
 
 interface Founder {
+  id: string;
+  firstName: string;
+  lastName: string;
+}
+
+interface GeneralPartner {
   id: string;
   firstName: string;
   lastName: string;
@@ -185,15 +192,24 @@ const getUserRole = async (email: string): Promise<UserRole> => {
         id: result.rows[0].fund,
         role: Role.Fund,
       };
-    } else {
+    } else if (role === Role.Stakeholder) {
+      return {
+        id: result.rows[0].fund,
+        role: Role.Stakeholder,
+      };
+    }else if (role === Role.Admin){
       return {
         id: result.rows[0].id,
         role: Role.Admin,
       };
+    } else {
+      throw new Error(
+        `Unknown role found for user with email: ${email}.`
+      );
     }
   } catch (err) {
     throw new Error(
-      `  "Failed query the users role after login for user with email: ${email}. Error:  ${err}`
+      `Failed query the users role after login for user with email: ${email}. Error:  ${err}`
     );
   } finally {
     client.release();

@@ -7,7 +7,7 @@ import {
   insertNewStartup,
   updateStartupName,
 } from "../models/startup";
-import { getFunds } from "../models/fund";
+import { Fund, AdminFundPortfolio, deleteFund, getFundById, getFunds, insertNewFund, NewFund, UpdatedFund, updateFund } from "../models/fund";
 import {
   deleteUser,
   emailRegistered,
@@ -29,8 +29,9 @@ import {
   updateBusinessCentralUser,
 } from "../models/businessCentral";
 import {
-  deleteStartupFundRelationship,
+  getStartupsForFund,
   insertFundStartupRelation,
+  updateFundStartups,
 } from "../models/fund_startup_map";
 
 const router: Router = express.Router();
@@ -42,14 +43,14 @@ router.get("/", async (req, res) => {
       scripts: [],
       page: "admin",
       title: "Admin Panel",
-      name: "Admin Name", // TODO: make dynamic
+      name: req.user?.firstName + " " + req.user?.lastName,
       funds: await getFunds(),
       startups: await getAllStartups(),
       users: await getUsers(),
     });
   } catch (err) {
     throw new Error(
-      `Failed to load all startups into the admin panel due to error: ${err}`
+      `Failed to load all startups into the admin panel Error: ${err}`
     );
   }
 });
@@ -61,14 +62,14 @@ router.get("/users", async (req, res) => {
       scripts: ["/js/admin/users"],
       page: "users",
       title: "Admin Panel",
-      name: "Admin Name", // TODO: make dynamic,
+      name: req.user?.firstName + " " + req.user?.lastName,
       funds: await getFunds(),
       startups: await getAllStartups(),
       users: await getUsers(),
     });
   } catch (err) {
     throw new Error(
-      `Failed to load all startups into the admin panel due to error: ${err}`
+      `Failed to load all startups into the admin panel Error: ${err}`
     );
   }
 });
@@ -171,20 +172,19 @@ router.get("/startups", async (req, res) => {
       scripts: ["/js/admin/startups"],
       page: "startups",
       title: "Admin Panel",
-      name: "Admin Name", // TODO: make dynamic,
-      funds: await getFunds(),
+      name: req.user?.firstName + " " + req.user?.lastName,
       founders: await getFounders(),
       startups: await getStartups(),
     });
   } catch (err) {
     throw new Error(
-      `Failed to load all startups into the admin panel due to error: ${err}`
+      `Failed to load all startups into the admin panel Error: ${err}`
     );
   }
 });
 
 router.post("/add-startup", async (req, res) => {
-  const { name, bcUsername, bcPassword, fund, bcCompany } = req.body;
+  const { name, bcUsername, bcPassword, bcCompany } = req.body;
 
   try {
     const startupId = await insertNewStartup(name);
@@ -197,7 +197,6 @@ router.post("/add-startup", async (req, res) => {
       ntHashedPassword: nt,
     };
     await insertBusinessCentralUser(bcUser);
-    await insertFundStartupRelation(fund, startupId);
     res.status(200).json();
   } catch (err) {
     throw new Error(`Failed to add new startup. Error: ${err}`);
@@ -239,7 +238,7 @@ router.post("/update-startup", async (req, res) => {
     await updateBusinessCentralUser(bcUser);
     res.status(200).json();
   } catch (err) {
-    throw new Error(`Failed to update new startup. Error: ${err}`);
+    throw new Error(`Failed to update startup. Error: ${err}`);
   }
 });
 
@@ -249,11 +248,128 @@ router.post("/delete-startup", async (req, res) => {
   try {
     await deleteStartup(id);
     await deleteBusinessCentralUser(id);
-    await deleteStartupFundRelationship(id);
     res.status(200).json();
   } catch (err) {
-    throw new Error(`Failed to update new startup. Error: ${err}`);
+    throw new Error(`Failed to delete startup. Error: ${err}`);
   }
 });
+
+router.get("/funds", async (req, res) => {
+  try {
+    res.render("admin/funds", {
+      layout: "../views/layouts/admin.ejs",
+      scripts: ["/js/admin/fund"],
+      page: "funds",
+      title: "Admin Panel",
+      name: req.user?.firstName + " " + req.user?.lastName,
+      funds: await getFunds(),
+      startups: await getStartups(),
+    });
+  } catch (err) {
+    throw new Error(
+      `Failed to load all funds into the admin panel Error: ${err}`
+    );
+  }
+});
+
+router.post("/add-fund", async (req, res) => {
+  const { fundName,
+    investmentSector,
+    hardCap,
+    fundVolume,
+    nextClosing,
+    finalClosing,
+    startups,
+    type} = req.body;
+
+    const newFund: NewFund = {
+      name: fundName,
+      investmentSector,
+      hardCap,
+      volume: fundVolume,
+      nextClosing,
+      finalClosing,
+      type
+    }
+
+  try {
+    const fundId = await insertNewFund(newFund);
+    
+    for (const startupId of startups) {
+      await insertFundStartupRelation(fundId, startupId);
+    }
+    res.status(200).json();
+  } catch (err) {
+    throw new Error(`Failed to add new fund. Error: ${err}`);
+   
+  }
+});
+
+router.post("/get-fund", async (req, res) => {
+  const { id } = req.body;
+  try {
+    const fund: Fund = await getFundById(id);
+    const startups = await getStartupsForFund(id);
+
+    const fundPortfolio: AdminFundPortfolio = {
+      name: fund.name,
+      sector: fund.investmentSector,
+      volume: fund.volume,
+      hardCap: fund.hardCap,
+      finalClosing: fund.finalClosing,
+      nextClosing: fund.nextClosing,
+      startups: startups.map((startup) => {
+        return startup.id;
+      }),
+      type: fund.type,
+    }
+    res.status(200).json(fundPortfolio);
+  } catch (err) {
+    throw new Error(`Failed to get fund for id: ${id}. Error: ${err}`);
+  }
+});
+
+router.post("/update-fund", async (req, res) => {
+  const { id, fundName,
+    investmentSector,
+    hardCap,
+    fundVolume,
+    nextClosing,
+    finalClosing,
+    fundsStartups} = req.body;
+
+  const updatedFund: UpdatedFund = {
+      id,
+      name: fundName,
+      sector: investmentSector,
+      hardCap,
+      volume: fundVolume,
+      nextClosing,
+      finalClosing,
+  }
+
+  const startupIds: string[] = fundsStartups;
+
+  try {
+    await updateFund(updatedFund);
+    await updateFundStartups(id, startupIds);
+    res.status(200).json();
+  } catch (err) {
+    throw new Error(`Failed to update fund. Error: ${err}`);
+  }
+});
+
+router.post("/delete-fund", async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    await deleteFund(id);
+    res.status(200).json();
+  } catch (err) {
+    throw new Error(`Failed to delete fund. Error: ${err}`);
+  }
+});
+
+
 
 export default router;

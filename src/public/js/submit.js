@@ -305,3 +305,95 @@ document.querySelector("#add-technology-btn").addEventListener("click", () => {
       location.reload();
     });
 });
+
+document.getElementById("add-investor").addEventListener("click", (e) => {
+  document.getElementById("add-investor-form").classList.toggle("show");
+});
+
+document.getElementById("submit-potential-investor").addEventListener("click", (e) => {
+  document.getElementById("add-investor-form").classList.toggle("show");
+  const name = document.getElementById("investor-name").value;
+  const type = document.getElementById("investor-type").value;
+  const email = document.getElementById("investor-email").value;
+  const number = document.getElementById("investor-number").value;
+  const url = document.getElementById("investor-url").value;
+  const country = document.getElementById("investor-country").value;
+  const notes = document.getElementById("investor-notes").value;
+  const contactDate = document.getElementById("investor-contact-date").value;
+
+  if(name == "" || type == "" || country == "" || contactDate == "" || (email == "" && number  == "" &&  url  == "")) {
+    alert("Please fill out all the fields.")
+  } else {
+    fetch("/submit/new-investor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      body: JSON.stringify({ name, type, email, number, url, country, notes, contactDate }),
+    })
+      .then(() => {
+        alert("Successfully added contacted investor");
+      })
+      .catch(() => {
+        alert("Failed to add contacted investor.");
+      });
+  }
+});
+
+document.querySelector(".exit").addEventListener("click", (e) => {
+  document.getElementById("add-investor-form").classList.toggle("show");
+});
+
+document.querySelector("#investor-accepted").addEventListener("click", (e) => {
+  const td = e.target.parentElement.parentElement.parentElement;
+  const span = document.createElement("span");
+  span.classList.add("las");
+  span.classList.add("la-check")
+  td.appendChild(span);
+  td.children[1].classList.add("hidden");
+
+  const id = td.children[0].value;
+
+  fetch("/submit/update-investor-status", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    body: JSON.stringify({ id, status: "accepted" }),
+  })
+    .then(() => {
+      alert("Successfully updated contacted investors status");
+    })
+    .catch(() => {
+      alert("Failed to update contacted investors status.");
+    });
+});
+
+document.getElementById("investor-declined").addEventListener("click", (e) => {
+  const td = e.target.parentElement.parentElement.parentElement;
+  const span = document.createElement("span");
+  span.classList.add("las");
+  span.classList.add("la-times")
+  td.appendChild(span);
+  td.children[1].classList.add("hidden");
+
+  const id = td.children[0].value;
+
+  fetch("/submit/update-investor-status", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    body: JSON.stringify({ id, status: "declined" }),
+  })
+    .then(() => {
+      alert("Successfully updated contacted investors status");
+    })
+    .catch(() => {
+      alert("Failed to update contacted investors status.");
+    });
+});
+

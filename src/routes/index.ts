@@ -28,18 +28,23 @@ router.post(
   }),
   async (req, res) => {
     const { email } = req.body;
-    const userRole: UserRole = await getUserRole(email);
-
-    switch (userRole.role) {
-      case Role.Admin:
-        return loginAdmin(userRole, res);
-      case Role.Startup:
-        return loginOrOnboardStartupUser(userRole, email, res, req);
-      case Role.Fund:
-        return loginFund(userRole, req, res);
-      default:
-        console.info("No role assigned to user. Redirect to login page.");
-        return res.redirect("/");
+    try {
+      const userRole: UserRole = await getUserRole(email);
+      switch (userRole.role) {
+        case Role.Admin:
+          return loginAdmin(userRole, res);
+        case Role.Startup:
+          return loginOrOnboardStartupUser(userRole, email, res, req);
+        case Role.Fund:
+          return loginFund(userRole, req, res);
+        case Role.Stakeholder:
+          return loginFund(userRole, req, res);
+        default:
+         throw new Error("No role assigned to user.");
+      }
+    } catch (error) {
+      console.info(error + " Redirecting to login page.");
+      return res.redirect("/");
     }
   }
 );

@@ -76,6 +76,19 @@ interface Trl {
   trlData: TrlData[];
 }
 
+interface Investor {
+  id: string;
+  name: string;
+  type: string;
+  email: string;
+  number: string  | undefined;
+  url: string  | undefined;
+  country: string;
+  notes: string  | undefined;
+  contactDate: Date;
+  status: string;
+}
+
 declare global {
   namespace Express {
     export interface Request {
@@ -114,5 +127,6 @@ declare module "express-session" {
     startupName: string;
     capTable: Row[];
     trl: Trl;
+    investors: Investor[];
   }
 }

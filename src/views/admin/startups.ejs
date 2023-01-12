@@ -20,18 +20,6 @@
                 <input type="password" name="bc-password" id="bc-password">
             </div>
         </div>
-        <div>
-            <h4>Fund</h4>
-            <div>
-                <label for="fund">Fund: </label>
-                <select name="fund" id="fund">
-                    <option value="" selected disabled>Select Fund</option>
-                    <% for (const fund of funds) { %>
-                        <option value="<%= fund.id %>"><%= fund.name %></option>
-                    <% } %> 
-                </select>
-            </div>
-        </div>
     </div>
     <button id="submit-new-startup">Submit new Startup</button>
 </div>
@@ -75,7 +63,7 @@
 <div>
     <h3>Delete Startup</h3>
     <div>
-        <select name="select-delete-users" id="select-delete-startup">
+        <select name="select-delete-startup" id="select-delete-startup">
             <option value="" selected disabled>Select Startup</option>
             <% for (const startup of startups) { %> 
                 <option value="<%= startup.id %>"><%= startup.name %></option>

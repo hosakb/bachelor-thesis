@@ -8,6 +8,7 @@ import {
   getTrl,
   Metrics,
   getMetrics,
+  getStartupNameById,
 } from "../models/startup";
 import { getMonth } from "../util/date";
 
@@ -31,7 +32,6 @@ router.get("/", async (req, res) => {
   } else {
     try {
       const trl = await getTrl(startupId);
-
       res.render("dashboard/startup/index", {
         layout: "../views/layouts/dashboard.ejs",
         dashboard: "startup",
@@ -43,7 +43,7 @@ router.get("/", async (req, res) => {
         phase: await getInvestmentPhase(startupId),
         kpis: req.kpis,
         page: "dashboard",
-        title: req.startupName,
+        title: await getStartupNameById(startupId),
         name: req.user?.firstName + " " + req.user?.lastName,
         trl: trl,
       });

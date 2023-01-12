@@ -1,38 +1,62 @@
 <div class="cards">
-    <div class="card-single-kpi">
-        <div>
-            <h3>
-                <%= locals.kpiI %> %
-            </h3>
-            <span>Fund KPI I</span>
+    <% if(portfolio.type == "fund") {%>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= portfolio.sector %>
+                </h3>
+                <span>Investment Sector</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
         </div>
-        <div>
-            <span class="las la-clipboard"></span>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= portfolio.hardCap %> $
+                </h3>
+                <span>Hard Cap</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
         </div>
-    </div>
-    <div class="card-single-kpi">
-        <div>
-            <h3>
-                <%= locals.kpiII %> %
-            </h3>
-            <span>Fund KPI II</span>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= portfolio.volume %> $
+                </h3>
+                <span>Fund Volume</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
         </div>
-        <div>
-            <span class="las la-clipboard"></span>
-        </div>
-    </div>
-    <div class="card-single-kpi">
-        <div>
-            <h3>
-                <%= locals.kpiIII %> %
-            </h3>
-            <span>Fund KPI III</span>
-        </div>
-        <div>
-            <span class="las la-clipboard"></span>
-        </div>
-    </div>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= portfolio.nextClosing %>
+                </h3>
+                <span>Next Closing</span>
+            </div>
+            <div>
 
+                <span class="las la-clipboard"></span>
+            </div>
+        </div>
+        <div class="card-single-kpi">
+            <div>
+                <h3>
+                    <%= portfolio.finalClosing %> %
+                </h3>
+                <span>Final Closing</span>
+            </div>
+            <div>
+                <span class="las la-clipboard"></span>
+            </div>
+        </div> 
+    <% } %>
     <div class="card-single-table">
         <div id="table" class="ag-theme-alpine"></div>
     </div>

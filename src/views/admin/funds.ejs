@@ -1,175 +1,145 @@
-<div class="admin">
-    <ul>
-        <% if(typeof errors != 'undefined') { %>
-            <% errors.forEach( error => {%>
-        <li><%= error.message %></li>
-        <% })}; %>
-    </ul>
-    
-    <div class="onboarding-container">
-        <div class="onboarding-pane" id="register-fund">
-            <h2>Register Fund</h2>
-            <form action="/admin/fund-registration" method="post">
-                <div>
-                    <label for="name" >Fund Name:</label>
-                    <input class="form-input" type="text" name="name" id="name" required>
-                </div>
-                <div>
-                    <label for="sector" >Investment Sector:</label>
-                    <input class="form-input" type="text" name="sector" id="sector" required>
-                </div>
-                <div>
-                    <label for="size" >Fund Size:</label>
-                    <input class="form-input" type="text" name="size" id="size" required>
-                </div>
-                <div>
-                    <label>General Partner:</label>
-                    <button type="button" class="form-btn" onclick="toggleRegisterPartners()"> + Add General Partner</button>
-                    <input type="hidden" id="gp">
-                    <input type="hidden" id="partners">
-                </div>
-                <div>
-                    <label for="startups">Add Startups of Fund</label>
-                    <div id="startup-selection-parent">
-                        <div class="startup-selection-child">
-                            <span>Added Startups</span>
-                            <ul class="startup-list" id="added-startup"></ul>
-                        </div>
-                        <div class="startup-selection-child" id="startup-controls">
-                            <button id="add-startup-btn">+</button>
-                            <br>
-                            <button id="remove-startup-btn">-</button>
-                        </div>
-                        <div class="startup-selection-child" id="existing-startups">
-                            <span>Available Startups</span>
-                            <ul class="startup-list"  id="existing-startup">  <!-- TODO: Add elems from Backend  -->
-                                <% startups.forEach( startup => {%>
-                                    <li value="<%= startup.id %>"><%= startup.name %></li>
-                                    <% }); %>
-                            </ul>
-                        </div>
-                    </div>
-                    <button id= "add-startups" class="form-btn" onclick="toggleRegisterStartup()"> + Add Startups</button>
-                    <input id="startup-input" type="hidden" required> <!-- TODO: Startups to input  -->
-                </div> 
-                <div class="submit">
-                    <input type="submit" value="Create Fund">
-                </div>
-            </form>
-            <form action="" metod="">
-                <label for=""></label>
-                <input type="file" name="import">
-            </form>
+   
+<div>
+    <h3>Register Fund or Stakeholder</h3>
+    <select name="selectFundStakeholder" id="select-fund-stakeholder">
+        <option selected disabled>Select</option>
+        <option value="fund">Fund</option>
+        <option value="stakeholder">Stakeholder</option>
+    </select>
+    <br>
+    <div id="register-fund" class="hidden">
+        <div>
+            <label for="name">Fund Name:</label>
+            <input class="form-input" type="text" name="name" id="name" required>
         </div>
-
-        <div class="variable-pane" id="register-gp">
-            <div class="variable-pane-box">
-                <h3>Register General Partner</h3>
-                
-                <div>
-                    <label>Name:</label>
-                    <input type="text" id="gp-name" required>
-                </div>    
-                <div id="partner-selection-parent">
-                    <div id="partner-selection-child">
-                        <label>Partners:</label>
-                        <ul id="partner-list"></ul>
-                    </div>
-                    <div>
-                        <div>
-                            <label for="partner-first-name">First Name:</label>
-                            <input type="text" id="partner-first-name">
-                        </div>
-                        <div>
-                            <label for="partner-last-name">Last Name:</label>
-                            <input type="text" id="partner-last-name">
-                        </div>
-                        <div>
-                            <label for="partner-email">Email:</label>
-                            <input type="email" id="partner-email">
-                        </div>
-                        <div>
-                            <label for="partner-password">Password:</label>
-                            <input type="password" id="partner-password">
-                        </div>
-                        <div>
-                            <button id="remove-partner-btn">Remove Partner</button>
-                            <button onclick="addPartner()">Add partner</button>
-                        </div>
-                    </div>
-                </div>
-                    <button onclick="createGp()">Create</button>
-                    <button onclick="toggleRegisterPartners()">Back</button>
+        <div>
+            <label for="sector">Investment Sector:</label>
+            <input class="form-input" type="text" name="sector" id="sector" required>
+        </div>
+        <div>
+            <label for="hard-cap" >Hard Cap:</label>
+            <input class="form-input" type="number" name="hardCap" id="hard-cap" required>
+        </div>
+        <div>
+            <label for="fund-volume">Fund Volume:</label>
+            <input class="form-input" type="number" name="fundVolume" id="fund-volume" required>
+        </div>
+        <div>
+            <label for="next-closing">Next Closing:</label>
+            <input class="form-input" type="date" name="nextClosing" id="next-closing" required>
+        </div>
+        <div>
+            <label for="final-closing">Final Closing:</label>
+            <input class="form-input" type="date" name="finalClosing" id="final-closing" required>
+        </div>
+        <div>
+            <label>Startups:</label>
+            <div class="form-input">
+                <ul id="startups-list">
+                    <% for (const startup of startups) { %> 
+                        <li class="no-bullet">
+                            <input type="checkbox" value="<%= startup.id %>">
+                            <span><%= startup.name %></span>
+                        </li>
+                    <% } %> 
+                </ul>
             </div>
         </div>
-
-        <div class="variable-pane" id="register-startup">
-            <div class="variable-pane-box">
-                <h3>Register Startups</h3>
-                <div>
-                    <label for="name">Startup Name</label>
-                    <input type="text" id="startup-name" required>
-                </div>    
-                <div>
-                    <label>Investment Phase</label>
-                    <select name="phase" id="phase" required>
-                        <option value="seed" selected="selected">Seed Phase</option>
-                        <option value="startup">Startup Phase</option>
-                        <option value="first_stage">First Stage Phase</option>
-                        <option value="second_stage">Second Stage Phase</option>
-                        <option value="third_stage">Third Stage Phase</option>
-                        <option value="later">Later Stage Phase</option>
-                    </select>
-                    <br>
-                    <div id="startup-users-parent">
-                        <div class="startup-users-child">
-                            <label>Users</label>
-                            <div id="startup-users">
-                                <table id="startup-user-table">
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Role</th>
-                                            <th>Email Address</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="startup-user-tbody"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="new-startup-users" class="startup-users-child">
-                            <div>
-                                <label for="user-first-name">First Name:</label>
-                                <input type="text" id="user-first-name">
-                            </div>
-                            <div>
-                                <label for="user-last-name">Last Name:</label>
-                                <input type="text" id="user-last-name">
-                            </div>
-                            <div>
-                                <label for="user-email">Email:</label>
-                                <input type="email" id="user-email">
-                            </div>
-                            <div>
-                                <label for="user-password">Password:</label>
-                                <input type="password" id="user-password">
-                            </div>
-                            <div>
-                                <label for="user-role">Role:</label>
-                                <input type="text" id="user-role">
-                            </div>
-                            <div>
-                                <button id="remove-startup-user-btn" onclick="removeStartupUser()">Remove User</button>
-                                <button  id="add-startup-user-btn" onclick="addStartupUser()">Add User</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button onclick="toggleRegisterStartup()">Back</button>
-                <button onclick="registerNewStartup()">Create</button>
-            </div>
+        <div>
+            <button type="button" onclick="registerFund()">Register Fund</button>
         </div>
     </div>
-    <script src="js/onboarding.js"></script> 
+    <div id="register-stakeholders" class="hidden">
+        <div>
+            <label for="stakeholder-name">Stakeholder or Company Name:</label>
+            <input class="form-input" type="text" name="stakeholderName" id="stakeholder-name" required>
+        </div>
+        <div>
+            <label>Startups:</label>
+            <div class="form-input">
+                <ul id="startups-list-stakeholder">
+                    <% for (const startup of startups) { %> 
+                        <li class="no-bullet">
+                            <input type="checkbox" value="<%= startup.id %>">
+                            <span><%= startup.name %></span>
+                        </li>
+                    <% } %> 
+                </ul>
+            </div>
+        </div>
+        <div>
+            <button type="button" onclick="registerStakeholder()">Register Stakeholder</button>
+        </div>
+    </div>
+</div>
+<br>
+<div>
+    <h3>Edit Fund or Stakeholder</h3>
+    <select name="funds" id="funds">
+        <option value="" selected disabled>Select User</option>
+        <% for (const fund of funds) { %> 
+           <option value="<%= fund.id %>"><%= fund.name %><option>
+        <% } %> 
+    </select>
+    <div id="new-fund" class="hidden">
+        <div>
+            <label for="new-name">Name:</label>
+            <input class="form-input" type="text" id="new-name">
+        </div>
+        <div id="hidden-edit-fields" class="hidden">
+            <div>
+                <label for="new-sector">Investment Sector:</label>
+                <input class="form-input" type="text" name="newSector" id="new-sector" required>
+            </div>
+            <div>
+                <label for="new-hard-cap" >Hard Cap:</label>
+                <input class="form-input" type="number" name="newHardCap" id="new-hard-cap" required>
+            </div>
+            <div>
+                <label for="new-fund-volume">Fund Volume:</label>
+                <input class="form-input" type="number" name="newFundVolume" id="new-fund-volume" required>
+            </div>
+            <div>
+                <label for="new-next-closing">Next Closing:</label>
+                <input class="form-input" type="date" name="newNextClosing" id="new-next-closing" required>
+            </div>
+            <div>
+                <label for="new-final-closing">Final Closing:</label>
+                <input class="form-input" type="date" name="newFinalClosing" id="new-final-closing" required>
+            </div>
+        </div>
+        <div>
+            <label>Startups:</label>
+            <div class="form-input">
+                <ul id="new-startups-list">
+                    <% for (const startup of startups) { %> 
+                        <li class="no-bullet">
+                            <input type="checkbox" value="<%= startup.id %>">
+                            <span><%= startup.name %></span>
+                        </li>
+                    <% } %> 
+                </ul>
+            </div>
+        </div>
+        <button id="submit-edited-fund" class="hidden" onclick="submitEditedFund()">Submit Edited Fund</button>
+        <button id="submit-edited-stakeholder" class="hidden" onclick="submitEditedStakeholder()">Submit Edited Stakeholder</button>
+    </div>
+</div>
+<br>
+<div>
+    <h3>Delete Fund or Stakeholder</h3>
+    <div>
+        <select name="select-delete-fund" id="select-delete-fund">
+            <option value="" selected disabled>Select Fund</option>
+            <% for (const fund of funds) { %> 
+                <option value="<%= fund.id %>"><%= fund.name %></option>
+            <% } %> 
+        </select>
+        <button type="button" id="delete-btn">Delete Fund</button>
+        <div id="chose-delete" class="hidden">
+            Are you sure you want to delete this fund?
+            <button type="button" id="yes-delete-btn">Yes</button>
+            <button type="button" id="dont-delete">No</button>
+        </div>
+    </div>
 </div>

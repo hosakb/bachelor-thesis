@@ -503,6 +503,10 @@ ul.startup-list > li.selected:nth-last-child(even) {
   transform: scale(1);
 }
 
+.exit {
+  float: right;
+}
+
 /* Partners */
 
 #partner-selection-parent {
