@@ -19,7 +19,8 @@ export function getQuestionnaireAverages(
       questionnaire.q1_2_10) /
     7;
   const q1_2_block_2 =
-    (questionnaire.q1_2_12 +
+    (questionnaire.q1_2_11 +
+      questionnaire.q1_2_12 +
       questionnaire.q1_2_13 +
       questionnaire.q1_2_14 +
       questionnaire.q1_2_15 +
@@ -209,6 +210,7 @@ export function getQuestionnaireAverages(
 
   return {
     h1,
+    h1_1: questionnaire.q1_1_1,
     h1_2,
     q1_2_4_block_1,
     q1_2_block_2,
@@ -246,70 +248,68 @@ export function getQuestionnaireAverages(
   };
 }
 
-export function getRating(qAvg: QuestionnaireAvg, weighting: Weights): Rating {
-  const h1_2 = parseFloat(getStandardRating(qAvg.h1_2).toFixed(1));
+export function getAllRatings(qAvg: QuestionnaireAvg): Rating {
+  const h1_2 = getRating(qAvg.h1_2);
 
-  const h1_3 = parseFloat(getStandardRating(qAvg.h1_3).toFixed(1));
+  const h1_3 = getRating(qAvg.h1_3);
 
-  const h1_4 = parseFloat(getStandardRating(qAvg.h1_4).toFixed(1));
+  const h1_4 = getRating(qAvg.h1_4);
 
-  const h1_5 = parseFloat(getStandardRating(qAvg.h1_5).toFixed(1));
+  const h1_5 = getRating(qAvg.h1_5);
 
-  const h1 = parseFloat(getWeightedRating(qAvg.h1, weighting.h1).toFixed(1));
+  const h1 = getRating(qAvg.h1);
 
-  const h2_1 = parseFloat(getStandardRating(qAvg.h2_1).toFixed(1));
+  const h2_1 = getRating(qAvg.h2_1);
 
-  const h2_2 = parseFloat(getStandardRating(qAvg.h2_2).toFixed(1));
+  const h2_2 = getRating(qAvg.h2_2);
 
-  const h2_3 = parseFloat(getStandardRating(qAvg.h2_3).toFixed(1));
+  const h2_3 = getRating(qAvg.h2_3);
 
-  const h2_4 = parseFloat(getStandardRating(qAvg.h2_4).toFixed(1));
+  const h2_4 = getRating(qAvg.h2_4);
 
-  const h2_5 = parseFloat(getStandardRating(qAvg.h2_5).toFixed(1));
+  const h2_5 = getRating(qAvg.h2_5);
 
-  const h2 = parseFloat(getWeightedRating(qAvg.h2, weighting.h2).toFixed(1));
+  const h2 = getRating(qAvg.h2);
 
-  const h3_1 = parseFloat(getStandardRating(qAvg.h3_1).toFixed(1));
+  const h3_1 = getRating(qAvg.h3_1);
 
-  const h3_2 = parseFloat(getStandardRating(qAvg.h3_2).toFixed(1));
+  const h3_2 = getRating(qAvg.h3_2);
 
-  const h3 = parseFloat(getWeightedRating(qAvg.h3, weighting.h3).toFixed(1));
+  const h3 = getRating(qAvg.h3);
 
-  const h4_1 = parseFloat(getStandardRating(qAvg.h4_1).toFixed(1));
+  const h4_1 = getRating(qAvg.h4_1);
 
-  const h4_2 = parseFloat(getStandardRating(qAvg.h4_2).toFixed(1));
+  const h4_2 = getRating(qAvg.h4_2);
 
-  const h4 = parseFloat(getWeightedRating(qAvg.h4, weighting.h4).toFixed(1));
+  const h4 = getRating(qAvg.h4);
 
-  const h5 = parseFloat(getWeightedRating(qAvg.h5, weighting.h5).toFixed(1));
+  const h5 = getRating(qAvg.h5);
 
-  const h6_1 = parseFloat(getStandardRating(qAvg.h6_1).toFixed(1));
+  const h6_1 = getRating(qAvg.h6_1);
 
-  const h6_2 = parseFloat(getStandardRating(qAvg.h6_2).toFixed(1));
+  const h6_2 = getRating(qAvg.h6_2);
 
-  const h6_3 = parseFloat(getStandardRating(qAvg.h6_3).toFixed(1));
+  const h6_3 = getRating(qAvg.h6_3);
 
-  const h6_4 = parseFloat(getStandardRating(qAvg.h6_4).toFixed(1));
+  const h6_4 = getRating(qAvg.h6_4);
 
-  const h6_5 = parseFloat(getStandardRating(qAvg.h6_5).toFixed(1));
+  const h6_5 = getRating(qAvg.h6_5);
 
-  const h6 = parseFloat(getWeightedRating(qAvg.h6, weighting.h6).toFixed(1));
+  const h6 = getRating(qAvg.h6);
 
-  const h7_1 = parseFloat(getStandardRating(qAvg.h7_1).toFixed(1));
+  const h7_1 = getRating(qAvg.h7_1);
 
-  const h7_2 = parseFloat(getStandardRating(qAvg.h7_2).toFixed(1));
+  const h7_2 = getRating(qAvg.h7_2);
 
-  const h7_3 = parseFloat(getStandardRating(qAvg.h7_3).toFixed(1));
+  const h7_3 = getRating(qAvg.h7_3);
 
-  const h7_4 = parseFloat(getStandardRating(qAvg.h7_4).toFixed(1));
+  const h7_4 = getRating(qAvg.h7_4);
 
-  const h7_5 = parseFloat(getStandardRating(qAvg.h7_5).toFixed(1));
+  const h7_5 = getRating(qAvg.h7_5);
 
-  const h7 = parseFloat(getWeightedRating(qAvg.h7, weighting.h7).toFixed(1));
+  const h7 = getRating(qAvg.h7);
 
-  const h8 = parseFloat(getWeightedRating(qAvg.h8, weighting.h8).toFixed(1));
-
-  const total = h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8;
+  const h8 = getRating(qAvg.h8);
 
   return {
     h1,
@@ -343,7 +343,6 @@ export function getRating(qAvg: QuestionnaireAvg, weighting: Weights): Rating {
     h7_4,
     h7_5,
     h8,
-    total,
   };
 }
 
@@ -351,15 +350,16 @@ export function getWeightedPoints(
   points: QuestionnaireAvg,
   weights: Weights
 ): WeightedPoints {
-  const h1 = parseFloat((points.h1 * weights.h1).toFixed(1));
-  const h2 = parseFloat((points.h2 * weights.h2).toFixed(1));
-  const h3 = parseFloat((points.h3 * weights.h3).toFixed(1));
-  const h4 = parseFloat((points.h4 * weights.h4).toFixed(1));
-  const h5 = parseFloat((points.h5 * weights.h5).toFixed(1));
-  const h6 = parseFloat((points.h6 * weights.h6).toFixed(1));
-  const h7 = parseFloat((points.h7 * weights.h7).toFixed(1));
-  const h8 = parseFloat((points.h8 * weights.h8).toFixed(1));
-  const sum = parseFloat((h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8).toFixed(1));
+  const h1 = points.h1 * weights.h1;
+  console.log(points.h1 + " * " + weights.h1);
+  const h2 = points.h2 * weights.h2;
+  const h3 = points.h3 * weights.h3;
+  const h4 = points.h4 * weights.h4;
+  const h5 = points.h5 * weights.h5;
+  const h6 = points.h6 * weights.h6;
+  const h7 = points.h7 * weights.h7;
+  const h8 = points.h8 * weights.h8;
+  const sum = h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8;
 
   return {
     h1,
@@ -373,52 +373,7 @@ export function getWeightedPoints(
     sum,
   };
 }
-export function getRoundedQuestionnaireAverages(
-  avg: QuestionnaireAvg
-): QuestionnaireAvg {
-  return {
-    h1: parseFloat(avg.h1.toFixed(1)),
-    h1_2: parseFloat(avg.h1_2.toFixed(1)),
-    q1_2_4_block_1: parseFloat(avg.q1_2_4_block_1.toFixed(1)),
-    q1_2_block_2: parseFloat(avg.q1_2_block_2.toFixed(1)),
-    q1_2_block_3: parseFloat(avg.q1_2_block_3.toFixed(1)),
-    h1_3: parseFloat(avg.h1_3.toFixed(1)),
-    h1_4: parseFloat(avg.h1_4.toFixed(1)),
-    h1_5: parseFloat(avg.h1_5.toFixed(1)),
-    h2: parseFloat(avg.h2.toFixed(1)),
-    h2_1: parseFloat(avg.h2_1.toFixed(1)),
-    h2_2: parseFloat(avg.h2_2.toFixed(1)),
-    h2_3: parseFloat(avg.h2_3.toFixed(1)),
-    h2_4: parseFloat(avg.h2_4.toFixed(1)),
-    h2_5: parseFloat(avg.h2_5.toFixed(1)),
-    h3: parseFloat(avg.h3.toFixed(1)),
-    h3_1: parseFloat(avg.h3_1.toFixed(1)),
-    h3_2: parseFloat(avg.h3_2.toFixed(1)),
-    h4: parseFloat(avg.h4.toFixed(1)),
-    h4_1: parseFloat(avg.h4_1.toFixed(1)),
-    h4_2: parseFloat(avg.h4_2.toFixed(1)),
-    h5: parseFloat(avg.h5.toFixed(1)),
-    h6: parseFloat(avg.h6.toFixed(1)),
-    h6_1: parseFloat(avg.h6_1.toFixed(1)),
-    h6_2: parseFloat(avg.h6_2.toFixed(1)),
-    h6_3: parseFloat(avg.h6_3.toFixed(1)),
-    h6_4: parseFloat(avg.h6_4.toFixed(1)),
-    h6_5: parseFloat(avg.h6_5.toFixed(1)),
-    h7: parseFloat(avg.h7.toFixed(1)),
-    h7_1: parseFloat(avg.h7_1.toFixed(1)),
-    h7_2: parseFloat(avg.h7_2.toFixed(1)),
-    h7_3: parseFloat(avg.h7_3.toFixed(1)),
-    h7_4: parseFloat(avg.h7_4.toFixed(1)),
-    h7_5: parseFloat(avg.h7_5.toFixed(1)),
-    h8: parseFloat(avg.h8.toFixed(1)),
-    sum: parseFloat(avg.sum.toFixed(1)),
-  };
-}
 
-function getWeightedRating(points: number, weighting: number): number {
-  return 18 - (17 * points * weighting) / (5 * weighting);
-}
-
-function getStandardRating(points: number): number {
+function getRating(points: number): number {
   return 18 - (17 * points) / 5;
 }

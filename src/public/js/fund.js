@@ -99,14 +99,21 @@ function renderLiq(liqData) {
 }
 
 var gantt;
-function renderGantt(tasks) {
+function renderGantt(data) {
+  const tasks = data.map((t) => {
+    return {
+      custom_index: t.index,
+      id: t.id,
+      name: t.name,
+      start: t.start,
+      end: t.end,
+      progress: t.progress,
+      dependencies: "",
+    };
+  });
   // eslint-disable-next-line no-undef
   gantt = new Gantt("#gantt", tasks, {
-    // can be a function that returns html
-    // or a simple html string
     custom_popup_html: function (task) {
-      // the task object will contain the updated
-      // dates and progress value
       const end_date = task.end;
       return `
       <div class="details-container">

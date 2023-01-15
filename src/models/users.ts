@@ -63,7 +63,7 @@ enum Role {
   Admin = "admin",
   Startup = "startup",
   Fund = "fund",
-  Stakeholder = "stakeholder"
+  Stakeholder = "stakeholder",
 }
 
 interface Founder {
@@ -197,15 +197,13 @@ const getUserRole = async (email: string): Promise<UserRole> => {
         id: result.rows[0].fund,
         role: Role.Stakeholder,
       };
-    }else if (role === Role.Admin){
+    } else if (role === Role.Admin) {
       return {
         id: result.rows[0].id,
         role: Role.Admin,
       };
     } else {
-      throw new Error(
-        `Unknown role found for user with email: ${email}.`
-      );
+      throw new Error(`Unknown role found for user with email: ${email}.`);
     }
   } catch (err) {
     throw new Error(

@@ -600,4 +600,7 @@ th {
   display: none;
 }
 
-/* Onboarding */
+/* Milestones */
+#milestones-tbl {
+  float: right;
+}

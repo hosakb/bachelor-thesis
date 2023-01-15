@@ -38,6 +38,22 @@ interface StartupInfo {
 
 interface Milestone {
   id: string;
+  index: number;
+  name: string;
+  start: string;
+  end: string;
+  progress: number;
+}
+
+interface NewMilestone {
+  index: number;
+  name: string;
+  start: string;
+  end: string;
+  progress: number;
+}
+
+interface UnIndexedMilestone {
   name: string;
   start: string;
   end: string;
@@ -196,6 +212,7 @@ interface Questionnaire {
 
 interface QuestionnaireAvg {
   h1: number;
+  h1_1: number;
   h1_2: number;
   q1_2_4_block_1: number;
   q1_2_block_2: number;
@@ -264,7 +281,6 @@ interface Rating {
   h7_4: number;
   h7_5: number;
   h8: number;
-  total: number;
 }
 
 interface WeightedPoints {
@@ -283,10 +299,10 @@ interface NewInvestor {
   name: string;
   type: string;
   email: string;
-  number: string  | undefined;
-  url: string  | undefined;
+  number: string | undefined;
+  url: string | undefined;
   country: string;
-  notes: string  | undefined;
+  notes: string | undefined;
   contactDate: Date;
   startupId: string;
 }
@@ -296,10 +312,10 @@ interface Investor {
   name: string;
   type: string;
   email: string;
-  number: string  | undefined;
-  url: string  | undefined;
+  number: string | undefined;
+  url: string | undefined;
   country: string;
-  notes: string  | undefined;
+  notes: string | undefined;
   contactDate: Date;
   status: string;
 }
@@ -307,11 +323,10 @@ interface Investor {
 interface UpdatedInvestor {
   id: string;
   email: string;
-  number: string  | undefined;
-  url: string  | undefined;
-  notes: string  | undefined;
+  number: string | undefined;
+  url: string | undefined;
+  notes: string | undefined;
 }
-
 
 const insertNewStartup = async (startupName: string): Promise<string> => {
   const client = await pool.connect();
@@ -384,9 +399,7 @@ const getNewStartupById = async (startupId: string) => {
       startupId,
     ]);
   } catch (err) {
-    throw new Error(
-      `Failed to query startup infos. Error: ${err}`
-    );
+    throw new Error(`Failed to query startup infos. Error: ${err}`);
   } finally {
     client.release();
   }
@@ -414,9 +427,7 @@ const getStartupById = async (startupId: string) => {
       [startupId]
     );
   } catch (err) {
-    throw new Error(
-      `Failed to query startup infos. Error: ${err}`
-    );
+    throw new Error(`Failed to query startup infos. Error: ${err}`);
   } finally {
     client.release();
   }
@@ -620,20 +631,25 @@ const getInfoByStartupId = async (startupId: string) => {
 };
 
 const persistMilestones = async (
-  milestones: Milestone[],
+  milestones: NewMilestone[],
   startupId: string
 ) => {
   const client = await pool.connect();
   try {
+    await client.query("DELETE FROM milestones WHERE startup_id = $1;", [
+      startupId,
+    ]);
+
     for (const milestone of milestones) {
       await client.query(
-        "INSERT INTO milestones (name, start_date, end_date, progress, startup_id) VALUES ($1, $2, $3, $4, $5)",
+        "INSERT INTO milestones (start_date, end_date, progress, startup_id, name, index) VALUES ($1, $2, $3, $4, $5, $6)",
         [
-          milestone.name,
           milestone.start,
           milestone.end,
           milestone.progress,
           startupId,
+          milestone.name,
+          milestone.index,
         ]
       );
     }
@@ -646,12 +662,45 @@ const persistMilestones = async (
   }
 };
 
-const getMilestones = async (startupId: string) => {
+const persistMilestonesWithId = async (
+  milestones: Milestone[],
+  startupId: string
+) => {
+  const client = await pool.connect();
+  try {
+    await client.query("DELETE FROM milestones WHERE startup_id = $1;", [
+      startupId,
+    ]);
+
+    for (const milestone of milestones) {
+      await client.query(
+        "INSERT INTO milestones (id, start_date, end_date, progress, startup_id, name, index) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+        [
+          milestone.id,
+          milestone.start,
+          milestone.end,
+          milestone.progress,
+          startupId,
+          milestone.name,
+          milestone.index,
+        ]
+      );
+    }
+  } catch (err) {
+    throw new Error(
+      `Failed to insert startup milestones for startup id ${startupId}. Error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const getMilestones = async (startupId: string): Promise<Milestone[]> => {
   const client = await pool.connect();
   let result;
   try {
     result = await client.query(
-      "SELECT id, name, start_date, end_date, progress FROM milestones WHERE startup_id = $1",
+      "SELECT id, name, start_date, end_date, progress, index FROM milestones WHERE startup_id = $1",
       [startupId]
     );
   } catch (err) {
@@ -665,6 +714,7 @@ const getMilestones = async (startupId: string) => {
   const milestones: Milestone[] = result.rows.map((row) => {
     return {
       id: row.id,
+      index: row.index,
       name: row.name,
       start: row.start_date,
       end: row.end_date,
@@ -993,7 +1043,7 @@ const getInvestors = async (startupId: string): Promise<Investor[]> => {
         status: row.status,
       };
     });
-  
+
     return investors;
   } catch (err) {
     throw new Error(
@@ -1009,7 +1059,13 @@ const updateInvestor = async (updatedInvestor: UpdatedInvestor) => {
   try {
     await client.query(
       "UPDATE investors SET email = $1, number = $2, url = $3, notes = $4  WHERE id = $5;",
-      [updatedInvestor.email, updatedInvestor.notes, updatedInvestor.url, updatedInvestor.notes, updatedInvestor.id]
+      [
+        updatedInvestor.email,
+        updatedInvestor.notes,
+        updatedInvestor.url,
+        updatedInvestor.notes,
+        updatedInvestor.id,
+      ]
     );
   } catch (err) {
     throw new Error(
@@ -1023,10 +1079,10 @@ const updateInvestor = async (updatedInvestor: UpdatedInvestor) => {
 const updateInvestorStatus = async (status: string, id: string) => {
   const client = await pool.connect();
   try {
-    await client.query(
-      "UPDATE investors SET status = $1 WHERE id = $2;",
-      [status,id]
-    );
+    await client.query("UPDATE investors SET status = $1 WHERE id = $2;", [
+      status,
+      id,
+    ]);
   } catch (err) {
     throw new Error(
       `Failed to update contacted investors status with id ${id}. Error: ${err}`
@@ -1035,7 +1091,6 @@ const updateInvestorStatus = async (status: string, id: string) => {
     client.release();
   }
 };
-
 
 export {
   InvestmentPhase,
@@ -1048,8 +1103,10 @@ export {
   TrlData,
   Questionnaire,
   WeightedPoints,
+  NewMilestone,
   Investor,
   NewInvestor,
+  UnIndexedMilestone,
   insertNewStartup,
   getStartupIds,
   getCapTable,
@@ -1082,6 +1139,7 @@ export {
   deleteStartup,
   insertInvestor,
   updateInvestor,
+  persistMilestonesWithId,
   updateInvestorStatus,
   getInvestors,
 };

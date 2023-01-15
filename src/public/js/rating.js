@@ -108,6 +108,7 @@ function hideSection(elem) {
 
 function showSubSection(elem) {
   const className = elem.parentElement.parentElement.classList[0];
+  console.log("Show " + className);
   const tbody = elem.parentElement.parentElement.parentElement;
 
   for (const child of tbody.children) {
@@ -130,7 +131,8 @@ function hideSubSection(elem) {
   for (const child of tbody.children) {
     if (
       child.classList.contains(className) &&
-      !child.classList.contains("hidden")
+      !child.classList.contains("hidden") &&
+      !child.classList.contains("subLine")
     ) {
       child.classList.add("hidden");
     }

@@ -81,12 +81,21 @@ interface Investor {
   name: string;
   type: string;
   email: string;
-  number: string  | undefined;
-  url: string  | undefined;
+  number: string | undefined;
+  url: string | undefined;
   country: string;
-  notes: string  | undefined;
+  notes: string | undefined;
   contactDate: Date;
   status: string;
+}
+
+interface Milestone {
+  id: string;
+  index: number;
+  name: string;
+  start: string;
+  end: string;
+  progress: number;
 }
 
 declare global {
@@ -128,5 +137,6 @@ declare module "express-session" {
     capTable: Row[];
     trl: Trl;
     investors: Investor[];
+    milestones: Milestone[];
   }
 }

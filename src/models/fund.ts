@@ -36,7 +36,7 @@ interface NewFund {
 }
 
 interface UpdatedFund {
-  id: string,
+  id: string;
   name: string;
   sector: string;
   hardCap: number;
@@ -142,12 +142,20 @@ const getWeights = async (fundId: string): Promise<Weights> => {
 };
 
 const insertNewFund = async (fund: NewFund): Promise<string> => {
-  console.log(fund)
+  console.log(fund);
   const client = await pool.connect();
   try {
     const result = await client.query(
       `INSERT INTO fund (name, investment_sector, fund_volume, hard_cap, next_closing, final_closing, type) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;`,
-      [fund.name, fund.investmentSector, fund.volume, fund.hardCap, fund.nextClosing, fund.finalClosing, fund.type]
+      [
+        fund.name,
+        fund.investmentSector,
+        fund.volume,
+        fund.hardCap,
+        fund.nextClosing,
+        fund.finalClosing,
+        fund.type,
+      ]
     );
     if (result.rows[0].id == undefined || result.rows[0].id == null) {
       throw new Error(
@@ -164,18 +172,35 @@ const insertNewFund = async (fund: NewFund): Promise<string> => {
 
 const getFundById = async (fundId: string): Promise<Fund> => {
   const client = await pool.connect();
-  
+
   try {
     const result = await client.query(
       "SELECT id, name, investment_sector, fund_volume, hard_cap, next_closing, final_closing, created_at, updated_at, type FROM fund WHERE id=$1",
       [fundId]
     );
 
-    if (result.rows[0].type == "fund" && (result.rows[0].name == undefined || result.rows[0].name == null || result.rows[0].investment_sector == undefined || result.rows[0].investment_sector == null || result.rows[0].fund_volume == undefined || result.rows[0].fund_volume == null || result.rows[0].hard_cap == undefined || result.rows[0].hard_cap == null || result.rows[0].next_closing == undefined || result.rows[0].next_closing == null || result.rows[0].final_closing == undefined || result.rows[0].final_closing == null)) {
+    if (
+      result.rows[0].type == "fund" &&
+      (result.rows[0].name == undefined ||
+        result.rows[0].name == null ||
+        result.rows[0].investment_sector == undefined ||
+        result.rows[0].investment_sector == null ||
+        result.rows[0].fund_volume == undefined ||
+        result.rows[0].fund_volume == null ||
+        result.rows[0].hard_cap == undefined ||
+        result.rows[0].hard_cap == null ||
+        result.rows[0].next_closing == undefined ||
+        result.rows[0].next_closing == null ||
+        result.rows[0].final_closing == undefined ||
+        result.rows[0].final_closing == null)
+    ) {
       throw new Error(
         `Expected queried values for fund. Received ${result.rows[0].name}.`
       );
-    } else if(result.rows[0].type == "stakeholder" && (result.rows[0].name == undefined || result.rows[0].name == null)) {
+    } else if (
+      result.rows[0].type == "stakeholder" &&
+      (result.rows[0].name == undefined || result.rows[0].name == null)
+    ) {
       throw new Error(
         `Expected queried values for stakeholder. Received ${result.rows[0].name}.`
       );
@@ -192,7 +217,7 @@ const getFundById = async (fundId: string): Promise<Fund> => {
       createdAt: result.rows[0].created_at,
       updatedAt: result.rows[0].updated_at,
       type: result.rows[0].type,
-    }
+    };
   } catch (err) {
     throw new Error(
       `Failed to query fund infos with the following error: ${err}`
@@ -200,20 +225,23 @@ const getFundById = async (fundId: string): Promise<Fund> => {
   } finally {
     client.release();
   }
-}
+};
 
 const updateFund = async (fund: UpdatedFund) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE fund SET name = $1, investment_sector = $2, fund_volume = $3, hard_cap = $4, next_closing = $5, final_closing = $6 WHERE id = $7;", [
-      fund.name,
-      fund.sector,
-      fund.volume,
-      fund.hardCap,
-      fund.nextClosing,
-      fund.finalClosing,
-      fund.id,
-    ]);
+    await client.query(
+      "UPDATE fund SET name = $1, investment_sector = $2, fund_volume = $3, hard_cap = $4, next_closing = $5, final_closing = $6 WHERE id = $7;",
+      [
+        fund.name,
+        fund.sector,
+        fund.volume,
+        fund.hardCap,
+        fund.nextClosing,
+        fund.finalClosing,
+        fund.id,
+      ]
+    );
   } catch (err) {
     throw new Error(
       `Failed to update fund with id ${fund.id} with the following error: ${err}`
@@ -234,4 +262,18 @@ const deleteFund = async (id: string) => {
   }
 };
 
-export { UpdatedFund, Weights, NewFund, Fund, AdminFundPortfolio,updateFund, getFunds, updateWeights, getWeights, getFundNameById, insertNewFund, getFundById, deleteFund };
+export {
+  UpdatedFund,
+  Weights,
+  NewFund,
+  Fund,
+  AdminFundPortfolio,
+  updateFund,
+  getFunds,
+  updateWeights,
+  getWeights,
+  getFundNameById,
+  insertNewFund,
+  getFundById,
+  deleteFund,
+};

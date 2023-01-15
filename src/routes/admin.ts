@@ -7,7 +7,17 @@ import {
   insertNewStartup,
   updateStartupName,
 } from "../models/startup";
-import { Fund, AdminFundPortfolio, deleteFund, getFundById, getFunds, insertNewFund, NewFund, UpdatedFund, updateFund } from "../models/fund";
+import {
+  Fund,
+  AdminFundPortfolio,
+  deleteFund,
+  getFundById,
+  getFunds,
+  insertNewFund,
+  NewFund,
+  UpdatedFund,
+  updateFund,
+} from "../models/fund";
 import {
   deleteUser,
   emailRegistered,
@@ -273,35 +283,36 @@ router.get("/funds", async (req, res) => {
 });
 
 router.post("/add-fund", async (req, res) => {
-  const { fundName,
+  const {
+    fundName,
     investmentSector,
     hardCap,
     fundVolume,
     nextClosing,
     finalClosing,
     startups,
-    type} = req.body;
+    type,
+  } = req.body;
 
-    const newFund: NewFund = {
-      name: fundName,
-      investmentSector,
-      hardCap,
-      volume: fundVolume,
-      nextClosing,
-      finalClosing,
-      type
-    }
+  const newFund: NewFund = {
+    name: fundName,
+    investmentSector,
+    hardCap,
+    volume: fundVolume,
+    nextClosing,
+    finalClosing,
+    type,
+  };
 
   try {
     const fundId = await insertNewFund(newFund);
-    
+
     for (const startupId of startups) {
       await insertFundStartupRelation(fundId, startupId);
     }
     res.status(200).json();
   } catch (err) {
     throw new Error(`Failed to add new fund. Error: ${err}`);
-   
   }
 });
 
@@ -322,7 +333,7 @@ router.post("/get-fund", async (req, res) => {
         return startup.id;
       }),
       type: fund.type,
-    }
+    };
     res.status(200).json(fundPortfolio);
   } catch (err) {
     throw new Error(`Failed to get fund for id: ${id}. Error: ${err}`);
@@ -330,23 +341,26 @@ router.post("/get-fund", async (req, res) => {
 });
 
 router.post("/update-fund", async (req, res) => {
-  const { id, fundName,
+  const {
+    id,
+    fundName,
     investmentSector,
     hardCap,
     fundVolume,
     nextClosing,
     finalClosing,
-    fundsStartups} = req.body;
+    fundsStartups,
+  } = req.body;
 
   const updatedFund: UpdatedFund = {
-      id,
-      name: fundName,
-      sector: investmentSector,
-      hardCap,
-      volume: fundVolume,
-      nextClosing,
-      finalClosing,
-  }
+    id,
+    name: fundName,
+    sector: investmentSector,
+    hardCap,
+    volume: fundVolume,
+    nextClosing,
+    finalClosing,
+  };
 
   const startupIds: string[] = fundsStartups;
 
@@ -369,7 +383,5 @@ router.post("/delete-fund", async (req, res) => {
     throw new Error(`Failed to delete fund. Error: ${err}`);
   }
 });
-
-
 
 export default router;

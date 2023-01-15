@@ -2,13 +2,19 @@ import express from "express";
 import {
   deleteTrl,
   getInvestors,
+  getMilestones,
   getStartupNameById,
   getTrl,
   insertInvestor,
+  Milestone,
   NewInvestor,
+  NewMilestone,
   persistCapTable,
+  persistMilestones,
+  persistMilestonesWithId,
   persistTrlData,
   TrlData,
+  UnIndexedMilestone,
   updateInvestorStatus,
   updateTrl,
 } from "../models/startup";
@@ -22,24 +28,28 @@ import {
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-    const trl = await getTrl(req.session.startupId);
-    req.session.trl = trl;
-    const investors = await getInvestors(req.session.startupId);
-    req.session.investors = investors;
+  const trl = await getTrl(req.session.startupId);
+  req.session.trl = trl;
+  const investors = await getInvestors(req.session.startupId);
+  req.session.investors = investors;
 
-    const startupName: string = await getStartupNameById(req.session.startupId);
-    req.session.startupName = startupName;
-    
-    res.render("submit/index", {
-      layout: "../views/layouts/dashboard.ejs",
-      dashboard: "startup",
-      scripts: ["/js/submit"],
-      page: "submit",
-      title: startupName,
-      name: req.user?.firstName + " " + req.user?.lastName,
-      trl: trl,
-      investors,
-    });
+  const startupName: string = await getStartupNameById(req.session.startupId);
+  req.session.startupName = startupName;
+
+  const milestones = await getMilestones(req.session.startupId);
+  req.session.milestones = milestones;
+
+  res.render("submit/index", {
+    layout: "../views/layouts/dashboard.ejs",
+    dashboard: "startup",
+    scripts: ["/js/submit"],
+    page: "submit",
+    title: startupName,
+    name: req.user?.firstName + " " + req.user?.lastName,
+    trl: trl,
+    investors,
+    milestones,
+  });
 });
 
 // router.post("/", multerUpload.single("kpis"), async (req, res) => {
@@ -224,9 +234,20 @@ router.post("/add-trl", async (req, res) => {
 });
 
 router.post("/new-investor", async (req, res) => {
-  const { name, type, email, number, url, country, notes, contactDate } = req.body;
+  const { name, type, email, number, url, country, notes, contactDate } =
+    req.body;
   try {
-    const newInvestor: NewInvestor = { name, type, email, number, url, country, notes, contactDate, startupId: req.session.startupId };
+    const newInvestor: NewInvestor = {
+      name,
+      type,
+      email,
+      number,
+      url,
+      country,
+      notes,
+      contactDate,
+      startupId: req.session.startupId,
+    };
     await insertInvestor(newInvestor);
     res.status(200).json();
   } catch (error) {
@@ -246,6 +267,128 @@ router.post("/update-investor-status", async (req, res) => {
   } catch (error) {
     console.error(
       `Failed to update investors status. Error: ${error}. Redirecting to /submit ${error}`
+    );
+    res.redirect("/submit");
+  }
+});
+
+router.post("/add-milestone", async (req, res) => {
+  const { milestones } = req.body;
+
+  const unIndexedMilestones: UnIndexedMilestone[] = milestones;
+  try {
+    const existingMilestones: Milestone[] = await getMilestones(
+      req.session.startupId
+    );
+
+    const joinedMilestones: UnIndexedMilestone[] = unIndexedMilestones.concat(
+      existingMilestones.map((existingMilestone) => {
+        return {
+          name: existingMilestone.name,
+          start: existingMilestone.start,
+          end: existingMilestone.end,
+          progress: existingMilestone.progress,
+        };
+      })
+    );
+
+    const indexedMilestones: NewMilestone[] = joinedMilestones
+      .sort((a: UnIndexedMilestone, b: UnIndexedMilestone) => {
+        return new Date(b.start).getTime() - new Date(a.start).getTime();
+      })
+      .reverse()
+      .map((m, index) => {
+        return {
+          index,
+          ...m,
+        };
+      });
+
+    await persistMilestones(indexedMilestones, req.session.startupId);
+    res.status(200).json();
+  } catch (error) {
+    console.error(
+      `Failed to persist milestone. Error: ${error}. Redirecting to /submit ${error}`
+    );
+    res.redirect("/submit");
+  }
+});
+
+router.post("/delete-milestone", async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const existingMilestones: Milestone[] = await getMilestones(
+      req.session.startupId
+    );
+
+    const indexedMilestones = existingMilestones
+      .filter((m) => m.id != id)
+      .sort((a: Milestone, b: Milestone) => {
+        return new Date(b.start).getTime() - new Date(a.start).getTime();
+      })
+      .reverse()
+      .map((m, index) => {
+        return {
+          id: m.id,
+          index,
+          name: m.name,
+          start: m.start,
+          end: m.end,
+          progress: m.progress,
+        };
+      });
+
+    await persistMilestonesWithId(indexedMilestones, req.session.startupId);
+
+    res.status(200).json();
+  } catch (error) {
+    console.error(
+      `Failed to delete milestone. Error: ${error}. Redirecting to /submit ${error}`
+    );
+    res.redirect("/submit");
+  }
+});
+
+router.post("/update-milestone", async (req, res) => {
+  const { id, name, start, end, progress } = req.body;
+
+  try {
+    const existingMilestones: Milestone[] = await getMilestones(
+      req.session.startupId
+    );
+
+    for (const m of existingMilestones) {
+      if (m.id == id) {
+        m.name = name;
+        m.start = start;
+        m.end = end;
+        m.progress = progress;
+      }
+    }
+
+    const indexedMilestones = existingMilestones
+      .sort((a: Milestone, b: Milestone) => {
+        return new Date(b.start).getTime() - new Date(a.start).getTime();
+      })
+      .reverse()
+      .map((m, index) => {
+        return {
+          id: m.id,
+          index,
+          name: m.name,
+          start: m.start,
+          end: m.end,
+          progress: m.progress,
+        };
+      });
+
+    await persistMilestonesWithId(indexedMilestones, req.session.startupId);
+
+    res.status(200).json();
+  } catch (error) {
+    console.error(
+      `Failed to update milestone with id ${id}. Error: ${error}. Redirecting to /submit ${error}`
     );
     res.redirect("/submit");
   }

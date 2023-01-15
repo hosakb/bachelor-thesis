@@ -80,16 +80,15 @@ const insertFundStartupRelation = async (fundId: string, startupId: string) => {
 const updateFundStartups = async (fundId: string, startups: string[]) => {
   const client = await pool.connect();
   try {
-
     await client.query("DELETE FROM fund_startup_map WHERE fund_id = $1;", [
       fundId,
     ]);
 
     for (const startupId of startups) {
-      await client.query("INSERT INTO fund_startup_map (fund_id, startup_id) VALUES ($1, $2);", [
-        fundId,
-        startupId,
-      ]);
+      await client.query(
+        "INSERT INTO fund_startup_map (fund_id, startup_id) VALUES ($1, $2);",
+        [fundId, startupId]
+      );
     }
   } catch (err) {
     throw new Error(

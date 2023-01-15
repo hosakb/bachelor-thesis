@@ -21,8 +21,7 @@ import {
 } from "../models/track_record";
 import {
   getQuestionnaireAverages,
-  getRating,
-  getRoundedQuestionnaireAverages,
+  getAllRatings,
   getWeightedPoints,
 } from "../util/calc/rating";
 import { getMonth } from "../util/date";
@@ -56,6 +55,7 @@ router.get("/", async (req, res) => {
 
       req.session.startupTable = await getStartupsForFund(fundId);
       const portfolio = await getFundById(fundId);
+
       res.render("dashboard/fund/index", {
         layout: "../views/layouts/dashboard.ejs",
         dashboard: "fund",
@@ -165,20 +165,54 @@ router.get("/startup/rating", async (req, res) => {
   }
   try {
     const questionnaire: Questionnaire = await getQuestionnaire(startupId);
+
+    let q: keyof typeof questionnaire;
+    for (q in questionnaire) {
+      if (Object.prototype.hasOwnProperty.call(questionnaire, q)) {
+        questionnaire[q] = parseFloat(questionnaire[q].toFixed(1));
+      }
+    }
+
     const questionnaireAvg: QuestionnaireAvg =
       getQuestionnaireAverages(questionnaire);
+
+    let qa: keyof typeof questionnaireAvg;
+    for (qa in questionnaireAvg) {
+      if (Object.prototype.hasOwnProperty.call(questionnaireAvg, qa)) {
+        questionnaireAvg[qa] = parseFloat(questionnaireAvg[qa].toFixed(1));
+      }
+    }
+
     const weights: Weights = await getWeights(fundId);
-    const rating = getRating(questionnaireAvg, weights);
     const weightedPoints = getWeightedPoints(questionnaireAvg, weights);
-    const questionnaireAvgRounded: QuestionnaireAvg =
-      getRoundedQuestionnaireAverages(questionnaireAvg);
+
+    let wp: keyof typeof weightedPoints;
+    for (wp in weightedPoints) {
+      if (Object.prototype.hasOwnProperty.call(weightedPoints, wp)) {
+        weightedPoints[wp] = parseFloat(weightedPoints[wp].toFixed(1));
+      }
+    }
+
+    const rating = getAllRatings(questionnaireAvg);
+
+    let r: keyof typeof rating;
+    for (r in rating) {
+      if (Object.prototype.hasOwnProperty.call(rating, r)) {
+        rating[r] = parseFloat(rating[r].toFixed(2));
+      }
+    }
+
+    const ratingTotal = parseFloat(
+      (18 - (17 * weightedPoints.sum) / (weights.sum * 5)).toFixed(2)
+    );
 
     const weightedRating = {
       questionnaire,
-      questionnaireAvg: questionnaireAvgRounded,
+      questionnaireAvg,
       weights,
-      rating,
       weightedPoints,
+      rating,
+      ratingTotal,
     };
 
     res.render("dashboard/founders/rating", {

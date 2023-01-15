@@ -1,3 +1,193 @@
+// ---------------------------- Milestones ----------------------------
+
+let milestones = [];
+
+document
+  .getElementById("milestones-form-btn")
+  .addEventListener("click", (e) => {
+    document.getElementById("add-milestones-pane").classList.toggle("show");
+  });
+
+document
+  .querySelector("#exit-new-milestones")
+  .addEventListener("click", (e) => {
+    document.getElementById("add-milestones-pane").classList.toggle("show");
+  });
+
+document.querySelector("#add-milestone-btn").addEventListener("click", (e) => {
+  const name = document.querySelector("#milestone");
+  const start = document.querySelector("#start-date-milestone");
+  const end = document.querySelector("#due-date-milestone");
+  const progress = document.querySelector("#milestone-completion");
+
+  const milestonesListTbody = document.querySelector("#milestones-new-tbody");
+
+  if (
+    name.value == "" ||
+    start.value == "" ||
+    end.value == "" ||
+    progress.value == ""
+  ) {
+    alert("Please fill out all the fields.");
+  } else {
+    milestones.push({
+      name: name.value,
+      start: start.value,
+      end: end.value,
+      progress: progress.value,
+    });
+
+    let tr = document.createElement("tr");
+
+    let tdName = document.createElement("td");
+    let tdStart = document.createElement("td");
+    let tdEnd = document.createElement("td");
+    let tdProgress = document.createElement("td");
+
+    tdName.appendChild(document.createTextNode(name.value));
+    tdStart.appendChild(document.createTextNode(start.value));
+    tdEnd.appendChild(document.createTextNode(end.value));
+    tdProgress.appendChild(document.createTextNode(progress.value));
+
+    tr.appendChild(tdName);
+    tr.appendChild(tdStart);
+    tr.appendChild(tdEnd);
+    tr.appendChild(tdProgress);
+
+    milestonesListTbody.appendChild(tr);
+
+    name.value = "";
+    start.value = "";
+    end.value = "";
+    progress.value = "";
+  }
+});
+
+document
+  .querySelector("#submit-milestones-btn")
+  .addEventListener("click", async () => {
+    await fetch("/submit/add-milestone", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      body: JSON.stringify({ milestones }),
+    }).catch(() => {
+      alert("Failed to add new Startup. Please try again.");
+    });
+
+    document.getElementById("add-milestones-pane").classList.toggle("show");
+    milestones = [];
+    location.reload();
+  });
+
+function editMilestoneRow(x) {
+  const row = document.querySelector(".milestone-" + x).children;
+
+  let milestoneNameInput = document.createElement("input");
+  milestoneNameInput.type = "text";
+  milestoneNameInput.id = "milestone-name-" + x;
+  milestoneNameInput.value = row[0].innerHTML.trim();
+
+  row[0].innerHTML = "";
+  row[0].appendChild(milestoneNameInput);
+
+  let milestoneStartInput = document.createElement("input");
+  milestoneStartInput.type = "date";
+  milestoneStartInput.id = "milestone-start-" + x;
+  milestoneStartInput.value = row[1].innerHTML.trim();
+
+  row[1].innerHTML = "";
+  row[1].appendChild(milestoneStartInput);
+
+  let milestoneEndInput = document.createElement("input");
+  milestoneEndInput.type = "date";
+  milestoneEndInput.id = "milestone-end-" + x;
+  milestoneEndInput.value = row[2].innerHTML.trim();
+
+  row[2].innerHTML = "";
+  row[2].appendChild(milestoneEndInput);
+
+  let milestoneProgressInput = document.createElement("input");
+  milestoneProgressInput.type = "number";
+  milestoneProgressInput.min = 0;
+  milestoneProgressInput.max = 100;
+  milestoneProgressInput.id = "milestone-progress-" + x;
+  milestoneProgressInput.value = row[3].innerHTML.trim();
+
+  row[3].innerHTML = "";
+  row[3].appendChild(milestoneProgressInput);
+
+  document
+    .querySelector("#milestone-option-btn-" + x)
+    .classList.toggle("hidden");
+  document.querySelector("#milestone-ok-btn-" + x).classList.toggle("hidden");
+}
+
+function deleteMilestoneRow(x) {
+  const id = document.querySelector("#milestone-" + x).value;
+  const milestoneTbody = document.querySelector("#milestones-list-tbody");
+  const tr = document.querySelector(".milestone-" + x);
+
+  milestoneTbody.removeChild(tr);
+
+  fetch("/submit/delete-milestone", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    body: JSON.stringify({
+      id: id,
+    }),
+  }).catch(function (err) {
+    console.info(err); //TODO:
+  });
+}
+
+function saveMilestone(x) {
+  const name = document.querySelector("#milestone-name-" + x).value;
+  const start = document.querySelector("#milestone-start-" + x).value;
+  const end = document.querySelector("#milestone-end-" + x).value;
+  const progress = document.querySelector("#milestone-progress-" + x).value;
+
+  const id = document.querySelector("#milestone-" + x).value;
+  document
+    .querySelector("#milestone-option-btn-" + x)
+    .classList.toggle("hidden");
+  document.querySelector("#milestone-ok-btn-" + x).classList.toggle("hidden");
+
+  const row = document.querySelector(".milestone-" + x).children;
+  row[0].innerHTML = name;
+  row[1].innerHTML = start;
+  row[2].innerHTML = end;
+  row[3].innerHTML = progress;
+
+  fetch("/submit/update-milestone", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    body: JSON.stringify({
+      id,
+      name,
+      start,
+      end,
+      progress,
+    }),
+  }).catch(function (err) {
+    console.info(err); //TODO:
+  });
+}
+
+function cancelEdit() {
+  location.reload();
+}
+
+// ---------------------------- TRL ----------------------------
+
 function editRow(x) {
   const row = document.querySelector(".trl-" + x).children;
 
@@ -157,7 +347,7 @@ function saveTrl(x) {
   });
 }
 
-function cancelTrlEdit(x) {
+function cancelMilestoneEdit(x) {
   location.reload();
 }
 
@@ -310,38 +500,55 @@ document.getElementById("add-investor").addEventListener("click", (e) => {
   document.getElementById("add-investor-form").classList.toggle("show");
 });
 
-document.getElementById("submit-potential-investor").addEventListener("click", (e) => {
-  document.getElementById("add-investor-form").classList.toggle("show");
-  const name = document.getElementById("investor-name").value;
-  const type = document.getElementById("investor-type").value;
-  const email = document.getElementById("investor-email").value;
-  const number = document.getElementById("investor-number").value;
-  const url = document.getElementById("investor-url").value;
-  const country = document.getElementById("investor-country").value;
-  const notes = document.getElementById("investor-notes").value;
-  const contactDate = document.getElementById("investor-contact-date").value;
+document
+  .getElementById("submit-potential-investor")
+  .addEventListener("click", (e) => {
+    document.getElementById("add-investor-form").classList.toggle("show");
+    const name = document.getElementById("investor-name").value;
+    const type = document.getElementById("investor-type").value;
+    const email = document.getElementById("investor-email").value;
+    const number = document.getElementById("investor-number").value;
+    const url = document.getElementById("investor-url").value;
+    const country = document.getElementById("investor-country").value;
+    const notes = document.getElementById("investor-notes").value;
+    const contactDate = document.getElementById("investor-contact-date").value;
 
-  if(name == "" || type == "" || country == "" || contactDate == "" || (email == "" && number  == "" &&  url  == "")) {
-    alert("Please fill out all the fields.")
-  } else {
-    fetch("/submit/new-investor", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow",
-      body: JSON.stringify({ name, type, email, number, url, country, notes, contactDate }),
-    })
-      .then(() => {
-        alert("Successfully added contacted investor");
+    if (
+      name == "" ||
+      type == "" ||
+      country == "" ||
+      contactDate == "" ||
+      (email == "" && number == "" && url == "")
+    ) {
+      alert("Please fill out all the fields.");
+    } else {
+      fetch("/submit/new-investor", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        body: JSON.stringify({
+          name,
+          type,
+          email,
+          number,
+          url,
+          country,
+          notes,
+          contactDate,
+        }),
       })
-      .catch(() => {
-        alert("Failed to add contacted investor.");
-      });
-  }
-});
+        .then(() => {
+          alert("Successfully added contacted investor");
+        })
+        .catch(() => {
+          alert("Failed to add contacted investor.");
+        });
+    }
+  });
 
-document.querySelector(".exit").addEventListener("click", (e) => {
+document.querySelector("#exit-new-investor").addEventListener("click", (e) => {
   document.getElementById("add-investor-form").classList.toggle("show");
 });
 
@@ -349,7 +556,7 @@ document.querySelector("#investor-accepted").addEventListener("click", (e) => {
   const td = e.target.parentElement.parentElement.parentElement;
   const span = document.createElement("span");
   span.classList.add("las");
-  span.classList.add("la-check")
+  span.classList.add("la-check");
   td.appendChild(span);
   td.children[1].classList.add("hidden");
 
@@ -375,7 +582,7 @@ document.getElementById("investor-declined").addEventListener("click", (e) => {
   const td = e.target.parentElement.parentElement.parentElement;
   const span = document.createElement("span");
   span.classList.add("las");
-  span.classList.add("la-times")
+  span.classList.add("la-times");
   td.appendChild(span);
   td.children[1].classList.add("hidden");
 
@@ -396,4 +603,3 @@ document.getElementById("investor-declined").addEventListener("click", (e) => {
       alert("Failed to update contacted investors status.");
     });
 });
-

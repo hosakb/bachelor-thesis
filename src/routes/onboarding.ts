@@ -4,7 +4,6 @@ import {
   Milestone,
   persistCapTable,
   persistInfo,
-  persistMilestones,
   StartupInfo,
   TrlData,
   persistTrlData,
@@ -81,7 +80,6 @@ router.post("/startup", async (req, res) => {
     productToMarket,
     timeToMarket,
     sector,
-    milestoneData,
   } = req.body.startupInfo;
 
   const startupInfo: StartupInfo = {
@@ -93,8 +91,6 @@ router.post("/startup", async (req, res) => {
     progress,
     sector,
   };
-
-  const milestones: Milestone[] = milestoneData;
 
   const startupId = req.user?.startup;
 
@@ -109,7 +105,6 @@ router.post("/startup", async (req, res) => {
     try {
       await persistCapTable(JSON.stringify(req.session.capTable), startupId);
       await persistInfo(startupInfo, startupId);
-      await persistMilestones(milestones, startupId);
       req.session.startupId = startupId;
       res.redirect("/onboarding/product");
     } catch (error) {

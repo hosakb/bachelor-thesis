@@ -40,7 +40,7 @@ router.post(
         case Role.Stakeholder:
           return loginFund(userRole, req, res);
         default:
-         throw new Error("No role assigned to user.");
+          throw new Error("No role assigned to user.");
       }
     } catch (error) {
       console.info(error + " Redirecting to login page.");

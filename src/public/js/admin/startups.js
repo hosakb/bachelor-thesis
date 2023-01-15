@@ -4,12 +4,7 @@ document.getElementById("submit-new-startup").addEventListener("click", () => {
   let bcUsername = document.getElementById("bc-username").value;
   let bcPassword = document.getElementById("bc-password").value;
 
-  if (
-    name == "" ||
-    bcUsername == "" ||
-    bcPassword == "" ||
-    bcCompany == ""
-  ) {
+  if (name == "" || bcUsername == "" || bcPassword == "" || bcCompany == "") {
     alert("Please fill out all fields.");
   } else {
     const newStartup = {

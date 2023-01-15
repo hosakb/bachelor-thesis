@@ -25,43 +25,6 @@ productToMarketSelect.addEventListener("change", () => {
   }
 });
 
-const addMilestoneBtn = document.querySelector("#add-milestone-btn");
-
-addMilestoneBtn.addEventListener("click", () => {
-  const milestone = document.querySelector("#milestone");
-  const startDate = document.querySelector("#start-date-milestone");
-  const dueDate = document.querySelector("#due-date-milestone");
-  const milestoneCompletion = document.querySelector("#milestone-completion");
-
-  const milestonesTbody = document.querySelector("#milestones-tbody");
-
-  let tr = document.createElement("tr");
-
-  let tdFirstName = document.createElement("td");
-  let tdStartDate = document.createElement("td");
-  let tdDueDate = document.createElement("td");
-  let tdMilestoneCompletion = document.createElement("td");
-
-  tdFirstName.appendChild(document.createTextNode(milestone.value));
-  tdStartDate.appendChild(document.createTextNode(startDate.value));
-  tdDueDate.appendChild(document.createTextNode(dueDate.value));
-  tdMilestoneCompletion.appendChild(
-    document.createTextNode(milestoneCompletion.value)
-  );
-
-  tr.appendChild(tdFirstName);
-  tr.appendChild(tdStartDate);
-  tr.appendChild(tdDueDate);
-  tr.appendChild(tdMilestoneCompletion);
-
-  milestonesTbody.appendChild(tr);
-
-  milestone.value = "";
-  startDate.value = "";
-  dueDate.value = "";
-  milestoneCompletion.value = "";
-});
-
 function submitCapTable() {
   var form = document.getElementById("cap-table-form");
   var formData = new FormData(form);
@@ -101,18 +64,6 @@ function submitStartupData() {
   const sector = document.querySelector("#sector").value;
   const progress = document.querySelector("#progress").value;
 
-  const milestonesTbody = document.querySelector("#milestones-tbody");
-  let milestoneData = [];
-
-  for (const tr of milestonesTbody.children) {
-    milestoneData.push({
-      name: tr.children[0].innerHTML,
-      start: tr.children[1].innerHTML,
-      end: tr.children[2].innerHTML,
-      progress: tr.children[3].innerHTML,
-    });
-  }
-
   let today = new Date();
   const dd = String(today.getDate()).padStart(2, "0");
   const mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -134,7 +85,6 @@ function submitStartupData() {
         startDatePhase: today,
         dueDatePhase: dueDatePhase,
         progress: progress,
-        milestoneData: milestoneData,
       },
     }),
   })

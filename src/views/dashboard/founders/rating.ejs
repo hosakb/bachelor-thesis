@@ -89,12 +89,12 @@
                 </tr> 
                 <tr>
                     <td></td>
-                    <td>Sum Points 1. - 8. (<%= weightedRating.weightedPoints.sum %> of <span>55,0</span> Points)</td>
+                    <td>Sum Points 1. - 8. (<%= weightedRating.weightedPoints.sum %> of <span><%= weightedRating.weights.sum * 5%></span> Points)</td>
                     <td><%= weightedRating.questionnaireAvg.sum %></td>
                     <td><%= weightedRating.weights.sum %> </td>
                     <td><%= weightedRating.weightedPoints.sum %></td>
                     <td><%= weightedRating.weights.sum * 5%></td>
-                    <td><%= weightedRating.rating.total %></td>
+                    <td><%= weightedRating.ratingTotal %></td>
                 </tr>
             </tbody>
         </table>
@@ -131,7 +131,7 @@
                         <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 1.1</td>
                         <td>Entrepreneurial stability</td>
                         <td></td>
-                        <td><%= weightedRating.questionnaireAvg.q1_1_1 %></td>
+                        <td><%= weightedRating.questionnaireAvg.h1_1 %></td>
                         <td></td>
                         <td>5</td>
                         <td><%= weightedRating.rating.q1_1_1 %></td>
@@ -149,7 +149,7 @@
                         <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 1.2</td>
                         <td>Management</td>
                         <td></td>
-                        <td><%= weightedRating.questionnaireAvg.q1_2 %> </td>
+                        <td><%= weightedRating.questionnaireAvg.h1_2 %> </td>
                         <td></td>
                         <td>5</td>
                         <td><%= weightedRating.rating.q1_1_2 %></td>
@@ -1133,9 +1133,9 @@
                         </tr>
                     <tr class="hidden h6-5 subLine">
                         <td><span onclick="showSubSection(this)"><i class="las la-angle-right"></i></span><span class="hidden" onclick="hideSubSection(this)"><i class="las la-angle-down"></i></span> 6.5</td>
+                        <td>Marketing and Sales</td>
                         <td></td>
                         <td><%= weightedRating.questionnaireAvg.h6_5 %></td>
-                        <td></td>
                         <td></td>
                         <td>5</td>
                         <td><%= weightedRating.rating.h6_5 %></td>

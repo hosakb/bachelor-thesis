@@ -115,7 +115,7 @@ var gantt;
 function renderGantt(data) {
   const tasks = data.map((t) => {
     return {
-      // custom_index: t.index,
+      custom_index: t.index,
       id: t.id,
       name: t.name,
       start: t.start,

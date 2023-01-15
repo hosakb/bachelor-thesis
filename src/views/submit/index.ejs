@@ -42,7 +42,7 @@
                                 </button>
                             </div>
                             <button id="ok-btn-<%= c %>" class="hidden" onclick="saveTrl('<%= c %>')"><i class="las la-check-circle"></i></button>
-                            <button id="cancel-btn-<%= c %>" class="hidden" onclick="cancelTrlEdit('<%= c %>')"><i class="las la-times"></i></button>
+                            <button id="cancel-btn-<%= c %>" class="hidden" onclick="cancelEdit()"><i class="las la-times"></i></button>
                         </td>
                     </tr>
                     <% c++; %> 
@@ -107,6 +107,60 @@
         <button id="add-investor">Add new Investor</button>
     </div>
     <div class="submit-card">
+        <h3>Milestones</h3>
+       <div>
+            <div>
+                <button id="milestones-form-btn">Add Milestones</button>
+            </div>
+            <div id="milestones-tbl">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Milestone</th>
+                            <th>Start Date</th>
+                            <th>Due Date</th>
+                            <th>Progress</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody id="milestones-list-tbody">
+                        <% let j = 0; %>
+                        <% for(const i of locals.milestones) {%>
+                            <tr class="milestone-<%= j %>">
+                                <td>
+                                    <%= i.name %> 
+                                </td>
+                                <td>
+                                    <%= i.start %> 
+                                </td>
+                                <td>
+                                    <%= i.end %> 
+                                </td>
+                                <td>
+                                    <%= i.progress %> 
+                                </td>
+                                <td>
+                                    <div id="milestone-option-btn-<%= j %>">
+                                        <input type="hidden" value="<%= i.id %>" id="milestone-<%= j %>">
+                                        <button onclick="editMilestoneRow('<%= j %>')">
+                                            <span><i class="las la-edit"></i></span>
+                                        </button>
+                                        <button onclick="deleteMilestoneRow('<%= j %>')">
+                                            <span><i class="las la-trash-alt"></i></span>
+                                        </button>
+                                    </div>
+                                    <button id="milestone-ok-btn-<%= j %>" class="hidden" onclick="saveMilestone('<%= j %>')"><i class="las la-check-circle"></i></button>
+                                    <button id="milestone-cancel-btn-<%= j %>" class="hidden" onclick="cancelEdit()"><i class="las la-times"></i></button>
+                                </td>
+                            </tr>
+                            <% j++; %> 
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+       </div>
+    </div>
+    <div class="submit-card">
         <h4>Capitalization Table</h4>
        <form action="/submit/cap-table" enctype="multipart/form-data" method="post">
             <div>
@@ -135,7 +189,7 @@
 </div>
 <div class="variable-pane" id="add-investor-form">
     <div class="variable-pane-box">
-        <button class="exit"><i class="las la-times"></i></button> <!-- TODO: -->
+        <button id="exit-new-investor" class="exit"><i class="las la-times"></i></button>
         <h4>New Investor</h4>
             <div>
                 <label for="investor-name">Name</label>
@@ -428,5 +482,51 @@
             </div>
             <button id="submit-potential-investor" type="button">Submit new Investor</button>
         </div>
+    </div>
+</div>
+<div class="variable-pane" id="add-milestones-pane">
+    <div class="variable-pane-box">
+        <div>
+            <button id="exit-new-milestones" class="exit"><i class="las la-times"></i></button>
+            <h3>Add Milestones</h3>
+        </div>
+        <div>
+            <div>
+                <div>
+                    <div>
+                        <label for="milestone">Milestone</label>
+                        <input type="text" id="milestone">
+                    </div>
+                    <div>
+                        <label for="start-date-milestone">Start Date</label>
+                        <input type="date" id="start-date-milestone">
+                    </div>
+                    <div>
+                        <label for="due-date-milestone">Due Date</label>
+                        <input type="date" id="due-date-milestone">
+                    </div>
+                    <div>
+                        <label for="milestone-completion">Percentage of Completion</label>
+                        <input type="number" id="milestone-completion">
+                    </div>
+                    <button id="add-milestone-btn">Add Milestone</button>
+                </div>
+            </div>
+            <div id="milestones-tbl">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Milestone</th>
+                            <th>Start Date</th>
+                            <th>Due Date</th>
+                            <th>Progress</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody id="milestones-new-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+        <button id="submit-milestones-btn">Submit Milestones</button>
     </div>
 </div>
