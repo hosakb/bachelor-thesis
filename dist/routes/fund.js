@@ -39,107 +39,277 @@ var __importDefault =
   };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const fund_1 = require("../models/fund");
 const fund_startup_map_1 = require("../models/fund_startup_map");
+const fund_2 = require("../models/fund");
 const startup_1 = require("../models/startup");
+const track_record_1 = require("../models/track_record");
+const rating_1 = require("../util/calc/rating");
+const date_1 = require("../util/date");
 const router = express_1.default.Router();
-let startupTable = [];
-router.get("/", (req, res) => {
-  if (req.session.fundId !== undefined) {
-    res.redirect("/fund/" + req.session.fundId);
-  } else if (req.session.startupId !== undefined) {
-    res.redirect("/startup/" + req.session.startupId);
-  } else {
-    res.redirect("/admin");
-  }
-});
-router.get("/:fundId", (req, res) => {
-  // TMP (fund) charts
-  res.render("dashboard/fund/index", {
-    layout: "../views/layouts/fund.ejs",
-    kpiI: 55,
-    kpiII: 33,
-    kpiIII: 66,
-    page: "dashboard",
-    startup: false,
-  });
-});
-router.param("fundId", (req, res, next, fundId) =>
+router.get("/", (req, res) =>
   __awaiter(void 0, void 0, void 0, function* () {
-    try {
-      if (yield !(0, fund_startup_map_1.fundIdExists)(fundId)) {
-        res.redirect("/"); // invalid query result for fundId
-        return;
+    var _a, _b, _c, _d, _e, _f;
+    const fundId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.fund;
+    if (fundId === undefined) {
+      if (
+        ((_b = req.user) === null || _b === void 0 ? void 0 : _b.startup) !==
+        undefined
+      ) {
+        console.log(
+          `Redirecting user ${
+            (_c = req.user) === null || _c === void 0 ? void 0 : _c.id
+          } to startup screen since no fund id is assigned.`
+        );
+        res.redirect("/startup");
+      } else {
+        console.log(
+          `Redirecting user ${
+            (_d = req.user) === null || _d === void 0 ? void 0 : _d.id
+          } to login screen since no fund id or startup id are assigned.`
+        );
+        res.redirect("/");
       }
-      startupTable = yield (0, fund_startup_map_1.getStartupsForFund)(fundId);
-      next();
-    } catch (error) {
-      throw new Error(
-        `Failed to query funds and startups for fund id ${fundId} with error: ${error}`
-      );
+    } else {
+      req.session.fundId = fundId;
+      try {
+        if (yield !(0, fund_startup_map_1.fundIdExists)(fundId)) {
+          res.redirect("/"); // invalid query result for fundId
+          return;
+        }
+        req.session.startupTable = yield (0,
+        fund_startup_map_1.getStartupsForFund)(fundId);
+        const portfolio = yield (0, fund_1.getFundById)(fundId);
+        res.render("dashboard/fund/index", {
+          layout: "../views/layouts/dashboard.ejs",
+          dashboard: "fund",
+          scripts: ["/js/table/table", "/js/table/ag-grid-community.min"],
+          portfolio,
+          page: "dashboard",
+          title: yield (0, fund_1.getFundNameById)(fundId),
+          name:
+            ((_e = req.user) === null || _e === void 0
+              ? void 0
+              : _e.firstName) +
+            " " +
+            ((_f = req.user) === null || _f === void 0 ? void 0 : _f.lastName),
+          view: "fund",
+        });
+      } catch (error) {
+        console.error(
+          `Failed to fetch fund data for startup with id ${fundId} due to:\n${error}.\nRedirecting to login screen.`
+        );
+        res.redirect("/");
+      }
     }
   })
 );
 router.get("/table/values", (req, res) => {
-  res.status(200).json(startupTable);
+  res.status(200).json(req.session.startupTable);
 });
 router.post("/startup", (req, res) => {
+  req.session.selectedStartup = req.body.id;
   res.setHeader("content-type", "application/javascript");
-  res.redirect(`startup/${req.body.id}`);
+  res.redirect(`startup`);
 });
-let netProfitMarginTs;
-let cashFlowRateTs;
-let liquidityTs;
-router.get("/startup/:startupId/", (req, res) => {
-  res.render("dashboard/fund/startup", {
-    layout: "../views/layouts/fund.ejs",
-    netProfitMargin: req.netProfitMargin,
-    cashFlowRate: req.cashFlowRate,
-    liquidity: req.liquidity,
-  });
-});
-router.get("/chart/npm", (req, res) => {
-  res.status(200).json(netProfitMarginTs);
-});
-router.get("/chart/cfr", (req, res) => {
-  res.status(200).json(cashFlowRateTs);
-});
-router.get("/chart/liq", (req, res) => {
-  res.status(200).json(liquidityTs);
-});
-router.param("startupId", (req, res, next, startupId) =>
+router.get("/startup/founders", (req, res) =>
+  __awaiter(void 0, void 0, void 0, function* () {
+    var _g, _h, _j;
+    const startupId = req.session.selectedStartup;
+    if (startupId === undefined) {
+      console.log(
+        `Redirecting user ${
+          (_g = req.user) === null || _g === void 0 ? void 0 : _g.id
+        } to fund screen since no selected startup was found.`
+      );
+      res.redirect("/fund/");
+    }
+    try {
+      const capTable = yield (0, startup_1.getCapTable)(startupId);
+      res.render("dashboard/founders/index", {
+        layout: "../views/layouts/dashboard.ejs",
+        dashboard: "fund",
+        scripts: [],
+        title: req.startupName,
+        name:
+          ((_h = req.user) === null || _h === void 0 ? void 0 : _h.firstName) +
+          " " +
+          ((_j = req.user) === null || _j === void 0 ? void 0 : _j.lastName),
+        founders: yield (0, track_record_1.getFoundersByStartupId)(startupId),
+        startup: req.session.selectedStartup,
+        page: "founders",
+        capTable,
+      });
+    } catch (error) {
+      console.error(
+        `Failed to fetch startup request data for startup with id ${startupId} due to:\n${error}.\nRedirecting to fund dashboard.`
+      );
+      res.redirect("/fund/");
+    }
+  })
+);
+router.get("/startup/", (req, res) =>
+  __awaiter(void 0, void 0, void 0, function* () {
+    var _k, _l, _m;
+    const startupId = req.session.selectedStartup;
+    if (startupId === undefined) {
+      console.log(
+        `Redirecting user ${
+          (_k = req.user) === null || _k === void 0 ? void 0 : _k.id
+        } to fund screen since no selected startup was found.`
+      );
+      res.redirect("/fund/");
+    }
+    try {
+      const trl = yield (0, startup_1.getTrl)(startupId);
+      res.render("dashboard/startup/index", {
+        layout: "../views/layouts/dashboard.ejs",
+        scripts: [
+          "/js/gantt/frappe-gantt.min",
+          "/js/chart/chart.min",
+          "/js/fund",
+        ],
+        dashboard: "fund",
+        kpis: req.kpis,
+        title: req.startupName,
+        page: "startup",
+        view: "startup",
+        name:
+          ((_l = req.user) === null || _l === void 0 ? void 0 : _l.firstName) +
+          " " +
+          ((_m = req.user) === null || _m === void 0 ? void 0 : _m.lastName),
+        startup: req.session.selectedStartup,
+        trl: trl,
+      });
+    } catch (error) {
+      console.error(
+        `Failed to fetch startup request data for startup with id ${startupId} due to:\n${error}.\nRedirecting to fund dashboard.`
+      );
+      res.redirect("/fund/");
+    }
+  })
+);
+router.get("/startup/rating", (req, res) =>
+  __awaiter(void 0, void 0, void 0, function* () {
+    var _o, _p, _q;
+    const startupId = req.session.selectedStartup;
+    const fundId = req.session.fundId;
+    if (startupId === undefined) {
+      console.log(
+        `Redirecting user ${
+          (_o = req.user) === null || _o === void 0 ? void 0 : _o.id
+        } to fund screen since no selected startup was found.`
+      );
+      res.redirect("/fund/");
+    }
+    try {
+      const questionnaire = yield (0, startup_1.getQuestionnaire)(startupId);
+      const questionnaireAvg = (0, rating_1.getQuestionnaireAverages)(
+        questionnaire
+      );
+      const weights = yield (0, fund_2.getWeights)(fundId);
+      const rating = (0, rating_1.getRating)(questionnaireAvg, weights);
+      const weightedPoints = (0, rating_1.getWeightedPoints)(
+        questionnaireAvg,
+        weights
+      );
+      const questionnaireAvgRounded = (0,
+      rating_1.getRoundedQuestionnaireAverages)(questionnaireAvg);
+      const weightedRating = {
+        questionnaire,
+        questionnaireAvg: questionnaireAvgRounded,
+        weights,
+        rating,
+        weightedPoints,
+      };
+      res.render("dashboard/founders/rating", {
+        layout: "../views/layouts/dashboard.ejs",
+        dashboard: "fund",
+        scripts: ["/js/rating"],
+        title: req.startupName,
+        name:
+          ((_p = req.user) === null || _p === void 0 ? void 0 : _p.firstName) +
+          " " +
+          ((_q = req.user) === null || _q === void 0 ? void 0 : _q.lastName),
+        startup: req.session.selectedStartup,
+        weightedRating: weightedRating,
+        page: "rating",
+      });
+    } catch (error) {
+      console.error(
+        `Failed to fetch startup request data for startup with id ${startupId} due to:\n${error}.\nRedirecting to fund dashboard.`
+      );
+      res.redirect("/fund/");
+    }
+  })
+);
+router.post("/update-weights", (req, res) =>
+  __awaiter(void 0, void 0, void 0, function* () {
+    const { weights } = req.body;
+    const newWeights = weights;
+    const fundId = req.session.fundId;
+    try {
+      yield (0, fund_2.updateWeights)(fundId, newWeights);
+      res.redirect("/fund/startup/rating");
+    } catch (error) {
+      console.error(
+        `Failed to update weights for fund with id ${fundId} due to: ${error}. Redirect to login screen.`
+      );
+      res.redirect("/");
+    }
+  })
+);
+router.get("/chart/data", (req, res) =>
   __awaiter(void 0, void 0, void 0, function* () {
     try {
-      const kpis = yield (0, startup_1.getKpis)(startupId);
-      req.netProfitMargin = kpis[kpis.length - 1].netProfitMargin;
-      req.cashFlowRate = kpis[kpis.length - 1].cashFlowRate;
-      req.liquidity = kpis[kpis.length - 1].liquidity;
-      let months = [];
-      let netProfitMargin = [];
-      let cashFlowRate = [];
-      let liquidity = [];
-      kpis.forEach((i) => {
-        months.push(i.date.substring(0, 7));
-        netProfitMargin.push(i.netProfitMargin);
-        cashFlowRate.push(i.cashFlowRate);
-        liquidity.push(i.liquidity);
+      const startupId = req.session.selectedStartup;
+      const milestones = yield (0, startup_1.getMilestones)(startupId);
+      const metrics = yield (0, startup_1.getMetrics)(startupId);
+      const months = metrics.map((x) => {
+        return (0, date_1.getMonth)(x.date);
       });
-      netProfitMarginTs = {
-        months: months,
-        periodData: netProfitMargin,
-      };
-      cashFlowRateTs = {
-        months: months,
-        periodData: cashFlowRate,
-      };
-      liquidityTs = {
-        months: months,
-        periodData: liquidity,
-      };
-      next();
-    } catch (error) {
-      throw new Error(
-        `Failed to query kpis for startup id ${startupId} with the following error: ${error}`
+      const burnRate = metrics.map((x) => {
+        return x.burnRate;
+      });
+      const cashRunway = metrics.map((x) => {
+        return x.cashRunway;
+      });
+      const liquidity = metrics.map((x) => {
+        return x.liquidity;
+      });
+      const expertiseValues = yield (0, track_record_1.getExpertiseByStartup)(
+        startupId
       );
+      const expertise = {
+        name: [],
+        amount: [],
+      };
+      for (const i of expertiseValues) {
+        if (!expertise.name.includes(i)) {
+          expertise.name.push(i);
+          const amount = expertiseValues.filter((x) => x == i);
+          expertise.amount.push(amount.length);
+        }
+      }
+      const chartData = {
+        milestones,
+        burnRate: {
+          months,
+          periodData: burnRate,
+        },
+        cashRunway: {
+          months,
+          periodData: cashRunway,
+        },
+        liquidity: {
+          months,
+          periodData: liquidity,
+        },
+        expertise,
+      };
+      res.status(200).json(chartData);
+    } catch (error) {
+      res.status(200).json([]);
     }
   })
 );

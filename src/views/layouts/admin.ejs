@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <title>Admin</title>
     <link rel="stylesheet" type="text/css" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <% for (const stylesheet of stylesheets) { %>
+        <link rel="stylesheet" type="text/css" href="/css/<%= stylesheet %>.css"></script>
+    <% } %>
 </head>
 <body>   
     <%- include("../partials/sidebar_admin.ejs") %>

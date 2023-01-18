@@ -53,15 +53,26 @@ function initPassport(passport) {
         __awaiter(this, void 0, void 0, function* () {
           try {
             if (yield (0, users_1.emailRegistered)(email)) {
-              let user = yield (0, users_1.getUserByEmail)(email);
+              const loginUser = yield (0, users_1.getLoginUserByEmail)(email);
               bcryptjs_1.default.compare(
                 password,
-                user.password,
+                loginUser.password,
                 (err, isMatch) => {
                   if (err) {
                     throw new Error("User authentication failed. " + err);
                   }
                   if (isMatch) {
+                    const user = {
+                      id: loginUser.id,
+                      firstName: loginUser.firstName,
+                      lastName: loginUser.lastName,
+                      email: loginUser.email,
+                      role: loginUser.role,
+                      created_at: loginUser.created_at,
+                      updated_at: loginUser.updated_at,
+                      startup: loginUser.startup,
+                      fund: loginUser.fund,
+                    };
                     return done(null, user);
                   } else {
                     return done(null, false, {
@@ -83,8 +94,8 @@ function initPassport(passport) {
   passport.deserializeUser((id, done) =>
     __awaiter(this, void 0, void 0, function* () {
       try {
-        let user = yield (0, users_1.getUserById)(id);
-        return done(null, user);
+        const loginUser = yield (0, users_1.getLoginUserById)(id);
+        return done(null, loginUser);
       } catch (err) {
         return done(err);
       }

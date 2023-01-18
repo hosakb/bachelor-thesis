@@ -59,7 +59,8 @@ router.get("/", async (req, res) => {
       res.render("dashboard/fund/index", {
         layout: "../views/layouts/dashboard.ejs",
         dashboard: "fund",
-        scripts: ["/js/table/table", "/js/table/ag-grid-community.min"],
+        stylesheets: ["main", "dashboard"],
+        scripts: ["/js/table", "/js/ag-grid-community.min"],
         portfolio,
         page: "dashboard",
         title: await getFundNameById(fundId),
@@ -100,6 +101,7 @@ router.get("/startup/founders", async (req, res) => {
     res.render("dashboard/founders/index", {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "fund",
+      stylesheets: ["main", "dashboard"],
       scripts: [],
       title: req.startupName,
       name: req.user?.firstName + " " + req.user?.lastName,
@@ -131,6 +133,7 @@ router.get("/startup/", async (req, res) => {
 
     res.render("dashboard/startup/index", {
       layout: "../views/layouts/dashboard.ejs",
+      stylesheets: ["main", "dashboard"],
       scripts: [
         "/js/gantt/frappe-gantt.min",
         "/js/chart/chart.min",
@@ -218,6 +221,7 @@ router.get("/startup/rating", async (req, res) => {
     res.render("dashboard/founders/rating", {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "fund",
+      stylesheets: ["main", "dashboard"],
       scripts: ["/js/rating"],
       title: req.startupName,
       name: req.user?.firstName + " " + req.user?.lastName,

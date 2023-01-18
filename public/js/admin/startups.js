@@ -52,6 +52,8 @@ document.getElementById("startups").addEventListener("change", async (e) => {
   document.getElementById("edited-name").value = startup.name;
   document.getElementById("edited-company").value = startup.company;
   document.getElementById("edited-bc-username").value = startup.username;
+
+  document.getElementById("edit-startup-form").classList.remove("hidden");
 });
 
 document
@@ -80,6 +82,7 @@ document
           document.getElementById("edited-company").value = "";
           document.getElementById("edited-bc-username").value = "";
           document.getElementById("edited-bc-password").value = "";
+          document.getElementById("edit-startup-form").classList.add("hidden");
         })
         .catch(() => {
           alert("Failed to add new Startup. Please try again.");

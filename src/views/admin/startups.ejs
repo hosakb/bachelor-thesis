@@ -1,33 +1,36 @@
 <div>
     <div>
-        <h3>Add Startup</h3>
-        <div>
+        <h2>Add Startup</h2>
+        <div class="form-item">
             <label for="name">Name: </label>
             <input type="text" name="name" id="name">
         </div>
-        <div>
+        <div class="form-sub-title">
             <h4>Business Central Credentials</h4>
-            <div>
-                <label for="company">Company: </label>
-                <input type="text" name="company" id="company">
-            </div>
-            <div>
-                <label for="bc-username">Username: </label>
-                <input type="text" name="bc-username" id="bc-username">
-            </div>
-            <div>
-                <label for="bc-password">Password: </label>
-                <input type="password" name="bc-password" id="bc-password">
-            </div>
+        </div>
+        <div class="form-item">
+            <label for="company">Company: </label>
+            <input type="text" name="company" id="company">
+        </div>
+        <div class="form-item">
+            <label for="bc-username">Username: </label>
+            <input type="text" name="bc-username" id="bc-username">
+        </div>
+        <div class="form-item">
+            <label for="bc-password">Password: </label>
+            <input type="password" name="bc-password" id="bc-password">
         </div>
     </div>
-    <button id="submit-new-startup">Submit new Startup</button>
+    <div class="btn-item">
+        <button id="submit-new-startup">Submit new Startup</button>
+    </div>
+   
 </div>
 <br>
 <div>
     <div>
-        <h3>Edit Startup</h3>
-        <div>
+        <h2>Edit Startup</h2>
+        <div class="form-item">
             <select name="startups" id="startups">
                 <option value="" selected disabled>Select Startup</option>
                 <% for (const startup of startups) { %> 
@@ -35,41 +38,45 @@
                 <% } %> 
             </select>
         </div>
-        <div>
-            <div>
+        <div id="edit-startup-form" class="hidden">
+            <div class="form-item">
                 <label for="edited-name">Name: </label>
                 <input type="text" name="edited-name" id="edited-name">
             </div>
             <div>
                 <h4>Business Central Credentials</h4>
-                <div>
+                <div class="form-item">
                     <label for="edited-company">Company: </label>
                     <input type="text" name="edited-company" id="edited-company">
                 </div>
-                <div>
+                <div class="form-item">
                     <label for="edited-bc-username">Username: </label>
                     <input type="text" name="edited-bc-username" id="edited-bc-username">
                 </div>
-                <div>
+                <div class="form-item">
                     <label for="edited-bc-password">Password: </label>
                     <input type="password" name="edited-bc-password" id="edited-bc-password">
                 </div>
             </div>
         </div>
     </div>
-    <button id="submit-edited-startup">Submit edited Startup</button>
+    <div class="btn-item">
+        <button id="submit-edited-startup">Submit edited Startup</button>
+    </div>
 </div>
 <br>
 <div>
-    <h3>Delete Startup</h3>
-    <div>
+    <h2>Delete Startup</h2>
+    <div class="form-item">
         <select name="select-delete-startup" id="select-delete-startup">
             <option value="" selected disabled>Select Startup</option>
             <% for (const startup of startups) { %> 
                 <option value="<%= startup.id %>"><%= startup.name %></option>
             <% } %> 
         </select>
-        <button type="button" id="delete-btn">Delete Startup</button>
+        <div class="button-item">
+            <button type="button" id="delete-btn">Delete Startup</button>
+        </div>
         <div id="chose-delete" class="hidden">
             Are you sure you want to delete this startup?
             <button type="button" id="yes-delete-btn">Yes</button>

@@ -14,6 +14,7 @@ import adminRouter from "./routes/admin";
 import onboardingRouter from "./routes/onboarding";
 import { checkNotAuthenticated } from "./middleware/check-auth";
 import { startJob } from "./api/job";
+import path from "path";
 
 const app = express();
 
@@ -42,7 +43,7 @@ app.set("views", __dirname + "/views");
 app.set("layout", "layouts/login");
 app.use(expressLayouts);
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname, "../public")));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

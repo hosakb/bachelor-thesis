@@ -1,89 +1,95 @@
 <div>
     <div>
-        <h2>Overview</h2>
+        <h1 class="title">Overview</h1>
     </div>
-    <br>
-    <div>
-        <h3>Funds</h3>
-       <div>
-        <table>
-          <thead>
-              <tr>
-                <th>Name</th>
-                <th>Created At</th>
-                <th>Updated At</th>
-              </tr>
-          </thead>
-          <tbody>
-           <% for (const fund of funds) { %> 
-            <tr>
-                <td><%= fund.name %> </td>
-                <td><%= fund.createdAt.getDate() + "-" + fund.createdAt.getMonth() + "-" + fund.createdAt.getFullYear() %></td>
-                <td><%= fund.updatedAt.getDate() + "-" + fund.updatedAt.getMonth() + "-" + fund.updatedAt.getFullYear() %></td>
-            </tr>
-            <% } %> 
-          </tbody>
-        </table>
-       </div>
-    </div>
-    <br>
-    <div>
-        <h3>Startups</h3>
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Investment Phase</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (const startup of startups) { %> 
+    <div class="grid">
+        <div class="card">
+            <h2>Users</h2>
+            <div>
+                <table class="admin-tbl">
+                    <thead>
                         <tr>
-                            <td><%= startup.name %> </td>
-                            <td><%= startup.stage %> </td>
-                            <td><%= startup.createdAt.getDate() + "-" + startup.createdAt.getMonth() + "-" + startup.createdAt.getFullYear() %></td>
-                            <td><%= startup.updatedAt.getDate() + "-" + startup.updatedAt.getMonth() + "-" + startup.updatedAt.getFullYear() %></td>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                            <th>Startup</th>
+                            <th>Fund</th>
                         </tr>
-                        <% } %> 
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <% for (const user of users) { %> 
+                            <tr>
+                                <td><%= user.firstName + " " + user.lastName %></td>
+                                <td><%= user.email %></td>
+                                <td><%= user.role %></td>
+                                <td><%= user.createdAt.getDate() + "-" + user.createdAt.getMonth() + "-" + user.createdAt.getFullYear() %></td>
+                                <td><%= user.updatedAt.getDate() + "-" + user.updatedAt.getMonth() + "-" + user.updatedAt.getFullYear() %></td>
+                                <td><%= user.startup %></td>
+                                <td><%= user.fund %></td>
+                            </tr>
+                            <% } %> 
+                    </tbody>
+                </table>
+            </div>
         </div>
-    <br>
-    <div>
-        <h3>Users</h3>
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                        <th>Startup</th>
-                        <th>Fund</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (const user of users) { %> 
+        <div class="card">
+            <h2>Funds</h2>
+            <div>
+                <table>
+                    <thead>
                         <tr>
-                            <td><%= user.firstName + " " + user.lastName %></td>
-                            <td><%= user.email %></td>
-                            <td><%= user.role %></td>
-                            <td><%= user.createdAt.getDate() + "-" + user.createdAt.getMonth() + "-" + user.createdAt.getFullYear() %></td>
-                            <td><%= user.updatedAt.getDate() + "-" + user.updatedAt.getMonth() + "-" + user.updatedAt.getFullYear() %></td>
-                            <td><%= user.startup %></td>
-                            <td><%= user.fund %></td>
+                          <th>Name</th>
+                          <th>Created At</th>
+                          <th>Updated At</th>
                         </tr>
-                        <% } %> 
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                     <% for (const fund of funds) { %> 
+                      <tr>
+                          <td><%= fund.name %> </td>
+                          <td><%= fund.createdAt.getDate() + "-" + fund.createdAt.getMonth() + "-" + fund.createdAt.getFullYear() %></td>
+                          <td><%= fund.updatedAt.getDate() + "-" + fund.updatedAt.getMonth() + "-" + fund.updatedAt.getFullYear() %></td>
+                      </tr>
+                      <% } %>
+                      <% if(funds.length < 7) { %>
+                          <% for (let i = 0; i < (7 - funds.length); i++) {  %>
+                              <tr>
+                                  <td> </td>
+                                  <td> </td>
+                                  <td> </td>
+                              </tr>
+                          <% } %> 
+                      <% } %>  
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Startups</h2>
+            <div>
+                <table class="admin-tbl">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Investment Phase</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (const startup of startups) { %> 
+                            <tr>
+                                <td><%= startup.name %> </td>
+                                <td><%= startup.stage %> </td>
+                                <td><%= startup.createdAt.getDate() + "-" + startup.createdAt.getMonth() + "-" + startup.createdAt.getFullYear() %></td>
+                                <td><%= startup.updatedAt.getDate() + "-" + startup.updatedAt.getMonth() + "-" + startup.updatedAt.getFullYear() %></td>
+                            </tr>
+                            <% } %> 
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    </div>
-    <br>
- 
 </div>

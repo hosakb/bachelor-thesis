@@ -173,15 +173,15 @@ document
           };
         }
 
-        const res = await fetch("/admin/add-user", {
+        fetch("/admin/add-user", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           redirect: "follow",
           body: JSON.stringify(newUser),
-        });
-
+        }).then(() => {
+          alert("Successfully added new user.")
         document.getElementById("email").value = "";
         document.getElementById("first-name").value = "";
         document.getElementById("last-name").value = "";
@@ -189,15 +189,7 @@ document
         document.getElementById("role").value = "";
         document.getElementById("fund").value = "";
         document.getElementById("startup").value = "";
-
-        const user = await res.json();
-        document.getElementById("added-first-name").value = user.firstName;
-        document.getElementById("added-last-name").value = user.lastName;
-        document.getElementById("added-email").value = user.email;
-        document.getElementById("added-password").value = user.password;
-        document.getElementById("added-role").value = user.role;
-        document.getElementById("added-fund").value = user.fund;
-        document.getElementById("added-startup").value = user.startup;
+        });
       }
     }
   });

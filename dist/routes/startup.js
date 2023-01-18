@@ -40,69 +40,122 @@ var __importDefault =
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const startup_1 = require("../models/startup");
+const date_1 = require("../util/date");
 const router = express_1.default.Router();
-let netProfitMarginTs;
-let cashFlowRateTs;
-let liquidityTs;
-router.get("/", (req, res) => {
-  console.log("fund: " + req.session.fundId);
-  console.log("startup: " + req.session.startupId);
-  if (req.session.fundId !== undefined) {
-    res.redirect("/fund/" + req.session.fundId);
-  } else if (req.session.startupId !== undefined) {
-    res.redirect("/startup/" + req.session.startupId);
-  } else {
-    res.redirect("/");
-  }
-});
-router.get("/:startupId/", (req, res) => {
-  res.render("dashboard/startup/index", {
-    layout: "../views/layouts/startup.ejs",
-    netProfitMargin: req.netProfitMargin,
-    cashFlowRate: req.cashFlowRate,
-    liquidity: req.liquidity,
-    page: "dashboard",
-  });
-});
-router.get("/chart/npm", (req, res) => {
-  res.status(200).json(netProfitMarginTs);
-});
-router.get("/chart/cfr", (req, res) => {
-  res.status(200).json(cashFlowRateTs);
-});
-router.get("/chart/liq", (req, res) => {
-  res.status(200).json(liquidityTs);
-});
-router.param("startupId", (req, res, next, startupId) =>
+router.get("/", (req, res) =>
   __awaiter(void 0, void 0, void 0, function* () {
-    const kpis = yield (0, startup_1.getKpis)(startupId);
-    req.netProfitMargin = kpis[kpis.length - 1].netProfitMargin;
-    req.cashFlowRate = kpis[kpis.length - 1].cashFlowRate;
-    req.liquidity = kpis[kpis.length - 1].liquidity;
-    let months = [];
-    let netProfitMargin = [];
-    let cashFlowRate = [];
-    let liquidity = [];
-    kpis.forEach((i) => {
-      months.push(i.date.substring(0, 7));
-      netProfitMargin.push(i.netProfitMargin);
-      cashFlowRate.push(i.cashFlowRate);
-      liquidity.push(i.liquidity);
-    });
-    netProfitMarginTs = {
-      months: months,
-      periodData: netProfitMargin,
-    };
-    cashFlowRateTs = {
-      months: months,
-      periodData: cashFlowRate,
-    };
-    liquidityTs = {
-      months: months,
-      periodData: liquidity,
-    };
-    next();
+    var _a, _b, _c, _d, _e, _f;
+    const startupId =
+      (_a = req.user) === null || _a === void 0 ? void 0 : _a.startup;
+    if (startupId === undefined) {
+      if (
+        ((_b = req.user) === null || _b === void 0 ? void 0 : _b.fund) !==
+        undefined
+      ) {
+        console.info(
+          `Redirecting user ${
+            (_c = req.user) === null || _c === void 0 ? void 0 : _c.id
+          } to fund screen since no startup id is assigned.`
+        );
+        res.redirect("/startup");
+      } else {
+        console.info(
+          `Redirecting user ${
+            (_d = req.user) === null || _d === void 0 ? void 0 : _d.id
+          } to login screen since no fund id or startup id are assigned.`
+        );
+        res.redirect("/");
+      }
+    } else {
+      try {
+        const trl = yield (0, startup_1.getTrl)(startupId);
+        res.render("dashboard/startup/index", {
+          layout: "../views/layouts/dashboard.ejs",
+          dashboard: "startup",
+          scripts: [
+            "/js/gantt/frappe-gantt.min",
+            "/js/chart/chart.min",
+            "/js/startup",
+          ],
+          phase: yield (0, startup_1.getInvestmentPhase)(startupId),
+          kpis: req.kpis,
+          page: "dashboard",
+          title: yield (0, startup_1.getStartupNameById)(startupId),
+          name:
+            ((_e = req.user) === null || _e === void 0
+              ? void 0
+              : _e.firstName) +
+            " " +
+            ((_f = req.user) === null || _f === void 0 ? void 0 : _f.lastName),
+          trl: trl,
+        });
+      } catch (error) {
+        console.error(
+          `Failed to fetch startup data for startup with id ${startupId} due to:\n${error}.\nRedirecting to login screen.`
+        );
+        res.redirect("/");
+      }
+    }
+  })
+);
+router.get("/chart/data", (req, res) =>
+  __awaiter(void 0, void 0, void 0, function* () {
+    try {
+      const milestones = yield (0, startup_1.getMilestones)(
+        req.session.startupId
+      );
+      const metrics = yield (0, startup_1.getMetrics)(req.session.startupId);
+      const months = metrics.map((x) => {
+        return (0, date_1.getMonth)(x.date);
+      });
+      const burnRate = metrics.map((x) => {
+        return x.burnRate;
+      });
+      const cashRunway = metrics.map((x) => {
+        return x.cashRunway;
+      });
+      const liquidity = metrics.map((x) => {
+        return x.liquidity;
+      });
+      const chartData = {
+        milestones,
+        burnRate: {
+          months,
+          periodData: burnRate,
+        },
+        cashRunway: {
+          months,
+          periodData: cashRunway,
+        },
+        liquidity: {
+          months,
+          periodData: liquidity,
+        },
+      };
+      res.status(200).json(chartData);
+    } catch (error) {
+      res.status(200).json([]);
+    }
+  })
+);
+router.put("/gantt/period", (req) =>
+  __awaiter(void 0, void 0, void 0, function* () {
+    const { taskId, start, end } = req.body;
+    try {
+      yield (0, startup_1.updateMilestoneDuration)(taskId, start, end);
+    } catch (error) {
+      console.error(`Failed to update Milestone duration due to ${error}.`);
+    }
+  })
+);
+router.put("/gantt/progress", (req) =>
+  __awaiter(void 0, void 0, void 0, function* () {
+    const { taskId, progress } = req.body;
+    try {
+      yield (0, startup_1.updateMilestoneProgress)(taskId, progress);
+    } catch (error) {
+      console.error(`Failed to update Milestone progress due to ${error}.`);
+    }
   })
 );
 exports.default = router;
-// [{"date":"2022-09-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-10-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-11-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-12-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"netProfitMargin":90},{"date":"2022-01-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"netProfitMargin":70},{"date":"2022-02-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"netProfitMargin":90},{"date":"2022-03-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70}, {"date":"2022-04-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70},{"date":"2022-05-04T13:33:03.969Z","liquidity":60,"cashFlowRate":60,"netProfitMargin":90},{"date":"2022-06-04T13:33:03.969Z","liquidity":40,"cashFlowRate":40,"netProfitMargin":70},{"date":"2022-07-04T13:33:03.969Z","liquidity":50,"cashFlowRate":20,"netProfitMargin":90},{"date":"2022-08-04T13:33:03.969Z","liquidity":50,"cashFlowRate":60,"netProfitMargin":70}]
