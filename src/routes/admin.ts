@@ -2,7 +2,7 @@ import express, { Router } from "express";
 import {
   deleteStartup,
   getAllStartups,
-  getStartupById,
+  getStartupNameById,
   getStartups,
   insertNewStartup,
   updateStartupName,
@@ -50,7 +50,6 @@ router.get("/", async (req, res) => {
   try {
     res.render("admin/index", {
       layout: "../views/layouts/admin.ejs",
-      stylesheets: ["main", "admin"],
       scripts: [],
       page: "admin",
       title: "Admin Panel",
@@ -70,7 +69,6 @@ router.get("/users", async (req, res) => {
   try {
     res.render("admin/users", {
       layout: "../views/layouts/admin.ejs",
-      stylesheets: ["main", "admin"],
       scripts: ["/js/admin/users"],
       page: "users",
       title: "Admin Panel",
@@ -173,7 +171,6 @@ router.get("/startups", async (req, res) => {
   try {
     res.render("admin/startups", {
       layout: "../views/layouts/admin.ejs",
-      stylesheets: ["main", "admin"],
       scripts: ["/js/admin/startups"],
       page: "startups",
       title: "Admin Panel",
@@ -212,11 +209,11 @@ router.post("/get-startup", async (req, res) => {
   const { id } = req.body;
 
   try {
-    const startup = await getStartupById(id);
+    const startupName = await getStartupNameById(id);
     const bc = await getBusinessCentralUserByStartupId(id);
 
     res.status(200).json({
-      name: startup.name,
+      name: startupName,
       company: bc.company,
       username: bc.username,
     });
@@ -263,7 +260,6 @@ router.get("/funds", async (req, res) => {
   try {
     res.render("admin/funds", {
       layout: "../views/layouts/admin.ejs",
-      stylesheets: ["main", "admin"],
       scripts: ["/js/admin/fund"],
       page: "funds",
       title: "Admin Panel",

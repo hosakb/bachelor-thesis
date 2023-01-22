@@ -1,14 +1,16 @@
 let gridOptions;
 
+const mobile = window.matchMedia("(max-width: 700px)")
+
 // setup the grid after the page has finished loading
 document.addEventListener("DOMContentLoaded", async () => {
   const columnDefs = [
     { field: "id", hide: true },
     { field: "name", headerName: "Startup Name" },
     { field: "sector", headerName: "Sector" },
-    { field: "share", headerName: "Portfolio Share (%)" },
     { field: "stage", headerName: "Investment Stage" },
     { field: "totalInvestment", headerName: "Total Investment ($)" },
+    { field: "rating", headerName: "Rating" },
   ];
 
   gridOptions = {
@@ -19,8 +21,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   const gridDiv = document.querySelector("#table");
+  // eslint-disable-next-line no-undef
   new agGrid.Grid(gridDiv, gridOptions);
-  gridOptions.api.sizeColumnsToFit();
+  if(!mobile.matches) {
+    gridOptions.api.sizeColumnsToFit();
+  }
 });
 
 async function getTableData() {

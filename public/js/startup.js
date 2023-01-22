@@ -27,6 +27,8 @@ async function loadChartData() {
   renderLiq(liqData);
   const ganttData = responserJson.milestones;
   renderGantt(ganttData);
+
+ 
 }
 
 function renderBurnRate(burnRateData) {
@@ -49,6 +51,7 @@ function renderBurnRate(burnRateData) {
       layout: {
         autoPadding: true,
       },
+      responsive: true,
     },
   };
 
@@ -76,6 +79,7 @@ function renderRunway(burnRateData) {
       layout: {
         autoPadding: true,
       },
+      responsive: true,
     },
   };
 
@@ -103,6 +107,7 @@ function renderLiq(liqData) {
       layout: {
         autoPadding: true,
       },
+      responsive: true,
     },
   };
 

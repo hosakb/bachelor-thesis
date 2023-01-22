@@ -54,17 +54,7 @@ export function getQuestionnaireAverages(
       questionnaire.q1_4_4) /
     4;
 
-  const h1_5 =
-    (questionnaire.q1_5_1 +
-      questionnaire.q1_5_2 +
-      questionnaire.q1_5_3 +
-      questionnaire.q1_5_4 +
-      questionnaire.q1_5_5 +
-      questionnaire.q1_5_6 +
-      questionnaire.q1_5_7) /
-    7;
-
-  const h1 = (questionnaire.q1_1_1 + h1_2 + h1_3 + h1_4 + h1_5) / 5;
+  const h1 = (questionnaire.q1_1_1 + h1_2 + h1_3 + h1_4) / 4;
 
   const h2_1 =
     (questionnaire.q2_1_1 +
@@ -85,11 +75,8 @@ export function getQuestionnaireAverages(
   const h2_3 =
     (questionnaire.q2_3_1 +
       questionnaire.q2_3_2 +
-      questionnaire.q2_3_3 +
-      questionnaire.q2_3_4 +
-      questionnaire.q2_3_5 +
-      questionnaire.q2_3_6) /
-    6;
+      questionnaire.q2_3_3) /
+    3;
 
   const h2_4 =
     (questionnaire.q2_4_1 +
@@ -107,104 +94,66 @@ export function getQuestionnaireAverages(
       questionnaire.q2_5_3 +
       questionnaire.q2_5_4 +
       questionnaire.q2_5_5 +
-      questionnaire.q2_5_6 +
-      questionnaire.q2_5_7 +
-      questionnaire.q2_5_8) /
-    8;
+      questionnaire.q2_5_6) /
+    6;
 
   const h2 = (h2_1 + h2_2 + h2_3 + h2_4 + h2_5) / 5;
 
-  const h3_1 =
+  const h3 =
     (questionnaire.q3_1_1 +
       questionnaire.q3_1_2 +
       questionnaire.q3_1_3 +
       questionnaire.q3_1_4) /
     4;
 
-  const h3_2 =
-    (questionnaire.q3_2_1 +
-      questionnaire.q3_2_2 +
-      questionnaire.q3_2_3 +
-      questionnaire.q3_2_4) /
-    4;
-
-  const h3 = (h3_1 + h3_2) / 2;
-
-  const h4_1 = (questionnaire.q4_1_1 + questionnaire.q4_1_2) / 2;
-
-  const h4_2 =
-    (questionnaire.q4_2_1 +
-      questionnaire.q4_2_2 +
-      questionnaire.q4_2_3 +
-      questionnaire.q4_2_4) /
-    4;
-
-  const h4 = (h4_1 + h4_2) / 2;
+  const h4 = (questionnaire.q4_1_1 + questionnaire.q4_1_2) / 2;
 
   const h5 =
     (questionnaire.q5_1_1 +
       questionnaire.q5_1_2 +
-      questionnaire.q5_1_3 +
-      questionnaire.q5_1_4) /
-    4;
+      questionnaire.q5_1_3) /
+    3;
 
   const h6_1 =
     (questionnaire.q6_1_1 +
-      questionnaire.q6_1_2 +
-      questionnaire.q6_1_3 +
-      questionnaire.q6_1_4 +
-      questionnaire.q6_1_5) /
-    5;
+      questionnaire.q6_1_2) /
+    2;
 
-  const h6_2 = (questionnaire.q6_2_1 + questionnaire.q6_2_2) / 2;
+  const h6_2 = (questionnaire.q6_2_1 + questionnaire.q6_2_2 + questionnaire.q6_2_3 + questionnaire.q6_2_4 + questionnaire.q6_2_5) / 5;
 
   const h6_3 =
     (questionnaire.q6_3_1 +
       questionnaire.q6_3_2 +
       questionnaire.q6_3_3 +
-      questionnaire.q6_3_4 +
-      questionnaire.q6_3_5) /
-    5;
+      questionnaire.q6_3_4) /
+    4;
 
   const h6_4 =
     (questionnaire.q6_4_1 +
       questionnaire.q6_4_2 +
-      questionnaire.q6_4_3 +
-      questionnaire.q6_4_4) /
-    4;
+      questionnaire.q6_4_3) /
+    3;
 
-  const h6_5 =
-    (questionnaire.q6_5_1 + questionnaire.q6_5_2 + questionnaire.q6_5_3) / 3;
-
-  const h6 = (h6_1 + h6_1 + h6_3 + h6_4 + h6_5) / 5;
+  const h6 = (h6_1 + h6_1 + h6_3 + h6_4) / 4;
 
   const h7_1 =
     (questionnaire.q7_1_1 +
       questionnaire.q7_1_2 +
       questionnaire.q7_1_3 +
       questionnaire.q7_1_4 +
-      questionnaire.q7_1_5) /
-    5;
+      questionnaire.q7_1_5 + questionnaire.q7_1_6) /
+    6;
 
   const h7_2 = (questionnaire.q7_2_1 + questionnaire.q7_2_2) / 2;
 
-  const h7_3 =
-    (questionnaire.q7_3_1 + questionnaire.q7_3_2 + questionnaire.q7_3_3) / 3;
+  const h7 = (h7_1 + h7_2) / 2;
 
-  const h7_4 = questionnaire.q7_4_1;
-
-  const h7_5 = questionnaire.q7_5_1;
-
-  const h7 = (h7_1 + h7_2 + h7_3 + h7_4 + h7_5) / 5;
+  console.log(h7_1, h7_2, h7);
 
   const h8 =
     (questionnaire.q8_1_1 +
-      questionnaire.q8_1_2 +
-      questionnaire.q8_1_3 +
-      questionnaire.q8_1_4 +
-      questionnaire.q8_1_5 +
-      questionnaire.q8_1_6) /
-    8;
+      questionnaire.q8_1_2) /
+    2;
 
   const sum = h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8;
 
@@ -217,7 +166,6 @@ export function getQuestionnaireAverages(
     q1_2_block_3,
     h1_3,
     h1_4,
-    h1_5,
     h2,
     h2_1,
     h2_2,
@@ -225,24 +173,16 @@ export function getQuestionnaireAverages(
     h2_4,
     h2_5,
     h3,
-    h3_1,
-    h3_2,
     h4,
-    h4_1,
-    h4_2,
     h5,
     h6,
     h6_1,
     h6_2,
     h6_3,
     h6_4,
-    h6_5,
     h7,
     h7_1,
     h7_2,
-    h7_3,
-    h7_4,
-    h7_5,
     h8,
     sum,
   };
@@ -254,8 +194,6 @@ export function getAllRatings(qAvg: QuestionnaireAvg): Rating {
   const h1_3 = getRating(qAvg.h1_3);
 
   const h1_4 = getRating(qAvg.h1_4);
-
-  const h1_5 = getRating(qAvg.h1_5);
 
   const h1 = getRating(qAvg.h1);
 
@@ -271,15 +209,7 @@ export function getAllRatings(qAvg: QuestionnaireAvg): Rating {
 
   const h2 = getRating(qAvg.h2);
 
-  const h3_1 = getRating(qAvg.h3_1);
-
-  const h3_2 = getRating(qAvg.h3_2);
-
   const h3 = getRating(qAvg.h3);
-
-  const h4_1 = getRating(qAvg.h4_1);
-
-  const h4_2 = getRating(qAvg.h4_2);
 
   const h4 = getRating(qAvg.h4);
 
@@ -293,19 +223,11 @@ export function getAllRatings(qAvg: QuestionnaireAvg): Rating {
 
   const h6_4 = getRating(qAvg.h6_4);
 
-  const h6_5 = getRating(qAvg.h6_5);
-
   const h6 = getRating(qAvg.h6);
 
   const h7_1 = getRating(qAvg.h7_1);
 
   const h7_2 = getRating(qAvg.h7_2);
-
-  const h7_3 = getRating(qAvg.h7_3);
-
-  const h7_4 = getRating(qAvg.h7_4);
-
-  const h7_5 = getRating(qAvg.h7_5);
 
   const h7 = getRating(qAvg.h7);
 
@@ -316,7 +238,6 @@ export function getAllRatings(qAvg: QuestionnaireAvg): Rating {
     h1_2,
     h1_3,
     h1_4,
-    h1_5,
     h2,
     h2_1,
     h2_2,
@@ -324,24 +245,16 @@ export function getAllRatings(qAvg: QuestionnaireAvg): Rating {
     h2_4,
     h2_5,
     h3,
-    h3_1,
-    h3_2,
     h4,
-    h4_1,
-    h4_2,
     h5,
     h6,
     h6_1,
     h6_2,
     h6_3,
     h6_4,
-    h6_5,
     h7,
     h7_1,
     h7_2,
-    h7_3,
-    h7_4,
-    h7_5,
     h8,
   };
 }
@@ -351,7 +264,6 @@ export function getWeightedPoints(
   weights: Weights
 ): WeightedPoints {
   const h1 = points.h1 * weights.h1;
-  console.log(points.h1 + " * " + weights.h1);
   const h2 = points.h2 * weights.h2;
   const h3 = points.h3 * weights.h3;
   const h4 = points.h4 * weights.h4;

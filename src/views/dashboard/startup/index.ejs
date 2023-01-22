@@ -1,6 +1,6 @@
 <div class="cards">
-    <div class="milestone-card">
-        <h4>Milestones</h4>
+    <div class="card-milestone" id="milestones">
+        <h2>Milestones</h2>
        <div class="overflow-chart">
         <% if(dashboard == "fund") { %>
             <svg id="gantt" class="disable-interaction"></svg>
@@ -21,64 +21,45 @@
             <% } %>
         </div>
     </div>
-    <div class="card-single-kpi">
+    <div class="card-startup-metrics" id="cash-runway">
         <div>
-            <h3>
-                <!-- KPIS  -->
-            </h3>
-            <span>Cash Runway</span>
+            <h2>
+                Cash Runway
+            </h2>
+           <div class="chart-container">
             <canvas id="runway-chart"></canvas>
-        </div>
-        <div>
-            <span class="las la-clipboard"></span>
-        </div>
-    </div>
-    <div class="card-single-kpi">
-        <div>
-            <h3>
-                <!--  KPIS -->
-            </h3>
-            <span>Burn Rate</span>
-            <canvas id="burn-rate-chart"></canvas>
-        </div>
-        <div>
-            <h4>Last Cash Inflow: </h4>
-            <span>Date</span>
-        </div>
-        <div>
-            <span class="las la-clipboard"></span>
-        </div>
-    </div>
-    <div class="card-single-kpi">
-        <div>
-            <h3>
-                <!--  KPIS -->
-            </h3>
-            <span>Liquidity</span>
-            <canvas id="liq-chart"></canvas>
-        </div>
-        <div>
-            <span class="las la-clipboard"></span>
-        </div>
-    </div>
-    <% if(locals.startup != undefined) {%>
-        <div class="card-single-kpi">
-            <h3>Expertise</h3>
-           <div>
-            <canvas id="expertise-chart"></canvas>
            </div>
-        </div> 
-    <% } %>
-   
-    <div class="card-single-kpi">
+        </div>
+    </div>
+    <div class="card-startup-metrics" id="burn-rate">
         <div>
-            <h3>
+            <h2>
+                Burn Rate
+            </h2>
+            <div class="chart-container">
+                <canvas id="burn-rate-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="card-startup-metrics" id="liquidity">
+        <div>
+            <h2>
+                Liquidity
+            </h2>
+            <div class="chart-container">
+                <canvas id="liq-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="card-startup-metrics" id="trl">
+        <div id="trl-prod-metric">
+            <h2>
                 <%= locals.trl.trlProd %>
-            </h3>
+            </h2>
             <span>TRL(PROD) of <%= locals.trl.product%> </span>
         </div>
         <br>
-        <table id="ctrl-prod-tbl">
+        <table>
             <thead>
                 <tr>
                     <th>
@@ -108,5 +89,57 @@
         </table>
     </div>
     <br>
+    <div class="card-startup-table" id="contacted-investors">
+        <h2>Contacted Investors</h2>
+        <div class="table-container">
+           <table>
+                <thead>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Contact Details</th>
+                    <th>Date of Contact</th>
+                    <th>Location</th>
+                    <th>Notes</th>
+                    <th>Status</th>
+                </thead>
+                <tbody>
+                    <% for (const investor of investors) { %>
+                        <tr>
+                            <td><%= investor.name %> </td>
+                            <td><%= investor.type %> </td>
+                            <td>
+                                <ul>
+                                    <li><%= investor.email %></li>
+                                    <li><%= investor.number %></li>
+                                    <li><%= investor.website %></li>
+                                </ul>
+                            </td>
+                            <td>
+                                <%= investor.contactDate %>
+                            </td>
+                            <td>
+                                <%= investor.country %>
+                            </td>
+                            <td>
+                                <%= investor.notes %>
+                            </td>
+                            <td>
+                                <input type="hidden" value="<%= investor.id %>">
+                                <div>
+                                    <% if(investor.status == "contacted") { %>
+                                        <span><i class="las la-hourglass-half"></i></span>
+                                    <% } else if(investor.status == "accepted")  { %>
+                                        <span><i class="las la-check"></i></span>
+                                    <% } else if(investor.status == "declined")  { %>
+                                        <span><i class="las la-times"></i></span>
+                                    <% } %> 
+                                </div>
+                            </td>
+                        </tr>
+                    <% } %> 
+                </tbody>
+           </table>
+        </div>
+    </div>
 </div>
  

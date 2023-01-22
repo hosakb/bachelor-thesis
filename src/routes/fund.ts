@@ -2,10 +2,11 @@ import express, { Router } from "express";
 import { Row } from "read-excel-file";
 import { getFundById, getFundNameById } from "../models/fund";
 
-import { fundIdExists, getStartupsForFund } from "../models/fund_startup_map";
+import { fundIdExists, getStartupsForFund, updateRatingTotal } from "../models/fund_startup_map";
 import { getWeights, updateWeights, Weights } from "../models/fund";
 import {
   getCapTable,
+  getInvestors,
   getMetrics,
   getMilestones,
   getQuestionnaire,
@@ -59,7 +60,6 @@ router.get("/", async (req, res) => {
       res.render("dashboard/fund/index", {
         layout: "../views/layouts/dashboard.ejs",
         dashboard: "fund",
-        stylesheets: ["main", "dashboard"],
         scripts: ["/js/table", "/js/ag-grid-community.min"],
         portfolio,
         page: "dashboard",
@@ -96,13 +96,13 @@ router.get("/startup/founders", async (req, res) => {
     res.redirect("/fund/");
   }
   try {
+
     const capTable: Row[] = await getCapTable(startupId);
 
     res.render("dashboard/founders/index", {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "fund",
-      stylesheets: ["main", "dashboard"],
-      scripts: [],
+      scripts: ["/js/chart/chart.min", "/js/founders"],
       title: req.startupName,
       name: req.user?.firstName + " " + req.user?.lastName,
       founders: await getFoundersByStartupId(startupId),
@@ -115,6 +115,31 @@ router.get("/startup/founders", async (req, res) => {
       `Failed to fetch startup request data for startup with id ${startupId} due to:\n${error}.\nRedirecting to fund dashboard.`
     );
     res.redirect("/fund/");
+  }
+});
+
+router.post("/expertise", async (req, res) => {
+  try {
+    const startupId = req.session.selectedStartup;
+
+    const expertiseValues = await getExpertiseByStartup(startupId);
+
+    const expertise: Expertise = {
+      name: [],
+      amount: [],
+    };
+
+    for (const i of expertiseValues) {
+      if (!expertise.name.includes(i)) {
+        expertise.name.push(i);
+        const amount = expertiseValues.filter((x) => x == i);
+        expertise.amount.push(amount.length);
+      }
+    }
+
+    res.status(200).json(expertise);
+  } catch (error) {
+    res.status(200).json([]);
   }
 });
 
@@ -133,7 +158,6 @@ router.get("/startup/", async (req, res) => {
 
     res.render("dashboard/startup/index", {
       layout: "../views/layouts/dashboard.ejs",
-      stylesheets: ["main", "dashboard"],
       scripts: [
         "/js/gantt/frappe-gantt.min",
         "/js/chart/chart.min",
@@ -147,6 +171,7 @@ router.get("/startup/", async (req, res) => {
       name: req.user?.firstName + " " + req.user?.lastName,
       startup: req.session.selectedStartup,
       trl: trl,
+      investors: await getInvestors(startupId),
     });
   } catch (error) {
     console.error(
@@ -209,6 +234,8 @@ router.get("/startup/rating", async (req, res) => {
       (18 - (17 * weightedPoints.sum) / (weights.sum * 5)).toFixed(2)
     );
 
+    await updateRatingTotal(ratingTotal, startupId, fundId);
+
     const weightedRating = {
       questionnaire,
       questionnaireAvg,
@@ -221,13 +248,12 @@ router.get("/startup/rating", async (req, res) => {
     res.render("dashboard/founders/rating", {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "fund",
-      stylesheets: ["main", "dashboard"],
       scripts: ["/js/rating"],
       title: req.startupName,
       name: req.user?.firstName + " " + req.user?.lastName,
       startup: req.session.selectedStartup,
       weightedRating: weightedRating,
-      page: "rating",
+      page: "rating",    
     });
   } catch (error) {
     console.error(
@@ -276,21 +302,6 @@ router.get("/chart/data", async (req, res) => {
       return x.liquidity;
     });
 
-    const expertiseValues = await getExpertiseByStartup(startupId);
-
-    const expertise: Expertise = {
-      name: [],
-      amount: [],
-    };
-
-    for (const i of expertiseValues) {
-      if (!expertise.name.includes(i)) {
-        expertise.name.push(i);
-        const amount = expertiseValues.filter((x) => x == i);
-        expertise.amount.push(amount.length);
-      }
-    }
-
     const chartData = {
       milestones,
       burnRate: {
@@ -304,8 +315,7 @@ router.get("/chart/data", async (req, res) => {
       liquidity: {
         months,
         periodData: liquidity,
-      },
-      expertise,
+      }
     };
 
     res.status(200).json(chartData);

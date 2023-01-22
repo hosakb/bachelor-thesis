@@ -9,6 +9,7 @@ import {
   Metrics,
   getMetrics,
   getStartupNameById,
+  getInvestors,
 } from "../models/startup";
 import { getMonth } from "../util/date";
 
@@ -46,6 +47,7 @@ router.get("/", async (req, res) => {
         title: await getStartupNameById(startupId),
         name: req.user?.firstName + " " + req.user?.lastName,
         trl: trl,
+        investors: await getInvestors(startupId),
       });
     } catch (error) {
       console.error(

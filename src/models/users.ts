@@ -137,9 +137,6 @@ const getUsers = async (): Promise<AdminUser[]> => {
           );
         }
       } else {
-        console.error(
-          `Could not find assigned startup or fund for user with id ${user.id}`
-        );
         users.push({
           id: user.id,
           firstName: user.first_name,

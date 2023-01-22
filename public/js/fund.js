@@ -13,11 +13,10 @@ async function loadChartData() {
   renderLiq(liqData);
   const ganttData = responserJson.milestones;
   renderGantt(ganttData);
-  const expertiseData = responserJson.expertise;
-  renderExpertise(expertiseData);
 }
 
 function renderBurnRate(burnRateData) {
+
   const data = {
     labels: burnRateData.months,
     datasets: [
@@ -31,17 +30,22 @@ function renderBurnRate(burnRateData) {
   };
 
   const config = {
+    maintainAspectRatio: false,
+    responsiveness: true,
     type: "line",
     data: data,
     options: {
-      layout: {
-        autoPadding: true,
-      },
+      // layout: {
+      //   autoPadding: true,
+      // },
+      
     },
   };
 
   // eslint-disable-next-line no-undef
-  new Chart(document.querySelector("#burn-rate-chart"), config);
+  let chart = new Chart(document.querySelector("#burn-rate-chart"), config);
+  chart.canvas.parentNode.style.height = "15vh";
+  chart.canvas.parentNode.style.width = "18vh";
 }
 
 function renderRunway(burnRateData) {
@@ -58,17 +62,22 @@ function renderRunway(burnRateData) {
   };
 
   const config = {
+    maintainAspectRatio: false,
+    responsiveness: true,
     type: "line",
     data: data,
     options: {
-      layout: {
-        autoPadding: true,
-      },
+      // layout: {
+      //   autoPadding: true,
+      // },
+      
     },
   };
 
   // eslint-disable-next-line no-undef
-  new Chart(document.querySelector("#runway-chart"), config);
+  let chart = new Chart(document.querySelector("#runway-chart"), config);
+//   chart.canvas.parentNode.style.height = "15vh";
+// chart.canvas.parentNode.style.width = "18vh";
 }
 
 function renderLiq(liqData) {
@@ -85,17 +94,22 @@ function renderLiq(liqData) {
   };
 
   const config = {
+    maintainAspectRatio: false,
+    responsiveness: true,
     type: "line",
     data: data,
     options: {
-      layout: {
-        autoPadding: true,
-      },
+      // layout: {
+      //   autoPadding: true,
+      // },
+      
     },
   };
 
   // eslint-disable-next-line no-undef
-  new Chart(document.querySelector("#liq-chart"), config);
+  let chart = new Chart(document.querySelector("#liq-chart"), config);
+//   chart.canvas.parentNode.style.height = "15vh";
+// chart.canvas.parentNode.style.width = "18vh";
 }
 
 var gantt;
@@ -130,40 +144,4 @@ function change_view_mode(period) {
   gantt.change_view_mode(period);
 }
 
-function renderExpertise(expertiseData) {
-  const data = {
-    labels: expertiseData.name,
-    datasets: [
-      {
-        label: "Expertise",
-        backgroundColor: [
-          "#3e45cd",
-          "#4e5ea2",
-          "#3c5a5f",
-          "#e8c334",
-          "#888850",
-          "#3wddcd",
-          "#54fda2",
-          "#3fef5f",
-          "#e33334",
-          "#666850",
-        ],
-        borderColor: "#ffffff",
-        data: expertiseData.amount,
-      },
-    ],
-  };
 
-  const config = {
-    type: "doughnut",
-    data: data,
-    options: {
-      layout: {
-        autoPadding: true,
-      },
-    },
-  };
-
-  // eslint-disable-next-line no-undef
-  new Chart(document.querySelector("#expertise-chart"), config);
-}

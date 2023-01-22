@@ -1,6 +1,15 @@
 import pool from "../config/db";
 import { calcTrlProd } from "../util/calc/trl";
 
+interface StartupTableRow {
+  id: string;
+  name: string;
+  stage?: string;
+  totalInvestment?: number;
+  sector?: string;
+  rating?: number;
+}
+
 interface Startup {
   id: string;
   name: string;
@@ -10,6 +19,10 @@ interface Startup {
   sector?: string;
 }
 
+interface NewStartup {
+  id: string;
+  name: string;
+}
 interface AdminStartup {
   name: string;
   stage: string;
@@ -108,17 +121,14 @@ interface Questionnaire {
   q1_2_24: number;
   q1_3_1: number;
   q1_3_2: number;
+  q1_3_3: number;
+  q1_3_4: number;
   q1_4_1: number;
   q1_4_2: number;
   q1_4_3: number;
   q1_4_4: number;
-  q1_5_1: number;
-  q1_5_2: number;
-  q1_5_3: number;
-  q1_5_4: number;
-  q1_5_5: number;
-  q1_5_6: number;
-  q1_5_7: number;
+  q1_4_5: number;
+  q1_4_6: number;
   q2_1_1: number;
   q2_1_2: number;
   q2_1_3: number;
@@ -135,9 +145,6 @@ interface Questionnaire {
   q2_3_1: number;
   q2_3_2: number;
   q2_3_3: number;
-  q2_3_4: number;
-  q2_3_5: number;
-  q2_3_6: number;
   q2_4_1: number;
   q2_4_2: number;
   q2_4_3: number;
@@ -151,63 +158,39 @@ interface Questionnaire {
   q2_5_4: number;
   q2_5_5: number;
   q2_5_6: number;
-  q2_5_7: number;
-  q2_5_8: number;
   q3_1_1: number;
   q3_1_2: number;
   q3_1_3: number;
   q3_1_4: number;
-  q3_2_1: number;
-  q3_2_2: number;
-  q3_2_3: number;
-  q3_2_4: number;
   q4_1_1: number;
   q4_1_2: number;
-  q4_2_1: number;
-  q4_2_2: number;
-  q4_2_3: number;
-  q4_2_4: number;
   q5_1_1: number;
   q5_1_2: number;
   q5_1_3: number;
-  q5_1_4: number;
   q6_1_1: number;
   q6_1_2: number;
-  q6_1_3: number;
-  q6_1_4: number;
-  q6_1_5: number;
   q6_2_1: number;
   q6_2_2: number;
+  q6_2_3: number;
+  q6_2_4: number;
+  q6_2_5: number;
   q6_3_1: number;
   q6_3_2: number;
   q6_3_3: number;
   q6_3_4: number;
-  q6_3_5: number;
   q6_4_1: number;
   q6_4_2: number;
   q6_4_3: number;
-  q6_4_4: number;
-  q6_5_1: number;
-  q6_5_2: number;
-  q6_5_3: number;
   q7_1_1: number;
   q7_1_2: number;
   q7_1_3: number;
   q7_1_4: number;
   q7_1_5: number;
+  q7_1_6: number;
   q7_2_1: number;
   q7_2_2: number;
-  q7_3_1: number;
-  q7_3_2: number;
-  q7_3_3: number;
-  q7_4_1: number;
-  q7_5_1: number;
   q8_1_1: number;
   q8_1_2: number;
-  q8_1_3: number;
-  q8_1_4: number;
-  q8_1_5: number;
-  q8_1_6: number;
 }
 
 interface QuestionnaireAvg {
@@ -219,7 +202,6 @@ interface QuestionnaireAvg {
   q1_2_block_3: number;
   h1_3: number;
   h1_4: number;
-  h1_5: number;
   h2: number;
   h2_1: number;
   h2_2: number;
@@ -227,24 +209,16 @@ interface QuestionnaireAvg {
   h2_4: number;
   h2_5: number;
   h3: number;
-  h3_1: number;
-  h3_2: number;
   h4: number;
-  h4_1: number;
-  h4_2: number;
   h5: number;
   h6: number;
   h6_1: number;
   h6_2: number;
   h6_3: number;
   h6_4: number;
-  h6_5: number;
   h7: number;
   h7_1: number;
   h7_2: number;
-  h7_3: number;
-  h7_4: number;
-  h7_5: number;
   h8: number;
   sum: number;
 }
@@ -254,7 +228,6 @@ interface Rating {
   h1_2: number;
   h1_3: number;
   h1_4: number;
-  h1_5: number;
   h2: number;
   h2_1: number;
   h2_2: number;
@@ -262,24 +235,16 @@ interface Rating {
   h2_4: number;
   h2_5: number;
   h3: number;
-  h3_1: number;
-  h3_2: number;
   h4: number;
-  h4_1: number;
-  h4_2: number;
   h5: number;
   h6: number;
   h6_1: number;
   h6_2: number;
   h6_3: number;
   h6_4: number;
-  h6_5: number;
   h7: number;
   h7_1: number;
   h7_2: number;
-  h7_3: number;
-  h7_4: number;
-  h7_5: number;
   h8: number;
 }
 
@@ -391,7 +356,7 @@ const getFirstStartupLoginById = async (startUpId: string) => {
   }
 };
 
-const getNewStartupById = async (startupId: string) => {
+const getNewStartupById = async (startupId: string): Promise<NewStartup> => {
   const client = await pool.connect();
   let result;
   try {
@@ -399,26 +364,22 @@ const getNewStartupById = async (startupId: string) => {
       startupId,
     ]);
   } catch (err) {
-    throw new Error(`Failed to query startup infos. Error: ${err}`);
+    throw new Error(`Failed to query new Startup. Error: ${err}`);
   } finally {
     client.release();
   }
 
   const { id, name } = result.rows[0];
 
-  const s: Startup = {
+  const s: NewStartup = {
     id,
-    name: name,
-    stage: undefined,
-    share: undefined,
-    sector: undefined,
-    totalInvestment: undefined,
+    name: name
   };
 
   return s;
 };
 
-const getStartupById = async (startupId: string) => {
+const getStartupTableRowById = async (startupId: string): Promise<StartupTableRow> => {
   const client = await pool.connect();
   let result;
   try {
@@ -439,11 +400,10 @@ const getStartupById = async (startupId: string) => {
   const totalInvestment =
     info[0] === undefined ? "Not available" : info[0].totalInvestment; //TODO: Fallback?
 
-  const s: Startup = {
+  const s: StartupTableRow = {
     id,
     name: name,
     stage: stage,
-    share: share,
     sector: sector,
     totalInvestment: totalInvestment,
   };
@@ -1096,6 +1056,7 @@ export {
   InvestmentPhase,
   Metrics,
   Milestone,
+  StartupTableRow,
   Startup,
   Rating,
   StartupInfo,
@@ -1119,7 +1080,7 @@ export {
   getNewStartupById,
   getQuestionnaireFilledOut,
   getQuestionnaire,
-  getStartupById,
+  getStartupTableRowById,
   getStartupNameById,
   getStartups,
   persistMetrics,

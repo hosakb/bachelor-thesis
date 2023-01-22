@@ -1,77 +1,101 @@
-<div id="founders" class="card">
-    <h2>Founders</h2>
-    <br>
-    <div>
-       
+<div class="founder-cards">
+    <div id="founders" class="card">
+        <h2>Founders</h2>
+        <br>
+        <div class="vertical-table-container">
             <% founders.forEach(founder => { %> 
-            <table>
-            <tr><td>Name</td><td><%= founder.firstName %> <%= founder.lastName %></td> </tr>
-            <tr><td>Age</td><td><%= founder.age %></td></tr>
-            <tr><td>Domain of Expertise</td><td><%= founder.trackRecord.expertise %></td></tr>
-            <tr>
-                <td>Previous Ventures</td>
-                <td>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Still in Business
-                                </th>
-                                <th>
-                                    Founding Date
-                                </th>
-                                <th>
-                                    Number Co-Founders
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% founder.trackRecord.ventures.forEach(venture => {%>
+            <table id="founders-table">
+                <tr><td>Name</td><td><%= founder.firstName %> <%= founder.lastName %></td> </tr>
+                <tr><td>Age</td><td><%= founder.age %></td></tr>
+                <tr>
+                    <td>Previous Ventures</td>
+                    <td>
+                        <table>
+                            <thead>
                                 <tr>
                                     <th>
-                                        <%= venture.ventureName %> 
+                                        Name
                                     </th>
                                     <th>
-                                        <%= venture.inBusiness %> 
+                                        Still in Business
                                     </th>
                                     <th>
-                                        <%= venture.foundingDate %> 
+                                        Founding Date
                                     </th>
                                     <th>
-                                        <%= venture.coFounders %> 
+                                        Number Co-Founders
                                     </th>
                                 </tr>
-                            <% }); %> 
-                        </tbody>
-                </table>
-                </td>
-            </tr>
-        </table>
-        <br>
+                            </thead>
+                            <tbody>
+                                <% founder.trackRecord.ventures.forEach(venture => {%>
+                                    <tr>
+                                        <th>
+                                            <%= venture.ventureName %> 
+                                        </th>
+                                        <th>
+                                            <%= venture.inBusiness %> 
+                                        </th>
+                                        <th>
+                                            <%= venture.foundingDate %> 
+                                        </th>
+                                        <th>
+                                            <%= venture.coFounders %> 
+                                        </th>
+                                    </tr>
+                                <% }); %> 
+                            </tbody>
+                    </table>
+                    </td>
+                </tr>
+            </table>
+            <br>
             <% }); %>
+        </div>
     </div>
-</div>
     <br>
-    
-<% if(locals.capTable != undefined) { %> 
-    <div id="founders" class="card"></div>
-        <div class="card-single-kpi">
-            <h3>Cap-Table</h3>
+        
+    <div id="cap-table" class="card">
+        <h2>Cap-Table</h2>
+        <div class="vertical-table-container">
+            <% if(locals.capTable != undefined) { %> 
             <table id="cap-table">
-                <% for(const row of locals.capTable) {%>
+            <% for(const row of locals.capTable) {%>
+                <tr>
+                    <% for(const cell of row) {%>
+                        <td>
+                            <%= cell %> 
+                        </td>
+                    <% } %> 
+                </tr>
+            <% } %>
+            </table>
+            <% } %> 
+        </div>
+    </div>
+    <br>
+    <div class="card" id="expertise">
+        <h2>Domain of Expertise</h2>
+        <div id="pie-chart-container">
+            <canvas id="expertise-chart"></canvas>
+        </div>
+        <div id="expertise-table-wrapper">
+            <table id="expertise-table">
+                <thead>
                     <tr>
-                        <% for(const cell of row) {%>
-                            <td>
-                                <%= cell %> 
-                            </td>
-                        <% } %> 
+                        <th>Name</th>
+                        <th>Expertise</th>
                     </tr>
-                <% } %> 
+                </thead>
+                <tbody>
+                    <% founders.forEach(founder => { %>
+                    <tr>
+                        <td><%= founder.firstName %> <%= founder.lastName %></td>
+                        <td><%= founder.trackRecord.expertise %></td>
+                    </tr>
+                    <% }); %> 
+                </tbody>
             </table>
         </div>
-        <br>
     </div>
-    <% } %> 
+</div>
