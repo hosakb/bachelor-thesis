@@ -40,7 +40,8 @@
                     <label for="startup">Startup:</label>
                     <select name="startup" id="startup">
                         <% for (const startup of startups) { %>
-                            <option value="<%= startup.id %> "><%= startup.name %></option>
+                            <option value="<%= startup.id %>"><%= startup.name %></option>
+                            <% console.log(startup.id); %> 
                         <% } %> 
                     </select>
                 </div>
@@ -49,42 +50,8 @@
                 <button id="submit-new-user">Submit new User</button>
             </div>
         </div>
-        <div>
-            <div id="email-taken" class="hidden form-item">
-                <label id="email-taken">Email already taken</label>
-            </div>
-            <div id="insert-status" class="hidden">
-                <h3>New User Added:</h3>
-                <div class="form-item">
-                    <label >First Name:</label>
-                    <input type="text" disabled id="added-first-name">
-                </div>
-                <div class="form-item">
-                    <label >Last Name:</label>
-                    <input type="text" disabled id="added-last-name">
-                </div>
-                <div class="form-item">
-                    <label>Email:</label>
-                    <input type="text" disabled id="added-email">
-                </div>
-                <div class="form-item">
-                    <label>Password:</label>
-                    <input type="password" disabled id="added-password">
-                    <button id="show-pw">Show Password</button>
-                </div>
-                <div class="form-item">
-                    <label>Role:</label>
-                    <input type="text" disabled id="added-role">
-                </div>
-                <div class="form-item hidden">
-                    <label>Fund:</label>
-                    <input type="text" disabled id="added-fund">
-                </div>
-                <div class="form-item hidden">
-                    <label>Startup:</label>
-                    <input type="text" disabled id="added-startup">
-                </div>
-            </div>
+        <div id="email-taken" class="hidden form-item">
+            <label id="email-taken">Email already taken</label>
         </div>
     </div>
     <br>

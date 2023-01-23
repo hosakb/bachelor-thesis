@@ -124,20 +124,13 @@ document
 
       const emailTakenResultJson = await emailTakenResult.json();
       const emailTaken = document.getElementById("email-taken");
-      const insertStatus = document.getElementById("insert-status");
       if (emailTakenResultJson) {
         if (emailTaken.classList.contains("hidden")) {
           emailTaken.classList.remove("hidden");
         }
-        if (!insertStatus.classList.contains("hidden")) {
-          insertStatus.classList.add("hidden");
-        }
       } else {
         if (!emailTaken.classList.contains("hidden")) {
           emailTaken.classList.add("hidden");
-        }
-        if (insertStatus.classList.contains("hidden")) {
-          insertStatus.classList.remove("hidden");
         }
 
         let newUser;
@@ -173,6 +166,8 @@ document
           };
         }
 
+        console.log(document.getElementById("startup"))
+
         fetch("/admin/add-user", {
           method: "POST",
           headers: {
@@ -193,16 +188,6 @@ document
       }
     }
   });
-
-document.querySelector("#show-pw").addEventListener("click", () => {
-  if (document.querySelector("#added-password").type == "password") {
-    document.querySelector("#added-password").type = "text";
-    document.querySelector("#show-pw").innerHTML = "Hide Password";
-  } else {
-    document.querySelector("#added-password").type = "password";
-    document.querySelector("#show-pw").innerHTML = "Show Password";
-  }
-});
 
 function emptyInputsEditUser() {
   var inputs = document.querySelectorAll("#new-user div input");

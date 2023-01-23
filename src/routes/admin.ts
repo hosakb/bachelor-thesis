@@ -126,7 +126,7 @@ router.post("/add-user", async (req, res) => {
       startup,
       fund,
     };
-
+    
     await insertUser(newUser);
     res.status(200).json();
   } catch (err) {

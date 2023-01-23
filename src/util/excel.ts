@@ -4,23 +4,17 @@ import readXlsxFile, { Row } from "read-excel-file/node";
 import fs from "fs";
 import path from "path";
 import { getTodaysDate } from "./date";
-
-const FILENAME_KPIS =
-  "kpis-" + getTodaysDate() + Math.round(Math.random() * 1e9) + ".xlsx";
 const FILENAME_CAP_TABLE =
   "cap-table-" + getTodaysDate() + Math.round(Math.random() * 1e9) + ".xlsx";
-const UPLOAD_PATH = path.join(__dirname, "..", "public", "uploads");
+
+const UPLOAD_PATH = path.join(__dirname, "..",  "..", "public", "uploads");
 
 const multerStorage: StorageEngine = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "src/public/uploads");
+    cb(null, "public/uploads");
   },
   filename: function (req: Request, file, cb) {
-    if (req.url == "/") {
-      cb(null, FILENAME_KPIS);
-    } else {
-      cb(null, FILENAME_CAP_TABLE);
-    }
+    cb(null, FILENAME_CAP_TABLE);
   },
 });
 
@@ -46,38 +40,6 @@ const multerUpload = multer({
   storage: multerStorage,
   fileFilter: FILE_FILTER,
 });
-
-const KPI_SCHEMA = {
-  Date: {
-    prop: "date",
-    type: Date,
-  },
-  "Number of Employees": {
-    prop: "numberOfEmployees",
-    type: Number,
-  },
-  "Cash Flow Rate": {
-    prop: "cashFlowRate",
-    type: Number,
-  },
-  Liquidity: {
-    prop: "liquidity",
-    type: Number,
-  },
-};
-
-const uploadKpis = async () => {
-  const filePath = path.join(UPLOAD_PATH, FILENAME_KPIS);
-
-  const { rows, errors } = await readXlsxFile(fs.createReadStream(filePath), {
-    schema: KPI_SCHEMA,
-  });
-
-  if (errors.length === 0) {
-    return rows;
-  }
-  throw new Error(`Failed during excel file stream due to: ${errors}`);
-};
 
 const uploadCapTable = async () => {
   const filePath = path.join(UPLOAD_PATH, FILENAME_CAP_TABLE);
@@ -148,7 +110,6 @@ const formatCapTable = (rows: Row[]) => {
 
 export {
   multerUpload,
-  uploadKpis,
   deleteSpreadsheets,
   uploadCapTable,
   formatCapTable,

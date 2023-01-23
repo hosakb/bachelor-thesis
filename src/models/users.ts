@@ -319,8 +319,10 @@ const emailRegistered = async (email: string) => {
 const insertUser = async (user: NewUser) => {
   const client = await pool.connect();
 
+  console.log(user);
+  
   try {
-    if (user.fund !== undefined) {
+    if (user.fund !== null) {
       await client.query(
         `INSERT INTO users (first_name, last_name, email, password, role, fund) VALUES ($1, $2, $3, $4, $5, $6)`,
         [
@@ -341,7 +343,7 @@ const insertUser = async (user: NewUser) => {
           user.email,
           user.hashedPassword,
           user.role,
-          user.startup,
+          user.startup
         ]
       );
     }

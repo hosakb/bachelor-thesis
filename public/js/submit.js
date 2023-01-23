@@ -552,6 +552,132 @@ document.querySelector("#exit-new-investor").addEventListener("click", (e) => {
   document.getElementById("add-investor-form").classList.toggle("show");
 });
 
+document.getElementById("next-investment-round-btn").addEventListener("click", (e) => {
+  const currentInvestmentPhase = document.getElementById("current-investment-phase").value;
+  let possiblePhases = []
+  switch (currentInvestmentPhase) {
+    case "pre-seed":
+      {
+        const option = document.createElement("option");
+        option.value = "seed";
+        option.innerHTML = "Seed";
+        possiblePhases.push(option);
+      }
+      break;
+    case "seed":
+     {
+      const option = document.createElement("option");
+      option.value = "startup";
+      option.innerHTML = "Startup";
+      possiblePhases.push(option);
+     }
+      break;
+    case "startup":
+      {
+        const option = document.createElement("option");
+        option.value = "series-a";
+        option.innerHTML = "Series A";
+        possiblePhases.push(option);
+       }
+      break;
+      case "series-a":
+        {
+          const option = document.createElement("option");
+          option.value = "series-b";
+          option.innerHTML = "Series B";
+          possiblePhases.push(option);
+         }
+      break;
+      case "series-b":
+        {
+          const option = document.createElement("option");
+          option.value = "series-c";
+          option.innerHTML = "Series C";
+          possiblePhases.push(option);
+         }
+      break;
+      case "series-c":
+        {
+          const option = document.createElement("option");
+          option.value = "series-d";
+          option.innerHTML = "Series D";
+          possiblePhases.push(option);
+
+          const option1 = document.createElement("option");
+          option1.value = "ipo";
+          option1.innerHTML = "IPO";
+          possiblePhases.push(option1);
+
+          const option2 = document.createElement("option");
+          option2.value = "emerging-growth";
+          option2.innerHTML = "Emerging-Growth";
+          possiblePhases.push(option2);
+
+          const option3 = document.createElement("option");
+          option3.value = "conquering";
+          option3.innerHTML = "Conquering";
+          possiblePhases.push(option3);
+
+          const option4 = document.createElement("option");
+          option4.value = "capturing";
+          option4.innerHTML = "Capturing";
+          possiblePhases.push(option4);
+
+
+          possiblePhases.push(option,
+            option1,
+            option2,
+            option3,
+            option4);
+         }
+      break;
+    default:
+      {
+        const option1 = document.createElement("option");
+        option1.value = "ipo";
+        option1.innerHTML = "IPO";
+        possiblePhases.push(option1);
+
+        const option2 = document.createElement("option");
+        option2.value = "emerging-growth";
+        option2.innerHTML = "Emerging-Growth";
+        possiblePhases.push(option2);
+
+        const option3 = document.createElement("option");
+        option3.value = "conquering";
+        option3.innerHTML = "Conquering";
+        possiblePhases.push(option3);
+
+        const option4 = document.createElement("option");
+        option4.value = "capturing";
+        option4.innerHTML = "Capturing";
+        possiblePhases.push(option4);
+
+        possiblePhases.push(
+          option1,
+          option2,
+          option3,
+          option4);
+       }
+      break;
+  }
+  possiblePhases.forEach(option => {
+    document.getElementById("next-phase").appendChild(option);
+  });
+
+  document.getElementById("next-investment-round").classList.toggle("show");
+});
+
+document.getElementById("submit-investment-stage").addEventListener("click", (e) => {
+  document.getElementById("next-investment-round").classList.toggle("show");
+});
+
+document
+  .querySelector("#exit-next-investment-round")
+  .addEventListener("click", (e) => {
+    document.getElementById("next-investment-round").classList.toggle("show");
+  });
+
 document.querySelector("#investor-accepted").addEventListener("click", (e) => {
   const td = e.target.parentElement.parentElement.parentElement;
   const span = document.createElement("span");

@@ -24,6 +24,7 @@ interface NewStartup {
   name: string;
 }
 interface AdminStartup {
+  id: string;
   name: string;
   stage: string;
   createdAt: Date;
@@ -441,11 +442,12 @@ const getAllStartups = async (): Promise<AdminStartup[]> => {
 
   try {
     const result = await client.query(
-      "SELECT name, stage, created_at, updated_at  FROM startup"
+      "SELECT id, name, stage, created_at, updated_at  FROM startup"
     );
 
     return result.rows.map((startup) => {
       return {
+        id: startup.id,
         name: startup.name,
         stage: startup.stage,
         createdAt: startup.created_at,
@@ -498,10 +500,41 @@ const getInvestmentPhase = async (startupId: string) => {
     client.release();
   }
 
-  const phase: InvestmentPhase = result.rows[0].stage;
+  const phase: string = result.rows[0].stage;
 
   return phase;
 };
+
+const updateInvestmentPhase = async (startupId: string, investmentPhase: string) => {
+  const client = await pool.connect();
+  try {
+    await client.query("UPDATE startup set stage = $1 where id = $2", [
+      investmentPhase, startupId
+    ]);
+  } catch (err) {
+    throw new Error(
+      `Failed to update investment phase for startup id ${startupId}. Error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const updateInvestedCapital = async (startupId: string, investedCapital: number) => {
+  const client = await pool.connect();
+  try {
+    await client.query("UPDATE startup set invested_capital = $1 where id = $2", [
+      investedCapital, startupId
+    ]);
+  } catch (err) {
+    throw new Error(
+      `Failed to update invested capital for startup id ${startupId}. Error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
 
 const persistCapTable = async (capTable: string, startupId: string) => {
   const client = await pool.connect();
@@ -1093,11 +1126,12 @@ export {
   persistCoreTechnology,
   updateTrl,
   updateMilestoneDuration,
+  updateInvestedCapital,
   updateMilestoneProgress,
   updateStartupName,
   getTrl,
   deleteTrl,
-  deleteStartup,
+  deleteStartup,updateInvestmentPhase,
   insertInvestor,
   updateInvestor,
   persistMilestonesWithId,

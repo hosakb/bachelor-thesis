@@ -5,60 +5,63 @@
 
 <div class="submit-cards">
     <div class="submit-card" id="submit-trl-prod">
-        <table id="ctrl-prod-tbl">
-            <thead>
-                <tr>
-                    <th>
-                        Technology 
-                    </th>
-                    <th>
-                        TRL 
-                    </th>
-                    <th>
-                        Criticality 
-                    </th>
-                    <th>
-                        Options
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="trl-tbody">
-                <% let c = 0; %>
-                <% for(const i of locals.trl.trlData) {%>
-                    <tr class="trl-<%= c %>">
-                        <td>
-                            <%= i.technology %> 
-                        </td>
-                        <td>
-                            <%= i.trl %> 
-                        </td>
-                        <td>
-                            <%= i.criticality %> 
-                        </td>
-                        <td>
-                            <div id="option-btn-<%= c %>">
-                                <input type="hidden" value="<%= i.id %>" id="id-<%= c %>">
-                                <button onclick="editRow('<%= c %>')">
-                                    <span><i class="las la-edit"></i></span>
-                                </button>
-                                <button onclick="deleteRow('<%= c %>')">
-                                    <span><i class="las la-trash-alt"></i></span>
-                                </button>
-                            </div>
-                            <button id="ok-btn-<%= c %>" class="hidden" onclick="saveTrl('<%= c %>')"><i class="las la-check-circle"></i></button>
-                            <button id="cancel-btn-<%= c %>" class="hidden" onclick="cancelEdit()"><i class="las la-times"></i></button>
-                        </td>
+        <h2>Technology Readiness Level</h2>
+        <div class="submit-table-wrapper">
+            <table id="ctrl-prod-tbl">
+                <thead>
+                    <tr>
+                        <th>
+                            Technology 
+                        </th>
+                        <th>
+                            TRL 
+                        </th>
+                        <th>
+                            Criticality 
+                        </th>
+                        <th>
+                            Options
+                        </th>
                     </tr>
-                    <% c++; %> 
-                <% } %>
-            </tbody>
+                </thead>
+                <tbody id="trl-tbody">
+                    <% let c = 0; %>
+                    <% for(const i of locals.trl.trlData) {%>
+                        <tr class="trl-<%= c %>">
+                            <td>
+                                <%= i.technology %> 
+                            </td>
+                            <td>
+                                <%= i.trl %> 
+                            </td>
+                            <td>
+                                <%= i.criticality %> 
+                            </td>
+                            <td>
+                                <div id="option-btn-<%= c %>">
+                                    <input type="hidden" value="<%= i.id %>" id="id-<%= c %>">
+                                    <button onclick="editRow('<%= c %>')">
+                                        <span><i class="las la-edit"></i></span>
+                                    </button>
+                                    <button onclick="deleteRow('<%= c %>')">
+                                        <span><i class="las la-trash-alt"></i></span>
+                                    </button>
+                                </div>
+                                <button id="ok-btn-<%= c %>" class="hidden" onclick="saveTrl('<%= c %>')"><i class="las la-check-circle"></i></button>
+                                <button id="cancel-btn-<%= c %>" class="hidden" onclick="cancelEdit()"><i class="las la-times"></i></button>
+                            </td>
+                        </tr>
+                        <% c++; %> 
+                    <% } %>
+                </tbody>
             </table>
+        </div>
             <br>
         <button id="add-technology-btn">Add Technology</button>
     </div>
     <div class="submit-card" id="submit-contacted-investors">
-        <h4>Contacted Investors</h4>
-        <div>
+        <h2>Contacted Investors</h2>
+        <div class="submit-table-wrapper">
            <table>
                 <thead>
                     <th>Name</th>
@@ -111,12 +114,12 @@
         <button id="add-investor">Add new Investor</button>
     </div>
     <div class="submit-card" id="submit-milestones">
-        <h3>Milestones</h3>
+        <h2>Milestones</h2>
        <div>
             <div>
                 <button id="milestones-form-btn">Add Milestones</button>
             </div>
-            <div id="milestones-tbl">
+            <div id="milestones-tbl" class="submit-table-wrapper">
                 <table>
                     <thead>
                         <tr>
@@ -165,17 +168,10 @@
        </div>
     </div>
     <div class="submit-card" id="submit-cap-table">
-        <h4>Capitalization Table</h4>
-       <form action="/submit/cap-table" enctype="multipart/form-data" method="post">
-            <div>
-                <label for="cap-table-upload">Upload:</label>
-                <input type="file" name="cap-table" id="cap-table-upload" required/>
-            </div>
-            <input type="submit" value="Submit Cap Table">
-        </form>
-        <br>
+        <h2>Capitalization Table</h2>
+        <button id="next-investment-round-btn">Next investment round</button>
         <% if(locals.capTable != undefined) { %> 
-            <div>
+            <div class="submit-table-wrapper">
                 <table id="cap-table">
                     <% for(const row of locals.capTable) {%>
                         <tr>
@@ -188,37 +184,38 @@
                     <% } %> 
                 </table>
             </div>
-        <% } %> 
+        <% } %>
+        <input type="hidden" id="current-investment-phase" value="<%= investmentPhase %>"> 
     </div>
 </div>
 <div class="variable-pane" id="add-investor-form">
     <div class="variable-pane-box">
         <button id="exit-new-investor" class="exit"><i class="las la-times"></i></button>
-        <h4>New Investor</h4>
-            <div>
+        <h3>New Investor</h3>
+            <div class="form-item">
                 <label for="investor-name">Name</label>
                 <input type="text" id="investor-name" name="investorName" required>
             </div>
-            <div>
+            <div class="form-item">
                 <label for="investor-type">Type</label>
                 <select name="investorType" id="investor-type">
                     <option value="ba">Business Angel</option>
                     <option value="fund">Fund</option>
                 </select>
             </div>
-            <div>
+            <div class="form-item">
                 <label for="investor-email">Email</label>
                 <input type="email" id="investor-email" name="investorEmail">
             </div>
-            <div>
+            <div class="form-item">
                 <label for="investor-number">Number</label>
                 <input type="tel" id="investor-number" name="investorNumber">
             </div>
-            <div>
+            <div class="form-item">
                 <label for="investor-url">Link to Website</label>
                 <input type="text" id="investor-url" name="investorUrl">
             </div>
-            <div>
+            <div class="form-item">
                 <label for="investor-country">Country</label>
                 <select name="investorCountry" id="investor-country">
                     <option selected disabled>Select Country</option>
@@ -476,11 +473,11 @@
                     <option value="Zimbabwe">Zimbabwe</option>
                 </select>
             </div>
-            <div>
+            <div class="form-item">
                 <label for="investor-contact-date">Date of contact</label>
                 <input type="date" id="investor-contact-date" name="investorContactDate" required>
             </div>
-            <div>
+            <div class="form-item">
                 <label for="investor-notes">Any additional notes</label>
                 <input type="text" id="investor-notes" name="investorNotes">
             </div>
@@ -497,19 +494,19 @@
         <div>
             <div>
                 <div>
-                    <div>
+                    <div class="form-item">
                         <label for="milestone">Milestone</label>
                         <input type="text" id="milestone">
                     </div>
-                    <div>
+                    <div class="form-item">
                         <label for="start-date-milestone">Start Date</label>
                         <input type="date" id="start-date-milestone">
                     </div>
-                    <div>
+                    <div class="form-item">
                         <label for="due-date-milestone">Due Date</label>
                         <input type="date" id="due-date-milestone">
                     </div>
-                    <div>
+                    <div class="form-item">
                         <label for="milestone-completion">Percentage of Completion</label>
                         <input type="number" id="milestone-completion">
                     </div>
@@ -532,5 +529,26 @@
             </div>
         </div>
         <button id="submit-milestones-btn">Submit Milestones</button>
+    </div>
+</div>
+<div class="variable-pane" id="next-investment-round">
+    <div class="variable-pane-box">
+        <button id="exit-next-investment-round" class="exit"><i class="las la-times"></i></button>
+        <h3>Next Investment Round</h3>
+        <form action="/submit/cap-table" enctype="multipart/form-data" method="post">
+            <div class="form-item">
+                <label for="cap-table-upload">Upload:</label>
+                <input type="file" name="cap-table" id="cap-table-upload" required/>
+            </div>
+            <div class="form-item">
+                <label for="next-phase">Next Investment Phase:</label>
+                <select name="nextPhase" id="next-phase" required></select>
+            </div>
+            <div class="form-item">
+                <label for="invested-capital">Invested Capital:</label>
+                <input type="number" min="0" name="investedCapital" id="invested-capital" required>
+            </div>
+            <input type="submit" value="Submit" id="submit-investment-stage">
+        </form>
     </div>
 </div>

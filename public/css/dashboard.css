@@ -504,7 +504,7 @@ input, select {
 
   #expertise {
     grid-area: expertise;
-    height: 260px;
+    height: 300px;
   }
 
   .vertical-table-container {
@@ -522,6 +522,17 @@ input, select {
     width: 100%;
     height: 100%;
     float: left;
+  }
+
+  @media only screen and (max-width: 768px) {
+    #expertise-table-wrapper {
+      float: right;
+      width: 50%;
+    }
+
+    #expertise {
+      height: 300px;
+    }
   }
 
   @media only screen and (max-width: 480px) {
@@ -553,6 +564,7 @@ input, select {
     border-radius: 10px;
     background: #3f495e;
     padding: 1.5rem;
+    overflow: hidden;
   }
 
   #overview {
@@ -561,6 +573,37 @@ input, select {
   #detailed-summary {
     grid-area: detailedSummary;
   }
+
+  .rating-table-wrapper {
+     overflow: scroll;
+  }
+  .rating-table-wrapper table {
+    width: 100%;
+  }
+
+  #rating-tbody tr td {
+    width: 3rem;
+  }
+
+  .category-col {
+    width: 6rem;
+  }
+
+  .weighting-input {
+    width: 5rem;
+    margin-left: 0.5rem;
+    float: left;
+  }
+
+  #weighting-col {
+   
+    width: 12rem;
+  }
+  .submit-weighting-btn,
+.cancel-weighting-btn {
+  float: right;
+  margin-left: 0.2rem;
+}
 
 
   /* --------------------------------- Submit ------------------------------- */
@@ -572,7 +615,8 @@ input, select {
     margin-top: 1rem;
     grid-template-areas: 
     "submitTrlProd submitContactedInvestors"
-    "submitMilestones submitCapTable";
+    "submitMilestones submitMilestones"
+    "submitCapTable submitCapTable";
   }
   
     #submit-trl-prod {
@@ -587,6 +631,10 @@ input, select {
     #submit-cap-table {
       grid-area: submitCapTable;
     }
+
+    #submit-cap-table * {
+      margin-bottom: 0.8rem;
+    }
   
     .submit-card {
       backdrop-filter: blur(10px);
@@ -597,6 +645,7 @@ input, select {
       grid-column: 1/4;
       grid-row: span 1;
       width: 100%;
+      overflow: hidden;
     }
 
     @media only screen and (max-width: 768px) {
@@ -607,7 +656,8 @@ input, select {
       grid-gap: 1rem;
       grid-template-areas:
       "submitContactedInvestors submitContactedInvestors"
-      "submitTrlProd submitMilestones"
+      "submitTrlProd submitTrlProd"
+      "submitMilestones submitMilestones"
       "submitCapTable submitCapTable";
       }
     }
@@ -625,12 +675,14 @@ input, select {
       "submitCapTable submitCapTable";
       }
     }
-  
-    .chart-container {
-      position: relative;
+
+    #next-investment-round-btn, #milestones-form-btn{
+      float: right;
+    }
+
+    .submit-table-wrapper {
       width: 100%;
-      height: 100%;
-      box-sizing: border-box;
+      overflow: scroll;
     }
 
   /* ---------------------------------  ------------------------------- */
@@ -660,11 +712,23 @@ input, select {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #e7e7e7;
+    background-color: #252b38;
     padding: 1rem 1.5rem;
     width: auto;
     height: auto;
     border-radius: 0.5rem;
+  }
+
+  .variable-pane-box .form-item {
+    margin-bottom: 0.8rem;
+  }
+
+  .variable-pane-box .form-item * {
+    margin: 0.8rem;
+  }
+
+  .variable-pane-box h3 {
+    margin-bottom: 0.8rem;
   }
 
   .show {

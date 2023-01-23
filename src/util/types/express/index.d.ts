@@ -130,7 +130,7 @@ declare module "express-session" {
     cashFlowRateTs?: TimeSeriesKpis;
     liquidityTs?: TimeSeriesKpis;
     startupTable: Startup[];
-    phase: InvestmentPhase;
+    phase: string;
     selectedStartup: string;
     expertise: Expertise;
     startupName: string;

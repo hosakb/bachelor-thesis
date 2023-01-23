@@ -1,6 +1,9 @@
 import express from "express";
+import { Row } from "read-excel-file";
 import {
   deleteTrl,
+  getCapTable,
+  getInvestmentPhase,
   getInvestors,
   getMilestones,
   getStartupNameById,
@@ -15,6 +18,8 @@ import {
   persistTrlData,
   TrlData,
   UnIndexedMilestone,
+  updateInvestedCapital,
+  updateInvestmentPhase,
   updateInvestorStatus,
   updateTrl,
 } from "../models/startup";
@@ -36,8 +41,13 @@ router.get("/", async (req, res) => {
   const startupName: string = await getStartupNameById(req.session.startupId);
   req.session.startupName = startupName;
 
+  const investmentPhase: string = await getInvestmentPhase(req.session.startupId);
+  req.session.phase = investmentPhase;
+
   const milestones = await getMilestones(req.session.startupId);
   req.session.milestones = milestones;
+
+  const capTable: Row[] = await getCapTable(req.session.startupId);
 
   res.render("submit/index", {
     layout: "../views/layouts/dashboard.ejs",
@@ -49,6 +59,8 @@ router.get("/", async (req, res) => {
     trl: trl,
     investors,
     milestones,
+    capTable,
+    investmentPhase,
   });
 });
 
@@ -147,7 +159,12 @@ router.post(
   "/cap-table",
   multerUpload.single("cap-table"),
   async (req, res) => {
+    const {nextPhase, investedCapital} = req.body;
     try {
+
+    await updateInvestmentPhase(req.session.startupId, nextPhase);
+    await updateInvestedCapital(req.session.startupId, parseInt(investedCapital));
+
       const rows = await uploadCapTable();
 
       const capTable = formatCapTable(rows);
@@ -159,18 +176,7 @@ router.post(
       }
 
       await persistCapTable(JSON.stringify(capTable), startupId);
-
-      res.render("submit/index", {
-        layout: "../views/layouts/dashboard.ejs",
-        dashboard: "startup",
-        scripts: ["/js/submit"],
-        page: "submit",
-        title: req.session.startupName,
-        name: req.user?.firstName + " " + req.user?.lastName,
-        capTable,
-        trl: req.session.trl,
-        investors: req.session.investors,
-      });
+      res.redirect("/submit");
 
       return;
     } catch (error) {
