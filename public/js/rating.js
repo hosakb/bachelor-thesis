@@ -84,6 +84,7 @@ cancelWeightingBtn.forEach((x) => {
   });
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function showSection(elem) {
   const tbody = elem.parentElement.parentElement.parentElement;
   for (let index = 1; index < tbody.children.length; index++) {
@@ -96,6 +97,7 @@ function showSection(elem) {
   elem.parentElement.children[1].classList.remove("hidden");
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function hideSection(elem) {
   const tbody = elem.parentElement.parentElement.parentElement;
   for (let index = 1; index < tbody.children.length; index++) {
@@ -106,6 +108,7 @@ function hideSection(elem) {
   elem.parentElement.children[1].classList.add("hidden");
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function showSubSection(elem) {
   const className = elem.parentElement.parentElement.classList[0];
   console.log("Show " + className);
@@ -124,6 +127,7 @@ function showSubSection(elem) {
   elem.parentElement.children[1].classList.remove("hidden");
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function hideSubSection(elem) {
   const className = elem.parentElement.parentElement.classList[0];
   const tbody = elem.parentElement.parentElement.parentElement;
@@ -141,3 +145,62 @@ function hideSubSection(elem) {
   elem.parentElement.children[0].classList.remove("hidden");
   elem.parentElement.children[1].classList.add("hidden");
 }
+
+document.querySelectorAll(".color-code-avg").forEach((td) => {
+  const value = parseFloat(td.innerHTML);
+  const weightedPoint = td.parentElement.children[4];
+  if(value >= 3.6) {
+    td.style.backgroundColor = "green";
+    weightedPoint.style.backgroundColor = "green";
+  } else if(value < 3.6 && value >= 1.8) {
+    td.style.backgroundColor = "yellow";
+    td.style.color = "black"; 
+    weightedPoint.style.backgroundColor = "yellow";
+    weightedPoint.style.color = "black"; 
+  } else {
+    td.style.backgroundColor = "red";
+    weightedPoint.style.backgroundColor = "red";
+  }
+})
+
+const tdSum = document.querySelector("#color-code-avg-sum");
+const tdSumValue = (parseFloat(tdSum.innerHTML) / 8);
+const weightedSum = tdSum.parentElement.children[4];
+if(tdSumValue >= 3.6) {
+  tdSum.style.backgroundColor = "green";
+  weightedSum.style.backgroundColor = "green";
+} else if(tdSumValue < 3.6 && tdSumValue >= 1.8) {
+  tdSum.style.backgroundColor = "yellow";
+  tdSum.style.color = "black";
+  weightedSum.style.backgroundColor = "yellow";
+  weightedSum.style.color = "black";
+} else {
+  tdSum.style.backgroundColor = "red";
+  weightedSum.style.backgroundColor = "red";
+}
+
+document.querySelectorAll(".color-code-rating").forEach((td) => {
+  const value = parseFloat(td.innerHTML);
+  if(value <= 6.0) {
+    td.style.backgroundColor = "green";
+  } else if(value > 6.0 && value <= 12.0) {
+    td.style.backgroundColor = "yellow";
+    td.style.color = "black"; 
+  } else {
+    td.style.backgroundColor = "red";
+  }
+})
+
+document.querySelectorAll(".color-code-detailed-avg").forEach((td) => {
+  const value = parseFloat(td.innerHTML);
+  if(value >= 3.6) {
+    td.style.backgroundColor = "green";
+  } else if(value < 3.6 && value >= 1.8) {
+    td.style.backgroundColor = "yellow";
+    td.style.color = "black"; 
+  } else {
+    td.style.backgroundColor = "red";
+  }
+})
+
+

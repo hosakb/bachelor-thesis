@@ -127,16 +127,6 @@ thead {
   box-shadow: 0 3px 6px #00000030;
 }
 
-td:first-child {
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-}
-
-td:last-child {
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-
 tr:nth-child(even) {
 background-color: rgb(58, 68, 85);
 }

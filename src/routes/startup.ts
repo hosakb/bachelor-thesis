@@ -1,4 +1,5 @@
 import express, { Router } from "express";
+import { Row } from "read-excel-file";
 import {
   getInvestmentPhase,
   Milestone,
@@ -10,8 +11,24 @@ import {
   getMetrics,
   getStartupNameById,
   getInvestors,
+  getCapTable,
+  updateInvestmentPhase,
+  updateInvestedCapital,
+  persistCapTable,
+  TrlData,
+  updateTrl,
+  deleteTrl,
+  persistTrlData,
+  NewInvestor,
+  insertInvestor,
+  updateInvestorStatus,
+  UnIndexedMilestone,
+  NewMilestone,
+  persistMilestones,
+  persistMilestonesWithId,
 } from "../models/startup";
 import { getMonth } from "../util/date";
+import { deleteSpreadsheets, formatCapTable, multerUpload, uploadCapTable } from "../util/excel";
 
 const router: Router = express.Router();
 
@@ -116,6 +133,290 @@ router.put("/gantt/progress", async (req) => {
     await updateMilestoneProgress(taskId, progress);
   } catch (error) {
     console.error(`Failed to update Milestone progress due to ${error}.`);
+  }
+});
+
+
+// =============================== Submit =====================================
+router.get("/submit", async (req, res) => {
+  const trl = await getTrl(req.session.startupId);
+  req.session.trl = trl;
+  const investors = await getInvestors(req.session.startupId);
+  req.session.investors = investors;
+
+  const startupName: string = await getStartupNameById(req.session.startupId);
+  req.session.startupName = startupName;
+
+  const investmentPhase: string = await getInvestmentPhase(req.session.startupId);
+  req.session.phase = investmentPhase;
+
+  const milestones = await getMilestones(req.session.startupId);
+  req.session.milestones = milestones;
+
+  const capTable: Row[] = await getCapTable(req.session.startupId);
+
+  res.render("dashboard/startup/submit", {
+    layout: "../views/layouts/dashboard.ejs",
+    dashboard: "startup",
+    scripts: ["/js/submit"],
+    page: "submit",
+    title: startupName,
+    name: req.user?.firstName + " " + req.user?.lastName,
+    trl: trl,
+    investors,
+    milestones,
+    capTable,
+    investmentPhase,
+  });
+});
+
+router.post("/submit/reupload", (req, res) => {
+  deleteSpreadsheets();
+  res.redirect("/startup/submit");
+});
+
+router.post(
+  "/cap-table",
+  multerUpload.single("cap-table"),
+  async (req, res) => {
+    const {nextPhase, investedCapital} = req.body;
+    try {
+
+    await updateInvestmentPhase(req.session.startupId, nextPhase);
+    await updateInvestedCapital(req.session.startupId, parseInt(investedCapital));
+
+      const rows = await uploadCapTable();
+
+      const capTable = formatCapTable(rows);
+
+      const startupId = req.user?.startup;
+
+      if (startupId == undefined) {
+        throw new Error("Failed to fetch startup id.");
+      }
+
+      await persistCapTable(JSON.stringify(capTable), startupId);
+      res.redirect("/startup/submit");
+
+      return;
+    } catch (error) {
+      console.error(
+        `The following error occurred during upload of a cap table. Redirecting to /startup/submit ${error}`
+      );
+      res.redirect("/startup/submit");
+    }
+  }
+);
+
+router.post("/submit/update-trl", async (req, res) => {
+  const { id, technology, trl, criticality } = req.body.trlData;
+  try {
+    const trlData: TrlData = {
+      id,
+      technology,
+      trl,
+      criticality,
+    };
+
+    await updateTrl(trlData);
+  } catch (error) {
+    console.error(
+      `The following error occurred during update of a technology trl with id ${id}. Redirecting to /startup/submit ${error}`
+    );
+    res.redirect("/startup/submit");
+  }
+});
+
+router.post("/submit/delete-trl", async (req, res) => {
+  const { id } = req.body.id;
+  try {
+    await deleteTrl(id);
+  } catch (error) {
+    console.error(
+      `The following error occurred during deletion of a technology trl with id ${id}. Redirecting to /startup/submit ${error}`
+    );
+    res.redirect("/startup/submit");
+  }
+});
+
+router.post("/submit/add-trl", async (req, res) => {
+  const { technology, trl, criticality } = req.body.trlData;
+  try {
+    const trlData: TrlData = {
+      id: "",
+      technology,
+      trl,
+      criticality,
+    };
+
+    await persistTrlData(req.session.startupId, [trlData]);
+    res.redirect("/startup/submit");
+  } catch (error) {
+    console.error(
+      `Failed to persist new trl startup with id ${req.session.startupId}. Error: ${error}. Redirecting to /startup/submit `
+    );
+    res.redirect("/startup/submit");
+  }
+});
+
+router.post("/submit/new-investor", async (req, res) => {
+  const { name, type, email, number, url, country, notes, contactDate } =
+    req.body;
+  try {
+    const newInvestor: NewInvestor = {
+      name,
+      type,
+      email,
+      number,
+      url,
+      country,
+      notes,
+      contactDate,
+      startupId: req.session.startupId,
+    };
+    await insertInvestor(newInvestor);
+    res.status(200).json();
+  } catch (error) {
+    console.error(
+      `Failed to add new investors contact to startup with id ${req.session.startupId}. Error: ${error}. Redirecting to /startup/submit ${error}`
+    );
+    res.status(500).json();
+    res.redirect("/startup/submit");
+  }
+});
+
+router.post("/submit/update-investor-status", async (req, res) => {
+  const { id, status } = req.body;
+  try {
+    await updateInvestorStatus(status, id);
+    res.status(200).json();
+  } catch (error) {
+    console.error(
+      `Failed to update investors status. Error: ${error}. Redirecting to /startup/submit ${error}`
+    );
+    res.redirect("/startup/submit");
+  }
+});
+
+router.post("/submit/add-milestone", async (req, res) => {
+  const { milestones } = req.body;
+
+  const unIndexedMilestones: UnIndexedMilestone[] = milestones;
+  try {
+    const existingMilestones: Milestone[] = await getMilestones(
+      req.session.startupId
+    );
+
+    const joinedMilestones: UnIndexedMilestone[] = unIndexedMilestones.concat(
+      existingMilestones.map((existingMilestone) => {
+        return {
+          name: existingMilestone.name,
+          start: existingMilestone.start,
+          end: existingMilestone.end,
+          progress: existingMilestone.progress,
+        };
+      })
+    );
+
+    const indexedMilestones: NewMilestone[] = joinedMilestones
+      .sort((a: UnIndexedMilestone, b: UnIndexedMilestone) => {
+        return new Date(b.start).getTime() - new Date(a.start).getTime();
+      })
+      .reverse()
+      .map((m, index) => {
+        return {
+          index,
+          ...m,
+        };
+      });
+
+    await persistMilestones(indexedMilestones, req.session.startupId);
+    res.status(200).json();
+  } catch (error) {
+    console.error(
+      `Failed to persist milestone. Error: ${error}. Redirecting to /startup/submit ${error}`
+    );
+    res.redirect("/startup/submit");
+  }
+});
+
+router.post("/submit/delete-milestone", async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const existingMilestones: Milestone[] = await getMilestones(
+      req.session.startupId
+    );
+
+    const indexedMilestones = existingMilestones
+      .filter((m) => m.id != id)
+      .sort((a: Milestone, b: Milestone) => {
+        return new Date(b.start).getTime() - new Date(a.start).getTime();
+      })
+      .reverse()
+      .map((m, index) => {
+        return {
+          id: m.id,
+          index,
+          name: m.name,
+          start: m.start,
+          end: m.end,
+          progress: m.progress,
+        };
+      });
+
+    await persistMilestonesWithId(indexedMilestones, req.session.startupId);
+
+    res.status(200).json();
+  } catch (error) {
+    console.error(
+      `Failed to delete milestone. Error: ${error}. Redirecting to /startup/submit ${error}`
+    );
+    res.redirect("/startup/submit");
+  }
+});
+
+router.post("/submit/update-milestone", async (req, res) => {
+  const { id, name, start, end, progress } = req.body;
+
+  try {
+    const existingMilestones: Milestone[] = await getMilestones(
+      req.session.startupId
+    );
+
+    for (const m of existingMilestones) {
+      if (m.id == id) {
+        m.name = name;
+        m.start = start;
+        m.end = end;
+        m.progress = progress;
+      }
+    }
+
+    const indexedMilestones = existingMilestones
+      .sort((a: Milestone, b: Milestone) => {
+        return new Date(b.start).getTime() - new Date(a.start).getTime();
+      })
+      .reverse()
+      .map((m, index) => {
+        return {
+          id: m.id,
+          index,
+          name: m.name,
+          start: m.start,
+          end: m.end,
+          progress: m.progress,
+        };
+      });
+
+    await persistMilestonesWithId(indexedMilestones, req.session.startupId);
+
+    res.status(200).json();
+  } catch (error) {
+    console.error(
+      `Failed to update milestone with id ${id}. Error: ${error}. Redirecting to /startup/submit ${error}`
+    );
+    res.redirect("/startup/submit");
   }
 });
 

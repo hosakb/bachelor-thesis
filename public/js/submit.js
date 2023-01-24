@@ -66,7 +66,7 @@ document.querySelector("#add-milestone-btn").addEventListener("click", (e) => {
 document
   .querySelector("#submit-milestones-btn")
   .addEventListener("click", async () => {
-    await fetch("/submit/add-milestone", {
+    await fetch("/startup/submit/add-milestone", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -132,7 +132,7 @@ function deleteMilestoneRow(x) {
 
   milestoneTbody.removeChild(tr);
 
-  fetch("/submit/delete-milestone", {
+  fetch("/startup/submit/delete-milestone", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -164,7 +164,7 @@ function saveMilestone(x) {
   row[2].innerHTML = end;
   row[3].innerHTML = progress;
 
-  fetch("/submit/update-milestone", {
+  fetch("/startup/submit/update-milestone", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -298,7 +298,7 @@ function deleteRow(x) {
 
   trlTbody.removeChild(tr);
 
-  fetch("/submit/delete-trl", {
+  fetch("/startup/submit/delete-trl", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -328,7 +328,7 @@ function saveTrl(x) {
   row[1].innerHTML = trl;
   row[2].innerHTML = criticality;
 
-  fetch("/submit/update-trl", {
+  fetch("/startup/submit/update-trl", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -464,7 +464,7 @@ document.querySelector("#add-technology-btn").addEventListener("click", () => {
     if (technology.value == "") {
       alert("Please input a value for the technology.");
     } else {
-      fetch("/submit/add-trl", {
+      fetch("/startup/submit/add-trl", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -522,7 +522,7 @@ document
     ) {
       alert("Please fill out all the fields.");
     } else {
-      fetch("/submit/new-investor", {
+      fetch("/startup/submit/new-investor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -688,7 +688,7 @@ document.querySelector("#investor-accepted").addEventListener("click", (e) => {
 
   const id = td.children[0].value;
 
-  fetch("/submit/update-investor-status", {
+  fetch("/startup/submit/update-investor-status", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -714,7 +714,7 @@ document.getElementById("investor-declined").addEventListener("click", (e) => {
 
   const id = td.children[0].value;
 
-  fetch("/submit/update-investor-status", {
+  fetch("/startup/submit/update-investor-status", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
