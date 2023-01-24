@@ -73,10 +73,7 @@ export function getQuestionnaireAverages(
     (questionnaire.q2_2_1 + questionnaire.q2_2_2 + questionnaire.q2_2_3) / 3;
 
   const h2_3 =
-    (questionnaire.q2_3_1 +
-      questionnaire.q2_3_2 +
-      questionnaire.q2_3_3) /
-    3;
+    (questionnaire.q2_3_1 + questionnaire.q2_3_2 + questionnaire.q2_3_3) / 3;
 
   const h2_4 =
     (questionnaire.q2_4_1 +
@@ -109,17 +106,17 @@ export function getQuestionnaireAverages(
   const h4 = (questionnaire.q4_1_1 + questionnaire.q4_1_2) / 2;
 
   const h5 =
-    (questionnaire.q5_1_1 +
-      questionnaire.q5_1_2 +
-      questionnaire.q5_1_3) /
-    3;
+    (questionnaire.q5_1_1 + questionnaire.q5_1_2 + questionnaire.q5_1_3) / 3;
 
-  const h6_1 =
-    (questionnaire.q6_1_1 +
-      questionnaire.q6_1_2) /
-    2;
+  const h6_1 = (questionnaire.q6_1_1 + questionnaire.q6_1_2) / 2;
 
-  const h6_2 = (questionnaire.q6_2_1 + questionnaire.q6_2_2 + questionnaire.q6_2_3 + questionnaire.q6_2_4 + questionnaire.q6_2_5) / 5;
+  const h6_2 =
+    (questionnaire.q6_2_1 +
+      questionnaire.q6_2_2 +
+      questionnaire.q6_2_3 +
+      questionnaire.q6_2_4 +
+      questionnaire.q6_2_5) /
+    5;
 
   const h6_3 =
     (questionnaire.q6_3_1 +
@@ -129,10 +126,7 @@ export function getQuestionnaireAverages(
     4;
 
   const h6_4 =
-    (questionnaire.q6_4_1 +
-      questionnaire.q6_4_2 +
-      questionnaire.q6_4_3) /
-    3;
+    (questionnaire.q6_4_1 + questionnaire.q6_4_2 + questionnaire.q6_4_3) / 3;
 
   const h6 = (h6_1 + h6_1 + h6_3 + h6_4) / 4;
 
@@ -141,7 +135,8 @@ export function getQuestionnaireAverages(
       questionnaire.q7_1_2 +
       questionnaire.q7_1_3 +
       questionnaire.q7_1_4 +
-      questionnaire.q7_1_5 + questionnaire.q7_1_6) /
+      questionnaire.q7_1_5 +
+      questionnaire.q7_1_6) /
     6;
 
   const h7_2 = (questionnaire.q7_2_1 + questionnaire.q7_2_2) / 2;
@@ -150,10 +145,7 @@ export function getQuestionnaireAverages(
 
   console.log(h7_1, h7_2, h7);
 
-  const h8 =
-    (questionnaire.q8_1_1 +
-      questionnaire.q8_1_2) /
-    2;
+  const h8 = (questionnaire.q8_1_1 + questionnaire.q8_1_2) / 2;
 
   const sum = h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8;
 

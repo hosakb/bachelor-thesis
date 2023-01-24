@@ -7,7 +7,7 @@ import { getTodaysDate } from "./date";
 const FILENAME_CAP_TABLE =
   "cap-table-" + getTodaysDate() + Math.round(Math.random() * 1e9) + ".xlsx";
 
-const UPLOAD_PATH = path.join(__dirname, "..",  "..", "public", "uploads");
+const UPLOAD_PATH = path.join(__dirname, "..", "..", "public", "uploads");
 
 const multerStorage: StorageEngine = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -108,9 +108,4 @@ const formatCapTable = (rows: Row[]) => {
   return capTable;
 };
 
-export {
-  multerUpload,
-  deleteSpreadsheets,
-  uploadCapTable,
-  formatCapTable,
-};
+export { multerUpload, deleteSpreadsheets, uploadCapTable, formatCapTable };

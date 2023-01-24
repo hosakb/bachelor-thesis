@@ -149,27 +149,27 @@ function hideSubSection(elem) {
 document.querySelectorAll(".color-code-avg").forEach((td) => {
   const value = parseFloat(td.innerHTML);
   const weightedPoint = td.parentElement.children[4];
-  if(value >= 3.6) {
+  if (value >= 3.6) {
     td.style.backgroundColor = "green";
     weightedPoint.style.backgroundColor = "green";
-  } else if(value < 3.6 && value >= 1.8) {
+  } else if (value < 3.6 && value >= 1.8) {
     td.style.backgroundColor = "yellow";
-    td.style.color = "black"; 
+    td.style.color = "black";
     weightedPoint.style.backgroundColor = "yellow";
-    weightedPoint.style.color = "black"; 
+    weightedPoint.style.color = "black";
   } else {
     td.style.backgroundColor = "red";
     weightedPoint.style.backgroundColor = "red";
   }
-})
+});
 
 const tdSum = document.querySelector("#color-code-avg-sum");
-const tdSumValue = (parseFloat(tdSum.innerHTML) / 8);
+const tdSumValue = parseFloat(tdSum.innerHTML) / 8;
 const weightedSum = tdSum.parentElement.children[4];
-if(tdSumValue >= 3.6) {
+if (tdSumValue >= 3.6) {
   tdSum.style.backgroundColor = "green";
   weightedSum.style.backgroundColor = "green";
-} else if(tdSumValue < 3.6 && tdSumValue >= 1.8) {
+} else if (tdSumValue < 3.6 && tdSumValue >= 1.8) {
   tdSum.style.backgroundColor = "yellow";
   tdSum.style.color = "black";
   weightedSum.style.backgroundColor = "yellow";
@@ -181,26 +181,24 @@ if(tdSumValue >= 3.6) {
 
 document.querySelectorAll(".color-code-rating").forEach((td) => {
   const value = parseFloat(td.innerHTML);
-  if(value <= 6.0) {
+  if (value <= 6.0) {
     td.style.backgroundColor = "green";
-  } else if(value > 6.0 && value <= 12.0) {
+  } else if (value > 6.0 && value <= 12.0) {
     td.style.backgroundColor = "yellow";
-    td.style.color = "black"; 
+    td.style.color = "black";
   } else {
     td.style.backgroundColor = "red";
   }
-})
+});
 
 document.querySelectorAll(".color-code-detailed-avg").forEach((td) => {
   const value = parseFloat(td.innerHTML);
-  if(value >= 3.6) {
+  if (value >= 3.6) {
     td.style.backgroundColor = "green";
-  } else if(value < 3.6 && value >= 1.8) {
+  } else if (value < 3.6 && value >= 1.8) {
     td.style.backgroundColor = "yellow";
-    td.style.color = "black"; 
+    td.style.color = "black";
   } else {
     td.style.backgroundColor = "red";
   }
-})
-
-
+});

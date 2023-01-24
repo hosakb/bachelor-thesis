@@ -2,7 +2,11 @@ import express, { Router } from "express";
 import { Row } from "read-excel-file";
 import { getFundById, getFundNameById } from "../models/fund";
 
-import { fundIdExists, getStartupsForFund, updateRatingTotal } from "../models/fund_startup_map";
+import {
+  fundIdExists,
+  getStartupsForFund,
+  updateRatingTotal,
+} from "../models/fund_startup_map";
 import { getWeights, updateWeights, Weights } from "../models/fund";
 import {
   getCapTable,
@@ -96,10 +100,9 @@ router.get("/startup/founders", async (req, res) => {
     res.redirect("/fund/");
   }
   try {
-
     const capTable: Row[] = await getCapTable(startupId);
 
-    res.render("dashboard/founders/index", {
+    res.render("dashboard/fund/founders", {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "fund",
       scripts: ["/js/chart/chart.min", "/js/founders"],
@@ -245,7 +248,7 @@ router.get("/startup/rating", async (req, res) => {
       ratingTotal,
     };
 
-    res.render("dashboard/founders/rating", {
+    res.render("dashboard/fund/rating", {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "fund",
       scripts: ["/js/rating"],
@@ -253,7 +256,7 @@ router.get("/startup/rating", async (req, res) => {
       name: req.user?.firstName + " " + req.user?.lastName,
       startup: req.session.selectedStartup,
       weightedRating: weightedRating,
-      page: "rating",    
+      page: "rating",
     });
   } catch (error) {
     console.error(
@@ -315,7 +318,7 @@ router.get("/chart/data", async (req, res) => {
       liquidity: {
         months,
         periodData: liquidity,
-      }
+      },
     };
 
     res.status(200).json(chartData);

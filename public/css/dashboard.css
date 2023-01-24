@@ -1,4 +1,4 @@
-html  {
+html {
   font-size: 62.5%;
 }
 
@@ -19,7 +19,7 @@ html  {
   left: 0;
   top: 0;
   height: 100%;
-  background:  #393e46;
+  background: #393e46;
   z-index: 100;
   transition: width 300ms;
 }
@@ -112,7 +112,8 @@ table {
   table-layout: auto;
 }
 
-td, th {
+td,
+th {
   text-align: center;
   padding: 1rem;
 }
@@ -128,9 +129,8 @@ thead {
 }
 
 tr:nth-child(even) {
-background-color: rgb(58, 68, 85);
+  background-color: rgb(58, 68, 85);
 }
-
 
 .main-content {
   transition: margin-left 300ms;
@@ -242,11 +242,12 @@ button {
   padding: 0.4rem;
   background: #797b80;
   border-radius: 0.5rem;
-  border:  none; 
+  border: none;
   font-size: 1rem;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   max-width: 25rem;
   margin-left: 1rem;
@@ -259,7 +260,6 @@ input, select {
   background: #45484e;
 }
 
-
 /* ================================= Dashboard =============================== */
 
 /* --------------------------------- Fund Portfolio ------------------------------- */
@@ -269,9 +269,9 @@ input, select {
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 2rem;
   margin-top: 1rem;
-  grid-template-areas: 
-  "investmentSector hardCap volume nextClosing finalClosing"
-  "portfolioTable portfolioTable portfolioTable portfolioTable portfolioTable";
+  grid-template-areas:
+    "investmentSector hardCap volume nextClosing finalClosing"
+    "portfolioTable portfolioTable portfolioTable portfolioTable portfolioTable";
 }
 
 #investment-sector {
@@ -322,11 +322,11 @@ input, select {
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 2rem;
     margin-top: 1rem;
-    grid-template-areas: 
-    "investmentSector investmentSector"
-    "hardCap volume"
-    "nextClosing finalClosing"
-    "portfolioTable portfolioTable";
+    grid-template-areas:
+      "investmentSector investmentSector"
+      "hardCap volume"
+      "nextClosing finalClosing"
+      "portfolioTable portfolioTable";
   }
 }
 
@@ -336,11 +336,11 @@ input, select {
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 1rem;
     margin-top: 1rem;
-    grid-template-areas: 
-    "investmentSector investmentSector  investmentSector investmentSector"
-    "hardCap hardCap volume volume"
-    "nextClosing nextClosing finalClosing finalClosing"
-    "portfolioTable portfolioTable portfolioTable portfolioTable";
+    grid-template-areas:
+      "investmentSector investmentSector  investmentSector investmentSector"
+      "hardCap hardCap volume volume"
+      "nextClosing nextClosing finalClosing finalClosing"
+      "portfolioTable portfolioTable portfolioTable portfolioTable";
   }
 }
 
@@ -349,405 +349,402 @@ input, select {
 .cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: minmax(auto, 30%)  minmax(auto, 30%) repeat(2, minmax(auto, 20%));
+  grid-template-rows: minmax(auto, 30%) minmax(auto, 30%) repeat(
+      2,
+      minmax(auto, 20%)
+    );
   grid-gap: 2rem;
   margin-top: 1rem;
-  grid-template-areas: 
-  "milestones milestones"
-  "contactedInvestors contactedInvestors"
-  "liquidity burnRate"
-  "cashRunway trl ";
+  grid-template-areas:
+    "milestones milestones"
+    "contactedInvestors contactedInvestors"
+    "liquidity burnRate"
+    "cashRunway trl ";
 }
 
-  #milestones {
-    grid-area: milestones;
-  }
-  #cash-runway {
-    grid-area: cashRunway;
-  }
-  #burn-rate {
-    grid-area: burnRate;
-  }
-  #liquidity {
-    grid-area: liquidity;
-  }
-  #trl {
-    grid-area: trl;
-  }
-  
-  #contacted-investors {
-    grid-area: contactedInvestors;
-  }
+#milestones {
+  grid-area: milestones;
+}
+#cash-runway {
+  grid-area: cashRunway;
+}
+#burn-rate {
+  grid-area: burnRate;
+}
+#liquidity {
+  grid-area: liquidity;
+}
+#trl {
+  grid-area: trl;
+}
 
-  .card-milestone {
-    backdrop-filter: blur(10px);
-    box-shadow: 7px 5px 16px 1px rgb(82 82 82 / 40%);
-    padding: 2rem;
-    border-radius: 10px;
-    background: #3f495e;
-    grid-column: 1/4;
-    grid-row: span 1;
-    width: 100%;
-  }
+#contacted-investors {
+  grid-area: contactedInvestors;
+}
 
-  .card-startup-metrics {
-    display: flex;
-    justify-content: space-between;
-    backdrop-filter: blur(10px);
-    box-shadow: 7px 5px 16px 1px rgb(82 82 82 / 40%);
-    padding: 2rem;
-    border-radius: 10px;
-    background: #3f495e;
-    grid-row: span 1;
-  }
+.card-milestone {
+  backdrop-filter: blur(10px);
+  box-shadow: 7px 5px 16px 1px rgb(82 82 82 / 40%);
+  padding: 2rem;
+  border-radius: 10px;
+  background: #3f495e;
+  grid-column: 1/4;
+  grid-row: span 1;
+  width: 100%;
+}
 
-  .card-startup-table {
-    backdrop-filter: blur(10px);
-    box-shadow: 7px 5px 16px 1px rgb(82 82 82 / 40%);
-    padding: 2rem;
-    border-radius: 10px;
-    background: #3f495e;
-    grid-row: span 1;
-    overflow-x: hidden;
-  }
+.card-startup-metrics {
+  display: flex;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  box-shadow: 7px 5px 16px 1px rgb(82 82 82 / 40%);
+  padding: 2rem;
+  border-radius: 10px;
+  background: #3f495e;
+  grid-row: span 1;
+}
 
-  .table-container {
-    width: 100%;
-    overflow-x: scroll;
-  }
+.card-startup-table {
+  backdrop-filter: blur(10px);
+  box-shadow: 7px 5px 16px 1px rgb(82 82 82 / 40%);
+  padding: 2rem;
+  border-radius: 10px;
+  background: #3f495e;
+  grid-row: span 1;
+  overflow-x: hidden;
+}
 
-  .card-startup-table h3 {
-    margin-bottom: 0.8rem;
-  }
+.table-container {
+  width: 100%;
+  overflow-x: scroll;
+}
 
+.card-startup-table h3 {
+  margin-bottom: 0.8rem;
+}
 
-  @media only screen and (max-width: 768px) {
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      grid-gap: 1rem;
-      margin-top: 1rem;
-      grid-template-areas: 
+@media only screen and (max-width: 768px) {
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 1rem;
+    margin-top: 1rem;
+    grid-template-areas:
       "milestones milestones milestones milestones milestones milestones"
       "cashRunway cashRunway burnRate burnRate liquidity liquidity"
       "trl trl trl contactedInvestors contactedInvestors contactedInvestors";
-    }
   }
+}
 
-  @media only screen and (max-width: 480px) {
-    .cards {
+@media only screen and (max-width: 480px) {
+  .cards {
     display: grid;
     grid-template-columns: 2fr;
     grid-gap: 1rem;
     grid-gap: 1rem;
-    grid-template-areas: 
-    "milestones milestones"
-    "cashRunway cashRunway"
-    "burnRate burnRate"
-    "liquidity liquidity"
-    "trl trl"
-    "contactedInvestors contactedInvestors";
-    }
+    grid-template-areas:
+      "milestones milestones"
+      "cashRunway cashRunway"
+      "burnRate burnRate"
+      "liquidity liquidity"
+      "trl trl"
+      "contactedInvestors contactedInvestors";
   }
+}
 
-  .chart-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-  }
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
 
-  #trl-prod-metric {
-    display: block;
-  }
+#trl-prod-metric {
+  display: block;
+}
 
-
-  /* --------------------------------- Founders ------------------------------- */
-  .founder-cards {
-    display: grid;
-    grid-template-columns: 2fr;
-    grid-gap: 2rem;
-    margin-top: 1rem;
-    grid-template-areas: 
+/* --------------------------------- Founders ------------------------------- */
+.founder-cards {
+  display: grid;
+  grid-template-columns: 2fr;
+  grid-gap: 2rem;
+  margin-top: 1rem;
+  grid-template-areas:
     "founders founders"
     "expertise expertise"
     "capTable capTable";
-  }
+}
 
-  .card {
-    backdrop-filter: blur(10px);
-    box-shadow: 5px 5px 4px 4px rgb(0 0 0 / 10%);
-    border-radius: 10px;
-    background: #3f495e;
-    padding: 1.5rem;
-    overflow: hidden;
-  }
+.card {
+  backdrop-filter: blur(10px);
+  box-shadow: 5px 5px 4px 4px rgb(0 0 0 / 10%);
+  border-radius: 10px;
+  background: #3f495e;
+  padding: 1.5rem;
+  overflow: hidden;
+}
 
-  #founders {
-    grid-area: founders;
-    max-height: 400px;
-  }
+#founders {
+  grid-area: founders;
+  max-height: 400px;
+}
 
-  #cap-table {
-    grid-area: capTable;
+#cap-table {
+  grid-area: capTable;
+}
+
+#expertise {
+  grid-area: expertise;
+  height: 300px;
+}
+
+.vertical-table-container {
+  overflow: scroll;
+}
+
+#expertise-table-wrapper {
+  float: right;
+  width: 60%;
+  overflow: scroll;
+}
+
+#pie-chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  float: left;
+}
+
+@media only screen and (max-width: 768px) {
+  #expertise-table-wrapper {
+    float: right;
+    width: 50%;
   }
 
   #expertise {
-    grid-area: expertise;
     height: 300px;
   }
+}
 
-  .vertical-table-container {
-    overflow: scroll;
-  }
-
+@media only screen and (max-width: 480px) {
   #expertise-table-wrapper {
     float: right;
-    width: 60%;
-    overflow: scroll;
+    width: 50%;
   }
 
-  #pie-chart-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    float: left;
+  #expertise {
+    height: 210px;
   }
+}
+/* --------------------------------- Rating ------------------------------- */
 
-  @media only screen and (max-width: 768px) {
-    #expertise-table-wrapper {
-      float: right;
-      width: 50%;
-    }
-
-    #expertise {
-      height: 300px;
-    }
-  }
-
-  @media only screen and (max-width: 480px) {
-    #expertise-table-wrapper {
-      float: right;
-      width: 50%;
-    }
-
-    #expertise {
-      height: 210px;
-    }
-  }
-  /* --------------------------------- Rating ------------------------------- */
-
-
-  .rating-cards {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 2rem;
-    margin-top: 1rem;
-    grid-template-areas: 
+.rating-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 2rem;
+  margin-top: 1rem;
+  grid-template-areas:
     "overview"
     "detailedSummary";
-  }
+}
 
-  .card {
-    backdrop-filter: blur(10px);
-    box-shadow: 5px 5px 4px 4px rgb(0 0 0 / 10%);
-    border-radius: 10px;
-    background: #3f495e;
-    padding: 1.5rem;
-    overflow: hidden;
-  }
+.card {
+  backdrop-filter: blur(10px);
+  box-shadow: 5px 5px 4px 4px rgb(0 0 0 / 10%);
+  border-radius: 10px;
+  background: #3f495e;
+  padding: 1.5rem;
+  overflow: hidden;
+}
 
-  #overview {
-    grid-area: overview;
-  }
-  #detailed-summary {
-    grid-area: detailedSummary;
-  }
+#overview {
+  grid-area: overview;
+}
+#detailed-summary {
+  grid-area: detailedSummary;
+}
 
-  .rating-table-wrapper {
-     overflow: scroll;
-  }
-  .rating-table-wrapper table {
-    width: 100%;
-  }
+.rating-table-wrapper {
+  overflow: scroll;
+}
+.rating-table-wrapper table {
+  width: 100%;
+}
 
-  #rating-tbody tr td {
-    width: 3rem;
-  }
+#rating-tbody tr td {
+  width: 3rem;
+}
 
-  .category-col {
-    width: 6rem;
-  }
+.category-col {
+  width: 6rem;
+}
 
-  .weighting-input {
-    width: 5rem;
-    margin-left: 0.5rem;
-    float: left;
-  }
+.weighting-input {
+  width: 5rem;
+  margin-left: 0.5rem;
+  float: left;
+}
 
-  #weighting-col {
-   
-    width: 12rem;
-  }
-  .submit-weighting-btn,
+#weighting-col {
+  width: 12rem;
+}
+.submit-weighting-btn,
 .cancel-weighting-btn {
   float: right;
   margin-left: 0.2rem;
 }
 
+/* --------------------------------- Submit ------------------------------- */
 
-  /* --------------------------------- Submit ------------------------------- */
-
-  .submit-cards {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 2rem;
-    margin-top: 1rem;
-    grid-template-areas: 
+.submit-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 2rem;
+  margin-top: 1rem;
+  grid-template-areas:
     "submitTrlProd submitContactedInvestors"
     "submitMilestones submitMilestones"
     "submitCapTable submitCapTable";
-  }
-  
-    #submit-trl-prod {
-      grid-area: submitTrlProd;
-    }
-    #submit-contacted-investors {
-      grid-area: submitContactedInvestors;
-    }
-    #submit-milestones {
-      grid-area: submitMilestones;
-    }
-    #submit-cap-table {
-      grid-area: submitCapTable;
-    }
+}
 
-    #submit-cap-table * {
-      margin-bottom: 0.8rem;
-    }
-  
-    .submit-card {
-      backdrop-filter: blur(10px);
-      box-shadow: 7px 5px 16px 1px rgb(82 82 82 / 40%);
-      padding: 2rem;
-      border-radius: 10px;
-      background: #3f495e;
-      grid-column: 1/4;
-      grid-row: span 1;
-      width: 100%;
-      overflow: hidden;
-    }
+#submit-trl-prod {
+  grid-area: submitTrlProd;
+}
+#submit-contacted-investors {
+  grid-area: submitContactedInvestors;
+}
+#submit-milestones {
+  grid-area: submitMilestones;
+}
+#submit-cap-table {
+  grid-area: submitCapTable;
+}
 
-    @media only screen and (max-width: 768px) {
-      .submit-cards {
-      display: grid;
-      grid-template-columns: 2fr;
-      grid-gap: 1rem;
-      grid-gap: 1rem;
-      grid-template-areas:
+#submit-cap-table * {
+  margin-bottom: 0.8rem;
+}
+
+.submit-card {
+  backdrop-filter: blur(10px);
+  box-shadow: 7px 5px 16px 1px rgb(82 82 82 / 40%);
+  padding: 2rem;
+  border-radius: 10px;
+  background: #3f495e;
+  grid-column: 1/4;
+  grid-row: span 1;
+  width: 100%;
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+  .submit-cards {
+    display: grid;
+    grid-template-columns: 2fr;
+    grid-gap: 1rem;
+    grid-gap: 1rem;
+    grid-template-areas:
       "submitContactedInvestors submitContactedInvestors"
       "submitTrlProd submitTrlProd"
       "submitMilestones submitMilestones"
       "submitCapTable submitCapTable";
-      }
-    }
+  }
+}
 
-    @media only screen and (max-width: 480px) {
-      .submit-cards {
-      display: grid;
-      grid-template-columns: 2fr;
-      grid-gap: 1rem;
-      grid-gap: 1rem;
-      grid-template-areas: 
-      "submitContactedInvestors submitContactedInvestors" 
+@media only screen and (max-width: 480px) {
+  .submit-cards {
+    display: grid;
+    grid-template-columns: 2fr;
+    grid-gap: 1rem;
+    grid-gap: 1rem;
+    grid-template-areas:
+      "submitContactedInvestors submitContactedInvestors"
       "submitTrlProd submitTrlProd"
       "submitMilestones submitMilestones"
       "submitCapTable submitCapTable";
-      }
-    }
-
-    #next-investment-round-btn, #milestones-form-btn{
-      float: right;
-    }
-
-    .submit-table-wrapper {
-      width: 100%;
-      overflow: scroll;
-    }
-
-  /* ---------------------------------  ------------------------------- */
-
-  #table {
-   display: inline-block;
-   width: 100%;
-   height: 30vh;
-   color: black;
   }
+}
 
-  /*Pop-Ups*/
-  .variable-pane {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    opacity: 0;
-    visibility: hidden;
-    z-index: 9999;
-  }
+#next-investment-round-btn,
+#milestones-form-btn {
+  float: right;
+}
 
-  .variable-pane-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #252b38;
-    padding: 1rem 1.5rem;
-    width: auto;
-    height: auto;
-    border-radius: 0.5rem;
-  }
+.submit-table-wrapper {
+  width: 100%;
+  overflow: scroll;
+}
 
-  .variable-pane-box .form-item {
-    margin-bottom: 0.8rem;
-  }
+/* ---------------------------------  ------------------------------- */
 
-  .variable-pane-box .form-item * {
-    margin: 0.8rem;
-  }
+#table {
+  display: inline-block;
+  width: 100%;
+  height: 30vh;
+  color: black;
+}
 
-  .variable-pane-box h3 {
-    margin-bottom: 0.8rem;
-  }
+/*Pop-Ups*/
+.variable-pane {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 9999;
+}
 
-  .show {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1);
-  }
+.variable-pane-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #252b38;
+  padding: 1rem 1.5rem;
+  width: auto;
+  height: auto;
+  border-radius: 0.5rem;
+}
 
-  .exit {
-    float: right;
-  }
+.variable-pane-box .form-item {
+  margin-bottom: 0.8rem;
+}
 
-  /* Gantt-Chart */
+.variable-pane-box .form-item * {
+  margin: 0.8rem;
+}
 
-  .overflow-chart {
-    overflow: scroll;
-    max-height: 250px;
-  }
+.variable-pane-box h3 {
+  margin-bottom: 0.8rem;
+}
 
-  .disable-interaction {
-    pointer-events: none;
-  }
+.show {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
 
-  #gantt {
-  
-  }
+.exit {
+  float: right;
+}
 
-  /* Milestones */
-  #milestones-tbl {
-    float: right;
-  }
-  
+/* Gantt-Chart */
+
+.overflow-chart {
+  overflow: scroll;
+  max-height: 250px;
+}
+
+.disable-interaction {
+  pointer-events: none;
+}
+
+#gantt {
+}
+
+/* Milestones */
+#milestones-tbl {
+  float: right;
+}

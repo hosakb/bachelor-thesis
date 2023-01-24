@@ -166,7 +166,7 @@ document
           };
         }
 
-        console.log(document.getElementById("startup"))
+        console.log(document.getElementById("startup"));
 
         fetch("/admin/add-user", {
           method: "POST",
@@ -176,14 +176,14 @@ document
           redirect: "follow",
           body: JSON.stringify(newUser),
         }).then(() => {
-          alert("Successfully added new user.")
-        document.getElementById("email").value = "";
-        document.getElementById("first-name").value = "";
-        document.getElementById("last-name").value = "";
-        document.getElementById("password").value = "";
-        document.getElementById("role").value = "";
-        document.getElementById("fund").value = "";
-        document.getElementById("startup").value = "";
+          alert("Successfully added new user.");
+          document.getElementById("email").value = "";
+          document.getElementById("first-name").value = "";
+          document.getElementById("last-name").value = "";
+          document.getElementById("password").value = "";
+          document.getElementById("role").value = "";
+          document.getElementById("fund").value = "";
+          document.getElementById("startup").value = "";
         });
       }
     }

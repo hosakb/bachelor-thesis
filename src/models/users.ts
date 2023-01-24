@@ -320,7 +320,7 @@ const insertUser = async (user: NewUser) => {
   const client = await pool.connect();
 
   console.log(user);
-  
+
   try {
     if (user.fund !== null) {
       await client.query(
@@ -343,7 +343,7 @@ const insertUser = async (user: NewUser) => {
           user.email,
           user.hashedPassword,
           user.role,
-          user.startup
+          user.startup,
         ]
       );
     }

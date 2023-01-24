@@ -28,7 +28,12 @@ import {
   persistMilestonesWithId,
 } from "../models/startup";
 import { getMonth } from "../util/date";
-import { deleteSpreadsheets, formatCapTable, multerUpload, uploadCapTable } from "../util/excel";
+import {
+  deleteSpreadsheets,
+  formatCapTable,
+  multerUpload,
+  uploadCapTable,
+} from "../util/excel";
 
 const router: Router = express.Router();
 
@@ -136,7 +141,6 @@ router.put("/gantt/progress", async (req) => {
   }
 });
 
-
 // =============================== Submit =====================================
 router.get("/submit", async (req, res) => {
   const trl = await getTrl(req.session.startupId);
@@ -147,7 +151,9 @@ router.get("/submit", async (req, res) => {
   const startupName: string = await getStartupNameById(req.session.startupId);
   req.session.startupName = startupName;
 
-  const investmentPhase: string = await getInvestmentPhase(req.session.startupId);
+  const investmentPhase: string = await getInvestmentPhase(
+    req.session.startupId
+  );
   req.session.phase = investmentPhase;
 
   const milestones = await getMilestones(req.session.startupId);
@@ -179,11 +185,13 @@ router.post(
   "/cap-table",
   multerUpload.single("cap-table"),
   async (req, res) => {
-    const {nextPhase, investedCapital} = req.body;
+    const { nextPhase, investedCapital } = req.body;
     try {
-
-    await updateInvestmentPhase(req.session.startupId, nextPhase);
-    await updateInvestedCapital(req.session.startupId, parseInt(investedCapital));
+      await updateInvestmentPhase(req.session.startupId, nextPhase);
+      await updateInvestedCapital(
+        req.session.startupId,
+        parseInt(investedCapital)
+      );
 
       const rows = await uploadCapTable();
 

@@ -1,6 +1,6 @@
 let gridOptions;
 
-const mobile = window.matchMedia("(max-width: 700px)")
+const mobile = window.matchMedia("(max-width: 700px)");
 
 // setup the grid after the page has finished loading
 document.addEventListener("DOMContentLoaded", async () => {
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const gridDiv = document.querySelector("#table");
   // eslint-disable-next-line no-undef
   new agGrid.Grid(gridDiv, gridOptions);
-  if(!mobile.matches) {
+  if (!mobile.matches) {
     gridOptions.api.sizeColumnsToFit();
   }
 });

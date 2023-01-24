@@ -27,8 +27,6 @@ async function loadChartData() {
   renderLiq(liqData);
   const ganttData = responserJson.milestones;
   renderGantt(ganttData);
-
- 
 }
 
 function renderBurnRate(burnRateData) {

@@ -30,7 +30,9 @@ const fundIdExists = async (fundId: string) => {
   }
 };
 
-const getStartupsForFund = async (fundId: string): Promise<StartupTableRow[]> => {
+const getStartupsForFund = async (
+  fundId: string
+): Promise<StartupTableRow[]> => {
   const client = await pool.connect();
   let result;
   try {
@@ -47,7 +49,6 @@ const getStartupsForFund = async (fundId: string): Promise<StartupTableRow[]> =>
   }
 
   try {
-
     const startups: StartupTableRow[] = [];
 
     result.rows.forEach(async (row) => {
@@ -56,8 +57,8 @@ const getStartupsForFund = async (fundId: string): Promise<StartupTableRow[]> =>
       startups.push({
         ...startup,
         rating,
-      })
-    })
+      });
+    });
 
     return startups;
   } catch (err) {
@@ -105,12 +106,17 @@ const updateFundStartups = async (fundId: string, startups: string[]) => {
   }
 };
 
-const updateRatingTotal= async (ratingTotal: number, startupId: string, fundId: string) => {
+const updateRatingTotal = async (
+  ratingTotal: number,
+  startupId: string,
+  fundId: string
+) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE fund_startup_map SET rating = $1 WHERE fund_id = $2 AND startup_id = $3;", [
-      ratingTotal, fundId, startupId, 
-    ]);
+    await client.query(
+      "UPDATE fund_startup_map SET rating = $1 WHERE fund_id = $2 AND startup_id = $3;",
+      [ratingTotal, fundId, startupId]
+    );
   } catch (err) {
     throw new Error(
       `Failed to update rating for startup_id: ${startupId} and fund_id: ${fundId}. Error: ${err}`

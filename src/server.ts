@@ -7,7 +7,6 @@ import session from "express-session";
 import initializePassport from "./config/passport";
 
 import indexRouter from "./routes/index";
-import submitRouter from "./routes/submit";
 import fundDashboardRouter from "./routes/fund";
 import startupDashboardRouter from "./routes/startup";
 import adminRouter from "./routes/admin";
@@ -52,7 +51,6 @@ app.use("/", indexRouter);
 
 app.use(checkNotAuthenticated);
 
-app.use("/submit", submitRouter);
 app.use("/fund", fundDashboardRouter);
 app.use("/admin", adminRouter);
 app.use("/startup", startupDashboardRouter);

@@ -374,13 +374,15 @@ const getNewStartupById = async (startupId: string): Promise<NewStartup> => {
 
   const s: NewStartup = {
     id,
-    name: name
+    name: name,
   };
 
   return s;
 };
 
-const getStartupTableRowById = async (startupId: string): Promise<StartupTableRow> => {
+const getStartupTableRowById = async (
+  startupId: string
+): Promise<StartupTableRow> => {
   const client = await pool.connect();
   let result;
   try {
@@ -505,11 +507,15 @@ const getInvestmentPhase = async (startupId: string) => {
   return phase;
 };
 
-const updateInvestmentPhase = async (startupId: string, investmentPhase: string) => {
+const updateInvestmentPhase = async (
+  startupId: string,
+  investmentPhase: string
+) => {
   const client = await pool.connect();
   try {
     await client.query("UPDATE startup set stage = $1 where id = $2", [
-      investmentPhase, startupId
+      investmentPhase,
+      startupId,
     ]);
   } catch (err) {
     throw new Error(
@@ -520,12 +526,16 @@ const updateInvestmentPhase = async (startupId: string, investmentPhase: string)
   }
 };
 
-const updateInvestedCapital = async (startupId: string, investedCapital: number) => {
+const updateInvestedCapital = async (
+  startupId: string,
+  investedCapital: number
+) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE startup set invested_capital = $1 where id = $2", [
-      investedCapital, startupId
-    ]);
+    await client.query(
+      "UPDATE startup set invested_capital = $1 where id = $2",
+      [investedCapital, startupId]
+    );
   } catch (err) {
     throw new Error(
       `Failed to update invested capital for startup id ${startupId}. Error: ${err}`
@@ -534,7 +544,6 @@ const updateInvestedCapital = async (startupId: string, investedCapital: number)
     client.release();
   }
 };
-
 
 const persistCapTable = async (capTable: string, startupId: string) => {
   const client = await pool.connect();
@@ -1131,7 +1140,8 @@ export {
   updateStartupName,
   getTrl,
   deleteTrl,
-  deleteStartup,updateInvestmentPhase,
+  deleteStartup,
+  updateInvestmentPhase,
   insertInvestor,
   updateInvestor,
   persistMilestonesWithId,

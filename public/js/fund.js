@@ -16,7 +16,6 @@ async function loadChartData() {
 }
 
 function renderBurnRate(burnRateData) {
-
   const data = {
     labels: burnRateData.months,
     datasets: [
@@ -38,7 +37,6 @@ function renderBurnRate(burnRateData) {
       // layout: {
       //   autoPadding: true,
       // },
-      
     },
   };
 
@@ -70,14 +68,13 @@ function renderRunway(burnRateData) {
       // layout: {
       //   autoPadding: true,
       // },
-      
     },
   };
 
   // eslint-disable-next-line no-undef
   let chart = new Chart(document.querySelector("#runway-chart"), config);
-//   chart.canvas.parentNode.style.height = "15vh";
-// chart.canvas.parentNode.style.width = "18vh";
+  //   chart.canvas.parentNode.style.height = "15vh";
+  // chart.canvas.parentNode.style.width = "18vh";
 }
 
 function renderLiq(liqData) {
@@ -102,14 +99,13 @@ function renderLiq(liqData) {
       // layout: {
       //   autoPadding: true,
       // },
-      
     },
   };
 
   // eslint-disable-next-line no-undef
   let chart = new Chart(document.querySelector("#liq-chart"), config);
-//   chart.canvas.parentNode.style.height = "15vh";
-// chart.canvas.parentNode.style.width = "18vh";
+  //   chart.canvas.parentNode.style.height = "15vh";
+  // chart.canvas.parentNode.style.width = "18vh";
 }
 
 var gantt;
@@ -143,5 +139,3 @@ function renderGantt(data) {
 function change_view_mode(period) {
   gantt.change_view_mode(period);
 }
-
-
