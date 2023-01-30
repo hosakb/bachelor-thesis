@@ -58,17 +58,10 @@ function submitCapTable() {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function submitStartupData() {
   const phase = document.querySelector("#phase").value;
-  const dueDatePhase = document.querySelector("#due-date-phase").value;
   const productToMarket = document.querySelector("#product-to-market").value;
   const timeToMarket = document.querySelector("#time-to-market").value;
   const sector = document.querySelector("#sector").value;
-  const progress = document.querySelector("#progress").value;
-
-  let today = new Date();
-  const dd = String(today.getDate()).padStart(2, "0");
-  const mm = String(today.getMonth() + 1).padStart(2, "0");
-  const yyyy = today.getFullYear();
-  today = yyyy + "-" + mm + "-" + dd;
+  const investedCapital = document.querySelector("#invested-capital").value;
 
   fetch("/onboarding/startup", {
     method: "POST",
@@ -82,9 +75,7 @@ function submitStartupData() {
         sector: sector,
         productToMarket: productToMarket,
         timeToMarket: timeToMarket,
-        startDatePhase: today,
-        dueDatePhase: dueDatePhase,
-        progress: progress,
+        investedCapital: investedCapital,
       },
     }),
   })

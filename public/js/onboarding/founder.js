@@ -7,6 +7,7 @@ let foundingDate;
 let coFounders;
 let ventureInBusiness;
 let lastValuation;
+let reasonForFailure;
 
 // ----------------- Expertise Selection ---------------------
 
@@ -73,6 +74,14 @@ function areVentureInputsEmpty() {
 
 submitVentureBtn = document.querySelector("#submit-venture-btn");
 
+document.querySelector("#venture-in-business").addEventListener("change", (e) => {
+  if(e.target.value == "no") {
+    document.getElementById("reason-for-failure-hidden").classList.remove("hidden");
+  } else {
+    document.getElementById("reason-for-failure-hidden").classList.add("hidden");
+  }
+})
+
 submitVentureBtn.addEventListener("click", () => {
   if (areVentureInputsEmpty()) {
     alert("Form is not complete or received wrong data format.");
@@ -90,26 +99,26 @@ submitVentureBtn.addEventListener("click", () => {
     let ventureNameCell = row.insertCell(0);
     let foundingDateCell = row.insertCell(1);
     let coFoundersCell = row.insertCell(2);
-    let lastValuationCell = row.insertCell(3);
-    let ventureInBusinessCell = row.insertCell(4);
+    let ventureInBusinessCell = row.insertCell(3);
+    let reasonForFailureCell = row.insertCell(4);
 
     ventureName = document.querySelector("#venture-name");
     foundingDate = document.querySelector("#founding-date");
     coFounders = document.querySelector("#co-founders");
     ventureInBusiness = document.querySelector("#venture-in-business");
-    lastValuation = document.querySelector("#last-valuation");
+    reasonForFailure = document.querySelector("#reason-for-fail");
 
     ventureNameCell.innerHTML = ventureName.value;
     foundingDateCell.innerHTML = foundingDate.value;
     coFoundersCell.innerHTML = coFounders.value;
     ventureInBusinessCell.innerHTML = ventureInBusiness.value;
-    lastValuationCell.innerHTML = lastValuation.value;
+    reasonForFailureCell.innerHTML = reasonForFailure.value;
 
     ventureName.value = "";
     foundingDate.value = "";
     coFounders.value = "";
     ventureInBusiness.value = "";
-    lastValuation.value = "";
+    reasonForFailure.value = "";
   }
 });
 
@@ -140,11 +149,11 @@ submitBtn.addEventListener("click", () => {
 
     for (var i = 0; i < tds.length; i += 5) {
       ventures.push({
-        ventureName: tds[i].innerHTML,
+        name: tds[i].innerHTML,
         foundingDate: tds[i + 1].innerHTML,
         coFounders: tds[i + 2].innerHTML,
-        lastValuation: tds[i + 3].innerHTML,
-        inBusiness: tds[i + 4].innerHTML,
+        inBusiness: tds[i + 3].innerHTML,
+        reasonForFailure: tds[i + 4].innerHTML,
       });
     }
 

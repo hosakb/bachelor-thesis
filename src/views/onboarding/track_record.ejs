@@ -3,7 +3,7 @@
 
 <br>
 
-<div class="track-record-input">
+<div class="form-item">
     <label for="expertise">What is your domain of expertise? If not listed please select other and submit your expertise.</label>
     <select id="expertise">
         <option value="IT">IT</option>
@@ -12,22 +12,18 @@
         <option value="Medicine">Medicine</option>
         <option value="Psychology">Psychology</option>
         <option value="Space">Space</option>
-        <option value="Teaching">Teaching</option>
         <option value="Mathematics">Mathematics</option>
         <option value="Physics">Physics</option>
         <option value="Chemistry">Chemistry</option>
         <option value="Biology">Biology</option>
-        <option value="Art">Art</option>
-        <option value="Languages">Languages</option>
-        <option value="History">History</option>
         <option value="other">Other</option>
     </select>
     <input id="other-expertise" class="hidden" type="text" placeholder="Other Expertise">
 </div>
 <br>
 <div>
-   <div>
-        <p>Is this your first venture?</p>
+    <div class="form-item">
+        <label>Is this your first venture?</label>
         <select id="first-venture">
             <option value="yes" selected>Yes</option>
             <option value="no">No</option>
@@ -39,28 +35,28 @@
         <p>Please list all ventures you are a founding member of.</p>
         <button id="add-venture-btn">Add venture</button>
         <div class="venture-form hidden">
-            <div>
+            <div class="form-item">
                 <label for="venture-name">Venture name</label>
                 <input id="venture-name" type="text">
             </div>
-            <div>
+            <div class="form-item">
                 <label for="founding-date">Founding date:</label>
                 <input id="founding-date" type="date">
             </div>
-            <div>
+            <div class="form-item">
                 <label for="co-founders">How many co-founders did do you have?</label>
                 <input id="co-founders" class="number-input" type="number">
             </div>
-            <div>
+            <div class="form-item">
                 <label for="venture-in-business">Is it still in business?</label>
                 <select id="venture-in-business">
                     <option value="yes" default>Yes</option>
                     <option value="no">No</option>
                 </select>
-                <div class="hidden-form">
-                    <label for="last-valuation">What was its last valuation?</label>
-                    <input id="last-valuation" class="number-input" type="number"> <span>$</span>
-                </div>
+            </div>
+            <div id="reason-for-failure-hidden" class="form-item hidden">
+                <label for="reason-for-fail">Why did it fail?</label>
+                <textarea id="reason-for-fail" rows="5" cols="33"></textarea>
             </div>
             <button id="submit-venture-btn" class="hidden">Add</button>
             <label id="incompleteVentureForm"></label>
@@ -75,8 +71,8 @@
                     <th>Name</th>
                     <th>Founding Date</th>
                     <th>Co-Founders</th>
-                    <th>Last Valuation</th>
                     <th>In Business</th>
+                    <th>Reason for Failure</th>
                 </tr>
             </thead>
             <tbody>

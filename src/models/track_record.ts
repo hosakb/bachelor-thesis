@@ -16,8 +16,8 @@ interface PreviousVenture {
   name: string;
   foundingDate: string;
   coFounders: number;
-  lastValuation: number;
   inBusiness: boolean;
+  reasonForFailure: string;
 }
 
 const insertTrackRecord = async (

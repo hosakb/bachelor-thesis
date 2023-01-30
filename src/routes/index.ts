@@ -61,6 +61,7 @@ router.get("/logout", (req, res) => {
 });
 
 export default router;
+
 function loginFund(userRole: UserRole, req: Request, res: Response) {
   console.info(
     `Logged in as fund with id ${userRole.id} and redirected to /fund/${userRole.id}`

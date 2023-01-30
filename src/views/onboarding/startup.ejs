@@ -3,13 +3,13 @@
     <p>Please provide some details about your startup.</p>
 </div>
 <br>
-<div>
-    <p>What sector is <%= startupName %> in? </p>
+<div class="form-item">
+    <label>What sector is <%= startupName %> in? </label>
     <input id="sector" type="text" placeholder="Sector">
 </div>
 <br>
-<div>
-    <p>What investment phase are you is <%= startupName %> currently in?</p>
+<div class="form-item">
+    <label>What investment phase are you is <%= startupName %> currently in?</label>
     <select name="phase" id="phase">
         <option value="pre-seed">Pre-Seed</option>
         <option value="seed">Seed</option>
@@ -25,28 +25,22 @@
     </select>
 </div>
 <br>
-<div>
-    <p>To what percentage have the milestones for this phase been completed?</p>
-    <input type="number" id="progress"> <span>%</span>
-</div>
-<br>
-<div>
-    <p>Please specify when the investment phase will be completed according to the business plan.</p>
-    <input type="date" id="due-date-phase">
-</div>
-<br>
-<div>
-    <p>Has <%= startupName %> brought a product to market yet?</p>
+<div class="form-item">
+    <label>Has <%= startupName %> brought a product to market yet?</label>
     <select name="product-to-market" id="product-to-market">
         <option value="yes">Yes</option>
         <option value="no">No</option>
     </select>
     <br>
-    <br>
-    <div id="est-time-to-market" class="hidden">
-        <p>If no, what is your estimated time to market?</p>
-        <input id="time-to-market" type="number"><span> Months</span>
+    <div id="est-time-to-market" class="hidden form-item">
+        <label>If no, what is your estimated time to market?</label>
+        <input id="time-to-market" type="number"><span>Months</span>
     </div>
+</div>
+<br>
+<div class="form-item">
+    <label>How much capital has so far been invested into <%= startupName %>?</label>
+    <input id="invested-capital" type="number" placeholder="Sector" min="0"> <span>Million</span>
 </div>
 <br>
 <div>
@@ -58,14 +52,13 @@
     <button onclick="submitCapTable()">Submit Cap Table</button>
 </div>
 <br>
-    <div id="cap-table-div" class="hidden">
-        <div>
-            <h3>Cap-Table</h3>
-            <table id="cap-table"></table>
-        </div>
-        <br>
-        <div>
-            <button onclick="submitStartupData()">Submit Startup Information</button>
-        </div>
+<div id="cap-table-div" class="hidden">
+    <div>
+        <h3>Cap-Table</h3>
+        <table id="cap-table"></table>
     </div>
-<br>
+    <br>
+    <div>
+        <button onclick="submitStartupData()">Submit Startup Information</button>
+    </div>
+</div>

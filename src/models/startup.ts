@@ -44,10 +44,8 @@ interface StartupInfo {
   phase: string;
   sector: string;
   timeToMarket: number;
-  productToMarket: string;
-  startDatePhase: string;
-  dueDatePhase: string;
-  progress: number;
+  productToMarket: boolean;
+  investedCapital: number
 }
 
 interface Milestone {
@@ -334,7 +332,7 @@ const getFirstStartupLoginById = async (startUpId: string) => {
   let result;
   try {
     result = await client.query(
-      `SELECT info FROM startup
+      `SELECT cap_table FROM startup
       WHERE id = $1`,
       [startUpId]
     );
@@ -350,7 +348,7 @@ const getFirstStartupLoginById = async (startUpId: string) => {
     client.release();
   }
 
-  if (result.rows[0].info == undefined) {
+  if (result.rows[0].cap_table == null) {
     return true;
   } else {
     return false;
@@ -387,7 +385,7 @@ const getStartupTableRowById = async (
   let result;
   try {
     result = await client.query(
-      "SELECT id, name, stage, info FROM startup WHERE id=$1",
+      "SELECT id, name, stage, invested_capital, sector FROM startup WHERE id=$1",
       [startupId]
     );
   } catch (err) {
@@ -396,19 +394,14 @@ const getStartupTableRowById = async (
     client.release();
   }
 
-  const { id, name, stage, info } = result.rows[0];
-
-  const share = info[0] === undefined ? "Not available" : info[0].share; //TODO: Fallback?
-  const sector = info[0] === undefined ? "Not available" : info[0].sector; //TODO: Fallback?
-  const totalInvestment =
-    info[0] === undefined ? "Not available" : info[0].totalInvestment; //TODO: Fallback?
+  const { id, name, stage, invested_capital, sector } = result.rows[0];
 
   const s: StartupTableRow = {
     id,
     name: name,
     stage: stage,
     sector: sector,
-    totalInvestment: totalInvestment,
+    totalInvestment: invested_capital,
   };
 
   return s;
@@ -600,8 +593,12 @@ const getCapTable = async (startupId: string) => {
 const persistInfo = async (startupInfo: StartupInfo, startupId: string) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE startup SET info = $1 WHERE id = $2", [
-      JSON.stringify(startupInfo),
+    await client.query("UPDATE startup SET stage = $1, invested_capital = $2, sector = $3, has_product = $4 , est_time_to_market = $5 WHERE id = $6", [
+     startupInfo.phase,
+     startupInfo.investedCapital,
+     startupInfo.sector,
+     startupInfo.productToMarket,
+     startupInfo.timeToMarket,
       startupId,
     ]);
   } catch (err) {

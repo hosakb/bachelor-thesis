@@ -73,22 +73,18 @@ router.post("/reupload", (req, res) => {
 router.post("/startup", async (req, res) => {
   const {
     phase,
-    startDatePhase,
-    dueDatePhase,
-    progress,
     productToMarket,
     timeToMarket,
     sector,
+    investedCapital,
   } = req.body.startupInfo;
 
   const startupInfo: StartupInfo = {
     phase,
-    startDatePhase,
-    dueDatePhase,
-    productToMarket,
+    productToMarket: (productToMarket === 'true'),
     timeToMarket,
-    progress,
     sector,
+    investedCapital
   };
 
   const startupId = req.user?.startup;
@@ -108,7 +104,7 @@ router.post("/startup", async (req, res) => {
       res.redirect("/onboarding/product");
     } catch (error) {
       console.error(
-        `Failed to update kpis due to ${error}. Redirect to startup screen.`
+        `Failed to onboard startup due to ${error}. Redirect to startup screen.`
       );
       res.redirect("/onboarding/startup");
     }
@@ -280,10 +276,6 @@ router.post("/questionnaire", async (req, res) => {
   }
 
   try {
-    // Object.keys(body).forEach(function (el) {
-    //   body[el] = parseInt(body[el]);
-    //   console.log(body[el])
-    // });
 
     const questionnaire: Questionnaire = {
       q1_1_1: parseInt(q1_1_1),

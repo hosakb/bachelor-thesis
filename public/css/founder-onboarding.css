@@ -217,7 +217,8 @@ label {
 }
 
 input,
-select {
+select,
+textarea {
   width: 100%;
   max-width: 25rem;
   margin-left: 1rem;
