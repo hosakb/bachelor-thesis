@@ -100,24 +100,28 @@ submitVentureBtn.addEventListener("click", () => {
     let foundingDateCell = row.insertCell(1);
     let coFoundersCell = row.insertCell(2);
     let ventureInBusinessCell = row.insertCell(3);
-    let reasonForFailureCell = row.insertCell(4);
+    let lastValuationCell = row.insertCell(4);
+    let reasonForFailureCell = row.insertCell(5);
 
     ventureName = document.querySelector("#venture-name");
     foundingDate = document.querySelector("#founding-date");
     coFounders = document.querySelector("#co-founders");
     ventureInBusiness = document.querySelector("#venture-in-business");
+    lastValuation = document.querySelector("#last-valuation");
     reasonForFailure = document.querySelector("#reason-for-fail");
 
     ventureNameCell.innerHTML = ventureName.value;
     foundingDateCell.innerHTML = foundingDate.value;
     coFoundersCell.innerHTML = coFounders.value;
     ventureInBusinessCell.innerHTML = ventureInBusiness.value;
+    lastValuationCell.innerHTML = lastValuation.value;
     reasonForFailureCell.innerHTML = reasonForFailure.value;
 
     ventureName.value = "";
     foundingDate.value = "";
     coFounders.value = "";
     ventureInBusiness.value = "";
+    lastValuation.value = "";
     reasonForFailure.value = "";
   }
 });
@@ -147,13 +151,14 @@ submitBtn.addEventListener("click", () => {
 
     let ventures = [];
 
-    for (var i = 0; i < tds.length; i += 5) {
+    for (var i = 0; i < tds.length; i += 6) {
       ventures.push({
         name: tds[i].innerHTML,
         foundingDate: tds[i + 1].innerHTML,
         coFounders: tds[i + 2].innerHTML,
         inBusiness: tds[i + 3].innerHTML,
-        reasonForFailure: tds[i + 4].innerHTML,
+        lastValuation: tds[i + 4].innerHTML,
+        reasonForFailure: tds[i + 5].innerHTML,
       });
     }
 

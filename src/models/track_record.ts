@@ -3,7 +3,6 @@ import pool from "../config/db";
 interface Founder {
   firstName: string;
   lastName: string;
-  age: number;
   trackRecord: TrackRecord;
 }
 
@@ -17,6 +16,7 @@ interface PreviousVenture {
   foundingDate: string;
   coFounders: number;
   inBusiness: boolean;
+  lastValuation: number;
   reasonForFailure: string;
 }
 
@@ -63,7 +63,6 @@ const getFoundersByStartupId = async (
       const startupFounder: Founder = {
         firstName: founder.first_name,
         lastName: founder.last_name,
-        age: 1,
         trackRecord: {
           expertise: founder.expertise,
           ventures: ventures,

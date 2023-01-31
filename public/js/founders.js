@@ -42,6 +42,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // eslint-disable-next-line no-undef
   let chart = new Chart(document.querySelector("#expertise-chart"), config);
-  chart.canvas.parentNode.style.height = "15vh";
-  chart.canvas.parentNode.style.width = "18vh";
+  // chart.canvas.parentNode.style.height = "5vh";
+  chart.canvas.parentNode.style.width = "25vh";
 });

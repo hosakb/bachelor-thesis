@@ -188,6 +188,100 @@
         <input type="hidden" id="current-investment-phase" value="<%= investmentPhase %>"> 
     </div>
 </div>
+<div class="variable-pane" id="new-trl">
+    <div class="variable-pane-box">
+        <button id="exit-new-trl" class="exit"><i class="las la-times"></i></button>
+        <h3>New Technology</h3>
+        <div>
+            <form action="/startup/submit/add-trl" method="post">
+                <div class="form-item">
+                    <label for="new-technology">Technology:</label>
+                    <input type="text" name="newTechnology" id="new-technology" required/>
+                </div>
+                <div class="form-item">
+                    <label for="new-trl-value">TRL:</label>
+                    <input type="number" name="newTrlValue" id="new-trl-value" min="1" max="9" required>
+                </div>
+                <div class="form-item">
+                    <label for="new-criticality">Criticality:</label>
+                    <input type="number" name="newCriticality" id="new-criticality" min="1" max="3" required>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>TRL</th>
+                        <th>Definition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Principal research into the core properties of the technology.</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>'Invention' of a concept or application for the technology. Shift from principle to applied research.</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Initial 'proof of concept' of critical functionality through active R&D (Analytical and laboratory studies in appropriate context to validate previous analytical precondition).</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Low-fidelity validation in laboratory environment. Technological advancement now focussed on meeting project requirements..</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Validation of basic technological elements in a relevant environment. Test 'set-up' to be of higher fidelity than TRL 4.</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>High-fidelity 'alpha' prototype demonstrated in a relevant environment.</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>'Beta' prototype (Of appropriate or full scale) demonstrated in an operational environment.</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Complete component, sub-system or system qualified to relevant project requirements and/or regulatory standards.</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Verified component, sub-system or system proven to meet all project requirements through 'real world' operation.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Criticality Value</th>
+                        <th>Definition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>3</td>
+                        <td>Technology is 'enabling' to the core functionality of the product. No work-around or substitution possible.</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Technology fulfils a vital role in the product's core functionality. However, a work-around may be possible using substitute technology that will incur an acceptable penalty.</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Technology is 'enhancing' to the products performance, cost, etc. Several alternative technologies exist that could be substituted and incur a minimal penalty.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <div class="variable-pane" id="add-investor-form">
     <div class="variable-pane-box">
         <button id="exit-new-investor" class="exit"><i class="las la-times"></i></button>
@@ -521,7 +615,6 @@
                             <th>Start Date</th>
                             <th>Due Date</th>
                             <th>Progress</th>
-                            <th>Options</th>
                         </tr>
                     </thead>
                     <tbody id="milestones-new-tbody"></tbody>
@@ -535,7 +628,7 @@
     <div class="variable-pane-box">
         <button id="exit-next-investment-round" class="exit"><i class="las la-times"></i></button>
         <h3>Next Investment Round</h3>
-        <form action="/submit/cap-table" enctype="multipart/form-data" method="post">
+        <form action="/startup/submit/cap-table" enctype="multipart/form-data" method="post">
             <div class="form-item">
                 <label for="cap-table-upload">Upload:</label>
                 <input type="file" name="cap-table" id="cap-table-upload" required/>

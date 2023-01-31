@@ -39,10 +39,12 @@ import {
   updateBusinessCentralUser,
 } from "../models/businessCentral";
 import {
+  getStartupIdsForFund,
   getStartupsForFund,
   insertFundStartupRelation,
   updateFundStartups,
 } from "../models/fund_startup_map";
+import { start } from "repl";
 
 const router: Router = express.Router();
 
@@ -225,8 +227,6 @@ router.post("/get-startup", async (req, res) => {
 router.post("/update-startup", async (req, res) => {
   const { id, name, bcUsername, bcPassword, bcCompany } = req.body;
 
-  console.log(bcPassword);
-
   try {
     await updateStartupName(name, id);
     const { lm, nt } = getHashedPassword(bcPassword);
@@ -258,6 +258,15 @@ router.post("/delete-startup", async (req, res) => {
 
 router.get("/funds", async (req, res) => {
   try {
+
+    const startups = await getAllStartups();
+    const allStartups = startups.map((startup) => {
+      return {
+        id: startup.id,
+        name: startup.name,
+      }
+    })
+
     res.render("admin/funds", {
       layout: "../views/layouts/admin.ejs",
       scripts: ["/js/admin/fund"],
@@ -266,6 +275,7 @@ router.get("/funds", async (req, res) => {
       name: req.user?.firstName + " " + req.user?.lastName,
       funds: await getFunds(),
       startups: await getStartups(),
+      allStartups: allStartups,
     });
   } catch (err) {
     throw new Error(
@@ -312,8 +322,7 @@ router.post("/get-fund", async (req, res) => {
   const { id } = req.body;
   try {
     const fund: Fund = await getFundById(id);
-    const startups = await getStartupsForFund(id);
-
+    const startups = await getStartupIdsForFund(id);
     const fundPortfolio: AdminFundPortfolio = {
       name: fund.name,
       sector: fund.investmentSector,
@@ -321,9 +330,7 @@ router.post("/get-fund", async (req, res) => {
       hardCap: fund.hardCap,
       finalClosing: fund.finalClosing,
       nextClosing: fund.nextClosing,
-      startups: startups.map((startup) => {
-        return startup.id;
-      }),
+      startups: startups,
       type: fund.type,
     };
     res.status(200).json(fundPortfolio);

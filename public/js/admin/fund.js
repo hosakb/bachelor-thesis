@@ -170,6 +170,7 @@ document.getElementById("funds").addEventListener("change", async (e) => {
   document.getElementById("new-fund").classList.remove("hidden");
 
   const startups = document.querySelectorAll("#new-startups-list li input");
+
   for (const startup of startups) {
     if (fund.startups.includes(startup.value)) {
       startup.checked = true;

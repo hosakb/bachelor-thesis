@@ -79,9 +79,9 @@
     <h2>Edit Fund or Stakeholder</h2>
     <div class="form-item">
         <select name="funds" id="funds">
-            <option value="" selected disabled>Select User</option>
+            <option selected disabled>Select Fund or Stakeholder</option>
             <% for (const fund of funds) { %> 
-               <option value="<%= fund.id %>"><%= fund.name %><option>
+                <option value="<%= fund.id %>"><%= fund.name %></option>
             <% } %> 
         </select>
     </div>
@@ -116,7 +116,7 @@
             <label>Startups:</label>
             <div class="form-input">
                 <ul id="new-startups-list">
-                    <% for (const startup of startups) { %> 
+                    <% for (const startup of allStartups) { %> 
                         <li class="no-bullet">
                             <input type="checkbox" value="<%= startup.id %>">
                             <span><%= startup.name %></span>

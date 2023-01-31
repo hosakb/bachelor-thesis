@@ -5,6 +5,7 @@
     <div class="grid">
         <div class="card">
             <h2>Users</h2>
+            <br>
             <div class="table-container">
                 <table class="admin-tbl">
                     <thead>
@@ -36,6 +37,7 @@
         </div>
         <div class="card">
             <h2>Funds</h2>
+            <br>
             <div class="table-container">
                 <table>
                     <thead>
@@ -47,27 +49,47 @@
                     </thead>
                     <tbody>
                      <% for (const fund of funds) { %> 
-                      <tr>
-                          <td><%= fund.name %> </td>
-                          <td><%= fund.createdAt.getDate() + "-" + fund.createdAt.getMonth() + "-" + fund.createdAt.getFullYear() %></td>
-                          <td><%= fund.updatedAt.getDate() + "-" + fund.updatedAt.getMonth() + "-" + fund.updatedAt.getFullYear() %></td>
-                      </tr>
-                      <% } %>
-                      <% if(funds.length < 7) { %>
-                          <% for (let i = 0; i < (7 - funds.length); i++) {  %>
-                              <tr>
-                                  <td> </td>
-                                  <td> </td>
-                                  <td> </td>
-                              </tr>
-                          <% } %> 
-                      <% } %>  
+                        <% if(fund.type == "fund") { %> 
+                            <tr>
+                                <td><%= fund.name %> </td>
+                                <td><%= fund.createdAt.getDate() + "-" + fund.createdAt.getMonth() + "-" + fund.createdAt.getFullYear() %></td>
+                                <td><%= fund.updatedAt.getDate() + "-" + fund.updatedAt.getMonth() + "-" + fund.updatedAt.getFullYear() %></td>
+                            </tr>
+                            <% } %> 
+                      <% } %> 
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Stakeholders</h2>
+            <br>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Created At</th>
+                          <th>Updated At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                     <% for (const fund of funds) { %> 
+                        <% if(fund.type == "stakeholder") { %> 
+                            <tr>
+                                <td><%= fund.name %> </td>
+                                <td><%= fund.createdAt.getDate() + "-" + fund.createdAt.getMonth() + "-" + fund.createdAt.getFullYear() %></td>
+                                <td><%= fund.updatedAt.getDate() + "-" + fund.updatedAt.getMonth() + "-" + fund.updatedAt.getFullYear() %></td>
+                            </tr>
+                            <% } %> 
+                      <% } %> 
                     </tbody>
                   </table>
             </div>
         </div>
         <div class="card">
             <h2>Startups</h2>
+            <br>
             <div class="table-container">
                 <table class="admin-tbl">
                     <thead>

@@ -248,13 +248,13 @@ router.post("/submit/delete-trl", async (req, res) => {
 });
 
 router.post("/submit/add-trl", async (req, res) => {
-  const { technology, trl, criticality } = req.body.trlData;
+  const { newTechnology, newTrlValue, newCriticality, } = req.body;
   try {
     const trlData: TrlData = {
       id: "",
-      technology,
-      trl,
-      criticality,
+      technology: newTechnology,
+      trl: newTrlValue,
+      criticality: newCriticality,
     };
 
     await persistTrlData(req.session.startupId, [trlData]);

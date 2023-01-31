@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     { field: "name", headerName: "Startup Name" },
     { field: "sector", headerName: "Sector" },
     { field: "stage", headerName: "Investment Stage" },
-    { field: "totalInvestment", headerName: "Total Investment ($)" },
+    { field: "totalInvestment", headerName: "Total Investment (M$)" },
     { field: "rating", headerName: "Rating" },
   ];
 
