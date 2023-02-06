@@ -32,17 +32,17 @@
                     <label for="fund">Fund/Stakeholder:</label>
                     <select name="fund" id="fund" required>
                         <% for (const fund of funds) { %>
-                            <option value="<%= fund.id %>"><%= fund.name %></option>
-                        <% } %> 
+                        <option value="<%= fund.id %>"><%= fund.name %></option>
+                        <% } %>
                     </select>
                 </div>
                 <div id="startup-input" class="hidden form-item">
                     <label for="startup">Startup:</label>
                     <select name="startup" id="startup">
                         <% for (const startup of startups) { %>
-                            <option value="<%= startup.id %>"><%= startup.name %></option>
-                            <% console.log(startup.id); %> 
-                        <% } %> 
+                        <option value="<%= startup.id %>"><%= startup.name %></option>
+                        <% console.log(startup.id); %>
+                        <% } %>
                     </select>
                 </div>
             </div>
@@ -60,29 +60,29 @@
         <div class="form-item">
             <select name="users" id="users">
                 <option value="" selected disabled>Select User</option>
-                <% for (const user of users) { %> 
-                    <option value="<%= user.id %>"><%= user.firstName %> <%= user.lastName %></option>
-                <% } %> 
+                <% for (const user of users) { %>
+                <option value="<%= user.id %>"><%= user.firstName %> <%= user.lastName %></option>
+                <% } %>
             </select>
         </div>
         <div id="new-user" class="hidden">
-             <div class="form-item">
+            <div class="form-item">
                 <label for="new-first-name">First Name:</label>
                 <input type="text" id="new-first-name">
             </div>
-             <div class="form-item">
+            <div class="form-item">
                 <label for="new-last-name">Last Name:</label>
                 <input type="text" id="new-last-name">
             </div>
-             <div class="form-item">
+            <div class="form-item">
                 <label for="new-email">Email:</label>
                 <input type="email" id="new-email">
             </div>
-             <div class="form-item">
+            <div class="form-item">
                 <label for="new-password">Password:</label>
                 <input type="password" id="new-password">
             </div>
-             <div class="form-item">
+            <div class="form-item">
                 <input type="hidden" name="id" id="same-id">
             </div>
             <div class="btn-item">
@@ -97,8 +97,8 @@
             <select name="id" id="select-delete-users">
                 <option value="" selected disabled>Select User</option>
                 <% for (const user of users) { %>
-                    <option value="<%= user.id %>"><%= user.firstName %> <%= user.lastName %></option>
-                <% } %> 
+                <option value="<%= user.id %>"><%= user.firstName %> <%= user.lastName %></option>
+                <% } %>
             </select>
         </div>
         <div class="btn-item">

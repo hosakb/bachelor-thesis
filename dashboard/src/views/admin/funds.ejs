@@ -1,155 +1,154 @@
-   
-<div>
-    <h2>Register Fund or Stakeholder</h2>
-    <div class="form-item">
-        <select name="selectFundStakeholder" id="select-fund-stakeholder">
-            <option selected disabled>Select</option>
-            <option value="fund">Fund</option>
-            <option value="stakeholder">Stakeholder</option>
-        </select>
-    </div>
-    <br>
-    <div id="register-fund" class="hidden">
-        <div class="form-item">
-            <label for="name">Fund Name:</label>
-            <input class="form-input" type="text" name="name" id="name" required>
-        </div>
-        <div class="form-item">
-            <label for="sector">Investment Sector:</label>
-            <input class="form-input" type="text" name="sector" id="sector" required>
-        </div>
-        <div class="form-item">
-            <label for="hard-cap" >Hard Cap:</label>
-            <input class="form-input" type="number" name="hardCap" id="hard-cap" required>
-        </div>
-        <div class="form-item">
-            <label for="fund-volume">Fund Volume:</label>
-            <input class="form-input" type="number" name="fundVolume" id="fund-volume" required>
-        </div>
-        <div class="form-item">
-            <label for="next-closing">Next Closing:</label>
-            <input class="form-input" type="date" name="nextClosing" id="next-closing" required>
-        </div>
-        <div class="form-item">
-            <label for="final-closing">Final Closing:</label>
-            <input class="form-input" type="date" name="finalClosing" id="final-closing" required>
-        </div>
-        <div class="form-item">
-            <label>Startups:</label>
-            <div class="form-input">
-                <ul id="startups-list">
-                    <% for (const startup of startups) { %> 
-                        <li class="no-bullet">
-                            <input type="checkbox" value="<%= startup.id %>">
-                            <span><%= startup.name %></span>
-                        </li>
-                    <% } %> 
-                </ul>
-            </div>
-        </div>
-        <div>
-            <button type="button" onclick="registerFund()">Register Fund</button>
-        </div>
-    </div>
-    <div id="register-stakeholders" class="hidden">
-        <div class="form-item">
-            <label for="stakeholder-name">Stakeholder or Company Name:</label>
-            <input class="form-input" type="text" name="stakeholderName" id="stakeholder-name" required>
-        </div>
-        <div class="form-item">
-            <label>Startups:</label>
-            <ul id="startups-list-stakeholder">
-                <% for (const startup of startups) { %> 
-                    <li class="no-bullet">
-                        <li class="no-bullet">
-                            <input type="checkbox" value="<%= startup.id %>">
-                            <span><%= startup.name %></span>
-                        </li>
-                    </li>
-                <% } %> 
-            </ul>
-        </div>
-        <div class="btn-item">
-            <button type="button" onclick="registerStakeholder()">Register Stakeholder</button>
-        </div>
-    </div>
-</div>
-<br>
-<div>
-    <h2>Edit Fund or Stakeholder</h2>
-    <div class="form-item">
-        <select name="funds" id="funds">
-            <option selected disabled>Select Fund or Stakeholder</option>
-            <% for (const fund of funds) { %> 
-                <option value="<%= fund.id %>"><%= fund.name %></option>
-            <% } %> 
-        </select>
-    </div>
-    <div id="new-fund" class="hidden">
-        <div class="form-item">
-            <label for="new-name">Name:</label>
-            <input class="form-input" type="text" id="new-name">
-        </div>
-        <div id="hidden-edit-fields" class="hidden">
-             <div class="form-item">
-                <label for="new-sector">Investment Sector:</label>
-                <input class="form-input" type="text" name="newSector" id="new-sector" required>
-            </div>
-             <div class="form-item">
-                <label for="new-hard-cap" >Hard Cap:</label>
-                <input class="form-input" type="number" name="newHardCap" id="new-hard-cap" required>
-            </div>
-             <div class="form-item">
-                <label for="new-fund-volume">Fund Volume:</label>
-                <input class="form-input" type="number" name="newFundVolume" id="new-fund-volume" required>
-            </div>
-             <div class="form-item">
-                <label for="new-next-closing">Next Closing:</label>
-                <input class="form-input" type="date" name="newNextClosing" id="new-next-closing" required>
-            </div>
-             <div class="form-item">
-                <label for="new-final-closing">Final Closing:</label>
-                <input class="form-input" type="date" name="newFinalClosing" id="new-final-closing" required>
-            </div>
-        </div>
-        <div class="form-item">
-            <label>Startups:</label>
-            <div class="form-input">
-                <ul id="new-startups-list">
-                    <% for (const startup of allStartups) { %> 
-                        <li class="no-bullet">
-                            <input type="checkbox" value="<%= startup.id %>">
-                            <span><%= startup.name %></span>
-                        </li>
-                    <% } %> 
-                </ul>
-            </div>
-        </div>
-        <div class="btn-item">
-            <button id="submit-edited-fund" class="hidden" onclick="submitEditedFund()">Submit Edited Fund</button>
-        </div>
-        <div class="btn-item">
-            <button id="submit-edited-stakeholder" class="hidden" onclick="submitEditedStakeholder()">Submit Edited Stakeholder</button>
-        </div>
-    </div>
-</div>
-<br>
-<div>
-    <h2>Delete Fund or Stakeholder</h2>
-    <div class="form-item">
-        <select name="select-delete-fund" id="select-delete-fund">
-            <option value="" selected disabled>Select Fund</option>
-            <% for (const fund of funds) { %> 
-                <option value="<%= fund.id %>"><%= fund.name %></option>
-            <% } %> 
-        </select>
-    </div>
-    <div class="btn-item">
-        <button type="button" id="delete-btn">Delete Fund</button>
-    </div>
-    <div id="chose-delete" class="hidden">
-        Are you sure you want to delete this fund?
-        <button type="button" id="yes-delete-btn">Yes</button>
-        <button type="button" id="dont-delete">No</button>
-    </div>
-</div>
+   <div>
+       <h2>Register Fund or Stakeholder</h2>
+       <div class="form-item">
+           <select name="selectFundStakeholder" id="select-fund-stakeholder">
+               <option selected disabled>Select</option>
+               <option value="fund">Fund</option>
+               <option value="stakeholder">Stakeholder</option>
+           </select>
+       </div>
+       <br>
+       <div id="register-fund" class="hidden">
+           <div class="form-item">
+               <label for="name">Fund Name:</label>
+               <input class="form-input" type="text" name="name" id="name" required>
+           </div>
+           <div class="form-item">
+               <label for="sector">Investment Sector:</label>
+               <input class="form-input" type="text" name="sector" id="sector" required>
+           </div>
+           <div class="form-item">
+               <label for="hard-cap">Hard Cap:</label>
+               <input class="form-input" type="number" name="hardCap" id="hard-cap" required>
+           </div>
+           <div class="form-item">
+               <label for="fund-volume">Fund Volume:</label>
+               <input class="form-input" type="number" name="fundVolume" id="fund-volume" required>
+           </div>
+           <div class="form-item">
+               <label for="next-closing">Next Closing:</label>
+               <input class="form-input" type="date" name="nextClosing" id="next-closing" required>
+           </div>
+           <div class="form-item">
+               <label for="final-closing">Final Closing:</label>
+               <input class="form-input" type="date" name="finalClosing" id="final-closing" required>
+           </div>
+           <div class="form-item">
+               <label>Startups:</label>
+               <div class="form-input">
+                   <ul id="startups-list">
+                       <% for (const startup of startups) { %>
+                       <li class="no-bullet">
+                           <input type="checkbox" value="<%= startup.id %>">
+                           <span><%= startup.name %></span>
+                       </li>
+                       <% } %>
+                   </ul>
+               </div>
+           </div>
+           <div>
+               <button type="button" onclick="registerFund()">Register Fund</button>
+           </div>
+       </div>
+       <div id="register-stakeholders" class="hidden">
+           <div class="form-item">
+               <label for="stakeholder-name">Stakeholder or Company Name:</label>
+               <input class="form-input" type="text" name="stakeholderName" id="stakeholder-name" required>
+           </div>
+           <div class="form-item">
+               <label>Startups:</label>
+               <ul id="startups-list-stakeholder">
+                   <% for (const startup of startups) { %>
+                   <li class="no-bullet">
+                   <li class="no-bullet">
+                       <input type="checkbox" value="<%= startup.id %>">
+                       <span><%= startup.name %></span>
+                   </li>
+                   </li>
+                   <% } %>
+               </ul>
+           </div>
+           <div class="btn-item">
+               <button type="button" onclick="registerStakeholder()">Register Stakeholder</button>
+           </div>
+       </div>
+   </div>
+   <br>
+   <div>
+       <h2>Edit Fund or Stakeholder</h2>
+       <div class="form-item">
+           <select name="funds" id="funds">
+               <option selected disabled>Select Fund or Stakeholder</option>
+               <% for (const fund of funds) { %>
+               <option value="<%= fund.id %>"><%= fund.name %></option>
+               <% } %>
+           </select>
+       </div>
+       <div id="new-fund" class="hidden">
+           <div class="form-item">
+               <label for="new-name">Name:</label>
+               <input class="form-input" type="text" id="new-name">
+           </div>
+           <div id="hidden-edit-fields" class="hidden">
+               <div class="form-item">
+                   <label for="new-sector">Investment Sector:</label>
+                   <input class="form-input" type="text" name="newSector" id="new-sector" required>
+               </div>
+               <div class="form-item">
+                   <label for="new-hard-cap">Hard Cap:</label>
+                   <input class="form-input" type="number" name="newHardCap" id="new-hard-cap" required>
+               </div>
+               <div class="form-item">
+                   <label for="new-fund-volume">Fund Volume:</label>
+                   <input class="form-input" type="number" name="newFundVolume" id="new-fund-volume" required>
+               </div>
+               <div class="form-item">
+                   <label for="new-next-closing">Next Closing:</label>
+                   <input class="form-input" type="date" name="newNextClosing" id="new-next-closing" required>
+               </div>
+               <div class="form-item">
+                   <label for="new-final-closing">Final Closing:</label>
+                   <input class="form-input" type="date" name="newFinalClosing" id="new-final-closing" required>
+               </div>
+           </div>
+           <div class="form-item">
+               <label>Startups:</label>
+               <div class="form-input">
+                   <ul id="new-startups-list">
+                       <% for (const startup of allStartups) { %>
+                       <li class="no-bullet">
+                           <input type="checkbox" value="<%= startup.id %>">
+                           <span><%= startup.name %></span>
+                       </li>
+                       <% } %>
+                   </ul>
+               </div>
+           </div>
+           <div class="btn-item">
+               <button id="submit-edited-fund" class="hidden" onclick="submitEditedFund()">Submit Edited Fund</button>
+           </div>
+           <div class="btn-item">
+               <button id="submit-edited-stakeholder" class="hidden" onclick="submitEditedStakeholder()">Submit Edited Stakeholder</button>
+           </div>
+       </div>
+   </div>
+   <br>
+   <div>
+       <h2>Delete Fund or Stakeholder</h2>
+       <div class="form-item">
+           <select name="select-delete-fund" id="select-delete-fund">
+               <option value="" selected disabled>Select Fund</option>
+               <% for (const fund of funds) { %>
+               <option value="<%= fund.id %>"><%= fund.name %></option>
+               <% } %>
+           </select>
+       </div>
+       <div class="btn-item">
+           <button type="button" id="delete-btn">Delete Fund</button>
+       </div>
+       <div id="chose-delete" class="hidden">
+           Are you sure you want to delete this fund?
+           <button type="button" id="yes-delete-btn">Yes</button>
+           <button type="button" id="dont-delete">No</button>
+       </div>
+   </div>

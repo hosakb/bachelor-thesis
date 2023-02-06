@@ -68,9 +68,7 @@ const getStartupsForFund = async (
   }
 };
 
-const getStartupIdsForFund = async (
-  fundId: string
-): Promise<string[]> => {
+const getStartupIdsForFund = async (fundId: string): Promise<string[]> => {
   const client = await pool.connect();
   try {
     const result = await client.query(
@@ -80,7 +78,7 @@ const getStartupIdsForFund = async (
 
     return result.rows.map((row) => {
       return row.startup_id;
-    })
+    });
   } catch (err) {
     throw new Error(
       `Failed to query startup ids fund with id ${fundId}. Error: ${err}`

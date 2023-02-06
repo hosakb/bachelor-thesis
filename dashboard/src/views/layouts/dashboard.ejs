@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,17 +8,19 @@
     <title>Dashboard</title>
     <link rel="stylesheet" type="text/css" href="/css/frappe-gantt.min.css">
     <link rel="stylesheet" type="text/css" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/dashboard.css"></script>
+    <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
+    </script>
 </head>
-<body>   
-    <% if(dashboard == "fund") {%> 
-        <%- include("../partials/sidebar_fund.ejs") %>
-    <% } else if(dashboard == "startup") { %> 
-        <%- include("../partials/sidebar_startup.ejs", {page}) %>
+
+<body>
+    <% if(dashboard == "fund") {%>
+    <%- include("../partials/sidebar_fund.ejs") %>
+    <% } else if(dashboard == "startup") { %>
+    <%- include("../partials/sidebar_startup.ejs", {page}) %>
     <% } %>
-  
+
     <div class="main-content">
-        <%- include("../partials/header.ejs", {title, name}) %> 
+        <%- include("../partials/header.ejs", {title, name}) %>
         <main>
             <%- body %>
         </main>
@@ -25,7 +28,8 @@
     </div>
 
     <% for (const script of scripts) { %>
-        <script type="application/javascript" src="<%= script %>.js" defer></script>
+    <script type="application/javascript" src="<%= script %>.js" defer></script>
     <% } %>
 </body>
+
 </html>

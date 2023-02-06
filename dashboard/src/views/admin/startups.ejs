@@ -24,7 +24,7 @@
     <div class="btn-item">
         <button id="submit-new-startup">Submit new Startup</button>
     </div>
-   
+
 </div>
 <br>
 <div>
@@ -33,9 +33,9 @@
         <div class="form-item">
             <select name="startups" id="startups">
                 <option value="" selected disabled>Select Startup</option>
-                <% for (const startup of startups) { %> 
-                    <option value="<%= startup.id %>"><%= startup.name %></option>
-                <% } %> 
+                <% for (const startup of startups) { %>
+                <option value="<%= startup.id %>"><%= startup.name %></option>
+                <% } %>
             </select>
         </div>
         <div id="edit-startup-form" class="hidden">
@@ -70,9 +70,9 @@
     <div class="form-item">
         <select name="select-delete-startup" id="select-delete-startup">
             <option value="" selected disabled>Select Startup</option>
-            <% for (const startup of startups) { %> 
-                <option value="<%= startup.id %>"><%= startup.name %></option>
-            <% } %> 
+            <% for (const startup of startups) { %>
+            <option value="<%= startup.id %>"><%= startup.name %></option>
+            <% } %>
         </select>
         <div class="button-item">
             <button type="button" id="delete-btn">Delete Startup</button>

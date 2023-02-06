@@ -1,45 +1,45 @@
 <div class="fund-cards">
     <% if(portfolio.type == "fund") {%>
-        <div class="card-fund-metrics" id="investment-sector">
-            <div>
-                <h3>
-                    <%= portfolio.investmentSector %>
-                </h3>
-                <span>Investment Sector</span>
-            </div>
+    <div class="card-fund-metrics" id="investment-sector">
+        <div>
+            <h3>
+                <%= portfolio.investmentSector %>
+            </h3>
+            <span>Investment Sector</span>
         </div>
-        <div class="card-fund-metrics" id="hard-cap">
-            <div>
-                <h3>
-                    <%= portfolio.hardCap %> $
-                </h3>
-                <span>Hard Cap</span>
-            </div>
+    </div>
+    <div class="card-fund-metrics" id="hard-cap">
+        <div>
+            <h3>
+                <%= portfolio.hardCap %> $
+            </h3>
+            <span>Hard Cap</span>
         </div>
-        <div class="card-fund-metrics" id="volume">
-            <div>
-                <h3>
-                    <%= portfolio.volume %> $
-                </h3>
-                <span>Fund Volume</span>
-            </div>
+    </div>
+    <div class="card-fund-metrics" id="volume">
+        <div>
+            <h3>
+                <%= portfolio.volume %> $
+            </h3>
+            <span>Fund Volume</span>
         </div>
-        <div class="card-fund-metrics" id="next-closing">
-            <div>
-                <h3>
-                    <%= portfolio.nextClosing %>
-                </h3>
-                <span>Next Closing</span>
-            </div>
+    </div>
+    <div class="card-fund-metrics" id="next-closing">
+        <div>
+            <h3>
+                <%= portfolio.nextClosing %>
+            </h3>
+            <span>Next Closing</span>
         </div>
-        <div class="card-fund-metrics" id="final-closing">
-            <div>
-                <h3>
-                    <%= portfolio.finalClosing %>
-                </h3>
-                <span>Final Closing</span>
-            </div>
-        </div> 
+    </div>
+    <div class="card-fund-metrics" id="final-closing">
+        <div>
+            <h3>
+                <%= portfolio.finalClosing %>
+            </h3>
+            <span>Final Closing</span>
+        </div>
+    </div>
     <% } %>
     <div class="card-table" id="portfolio-table">
         <div id="table" class="ag-theme-alpine-dark"></div>

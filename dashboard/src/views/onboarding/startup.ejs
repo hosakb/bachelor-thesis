@@ -40,15 +40,13 @@
 <br>
 <div class="form-item">
     <label>How much capital has so far been invested into <%= startupName %>?</label>
-    <input id="invested-capital" type="number" 
-    
-    min="0"> <span>Million</span>
+    <input id="invested-capital" type="number" min="0"> <span>Million</span>
 </div>
 <br>
 <div>
     <p>Please upload the current capitalization table in an Excel format.</p>
 
-   <form id="cap-table-form" action="/onboarding/cap-table" enctype="multipart/form-data" method="post">
+    <form id="cap-table-form" action="/onboarding/cap-table" enctype="multipart/form-data" method="post">
         <input type="file" name="cap-table" />
     </form>
     <button onclick="submitCapTable()">Submit Cap Table</button>

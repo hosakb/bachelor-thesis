@@ -74,13 +74,19 @@ function areVentureInputsEmpty() {
 
 submitVentureBtn = document.querySelector("#submit-venture-btn");
 
-document.querySelector("#venture-in-business").addEventListener("change", (e) => {
-  if(e.target.value == "no") {
-    document.getElementById("reason-for-failure-hidden").classList.remove("hidden");
-  } else {
-    document.getElementById("reason-for-failure-hidden").classList.add("hidden");
-  }
-})
+document
+  .querySelector("#venture-in-business")
+  .addEventListener("change", (e) => {
+    if (e.target.value == "no") {
+      document
+        .getElementById("reason-for-failure-hidden")
+        .classList.remove("hidden");
+    } else {
+      document
+        .getElementById("reason-for-failure-hidden")
+        .classList.add("hidden");
+    }
+  });
 
 submitVentureBtn.addEventListener("click", () => {
   if (areVentureInputsEmpty()) {

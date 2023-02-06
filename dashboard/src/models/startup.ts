@@ -45,7 +45,7 @@ interface StartupInfo {
   sector: string;
   timeToMarket: number;
   productToMarket: boolean;
-  investedCapital: number
+  investedCapital: number;
 }
 
 interface Milestone {
@@ -293,31 +293,60 @@ interface UpdatedInvestor {
 }
 
 interface NewPatent {
-  invention: string; 
-  newInventor: string; 
-  patentStatus: string; 
-  patentConfirmation: Date | undefined; 
-  patentOffice: string; 
+  invention: string;
+  newInventor: string;
+  patentStatus: string;
+  patentConfirmationDate: Date | undefined;
+  patentExaminationNoticeDate: Date | undefined;
+  patentGrantDate: Date | undefined;
+  patentOffice: string;
+  patentDuration: number | undefined;
 }
 
 interface Patent {
   id: string;
-  invention: string; 
-  inventor: string; 
-  status: string; 
-  confirmationDate: Date | null; 
+  invention: string;
+  inventor: string;
+  status: string;
+  confirmationDate: Date | null;
   patentOffice: string;
   updatedAt: Date;
   registrationFee: boolean;
   inventorNomination: boolean;
   annualFee: boolean;
+  patentExaminationRequest: boolean;
   patentExaminationNoticeDate: Date | null;
   patentExaminationNotice: boolean;
-  grantDate: Date  | null;
+  grantDate: Date | null;
   grantFee: boolean;
   objection: boolean;
-  receiptOfObjections: boolean;
   rejectionReason: string | null;
+  patentDuration: number | undefined;
+  examinationRequest: boolean;
+  objectionResponse: boolean;
+}
+
+interface UpdatedPatentDisclosure {
+  id: string;
+  status: string;
+  registrationFee: boolean;
+  annualFee: boolean;
+  inventorNomination: boolean;
+  examinationRequest: boolean;
+}
+
+interface UpdatedPatentExamination {
+  id: string;
+  status: string;
+  patentExaminationNotice: boolean;
+}
+
+interface UpdatedPatentObjection {
+  id: string;
+  status: string;
+  grantFee: boolean;
+  objection: boolean;
+  objectionResponse: boolean;
 }
 
 const insertNewStartup = async (startupName: string): Promise<string> => {
@@ -621,14 +650,17 @@ const getCapTable = async (startupId: string) => {
 const persistInfo = async (startupInfo: StartupInfo, startupId: string) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE startup SET stage = $1, invested_capital = $2, sector = $3, has_product = $4 , est_time_to_market = $5 WHERE id = $6", [
-     startupInfo.phase,
-     startupInfo.investedCapital,
-     startupInfo.sector,
-     startupInfo.productToMarket,
-     startupInfo.timeToMarket,
-      startupId,
-    ]);
+    await client.query(
+      "UPDATE startup SET stage = $1, invested_capital = $2, sector = $3, has_product = $4 , est_time_to_market = $5 WHERE id = $6",
+      [
+        startupInfo.phase,
+        startupInfo.investedCapital,
+        startupInfo.sector,
+        startupInfo.productToMarket,
+        startupInfo.timeToMarket,
+        startupId,
+      ]
+    );
   } catch (err) {
     throw new Error(
       `Failed to persist startup info for startup id ${startupId}. Error: ${err}`
@@ -1100,27 +1132,76 @@ const updateInvestorStatus = async (status: string, id: string) => {
 const insertNewPatent = async (patent: NewPatent, startupId: string) => {
   const client = await pool.connect();
   try {
-    if(patent.patentConfirmation === undefined) {
-      await client.query("INSERT INTO patents (invention, inventor, status, patent_office, startup_id) VALUES ($1, $2, $3, $4, $5)", [
-        patent.invention, 
-        patent.newInventor, 
-        patent.patentStatus,
-        patent.patentOffice, 
-        startupId
-      ]);
+    if (
+      patent.patentConfirmationDate === undefined &&
+      patent.patentExaminationNoticeDate === undefined &&
+      patent.patentGrantDate === undefined
+    ) {
+      await client.query(
+        "INSERT INTO patents (invention, inventor, status, patent_office, startup_id) VALUES ($1, $2, $3, $4, $5)",
+        [
+          patent.invention,
+          patent.newInventor,
+          patent.patentStatus,
+          patent.patentOffice,
+          startupId,
+        ]
+      );
+    } else if (
+      patent.patentConfirmationDate !== undefined &&
+      patent.patentExaminationNoticeDate === undefined &&
+      patent.patentGrantDate === undefined
+    ) {
+      await client.query(
+        "INSERT INTO patents (invention, inventor, status, patent_office, application_confirmation_date, startup_id) VALUES ($1, $2, $3, $4, $5, $6)",
+        [
+          patent.invention,
+          patent.newInventor,
+          patent.patentStatus,
+          patent.patentOffice,
+          patent.patentConfirmationDate,
+          startupId,
+        ]
+      );
+    } else if (
+      patent.patentConfirmationDate === undefined &&
+      patent.patentExaminationNoticeDate !== undefined &&
+      patent.patentGrantDate === undefined
+    ) {
+      await client.query(
+        "INSERT INTO patents (invention, inventor, status, patent_office, patent_examination_notice_date, startup_id) VALUES ($1, $2, $3, $4, $5, $6)",
+        [
+          patent.invention,
+          patent.newInventor,
+          patent.patentStatus,
+          patent.patentOffice,
+          patent.patentExaminationNoticeDate,
+          startupId,
+        ]
+      );
+    } else if (
+      patent.patentConfirmationDate === undefined &&
+      patent.patentExaminationNoticeDate === undefined &&
+      patent.patentGrantDate !== undefined
+    ) {
+      await client.query(
+        "INSERT INTO patents (invention, inventor, status, patent_office, grant_date, patent_duration, startup_id) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+        [
+          patent.invention,
+          patent.newInventor,
+          patent.patentStatus,
+          patent.patentOffice,
+          patent.patentGrantDate,
+          patent.patentDuration,
+          startupId,
+        ]
+      );
     } else {
-      await client.query("INSERT INTO patents (invention, inventor, status, patent_office, application_confirmation_date, startup_id) VALUES ($1, $2, $3, $4, $5, $6)", [
-        patent.invention, 
-        patent.newInventor, 
-        patent.patentStatus, 
-        patent.patentOffice, 
-        patent.patentConfirmation, 
-        startupId
-      ]);
+      throw new Error("Unknown Patent Status");
     }
   } catch (err) {
     throw new Error(
-      `Failed to insert new patent for startup with id: ${startupId}. Error: ${err}` 
+      `Failed to insert new patent for startup with id: ${startupId}. Error: ${err}`
     );
   } finally {
     client.release();
@@ -1130,35 +1211,72 @@ const insertNewPatent = async (patent: NewPatent, startupId: string) => {
 const getAllPatents = async (startupId: string): Promise<Patent[]> => {
   const client = await pool.connect();
   try {
-      const result = await client.query("SELECT * FROM patents WHERE startup_id = $1;", [
-        startupId
-      ]);
+    const result = await client.query(
+      "SELECT * FROM patents WHERE startup_id = $1;",
+      [startupId]
+    );
 
-      return result.rows.map((row) => {
-        return {
-          id: row.id,
-          invention: row.invention,
-          inventor: row.inventor,
-          status: row.status,
-          confirmationDate: row.application_confirmation_date !== null ? new Date(row.application_confirmation_date) : null,
-          patentOffice: row.patent_office,
-          updatedAt: row.updated_at,
-          registrationFee: row.registration_fee,
-          inventorNomination: row.inventor_nomination,
-          annualFee: row.annual_fee,
-          patentExaminationNoticeDate: row.patent_examination_notice_date !== null ? new Date(row.patent_examination_notice_date) : null,
-          patentExaminationNotice: row.patent_examination_notice,
-          grantDate: row.grant_date !== null ? new Date(row.grant_date) : null,
-          grantFee: row.grant_fee,
-          objection: row.objection,
-          receiptOfObjections: row.receipt_of_objections,
-          rejectionReason: row.rejection_reason,
-        };
-      })
+    return result.rows.map((row) => {
+      return {
+        id: row.id,
+        invention: row.invention,
+        inventor: row.inventor,
+        status: row.status,
+        confirmationDate:
+          row.application_confirmation_date !== null
+            ? new Date(row.application_confirmation_date)
+            : null,
+        patentOffice: row.patent_office,
+        updatedAt: row.updated_at,
+        registrationFee: row.registration_fee,
+        inventorNomination: row.inventor_nomination,
+        annualFee: row.annual_fee,
+        patentExaminationRequest: row.patent_examination_request,
+        patentExaminationNoticeDate:
+          row.patent_examination_notice_date !== null
+            ? new Date(row.patent_examination_notice_date)
+            : null,
+        patentExaminationNotice: row.patent_examination_notice,
+        grantDate: row.grant_date !== null ? new Date(row.grant_date) : null,
+        grantFee: row.grant_fee,
+        objection: row.objection,
+        rejectionReason: row.rejection_reason,
+        patentDuration: row.patent_duration,
+        examinationRequest: row.examination_request,
+        objectionResponse: row.objection_response,
+      };
+    });
   } catch (err) {
     throw new Error(
-      `Failed query patents for startup with id: ${startupId}. Error: ${err}` 
+      `Failed query patents for startup with id: ${startupId}. Error: ${err}`
     );
+  } finally {
+    client.release();
+  }
+};
+
+const updatePatent = async (patentUpdate: UpdatedPatentDisclosure | UpdatedPatentExamination | UpdatedPatentObjection) => {
+  const client = await pool.connect();
+  try {
+
+    if(patentUpdate.status === "disclosure-phase") {
+      await client.query(
+        "UPDATE patent SET registration_fee = $1, annual_fee = $2, inventor_nomination = $3, examination_request = $4 WHERE id = $5;",
+        [patentUpdate.]
+      );
+    } else if(patentUpdate.status === "examination-phase") {
+      await client.query(
+        "UPDATE patent SET technology = $1, patent = $2, criticality = $3 WHERE id = $4;",
+        [trlData.technology, trlData.patent, trlData.criticality, trlData.id]
+      );
+    } else {
+      await client.query(
+        "UPDATE patent SET technology = $1, patent = $2, criticality = $3 WHERE id = $4;",
+        [trlData.technology, trlData.trl, trlData.criticality, trlData.id]
+      );
+    }
+  } catch (err) {
+    throw new Error(`${err}`);
   } finally {
     client.release();
   }
@@ -1166,57 +1284,61 @@ const getAllPatents = async (startupId: string): Promise<Patent[]> => {
 
 export {
   InvestmentPhase,
+  Investor,
   Metrics,
   Milestone,
-  StartupTableRow,
-  Startup,
-  Rating,
-  StartupInfo,
-  QuestionnaireAvg,
-  TrlData,
-  Questionnaire,
-  WeightedPoints,
-  NewMilestone,
-  Investor,
   NewInvestor,
-  UnIndexedMilestone,
+  NewMilestone,
   NewPatent,
-  insertNewStartup,
-  getStartupIds,
+  Questionnaire,
+  QuestionnaireAvg,
+  Rating,
+  Startup,
+  StartupInfo,
+  StartupTableRow,
+  TrlData,
+  UnIndexedMilestone,
+  UpdatedPatentDisclosure,
+  UpdatedPatentExamination,
+  UpdatedPatentObjection,
+  WeightedPoints,
+  deleteStartup,
+  deleteTrl,
+  getAllPatents,
+  getAllStartups,
   getCapTable,
   getFirstStartupLoginById,
   getInfoByStartupId,
   getInvestmentPhase,
+  getInvestors,
   getMetrics,
   getMilestones,
-  persistQuestionnaire,
   getNewStartupById,
-  getQuestionnaireFilledOut,
   getQuestionnaire,
-  getStartupTableRowById,
+  getQuestionnaireFilledOut,
+  getStartupIds,
   getStartupNameById,
   getStartups,
-  getTrlAvailable,
-  persistCapTable,
-  getAllStartups,
-  persistInfo,
-  persistTrlData,
-  persistMilestones,
-  persistCoreTechnology,
-  updateTrl,
-  updateMilestoneDuration,
-  updateInvestedCapital,
-  updateMilestoneProgress,
-  updateStartupName,
+  getStartupTableRowById,
   getTrl,
-  deleteTrl,
-  deleteStartup,
-  updateInvestmentPhase,
+  getTrlAvailable,
   insertInvestor,
-  updateInvestor,
-  persistMilestonesWithId,
-  updateInvestorStatus,
-  getInvestors,
   insertNewPatent,
-  getAllPatents,
+  insertNewStartup,
+  persistCapTable,
+  persistCoreTechnology,
+  persistInfo,
+  persistMilestones,
+  persistMilestonesWithId,
+  persistQuestionnaire,
+  persistTrlData,
+  updateInvestedCapital,
+  updateInvestmentPhase,
+  updateInvestor,
+  updateInvestorStatus,
+  updateMilestoneDuration,
+  updateMilestoneProgress,
+  updatePatent,
+  updateStartupName,
+  updateTrl,
 };

@@ -29,6 +29,10 @@ import {
   NewPatent,
   insertNewPatent,
   getAllPatents,
+  UpdatedPatentDisclosure,
+  UpdatedPatentDisclosure,
+  UpdatedPatentExamination,
+  UpdatedPatentObjection,
 } from "../models/startup";
 import { getMonth } from "../util/date";
 import {
@@ -165,6 +169,7 @@ router.get("/submit", async (req, res) => {
   const capTable: Row[] = await getCapTable(req.session.startupId);
 
   const patents = await getAllPatents(req.session.startupId);
+  
 
   res.render("dashboard/startup/submit", {
     layout: "../views/layouts/dashboard.ejs",
@@ -254,7 +259,7 @@ router.post("/submit/delete-trl", async (req, res) => {
 });
 
 router.post("/submit/add-trl", async (req, res) => {
-  const { newTechnology, newTrlValue, newCriticality, } = req.body;
+  const { newTechnology, newTrlValue, newCriticality } = req.body;
   try {
     const trlData: TrlData = {
       id: "",
@@ -435,29 +440,81 @@ router.post("/submit/update-milestone", async (req, res) => {
 });
 
 router.post("/submit/new-patent", async (req, res) => {
-  const { invention, newInventor, patentStatus, patentConfirmation, patentOffice } = req.body;
+  const {
+    invention,
+    newInventor,
+    patentStatus,
+    patentConfirmationDate,
+    patentOffice,
+    patentExaminationNoticeDate,
+    patentGrantDate,
+    patentDuration,
+  } = req.body;
   let newPatent: NewPatent;
-
-  if(patentConfirmation === '') {
-    newPatent =  {
-      invention, 
-      newInventor, 
-      patentStatus, 
-      patentConfirmation: undefined, 
-      patentOffice, 
-    };
-  } else {
-    newPatent =  {
-      invention, 
-      newInventor, 
-      patentStatus, 
-      patentConfirmation: new Date(patentConfirmation), 
-      patentOffice, 
-    };
-  }
-  
-
   try {
+    if (
+      patentConfirmationDate === "" &&
+      patentExaminationNoticeDate === "" &&
+      patentGrantDate === ""
+    ) {
+      newPatent = {
+        invention,
+        newInventor,
+        patentStatus,
+        patentConfirmationDate: undefined,
+        patentExaminationNoticeDate: undefined,
+        patentGrantDate: undefined,
+        patentOffice,
+        patentDuration: undefined,
+      };
+    } else if (
+      patentConfirmationDate !== "" &&
+      patentExaminationNoticeDate === "" &&
+      patentGrantDate === ""
+    ) {
+      newPatent = {
+        invention,
+        newInventor,
+        patentStatus,
+        patentConfirmationDate: new Date(patentConfirmationDate),
+        patentExaminationNoticeDate: undefined,
+        patentGrantDate: undefined,
+        patentOffice,
+        patentDuration: undefined,
+      };
+    } else if (
+      patentConfirmationDate === "" &&
+      patentExaminationNoticeDate !== "" &&
+      patentGrantDate === ""
+    ) {
+      newPatent = {
+        invention,
+        newInventor,
+        patentStatus,
+        patentConfirmationDate: undefined,
+        patentExaminationNoticeDate: new Date(patentExaminationNoticeDate),
+        patentGrantDate: undefined,
+        patentOffice,
+        patentDuration: undefined,
+      };
+    } else if (
+      patentConfirmationDate === "" &&
+      patentExaminationNoticeDate === "" &&
+      patentGrantDate !== ""
+    ) {
+      newPatent = {
+        invention,
+        newInventor,
+        patentStatus,
+        patentConfirmationDate: undefined,
+        patentExaminationNoticeDate: undefined,
+        patentGrantDate: new Date(patentGrantDate),
+        patentOffice,
+        patentDuration,
+      };
+    } else {
+      throw new Error("Unknown Patent status.");
+    }
     await insertNewPatent(newPatent, req.session.startupId);
     res.redirect("/startup/submit");
   } catch (error) {
@@ -466,6 +523,62 @@ router.post("/submit/new-patent", async (req, res) => {
     );
     res.redirect("/startup/submit");
   }
+});
+
+router.post("/submit/new-patent", async (req, res) => {
+  const { patentId,
+    patentStatus,
+    submissionFeeDeadline,
+    annualFeeDeadline,
+    inventorNominationDeadline,
+    examinationRequestDeadline,
+    examinationNoticeDeadline,
+    grantFeeDeadline,
+    objectionFilingDeadline,
+    objectionResponseDeadline } = req.body;
+
+    let p: UpdatedPatentDisclosure | UpdatedPatentExamination | UpdatedPatentObjection;
+
+    try {
+      if(patentId === undefined || patentStatus === undefined ) {
+        throw new Error("Patent or Status not identifiable.")
+      } else if(patentStatus === "disclosure-phase") {
+        p  = {
+          id: patentId,
+          status: patentStatus,
+          registrationFee: submissionFeeDeadline,
+          annualFee: annualFeeDeadline,
+          inventorNomination: inventorNominationDeadline,
+          examinationRequest: examinationRequestDeadline,
+        } 
+
+      } else if(patentStatus === "examination-phase") {
+        p  = {
+          id: patentId,
+          status: patentStatus,
+          patentExaminationNotice: examinationNoticeDeadline,
+        } 
+      } else if(patentStatus === "objection-phase") {
+        p  = {
+          id: patentId,
+          status: patentStatus,
+          grantFee: grantFeeDeadline,
+          objection: objectionFilingDeadline,
+          objectionResponse: objectionResponseDeadline,
+        } 
+      } else {
+        throw new Error("Phase not identifiable");
+      }
+      await updatePatent(p)
+    res.redirect("/startup/submit");
+  } catch (error) {
+    console.error(
+      `Failed to update patent information. Error: ${error}. Redirecting to /startup/submit ${error}`
+    );
+    res.redirect("/startup/submit");
+  }
+
+
 });
 
 export default router;

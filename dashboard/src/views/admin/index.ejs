@@ -20,17 +20,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% for (const user of users) { %> 
-                            <tr>
-                                <td><%= user.firstName + " " + user.lastName %></td>
-                                <td><%= user.email %></td>
-                                <td><%= user.role %></td>
-                                <td><%= user.createdAt.getDate() + "-" + user.createdAt.getMonth() + "-" + user.createdAt.getFullYear() %></td>
-                                <td><%= user.updatedAt.getDate() + "-" + user.updatedAt.getMonth() + "-" + user.updatedAt.getFullYear() %></td>
-                                <td><%= user.startup %></td>
-                                <td><%= user.fund %></td>
-                            </tr>
-                            <% } %> 
+                        <% for (const user of users) { %>
+                        <tr>
+                            <td><%= user.firstName + " " + user.lastName %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.role %></td>
+                            <td><%= user.createdAt.getDate() + "-" + user.createdAt.getMonth() + "-" + user.createdAt.getFullYear() %></td>
+                            <td><%= user.updatedAt.getDate() + "-" + user.updatedAt.getMonth() + "-" + user.updatedAt.getFullYear() %></td>
+                            <td><%= user.startup %></td>
+                            <td><%= user.fund %></td>
+                        </tr>
+                        <% } %>
                     </tbody>
                 </table>
             </div>
@@ -42,23 +42,23 @@
                 <table>
                     <thead>
                         <tr>
-                          <th>Name</th>
-                          <th>Created At</th>
-                          <th>Updated At</th>
+                            <th>Name</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
                         </tr>
                     </thead>
                     <tbody>
-                     <% for (const fund of funds) { %> 
-                        <% if(fund.type == "fund") { %> 
-                            <tr>
-                                <td><%= fund.name %> </td>
-                                <td><%= fund.createdAt.getDate() + "-" + fund.createdAt.getMonth() + "-" + fund.createdAt.getFullYear() %></td>
-                                <td><%= fund.updatedAt.getDate() + "-" + fund.updatedAt.getMonth() + "-" + fund.updatedAt.getFullYear() %></td>
-                            </tr>
-                            <% } %> 
-                      <% } %> 
+                        <% for (const fund of funds) { %>
+                        <% if(fund.type == "fund") { %>
+                        <tr>
+                            <td><%= fund.name %> </td>
+                            <td><%= fund.createdAt.getDate() + "-" + fund.createdAt.getMonth() + "-" + fund.createdAt.getFullYear() %></td>
+                            <td><%= fund.updatedAt.getDate() + "-" + fund.updatedAt.getMonth() + "-" + fund.updatedAt.getFullYear() %></td>
+                        </tr>
+                        <% } %>
+                        <% } %>
                     </tbody>
-                  </table>
+                </table>
             </div>
         </div>
         <div class="card">
@@ -68,23 +68,23 @@
                 <table>
                     <thead>
                         <tr>
-                          <th>Name</th>
-                          <th>Created At</th>
-                          <th>Updated At</th>
+                            <th>Name</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
                         </tr>
                     </thead>
                     <tbody>
-                     <% for (const fund of funds) { %> 
-                        <% if(fund.type == "stakeholder") { %> 
-                            <tr>
-                                <td><%= fund.name %> </td>
-                                <td><%= fund.createdAt.getDate() + "-" + fund.createdAt.getMonth() + "-" + fund.createdAt.getFullYear() %></td>
-                                <td><%= fund.updatedAt.getDate() + "-" + fund.updatedAt.getMonth() + "-" + fund.updatedAt.getFullYear() %></td>
-                            </tr>
-                            <% } %> 
-                      <% } %> 
+                        <% for (const fund of funds) { %>
+                        <% if(fund.type == "stakeholder") { %>
+                        <tr>
+                            <td><%= fund.name %> </td>
+                            <td><%= fund.createdAt.getDate() + "-" + fund.createdAt.getMonth() + "-" + fund.createdAt.getFullYear() %></td>
+                            <td><%= fund.updatedAt.getDate() + "-" + fund.updatedAt.getMonth() + "-" + fund.updatedAt.getFullYear() %></td>
+                        </tr>
+                        <% } %>
+                        <% } %>
                     </tbody>
-                  </table>
+                </table>
             </div>
         </div>
         <div class="card">
@@ -101,14 +101,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% for (const startup of startups) { %> 
-                            <tr>
-                                <td><%= startup.name %> </td>
-                                <td><%= startup.stage %> </td>
-                                <td><%= startup.createdAt.getDate() + "-" + startup.createdAt.getMonth() + "-" + startup.createdAt.getFullYear() %></td>
-                                <td><%= startup.updatedAt.getDate() + "-" + startup.updatedAt.getMonth() + "-" + startup.updatedAt.getFullYear() %></td>
-                            </tr>
-                            <% } %> 
+                        <% for (const startup of startups) { %>
+                        <tr>
+                            <td><%= startup.name %> </td>
+                            <td><%= startup.stage %> </td>
+                            <td><%= startup.createdAt.getDate() + "-" + startup.createdAt.getMonth() + "-" + startup.createdAt.getFullYear() %></td>
+                            <td><%= startup.updatedAt.getDate() + "-" + startup.updatedAt.getMonth() + "-" + startup.updatedAt.getFullYear() %></td>
+                        </tr>
+                        <% } %>
                     </tbody>
                 </table>
             </div>

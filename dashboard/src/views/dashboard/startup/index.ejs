@@ -1,14 +1,14 @@
 <div class="cards">
     <div class="card-milestone" id="milestones">
         <h2>Milestones</h2>
-       <div class="overflow-chart">
-        <% if(dashboard == "fund") { %>
+        <div class="overflow-chart">
+            <% if(dashboard == "fund") { %>
             <svg id="gantt" class="disable-interaction"></svg>
-        <% } else if(dashboard == "startup") {%>
+            <% } else if(dashboard == "startup") {%>
             <svg id="gantt"></svg>
-        <% } %>
-       </div>
-       <div>
+            <% } %>
+        </div>
+        <div>
             <button onclick="change_view_mode('Day')">Day</button>
             <button onclick="change_view_mode('Week')">Week</button>
             <button onclick="change_view_mode('Month')">Month</button>
@@ -16,8 +16,8 @@
         </div>
         <div id="gantt-changes" class="hidden">
             <% if(dashboard == "startup") {%>
-                <button id="gantt-changes-ok-btn">Ok</button>
-                <button id="gantt-changes-cancel-btn">Cancel</button>
+            <button id="gantt-changes-ok-btn">Ok</button>
+            <button id="gantt-changes-cancel-btn">Cancel</button>
             <% } %>
         </div>
     </div>
@@ -26,9 +26,9 @@
             <h2>
                 Cash Runway
             </h2>
-           <div class="chart-container">
-            <canvas id="runway-chart"></canvas>
-           </div>
+            <div class="chart-container">
+                <canvas id="runway-chart"></canvas>
+            </div>
         </div>
     </div>
     <div class="card-startup-metrics" id="burn-rate">
@@ -63,28 +63,28 @@
             <thead>
                 <tr>
                     <th>
-                        Technology 
+                        Technology
                     </th>
                     <th>
-                        TRL 
+                        TRL
                     </th>
                     <th>
-                        Criticality 
+                        Criticality
                     </th>
                 </tr>
             </thead>
             <% for(const i of locals.trl.trlData) {%>
-                <tr>
-                    <td>
-                        <%= i.technology %> 
-                    </td>
-                    <td>
-                        <%= i.trl %> 
-                    </td>
-                    <td>
-                        <%= i.criticality %> 
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    <%= i.technology %>
+                </td>
+                <td>
+                    <%= i.trl %>
+                </td>
+                <td>
+                    <%= i.criticality %>
+                </td>
+            </tr>
             <% } %>
         </table>
     </div>
@@ -92,7 +92,7 @@
     <div class="card-startup-table" id="contacted-investors">
         <h2>Contacted Investors</h2>
         <div class="table-container">
-           <table>
+            <table>
                 <thead>
                     <th>Name</th>
                     <th>Type</th>
@@ -104,42 +104,41 @@
                 </thead>
                 <tbody>
                     <% for (const investor of investors) { %>
-                        <tr>
-                            <td><%= investor.name %> </td>
-                            <td><%= investor.type %> </td>
-                            <td>
-                                <ul>
-                                    <li><%= investor.email %></li>
-                                    <li><%= investor.number %></li>
-                                    <li><%= investor.website %></li>
-                                </ul>
-                            </td>
-                            <td>
-                                <%= investor.contactDate %>
-                            </td>
-                            <td>
-                                <%= investor.country %>
-                            </td>
-                            <td>
-                                <%= investor.notes %>
-                            </td>
-                            <td>
-                                <input type="hidden" value="<%= investor.id %>">
-                                <div>
-                                    <% if(investor.status == "contacted") { %>
-                                        <span><i class="las la-hourglass-half"></i></span>
-                                    <% } else if(investor.status == "accepted")  { %>
-                                        <span><i class="las la-check"></i></span>
-                                    <% } else if(investor.status == "declined")  { %>
-                                        <span><i class="las la-times"></i></span>
-                                    <% } %> 
-                                </div>
-                            </td>
-                        </tr>
-                    <% } %> 
+                    <tr>
+                        <td><%= investor.name %> </td>
+                        <td><%= investor.type %> </td>
+                        <td>
+                            <ul>
+                                <li><%= investor.email %></li>
+                                <li><%= investor.number %></li>
+                                <li><%= investor.website %></li>
+                            </ul>
+                        </td>
+                        <td>
+                            <%= investor.contactDate %>
+                        </td>
+                        <td>
+                            <%= investor.country %>
+                        </td>
+                        <td>
+                            <%= investor.notes %>
+                        </td>
+                        <td>
+                            <input type="hidden" value="<%= investor.id %>">
+                            <div>
+                                <% if(investor.status == "contacted") { %>
+                                <span><i class="las la-hourglass-half"></i></span>
+                                <% } else if(investor.status == "accepted")  { %>
+                                <span><i class="las la-check"></i></span>
+                                <% } else if(investor.status == "declined")  { %>
+                                <span><i class="las la-times"></i></span>
+                                <% } %>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
                 </tbody>
-           </table>
+            </table>
         </div>
     </div>
 </div>
- 

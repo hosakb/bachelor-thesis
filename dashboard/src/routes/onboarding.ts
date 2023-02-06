@@ -71,20 +71,15 @@ router.post("/reupload", (req, res) => {
 });
 
 router.post("/startup", async (req, res) => {
-  const {
-    phase,
-    productToMarket,
-    timeToMarket,
-    sector,
-    investedCapital,
-  } = req.body.startupInfo;
+  const { phase, productToMarket, timeToMarket, sector, investedCapital } =
+    req.body.startupInfo;
 
   const startupInfo: StartupInfo = {
     phase,
-    productToMarket: (productToMarket === 'true'),
+    productToMarket: productToMarket === "true",
     timeToMarket,
     sector,
-    investedCapital
+    investedCapital,
   };
 
   const startupId = req.user?.startup;
@@ -276,7 +271,6 @@ router.post("/questionnaire", async (req, res) => {
   }
 
   try {
-
     const questionnaire: Questionnaire = {
       q1_1_1: parseInt(q1_1_1),
       q1_2_1: parseInt(q1_2_1),
