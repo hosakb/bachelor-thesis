@@ -292,6 +292,34 @@ interface UpdatedInvestor {
   notes: string | undefined;
 }
 
+interface NewPatent {
+  invention: string; 
+  newInventor: string; 
+  patentStatus: string; 
+  patentConfirmation: Date | undefined; 
+  patentOffice: string; 
+}
+
+interface Patent {
+  id: string;
+  invention: string; 
+  inventor: string; 
+  status: string; 
+  confirmationDate: Date | null; 
+  patentOffice: string;
+  updatedAt: Date;
+  registrationFee: boolean;
+  inventorNomination: boolean;
+  annualFee: boolean;
+  patentExaminationNoticeDate: Date | null;
+  patentExaminationNotice: boolean;
+  grantDate: Date  | null;
+  grantFee: boolean;
+  objection: boolean;
+  receiptOfObjections: boolean;
+  rejectionReason: string | null;
+}
+
 const insertNewStartup = async (startupName: string): Promise<string> => {
   const client = await pool.connect();
   try {
@@ -1069,6 +1097,73 @@ const updateInvestorStatus = async (status: string, id: string) => {
   }
 };
 
+const insertNewPatent = async (patent: NewPatent, startupId: string) => {
+  const client = await pool.connect();
+  try {
+    if(patent.patentConfirmation === undefined) {
+      await client.query("INSERT INTO patents (invention, inventor, status, patent_office, startup_id) VALUES ($1, $2, $3, $4, $5)", [
+        patent.invention, 
+        patent.newInventor, 
+        patent.patentStatus,
+        patent.patentOffice, 
+        startupId
+      ]);
+    } else {
+      await client.query("INSERT INTO patents (invention, inventor, status, patent_office, application_confirmation_date, startup_id) VALUES ($1, $2, $3, $4, $5, $6)", [
+        patent.invention, 
+        patent.newInventor, 
+        patent.patentStatus, 
+        patent.patentOffice, 
+        patent.patentConfirmation, 
+        startupId
+      ]);
+    }
+  } catch (err) {
+    throw new Error(
+      `Failed to insert new patent for startup with id: ${startupId}. Error: ${err}` 
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const getAllPatents = async (startupId: string): Promise<Patent[]> => {
+  const client = await pool.connect();
+  try {
+      const result = await client.query("SELECT * FROM patents WHERE startup_id = $1;", [
+        startupId
+      ]);
+
+      return result.rows.map((row) => {
+        return {
+          id: row.id,
+          invention: row.invention,
+          inventor: row.inventor,
+          status: row.status,
+          confirmationDate: row.application_confirmation_date !== null ? new Date(row.application_confirmation_date) : null,
+          patentOffice: row.patent_office,
+          updatedAt: row.updated_at,
+          registrationFee: row.registration_fee,
+          inventorNomination: row.inventor_nomination,
+          annualFee: row.annual_fee,
+          patentExaminationNoticeDate: row.patent_examination_notice_date !== null ? new Date(row.patent_examination_notice_date) : null,
+          patentExaminationNotice: row.patent_examination_notice,
+          grantDate: row.grant_date !== null ? new Date(row.grant_date) : null,
+          grantFee: row.grant_fee,
+          objection: row.objection,
+          receiptOfObjections: row.receipt_of_objections,
+          rejectionReason: row.rejection_reason,
+        };
+      })
+  } catch (err) {
+    throw new Error(
+      `Failed query patents for startup with id: ${startupId}. Error: ${err}` 
+    );
+  } finally {
+    client.release();
+  }
+};
+
 export {
   InvestmentPhase,
   Metrics,
@@ -1085,6 +1180,7 @@ export {
   Investor,
   NewInvestor,
   UnIndexedMilestone,
+  NewPatent,
   insertNewStartup,
   getStartupIds,
   getCapTable,
@@ -1121,4 +1217,6 @@ export {
   persistMilestonesWithId,
   updateInvestorStatus,
   getInvestors,
+  insertNewPatent,
+  getAllPatents,
 };

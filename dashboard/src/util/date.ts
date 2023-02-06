@@ -6,3 +6,7 @@ export function getTodaysDate() {
 export function getMonth(date: Date) {
   return date.getMonth() + "-" + date.getFullYear();
 }
+
+export function formatDate(date: Date): string {
+  return date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear();
+}

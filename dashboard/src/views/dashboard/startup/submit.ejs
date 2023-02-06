@@ -97,8 +97,8 @@
                                 <input type="hidden" value="<%= investor.id %>">
                                 <div>
                                     <% if(investor.status == "contacted") { %>
-                                        <button id="investor-accepted"><i class="las la-check"></i></button>
-                                        <button id="investor-declined"><i class="las la-times"></i></button>
+                                        <button id="investor-accepted" onclick="investorAccepted(this)"><i class="las la-check"></i></button>
+                                        <button id="investor-declined"><i class="las la-times" onclick="investorDeclined(this)"></i></button>
                                     <% } else if(investor.status == "accepted")  { %>
                                         <span><i class="las la-check"></i></span>
                                     <% } else if(investor.status == "declined")  { %>
@@ -186,6 +186,68 @@
             </div>
         <% } %>
         <input type="hidden" id="current-investment-phase" value="<%= investmentPhase %>"> 
+    </div>
+    <div class="submit-card" id="submit-patent">
+        <h2>Patents</h2>
+        <button id="new-patent-btn">New Patent</button>
+        <div id="milestones-tbl" class="submit-table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Invention</th>
+                        <th>Inventor</th>
+                        <th>Status</th>
+                        <th>Last Status Change</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody id="patent-tbody">
+                    <% let x = 0; %>
+                    <% for(const y of locals.patents) { %>
+                        <% const p = {
+                            invention: y.invention,
+                            status: y.status,
+                            confirmationDate: y.confirmationDate,
+                            registrationFee: y.registrationFee,
+                            inventorNomination: y.inventorNomination,
+                            annualFee: y.annualFee,
+                            patentExaminationNoticeDate: y.patentExaminationNoticeDate,
+                            patentExaminationNotice: y.patentExaminationNotice,
+                            grantDate: y.grantDate,
+                            grantFee: y.grantFee,
+                            objection: y.objection,
+                            receiptOfObjections: y.receiptOfObjections,
+                            rejectionReason: y.rejectionReason,
+                        } %>
+                        <tr class="patent-<%= x %>" onclick="showPatentInfo('<%= JSON.stringify(p) %>')">
+                            <td>
+                                <%= y.invention %> 
+                            </td>
+                            <td>
+                                <%= y.inventor %> 
+                            </td>
+                            <td>
+                                <%= y.status %> 
+                            </td>
+                            <td>
+                                <%= y.updatedAt.getDate() + "-" + y.updatedAt.getMonth() + "-" + y.updatedAt.getFullYear() %> 
+                            </td>
+                            <td>
+                                <div id="patent-option-btn-<%= x %>">
+                                    <input type="hidden" value="<%= y.id %>" id="patent-<%= x %>">
+                                    <button onclick="updatePatentStatus('<%= x %>')">
+                                        <span><i class="las la-edit"></i></span>
+                                    </button>
+                                </div>
+                                <button id="patent-ok-btn-<%= x %>" class="hidden" onclick="savePatent('<%= x %>')"><i class="las la-check-circle"></i></button>
+                                <button id="patent-cancel-btn-<%= x %>" class="hidden" onclick="cancelUpdate()"><i class="las la-times"></i></button>
+                            </td>
+                        </tr>
+                        <% x++; %> 
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <div class="variable-pane" id="new-trl">
@@ -557,7 +619,7 @@
                     <option value="Uzbekistan">Uzbekistan</option>
                     <option value="Vanuatu">Vanuatu</option>
                     <option value="Venezuela">Venezuela</option>
-                    <option value="Viet Nam">Vietnam</option>
+                    <option value="Vietnam">Vietnam</option>
                     <option value="Virgin Islands, British">British Virgin Islands</option>
                     <option value="Virgin Islands, U.s.">U.S. Virgin Islands</option>
                     <option value="Wallis and Futuna">Wallis & Futuna</option>
@@ -641,7 +703,152 @@
                 <label for="invested-capital">Invested Capital:</label>
                 <input type="number" min="0" name="investedCapital" id="invested-capital" required>
             </div>
-            <input type="submit" value="Submit" id="submit-investment-stage">
+            <input type="submit" id="submit-investment-stage">
         </form>
+    </div>
+</div>
+<div class="variable-pane" id="new-patent-pane">
+    <div class="variable-pane-box">
+        <button id="exit-new-patent" class="exit"><i class="las la-times"></i></button>
+        <h3>New Patent</h3>
+        <form action="/startup/submit/new-patent" method="post">
+            <div class="form-item">
+                <label for="new-invention">Invention</label>
+                <input type="text" name="invention" id="invention" required/>
+            </div>
+            <div class="form-item">
+                <label for="new-inventor">Inventor</label>
+                <input type="text" name="newInventor" id="new-inventor" required>
+            </div>
+            <div class="form-item">
+                <label for="patent-status">Status</label>
+                <select name="patentStatus" id="patent-status" required>
+                    <option value="initial-application">Initial Application</option>
+                    <option value="disclosure-phase">Disclosure Phase</option>
+                    <option value="examination-phase">Examination Phase</option>
+                    <option value="objection-phase">Objection Phase</option>
+                    <option value="granted">Patent granted</option>
+                </select>
+            </div>
+            <div id="patent-confirmation" class="hidden form-item">
+                <label for="patent-confirmation-input">Date of patent confirmation</label>
+                <input type="date" name="patentConfirmation" id="patent-confirmation-input">
+            </div>
+            <div class="form-item">
+                <label for="patent-office">Patent Office</label>
+                <select name="patentOffice" id="patent-office">
+                    <option value="german">German Patent and Trademark Office</option>
+                    <option value="european">Confirmation First Application</option>
+                </select>
+            </div>
+            <input type="submit" id="">
+        </form>
+    </div>
+</div>
+
+<div class="variable-pane" id="patent-info-pane">
+    <div class="variable-pane-box">
+        <button id="exit-patent-info" class="exit"><i class="las la-times"></i></button>
+        <h3>Patent Information</h3>
+        <div>
+            <h4 id="invention-header"></h4>
+            <div id="initial-application" class="hidden">
+                <h4>Application filed. No confirmation received yet.</h4>
+            </div>
+            <div id="disclosure-phase" class="hidden">
+                <div>
+                    <label>Submission Fee Deadline: </label>
+                    <span id="submission-fee-deadline"></span>
+                </div>
+                <div>
+                    <label>Annual Fee Deadline: </label>
+                    <span id="annual-fee-deadline"></span>
+                </div>
+                <div>
+                    <label>Research Result Deadline: </label>
+                    <span id="research-result-deadline"></span>
+                </div>
+                <div>
+                    <label>Parallel Patent Submission Deadline: </label>
+                    <span id="parallel-patent-deadline"></span>
+                </div>
+                <div>
+                    <label>Inventor Nomination Deadline: </label>
+                    <span id="inventor-nomination-deadline"></span>
+                </div>
+                <div>
+                    <label>Compensation Claim Deadline: </label>
+                    <span id="compensation-claim-deadline"></span>
+                </div>
+                <div>
+                    <label>Disclosure: </label>
+                    <span id="disclosure-deadline"></span>
+                </div>
+                <div>
+                    <label>Secrecy: </label>
+                    <span id="secrecy-deadline"></span>
+                </div>
+                <div>
+                    <label>Addition Patents Deadline: </label>
+                    <span id="additional-patent-deadline"></span>
+                </div>
+                <div>
+                    <label>Patent Examination Request Deadline: </label>
+                    <span id="examination-request-deadline"></span>
+                </div>
+            </div>
+            <div id="examination-phase" class="hidden">
+               <div>
+                    <label>Date of Received Examination notice: </label>
+                    <span id="examination-notice-date"></span>
+               </div>
+               <div>
+                    <label>Examination notice Deadline: </label>
+                    <span id="examination-notice-deadline"></span>
+               </div>
+            </div>
+            <div id="objection-phase" class="hidden">
+                <div>
+                    <label>Patent grant date: </label>
+                    <span id="patent-grant-date"></span>
+               </div>
+               <div>
+                    <label>Grant Fee Deadline: </label>
+                    <span id="grant-fee-deadline"></span>
+               </div>
+               <div>
+                    <label>Examination notice Deadline: </label>
+                    <span id="examination-notice-deadline"></span>
+               </div>
+               <div>
+                    <label>Objection filing deadline: </label>
+                    <span id="objection-filing-deadline"></span>
+               </div>
+               <div>
+                    <label>Objection response deadline: </label>
+                    <span id="objection-response-deadline"></span>
+               </div>
+            </div>
+            <div id="granted" class="hidden">
+                <div>
+                    <h3>The patent has been granted for granted for:</h3>
+                    <h2 id="granted-duration"></h2>
+                </div>
+                <div>
+                    <label>Granted on:</label>
+                    <span id="granted-on"></span>        
+                </div>
+            </div>
+            <div id="rejected" class="hidden">
+                <div>
+                    <label>The patent has been rejected or has been canceled due to:</label>
+                    <p id="rejection-reason"></p>
+                </div>
+                <div>
+                    <label>Date:</label>
+                    <span id="rejected-on"></span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

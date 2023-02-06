@@ -26,6 +26,9 @@ import {
   NewMilestone,
   persistMilestones,
   persistMilestonesWithId,
+  NewPatent,
+  insertNewPatent,
+  getAllPatents,
 } from "../models/startup";
 import { getMonth } from "../util/date";
 import {
@@ -161,6 +164,8 @@ router.get("/submit", async (req, res) => {
 
   const capTable: Row[] = await getCapTable(req.session.startupId);
 
+  const patents = await getAllPatents(req.session.startupId);
+
   res.render("dashboard/startup/submit", {
     layout: "../views/layouts/dashboard.ejs",
     dashboard: "startup",
@@ -173,6 +178,7 @@ router.get("/submit", async (req, res) => {
     milestones,
     capTable,
     investmentPhase,
+    patents,
   });
 });
 
@@ -423,6 +429,40 @@ router.post("/submit/update-milestone", async (req, res) => {
   } catch (error) {
     console.error(
       `Failed to update milestone with id ${id}. Error: ${error}. Redirecting to /startup/submit ${error}`
+    );
+    res.redirect("/startup/submit");
+  }
+});
+
+router.post("/submit/new-patent", async (req, res) => {
+  const { invention, newInventor, patentStatus, patentConfirmation, patentOffice } = req.body;
+  let newPatent: NewPatent;
+
+  if(patentConfirmation === '') {
+    newPatent =  {
+      invention, 
+      newInventor, 
+      patentStatus, 
+      patentConfirmation: undefined, 
+      patentOffice, 
+    };
+  } else {
+    newPatent =  {
+      invention, 
+      newInventor, 
+      patentStatus, 
+      patentConfirmation: new Date(patentConfirmation), 
+      patentOffice, 
+    };
+  }
+  
+
+  try {
+    await insertNewPatent(newPatent, req.session.startupId);
+    res.redirect("/startup/submit");
+  } catch (error) {
+    console.error(
+      `Failed to add new Patent. Error: ${error}. Redirecting to /startup/submit ${error}`
     );
     res.redirect("/startup/submit");
   }
