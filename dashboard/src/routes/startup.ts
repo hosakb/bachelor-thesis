@@ -84,6 +84,7 @@ router.get("/chart/data", async (req, res) => {
   try {
     const milestones: Milestone[] = await getMilestones(req.session.startupId);
     const metrics: Metrics[] = await getMetrics(req.session.startupId);
+    console.log(metrics.length + "-------------")
 
     const months = metrics.map((x) => {
       return getMonth(x.date);

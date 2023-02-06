@@ -537,54 +537,54 @@ document
     document.getElementById("next-investment-round").classList.toggle("show");
   });
 
-document.querySelector("#investor-accepted").addEventListener("click", (e) => {
-  const td = e.target.parentElement.parentElement.parentElement;
-  const span = document.createElement("span");
-  span.classList.add("las");
-  span.classList.add("la-check");
-  td.appendChild(span);
-  td.children[1].classList.add("hidden");
-
-  const id = td.children[0].value;
-
-  fetch("/startup/submit/update-investor-status", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
-    body: JSON.stringify({ id, status: "accepted" }),
-  })
-    .then(() => {
-      alert("Successfully updated contacted investors status");
+  function investorAccepted(e) {
+    const td = e.parentElement.parentElement.parentElement;
+    const span = document.createElement("span");
+    span.classList.add("las");
+    span.classList.add("la-check");
+    td.appendChild(span);
+    td.children[1].classList.add("hidden");
+  
+    const id = td.children[6].children[0].value;
+  
+    fetch("/startup/submit/update-investor-status", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      body: JSON.stringify({ id, status: "accepted" }),
     })
-    .catch(() => {
-      alert("Failed to update contacted investors status.");
-    });
-});
-
-document.getElementById("investor-declined").addEventListener("click", (e) => {
-  const td = e.target.parentElement.parentElement.parentElement;
-  const span = document.createElement("span");
-  span.classList.add("las");
-  span.classList.add("la-times");
-  td.appendChild(span);
-  td.children[1].classList.add("hidden");
-
-  const id = td.children[0].value;
-
-  fetch("/startup/submit/update-investor-status", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
-    body: JSON.stringify({ id, status: "declined" }),
-  })
-    .then(() => {
-      alert("Successfully updated contacted investors status");
+      .then(() => {
+        alert("Successfully updated contacted investors status");
+      })
+      .catch(() => {
+        alert("Failed to update contacted investors status.");
+      });
+  }
+  
+  function investorDeclined(e) {
+    const td = e.parentElement.parentElement.parentElement;
+    const span = document.createElement("span");
+    span.classList.add("las");
+    span.classList.add("la-times");
+    td.appendChild(span);
+    td.children[1].classList.add("hidden");
+  
+    const id = td.children[0].value;
+  
+    fetch("/startup/submit/update-investor-status", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      body: JSON.stringify({ id, status: "declined" }),
     })
-    .catch(() => {
-      alert("Failed to update contacted investors status.");
-    });
-});
+      .then(() => {
+        alert("Successfully updated contacted investors status");
+      })
+      .catch(() => {
+        alert("Failed to update contacted investors status.");
+      });
+  }

@@ -42,8 +42,8 @@ function renderBurnRate(burnRateData) {
 
   // eslint-disable-next-line no-undef
   let chart = new Chart(document.querySelector("#burn-rate-chart"), config);
-  chart.canvas.parentNode.style.height = "15vh";
-  chart.canvas.parentNode.style.width = "18vh";
+  // chart.canvas.parentNode.style.height = "15vh";
+  // chart.canvas.parentNode.style.width = "18vh";
 }
 
 function renderRunway(burnRateData) {

@@ -97,8 +97,8 @@
                                 <input type="hidden" value="<%= investor.id %>">
                                 <div>
                                     <% if(investor.status == "contacted") { %>
-                                        <button id="investor-accepted"><i class="las la-check"></i></button>
-                                        <button id="investor-declined"><i class="las la-times"></i></button>
+                                        <button id="investor-accepted" onclick="investorAccepted(this)"><i class="las la-check"></i></button>
+                                        <button id="investor-declined"><i class="las la-times" onclick="investorDeclined(this)"></i></button>
                                     <% } else if(investor.status == "accepted")  { %>
                                         <span><i class="las la-check"></i></span>
                                     <% } else if(investor.status == "declined")  { %>
