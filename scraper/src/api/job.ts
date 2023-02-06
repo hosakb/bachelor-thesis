@@ -14,17 +14,31 @@ export const startJob = () => {
   new CronJob(
     "* * 6 * * *", // Scrapes data at 6 AM
     async function () {
+      let bcUsers;
       console.info("Scraping Financial Data from Business Central");
       const startupIds: string[] = await getStartupIds();
-      const bcUsers = await fetchUsers(startupIds);
+      try {
+        bcUsers = await fetchUsers(startupIds);
+      } catch (error) {
+        console.error(`Failed to fetch business central users due to: ${error}`)
+      }
 
-      for (const user of bcUsers) {
-        await scrapeFinancialData(user);
-        const financialData: FinancialData[] = await getFinancialData(
-          user.startupId
-        );
-        const metrics: Metrics = await calculateMetrics(financialData);
-        await persistMetrics(metrics, user.startupId);
+      if(bcUsers !== undefined) {
+        for (const user of bcUsers) {
+          try {
+            await scrapeFinancialData(user);
+          const financialData: FinancialData[] = await getFinancialData(
+            user.startupId
+          );
+          console.info(`Scraped financial data for startup with id: ${user.startupId}.`)
+          const metrics: Metrics = await calculateMetrics(financialData);
+          console.info(`Calculated financial metrics for startup with id: ${user.startupId}.`)
+          await persistMetrics(metrics, user.startupId);
+          console.info(`Persisted financial metrics for startup with id: ${user.startupId}.`)
+          } catch (error) {
+            console.error(`Failed to scrape financial data for startup with id: ${user.startupId}.`)
+          }
+        }
       }
     },
     null,
