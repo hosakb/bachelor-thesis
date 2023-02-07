@@ -1306,7 +1306,7 @@ const updatePatent = async (
   try {
     if (isUpdatedPatentDisclosure(patentUpdate)) {
       await client.query(
-        "UPDATE patent SET registration_fee = $1, annual_fee = $2, inventor_nomination = $3, examination_request = $4 WHERE id = $5;",
+        "UPDATE patents SET registration_fee = $1, annual_fee = $2, inventor_nomination = $3, examination_request = $4 WHERE id = $5;",
         [
           patentUpdate.registrationFee,
           patentUpdate.annualFee,
@@ -1317,12 +1317,12 @@ const updatePatent = async (
       );
     } else if (isUpdatedPatentExamination(patentUpdate)) {
       await client.query(
-        "UPDATE patent SET patent_examination_notice = $1 WHERE id = $2;",
+        "UPDATE patents SET patent_examination_notice = $1 WHERE id = $2;",
         [patentUpdate.patentExaminationNotice, patentUpdate.id]
       );
     } else {
       await client.query(
-        "UPDATE patent SET grant_fee = $1, objection = $2, objection_response = $3 WHERE id = $4;",
+        "UPDATE patents SET grant_fee = $1, objection = $2, objection_response = $3 WHERE id = $4;",
         [
           patentUpdate.grantFee,
           patentUpdate.objection,
@@ -1334,6 +1334,22 @@ const updatePatent = async (
   } catch (err) {
     throw new Error(
       `Failed to update patent with id ${patentUpdate.id} due to Error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const persistPatentConfirmationDate = async (id: string, date: Date) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      "UPDATE patents SET application_confirmation_date = $1, status = 'disclosure-phase' WHERE id = $2;",
+      [date, id]
+    );
+  } catch (err) {
+    throw new Error(
+      `Failed to update patent application confirmation date with id ${id} due to Error: ${err}`
     );
   } finally {
     client.release();
@@ -1388,6 +1404,7 @@ export {
   persistInfo,
   persistMilestones,
   persistMilestonesWithId,
+  persistPatentConfirmationDate,
   persistQuestionnaire,
   persistTrlData,
   updateInvestedCapital,

@@ -33,6 +33,7 @@ import {
   UpdatedPatentExamination,
   UpdatedPatentObjection,
   updatePatent,
+  persistPatentConfirmationDate,
 } from "../models/startup";
 import { getMonth } from "../util/date";
 import {
@@ -524,7 +525,7 @@ router.post("/submit/new-patent", async (req, res) => {
   }
 });
 
-router.post("/submit/new-patent", async (req, res) => {
+router.post("/submit/update-patent", async (req, res) => {
   const {
     patentId,
     patentStatus,
@@ -542,34 +543,48 @@ router.post("/submit/new-patent", async (req, res) => {
     | UpdatedPatentDisclosure
     | UpdatedPatentExamination
     | UpdatedPatentObjection;
-
   try {
-    if (patentId === undefined || patentStatus === undefined) {
+    if (patentId === undefined || patentId === '' || patentStatus === undefined || patentStatus === '') {
       throw new Error("Patent or Status not identifiable.");
     } else if (patentStatus === "disclosure-phase") {
       p = {
         id: patentId,
-        registrationFee: submissionFeeDeadline,
-        annualFee: annualFeeDeadline,
-        inventorNomination: inventorNominationDeadline,
-        examinationRequest: examinationRequestDeadline,
+        registrationFee: submissionFeeDeadline === "on" ? true : false,
+        annualFee: annualFeeDeadline === "on" ? true : false,
+        inventorNomination: inventorNominationDeadline === "on" ? true : false,
+        examinationRequest: examinationRequestDeadline === "on" ? true : false,
       };
     } else if (patentStatus === "examination-phase") {
       p = {
         id: patentId,
-        patentExaminationNotice: examinationNoticeDeadline,
+        patentExaminationNotice:
+          examinationNoticeDeadline === "on" ? true : false,
       };
     } else if (patentStatus === "objection-phase") {
       p = {
         id: patentId,
-        grantFee: grantFeeDeadline,
-        objection: objectionFilingDeadline,
-        objectionResponse: objectionResponseDeadline,
+        grantFee: grantFeeDeadline === "on" ? true : false,
+        objection: objectionFilingDeadline === "on" ? true : false,
+        objectionResponse: objectionResponseDeadline === "on" ? true : false,
       };
     } else {
       throw new Error("Phase not identifiable");
     }
     await updatePatent(p);
+    res.redirect("/startup/submit");
+  } catch (error) {
+    console.error(
+      `Failed to update patent information. Error: ${error}. Redirecting to /startup/submit ${error}`
+    );
+    res.redirect("/startup/submit");
+  }
+});
+
+router.post("/submit/initial-patent-application", async (req, res) => {
+  const { patentId, confirmationDate } = req.body;
+
+  try {
+    await persistPatentConfirmationDate(patentId, new Date(confirmationDate));
     res.redirect("/startup/submit");
   } catch (error) {
     console.error(

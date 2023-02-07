@@ -197,28 +197,8 @@
                     </tr>
                 </thead>
                 <tbody id="patent-tbody">
-                    <% let x = 0; %>
                     <% for(const patent of locals.patents) { %>
-                    <% const p = {
-                            id: patent.id
-                            invention: patent.invention,
-                            status: patent.status,
-                            confirmationDate: patent.confirmationDate,
-                            registrationFee: patent.registrationFee,
-                            inventorNomination: patent.inventorNomination,
-                            annualFee: patent.annualFee,
-                            patentExaminationNoticeDate: patent.patentExaminationNoticeDate,
-                            patentExaminationNotice: patent.patentExaminationNotice,
-                            grantDate: patent.grantDate,
-                            grantFee: patent.grantFee,
-                            objection: patent.objection,
-                            rejectionReason: patent.rejectionReason,
-                            patentDuration: patent.patentDuration,
-                            examinationRequest: patent.examinationRequest,
-                            objectionResponse: patent.objection_response,
-                        } 
-                    %>
-                    <tr class="patent-<%= x %>" onclick="showPatentInfo('<%= JSON.stringify(p) %>')">
+                    <tr>
                         <td>
                             <%= patent.invention %>
                         </td>
@@ -232,17 +212,11 @@
                             <%= patent.updatedAt.getDate() + "." + patent.updatedAt.getMonth() + "." + patent.updatedAt.getFullYear() %>
                         </td>
                         <td>
-                            <div id="patent-option-btn-<%= x %>">
-                                <input type="hidden" value="<%= patent.id %>" id="patent-<%= x %>">
-                                <button onclick="updatePatentStatus('<%= x %>')">
-                                    <span><i class="las la-edit"></i></span>
-                                </button>
-                            </div>
-                            <button id="patent-ok-btn-<%= x %>" class="hidden" onclick="savePatent('<%= x %>')"><i class="las la-check-circle"></i></button>
-                            <button id="patent-cancel-btn-<%= x %>" class="hidden" onclick="cancelUpdate()"><i class="las la-times"></i></button>
+                            <button onclick="updatePatentStatus('<%= JSON.stringify(patent) %>')">
+                                <span><i class="las la-edit"></i></span>
+                            </button>
                         </td>
                     </tr>
-                    <% x++; %>
                     <% } %>
                 </tbody>
             </table>
@@ -763,11 +737,20 @@
         <br>
         <div id="initial-application" class="hidden">
             <h4>Application filed. No confirmation received yet.</h4>
+            <br>
+            <form action="/startup/submit/initial-patent-application" method="post">
+                <input type="hidden" name="patentId" id="initial-patent-id">
+                <div class="form-item">
+                    <label for="confirmation-date">Date of received confirmation</label>
+                    <input type="date" name="confirmationDate" id="confirmation-date">
+                </div>
+                <input type="submit" value="Submit">
+            </form>
         </div>
-        <form action="/startup/submit/update-patent" method="post">
-            <input type="hidden" name="patentId" id="patent-id">
-            <input type="hidden" name="patentStatus" id="patent-status">
-            <div id="disclosure-phase" class="hidden">
+        <div id="disclosure-phase" class="hidden">
+            <form action="/startup/submit/update-patent" method="post">
+                <input type="hidden" name="patentStatus" id="current-patent-status" value="disclosure-phase">
+                <input type="hidden" name="patentId" id="disclosure-patent-id">
                 <table>
                     <thead>
                         <tr>
@@ -846,8 +829,21 @@
                         </tr>
                     </tbody>
                 </table>
+                <input type="submit" value="Submit" id="submit-disclosure-phase">
+            </form>
+            <div id="examination-notice-date-received-form" class="hidden">
+                <form action="">
+                    <div class="form-item" id="examination-notice-date-received">
+                        <label for="examination-notice-date-received-input">Date of received examination notice</label>
+                        <input type="date" name="examinationDateInput" id="examination-notice-date-received-input">
+                    </div>
+                </form>
             </div>
-            <div id="examination-phase" class="hidden">
+        </div>
+        <div id="examination-phase" class="hidden">
+            <form action="/startup/submit/update-patent" method="post">
+                <input type="hidden" name="patentId" id="examination-patent-id">
+                <input type="hidden" name="patentStatus" id="current-patent-status" value="examination-phase">
                 <table>
                     <thead>
                         <tr>
@@ -872,8 +868,13 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <div id="objection-phase" class="hidden">
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <div id="objection-phase" class="hidden">
+            <form action="/startup/submit/update-patent" method="post">
+                <input type="hidden" name="patentId" id="objection-patent-id">
+                <input type="hidden" name="patentStatus" id="current-patent-status" value="objection-phase">
                 <div>
                     <h3>The patent has been granted for granted for:</h3>
                     <h2 id="objection-granted-duration"></h2>
@@ -918,9 +919,9 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <input type="submit" value="Submit">
-        </form>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
         <div id="granted" class="hidden">
             <div>
                 <h3>The patent has been granted for granted for:</h3>

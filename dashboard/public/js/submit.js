@@ -641,151 +641,23 @@ document.querySelector("#patent-status").addEventListener("change", (e) => {
   }
 });
 
-function showPatentInfo(p) {
+function updatePatentStatus(p) {
   const patent = JSON.parse(p);
-  document.getElementById("patent-id").value = patent.id;
-  document.getElementById("patent-status").value = patent.status;
   document.getElementById("patent-info-pane").classList.toggle("show");
 
   document.getElementById("invention-header").innerHTML = patent.invention;
 
   if (patent.status === "initial-application") {
     document.getElementById("initial-application").classList.toggle("hidden"); // TODO: Add date of filed application
+    document.getElementsByClassName("initial-patent-id").value = patent.id;
   } else if (patent.status == "disclosure-phase") {
-    document.getElementById("disclosure-phase").classList.remove("hidden");
-
-    let confirmationDate = new Date(patent.confirmationDate);
-    document.getElementById("application-filed-date").innerHTML =
-      formatDate(confirmationDate);
-
-    document.getElementById("submission-fee-deadline").innerHTML = formatDate(
-      confirmationDate.addMonths(1)
-    );
-    console.log(patent.registrationFee);
-
-    if (patent.registrationFee) {
-      document
-        .getElementById("submission-fee-deadline-checkbox")
-        .classList.add("hidden");
-      document
-        .getElementById("submission-fee-deadline-check")
-        .classList.remove("hidden");
-    }
-
-    document.getElementById("research-result-deadline").innerHTML = formatDate(
-      confirmationDate.addMonths(5)
-    );
-
-    if (patent.annualFee) {
-      document
-        .getElementById("annual-fee-deadline-checkbox")
-        .classList.add("hidden");
-      document
-        .getElementById("annual-fee-deadline-check")
-        .classList.remove("hidden");
-    }
-
-    document.getElementById("annual-fee-deadline").innerHTML = formatDate(
-      confirmationDate.addMonths(7)
-    );
-    document.getElementById("parallel-patent-deadline").innerHTML =
-      formatDate(confirmationDate);
-
-    document.getElementById("inventor-nomination-deadline").innerHTML =
-      formatDate(confirmationDate.addMonths(3));
-
-    if (patent.inventorNomination) {
-      document
-        .getElementById("inventor-nomination-deadline-checkbox")
-        .classList.add("hidden");
-      document
-        .getElementById("inventor-nomination-deadline-check")
-        .classList.remove("hidden");
-    }
-
-    document.getElementById("compensation-claim-deadline").innerHTML =
-      formatDate(confirmationDate.addMonths(3));
-    document.getElementById("disclosure-deadline").innerHTML =
-      formatDate(confirmationDate);
-    document.getElementById("secrecy-deadline").innerHTML =
-      formatDate(confirmationDate);
-    document.getElementById("additional-patent-deadline").innerHTML =
-      formatDate(confirmationDate);
-
-    document.getElementById("examination-request-deadline").innerHTML =
-      formatDate(confirmationDate.addMonths(66));
-
-    if (patent.patentExaminationRequest) {
-      document
-        .getElementById("examination-request-deadline-checkbox")
-        .classList.add("hidden");
-      document
-        .getElementById("examination-request-deadline-check")
-        .classList.remove("hidden");
-    }
+    disclosurePhase(patent);
   } else if (patent.status === "examination-phase") {
-    document.getElementById("examination-phase").classList.toggle("hidden");
-    const examinationNoticeDate = new Date(patent.patentExaminationNoticeDate);
-
-    document.getElementById("examination-notice-date").innerHTML = formatDate(
-      examinationNoticeDate
-    );
-    document.getElementById("examination-notice-deadline").innerHTML =
-      formatDate(examinationNoticeDate.addMonths(4));
-
-    if (patent.patentExaminationNotice) {
-      document
-        .getElementById("examination-notice-deadline-checkbox")
-        .classList.add("hidden");
-      document
-        .getElementById("examination-notice-deadline-check")
-        .classList.remove("hidden");
-    }
+    examinationPhase(patent);
   } else if (patent.status === "objection-phase") {
-    document.getElementById("objection-phase").classList.toggle("hidden");
-
-    document.getElementById("objection-granted-duration").innerHTML =
-      patent.patentDuration + " Years";
-    const grantPatentDate = new Date(patent.grantDate);
-    document.getElementById("objection-granted-on").innerHTML =
-      formatDate(grantPatentDate);
-    document.getElementById("grant-fee-deadline").innerHTML = formatDate(
-      grantPatentDate.addMonths(2)
-    );
-
-    if (patent.grantFee) {
-      document
-        .getElementById("grant-fee-deadline-checkbox")
-        .classList.add("hidden");
-      document
-        .getElementById("grant-fee-deadline-check")
-        .classList.remove("hidden");
-    }
-    document.getElementById("objection-filing-deadline").innerHTML = formatDate(
-      grantPatentDate.addMonths(1)
-    );
-
-    if (patent.objection) {
-      document
-        .getElementById("objection-filing-deadline-checkbox")
-        .classList.add("hidden");
-      document
-        .getElementById("objection-filing-deadline-check")
-        .classList.remove("hidden");
-    }
-    document.getElementById("objection-response-deadline").innerHTML =
-      formatDate(grantPatentDate.addMonths(4));
-    if (patent.objectionResponse) {
-      document
-        .getElementById("objection-response-deadline-checkbox")
-        .classList.add("hidden");
-      document
-        .getElementById("objection-response-deadline-check")
-        .classList.remove("hidden");
-    }
+    objectionPhase(patent);
   } else if (patent.status === "granted") {
     const grantPatentDate = formatDate(new Date(patent.grantDate));
-    console.log(patent.patentDuration);
     document.getElementById("granted").classList.toggle("hidden");
     document.getElementById("granted-duration").innerHTML =
       patent.patentDuration + " Years";
@@ -827,6 +699,171 @@ document.querySelector("#exit-patent-info").addEventListener("click", (e) => {
     document.getElementById("rejected").classList.add("hidden");
   }
 });
+
+function objectionPhase(patent) {
+  document.getElementById("objection-phase").classList.toggle("hidden");
+  document.getElementById("objection-patent-id").value = patent.id;
+
+  document.getElementById("objection-granted-duration").innerHTML =
+    patent.patentDuration + " Years";
+  const grantPatentDate = new Date(patent.grantDate);
+  document.getElementById("objection-granted-on").innerHTML =
+    formatDate(grantPatentDate);
+  document.getElementById("grant-fee-deadline").innerHTML = formatDate(
+    grantPatentDate.addMonths(2)
+  );
+
+  if (patent.grantFee) {
+    document.getElementById("grant-fee-deadline-checkbox").style.visibility =
+      "hidden";
+    document.getElementById("grant-fee-deadline-checkbox").checked = true;
+    document
+      .getElementById("grant-fee-deadline-check")
+      .classList.remove("hidden");
+  }
+  document.getElementById("objection-filing-deadline").innerHTML = formatDate(
+    grantPatentDate.addMonths(1)
+  );
+
+  if (patent.objection) {
+    document.getElementById(
+      "objection-filing-deadline-checkbox"
+    ).style.visibility = "hidden";
+    document.getElementById(
+      "objection-filing-deadline-checkbox"
+    ).checked = true;
+    document
+      .getElementById("objection-filing-deadline-check")
+      .classList.remove("hidden");
+  }
+  document.getElementById("objection-response-deadline").innerHTML = formatDate(
+    grantPatentDate.addMonths(4)
+  );
+
+  console.log(patent.objectionResponse);
+  if (patent.objectionResponse) {
+    document.getElementById(
+      "objection-response-deadline-checkbox"
+    ).style.visibility = "hidden";
+    document.getElementById(
+      "objection-response-deadline-checkbox"
+    ).checked = true;
+    document
+      .getElementById("objection-response-deadline-check")
+      .classList.remove("hidden");
+  }
+}
+
+function examinationPhase(patent) {
+  document.getElementById("examination-phase").classList.toggle("hidden");
+  document.getElementById("examination-patent-id").value = patent.id;
+
+  const examinationNoticeDate = new Date(patent.patentExaminationNoticeDate);
+
+  document.getElementById("examination-notice-date").innerHTML = formatDate(
+    examinationNoticeDate
+  );
+  document.getElementById("examination-notice-deadline").innerHTML = formatDate(
+    examinationNoticeDate.addMonths(4)
+  );
+
+  if (patent.patentExaminationNotice) {
+    document.getElementById(
+      "examination-notice-deadline-checkbox"
+    ).style.visibility = "hidden";
+    document.getElementById(
+      "examination-notice-deadline-checkbox"
+    ).checked = true;
+    document
+      .getElementById("examination-notice-deadline-check")
+      .classList.remove("hidden");
+  }
+}
+
+function disclosurePhase(patent) {
+  document.getElementById("disclosure-phase").classList.remove("hidden");
+  document.getElementById("disclosure-patent-id").value = patent.id;
+  let confirmationDate = new Date(patent.confirmationDate);
+  document.getElementById("application-filed-date").innerHTML =
+    formatDate(confirmationDate);
+
+  document.getElementById("submission-fee-deadline").innerHTML = formatDate(
+    confirmationDate.addMonths(1)
+  );
+
+  if (patent.registrationFee) {
+    document.getElementById(
+      "submission-fee-deadline-checkbox"
+    ).style.visibility = "hidden";
+    document.getElementById("submission-fee-deadline-checkbox").checked = true;
+    document
+      .getElementById("submission-fee-deadline-check")
+      .classList.remove("hidden");
+  }
+
+  document.getElementById("research-result-deadline").innerHTML = formatDate(
+    confirmationDate.addMonths(5)
+  );
+
+  if (patent.annualFee) {
+    document.getElementById("annual-fee-deadline-checkbox").style.visibility =
+      "hidden";
+    document.getElementById("annual-fee-deadline-checkbox").checked = true;
+    document
+      .getElementById("annual-fee-deadline-check")
+      .classList.remove("hidden");
+  }
+
+  document.getElementById("annual-fee-deadline").innerHTML = formatDate(
+    confirmationDate.addMonths(7)
+  );
+  document.getElementById("parallel-patent-deadline").innerHTML =
+    formatDate(confirmationDate);
+
+  document.getElementById("inventor-nomination-deadline").innerHTML =
+    formatDate(confirmationDate.addMonths(3));
+
+  if (patent.inventorNomination) {
+    document.getElementById(
+      "inventor-nomination-deadline-checkbox"
+    ).style.visibility = "hidden";
+    document.getElementById(
+      "inventor-nomination-deadline-checkbox"
+    ).checked = true;
+    document
+      .getElementById("inventor-nomination-deadline-check")
+      .classList.remove("hidden");
+  }
+
+  document.getElementById("compensation-claim-deadline").innerHTML = formatDate(
+    confirmationDate.addMonths(3)
+  );
+  document.getElementById("disclosure-deadline").innerHTML =
+    formatDate(confirmationDate);
+  document.getElementById("secrecy-deadline").innerHTML =
+    formatDate(confirmationDate);
+  document.getElementById("additional-patent-deadline").innerHTML =
+    formatDate(confirmationDate);
+
+  document.getElementById("examination-request-deadline").innerHTML =
+    formatDate(confirmationDate.addMonths(66));
+
+  if (patent.examinationRequest) {
+    document.getElementById(
+      "examination-request-deadline-checkbox"
+    ).style.visibility = "hidden";
+    document.getElementById(
+      "examination-request-deadline-checkbox"
+    ).checked = true;
+    document
+      .getElementById("examination-request-deadline-check")
+      .classList.remove("hidden");
+    document
+    .getElementById("examination-notice-date-received-form").classList.remove("hidden");
+    document
+    .getElementById("submit-disclosure-phase").classList.add("hidden");
+  }
+}
 
 Date.isLeapYear = function (year) {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
