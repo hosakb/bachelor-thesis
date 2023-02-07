@@ -30,9 +30,9 @@ import {
   insertNewPatent,
   getAllPatents,
   UpdatedPatentDisclosure,
-  UpdatedPatentDisclosure,
   UpdatedPatentExamination,
   UpdatedPatentObjection,
+  updatePatent,
 } from "../models/startup";
 import { getMonth } from "../util/date";
 import {
@@ -169,7 +169,6 @@ router.get("/submit", async (req, res) => {
   const capTable: Row[] = await getCapTable(req.session.startupId);
 
   const patents = await getAllPatents(req.session.startupId);
-  
 
   res.render("dashboard/startup/submit", {
     layout: "../views/layouts/dashboard.ejs",
@@ -526,7 +525,8 @@ router.post("/submit/new-patent", async (req, res) => {
 });
 
 router.post("/submit/new-patent", async (req, res) => {
-  const { patentId,
+  const {
+    patentId,
     patentStatus,
     submissionFeeDeadline,
     annualFeeDeadline,
@@ -535,41 +535,41 @@ router.post("/submit/new-patent", async (req, res) => {
     examinationNoticeDeadline,
     grantFeeDeadline,
     objectionFilingDeadline,
-    objectionResponseDeadline } = req.body;
+    objectionResponseDeadline,
+  } = req.body;
 
-    let p: UpdatedPatentDisclosure | UpdatedPatentExamination | UpdatedPatentObjection;
+  let p:
+    | UpdatedPatentDisclosure
+    | UpdatedPatentExamination
+    | UpdatedPatentObjection;
 
-    try {
-      if(patentId === undefined || patentStatus === undefined ) {
-        throw new Error("Patent or Status not identifiable.")
-      } else if(patentStatus === "disclosure-phase") {
-        p  = {
-          id: patentId,
-          status: patentStatus,
-          registrationFee: submissionFeeDeadline,
-          annualFee: annualFeeDeadline,
-          inventorNomination: inventorNominationDeadline,
-          examinationRequest: examinationRequestDeadline,
-        } 
-
-      } else if(patentStatus === "examination-phase") {
-        p  = {
-          id: patentId,
-          status: patentStatus,
-          patentExaminationNotice: examinationNoticeDeadline,
-        } 
-      } else if(patentStatus === "objection-phase") {
-        p  = {
-          id: patentId,
-          status: patentStatus,
-          grantFee: grantFeeDeadline,
-          objection: objectionFilingDeadline,
-          objectionResponse: objectionResponseDeadline,
-        } 
-      } else {
-        throw new Error("Phase not identifiable");
-      }
-      await updatePatent(p)
+  try {
+    if (patentId === undefined || patentStatus === undefined) {
+      throw new Error("Patent or Status not identifiable.");
+    } else if (patentStatus === "disclosure-phase") {
+      p = {
+        id: patentId,
+        registrationFee: submissionFeeDeadline,
+        annualFee: annualFeeDeadline,
+        inventorNomination: inventorNominationDeadline,
+        examinationRequest: examinationRequestDeadline,
+      };
+    } else if (patentStatus === "examination-phase") {
+      p = {
+        id: patentId,
+        patentExaminationNotice: examinationNoticeDeadline,
+      };
+    } else if (patentStatus === "objection-phase") {
+      p = {
+        id: patentId,
+        grantFee: grantFeeDeadline,
+        objection: objectionFilingDeadline,
+        objectionResponse: objectionResponseDeadline,
+      };
+    } else {
+      throw new Error("Phase not identifiable");
+    }
+    await updatePatent(p);
     res.redirect("/startup/submit");
   } catch (error) {
     console.error(
@@ -577,8 +577,6 @@ router.post("/submit/new-patent", async (req, res) => {
     );
     res.redirect("/startup/submit");
   }
-
-
 });
 
 export default router;

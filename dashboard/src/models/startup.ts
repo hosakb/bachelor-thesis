@@ -328,25 +328,66 @@ interface Patent {
 
 interface UpdatedPatentDisclosure {
   id: string;
-  status: string;
   registrationFee: boolean;
   annualFee: boolean;
   inventorNomination: boolean;
   examinationRequest: boolean;
 }
 
+function isUpdatedPatentDisclosure(
+  value:
+    | UpdatedPatentDisclosure
+    | UpdatedPatentExamination
+    | UpdatedPatentObjection
+): value is UpdatedPatentDisclosure {
+  return (
+    // eslint-disable-next-line no-prototype-builtins
+    value.hasOwnProperty("registrationFee") &&
+    // eslint-disable-next-line no-prototype-builtins
+    value.hasOwnProperty("annualFee") &&
+    // eslint-disable-next-line no-prototype-builtins
+    value.hasOwnProperty("inventorNomination") &&
+    // eslint-disable-next-line no-prototype-builtins
+    value.hasOwnProperty("examinationRequest")
+  );
+}
+
 interface UpdatedPatentExamination {
   id: string;
-  status: string;
   patentExaminationNotice: boolean;
+}
+
+function isUpdatedPatentExamination(
+  value:
+    | UpdatedPatentDisclosure
+    | UpdatedPatentExamination
+    | UpdatedPatentObjection
+): value is UpdatedPatentExamination {
+  // eslint-disable-next-line no-prototype-builtins
+  return value.hasOwnProperty("patentExaminationNotice");
 }
 
 interface UpdatedPatentObjection {
   id: string;
-  status: string;
   grantFee: boolean;
   objection: boolean;
   objectionResponse: boolean;
+}
+
+function isUpdatedPatentObjection(
+  value:
+    | UpdatedPatentDisclosure
+    | UpdatedPatentExamination
+    | UpdatedPatentObjection
+): value is UpdatedPatentObjection {
+  return (
+    // eslint-disable-next-line no-prototype-builtins
+    value.hasOwnProperty("grantFee") &&
+    // eslint-disable-next-line no-prototype-builtins
+    value.hasOwnProperty("objection") &&
+    // eslint-disable-next-line no-prototype-builtins
+    value.hasOwnProperty("objectionResponse")
+  );
 }
 
 const insertNewStartup = async (startupName: string): Promise<string> => {
@@ -1255,28 +1296,45 @@ const getAllPatents = async (startupId: string): Promise<Patent[]> => {
   }
 };
 
-const updatePatent = async (patentUpdate: UpdatedPatentDisclosure | UpdatedPatentExamination | UpdatedPatentObjection) => {
+const updatePatent = async (
+  patentUpdate:
+    | UpdatedPatentDisclosure
+    | UpdatedPatentExamination
+    | UpdatedPatentObjection
+) => {
   const client = await pool.connect();
   try {
-
-    if(patentUpdate.status === "disclosure-phase") {
+    if (isUpdatedPatentDisclosure(patentUpdate)) {
       await client.query(
         "UPDATE patent SET registration_fee = $1, annual_fee = $2, inventor_nomination = $3, examination_request = $4 WHERE id = $5;",
-        [patentUpdate.]
+        [
+          patentUpdate.registrationFee,
+          patentUpdate.annualFee,
+          patentUpdate.inventorNomination,
+          patentUpdate.examinationRequest,
+          patentUpdate.id,
+        ]
       );
-    } else if(patentUpdate.status === "examination-phase") {
+    } else if (isUpdatedPatentExamination(patentUpdate)) {
       await client.query(
-        "UPDATE patent SET technology = $1, patent = $2, criticality = $3 WHERE id = $4;",
-        [trlData.technology, trlData.patent, trlData.criticality, trlData.id]
+        "UPDATE patent SET patent_examination_notice = $1 WHERE id = $2;",
+        [patentUpdate.patentExaminationNotice, patentUpdate.id]
       );
     } else {
       await client.query(
-        "UPDATE patent SET technology = $1, patent = $2, criticality = $3 WHERE id = $4;",
-        [trlData.technology, trlData.trl, trlData.criticality, trlData.id]
+        "UPDATE patent SET grant_fee = $1, objection = $2, objection_response = $3 WHERE id = $4;",
+        [
+          patentUpdate.grantFee,
+          patentUpdate.objection,
+          patentUpdate.objectionResponse,
+          patentUpdate.id,
+        ]
       );
     }
   } catch (err) {
-    throw new Error(`${err}`);
+    throw new Error(
+      `Failed to update patent with id ${patentUpdate.id} due to Error: ${err}`
+    );
   } finally {
     client.release();
   }
