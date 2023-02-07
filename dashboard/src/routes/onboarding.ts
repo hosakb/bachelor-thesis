@@ -371,8 +371,6 @@ router.post("/questionnaire", async (req, res) => {
       q8_1_2: parseInt(q8_1_2),
     };
 
-    console.log(questionnaire);
-
     await persistQuestionnaire(startupId, questionnaire);
     res.redirect("/onboarding/track-record");
   } catch (error) {

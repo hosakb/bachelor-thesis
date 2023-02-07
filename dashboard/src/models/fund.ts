@@ -142,7 +142,6 @@ const getWeights = async (fundId: string): Promise<Weights> => {
 };
 
 const insertNewFund = async (fund: NewFund): Promise<string> => {
-  console.log(fund);
   const client = await pool.connect();
   try {
     const result = await client.query(

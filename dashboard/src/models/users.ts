@@ -319,8 +319,6 @@ const emailRegistered = async (email: string) => {
 const insertUser = async (user: NewUser) => {
   const client = await pool.connect();
 
-  console.log(user);
-
   try {
     if (user.fund !== null) {
       await client.query(

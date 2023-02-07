@@ -111,7 +111,6 @@ function hideSection(elem) {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function showSubSection(elem) {
   const className = elem.parentElement.parentElement.classList[0];
-  console.log("Show " + className);
   const tbody = elem.parentElement.parentElement.parentElement;
 
   for (const child of tbody.children) {
