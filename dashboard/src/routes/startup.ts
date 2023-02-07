@@ -84,7 +84,6 @@ router.get("/chart/data", async (req, res) => {
   try {
     const milestones: Milestone[] = await getMilestones(req.session.startupId);
     const metrics: Metrics[] = await getMetrics(req.session.startupId);
-    console.log(metrics.length + "-------------")
 
     const months = metrics.map((x) => {
       return getMonth(x.date);
@@ -249,7 +248,7 @@ router.post("/submit/delete-trl", async (req, res) => {
 });
 
 router.post("/submit/add-trl", async (req, res) => {
-  const { newTechnology, newTrlValue, newCriticality, } = req.body;
+  const { newTechnology, newTrlValue, newCriticality } = req.body;
   try {
     const trlData: TrlData = {
       id: "",

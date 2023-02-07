@@ -258,14 +258,13 @@ router.post("/delete-startup", async (req, res) => {
 
 router.get("/funds", async (req, res) => {
   try {
-
     const startups = await getAllStartups();
     const allStartups = startups.map((startup) => {
       return {
         id: startup.id,
         name: startup.name,
-      }
-    })
+      };
+    });
 
     res.render("admin/funds", {
       layout: "../views/layouts/admin.ejs",

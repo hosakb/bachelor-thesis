@@ -143,8 +143,6 @@ export function getQuestionnaireAverages(
 
   const h7 = (h7_1 + h7_2) / 2;
 
-  console.log(h7_1, h7_2, h7);
-
   const h8 = (questionnaire.q8_1_1 + questionnaire.q8_1_2) / 2;
 
   const sum = h1 + h2 + h3 + h4 + h5 + h6 + h7 + h8;

@@ -166,8 +166,6 @@ document
           };
         }
 
-        console.log(document.getElementById("startup"));
-
         fetch("/admin/add-user", {
           method: "POST",
           headers: {
@@ -193,7 +191,6 @@ function emptyInputsEditUser() {
   var inputs = document.querySelectorAll("#new-user div input");
   for (const input of inputs)
     if (input.value === "") {
-      console.log(input);
       return true;
     }
   return false;

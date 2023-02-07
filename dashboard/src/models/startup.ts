@@ -45,7 +45,7 @@ interface StartupInfo {
   sector: string;
   timeToMarket: number;
   productToMarket: boolean;
-  investedCapital: number
+  investedCapital: number;
 }
 
 interface Milestone {
@@ -593,14 +593,17 @@ const getCapTable = async (startupId: string) => {
 const persistInfo = async (startupInfo: StartupInfo, startupId: string) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE startup SET stage = $1, invested_capital = $2, sector = $3, has_product = $4 , est_time_to_market = $5 WHERE id = $6", [
-     startupInfo.phase,
-     startupInfo.investedCapital,
-     startupInfo.sector,
-     startupInfo.productToMarket,
-     startupInfo.timeToMarket,
-      startupId,
-    ]);
+    await client.query(
+      "UPDATE startup SET stage = $1, invested_capital = $2, sector = $3, has_product = $4 , est_time_to_market = $5 WHERE id = $6",
+      [
+        startupInfo.phase,
+        startupInfo.investedCapital,
+        startupInfo.sector,
+        startupInfo.productToMarket,
+        startupInfo.timeToMarket,
+        startupId,
+      ]
+    );
   } catch (err) {
     throw new Error(
       `Failed to persist startup info for startup id ${startupId}. Error: ${err}`
