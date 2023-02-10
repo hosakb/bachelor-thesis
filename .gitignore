@@ -1,5 +1,5 @@
 .env
 node_modules
 generated/**/*
-dist/**
+dashboard/dist/**
 .vscode/*
