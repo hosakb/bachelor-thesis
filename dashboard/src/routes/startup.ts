@@ -195,8 +195,7 @@ router.post("/submit/reupload", (req, res) => {
   res.redirect("/startup/submit");
 });
 
-router.post(
-  "/cap-table",
+router.post("/submit/cap-table",
   multerUpload.single("cap-table"),
   async (req, res) => {
     const { nextPhase, investedCapital } = req.body;
