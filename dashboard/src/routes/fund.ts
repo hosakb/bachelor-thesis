@@ -9,6 +9,7 @@ import {
 } from "../models/fund_startup_map";
 import { getWeights, updateWeights, Weights } from "../models/fund";
 import {
+  getAllPatents,
   getCapTable,
   getInvestors,
   getMetrics,
@@ -175,6 +176,7 @@ router.get("/startup/", async (req, res) => {
       startup: req.session.selectedStartup,
       trl: trl,
       investors: await getInvestors(startupId),
+      patents: await getAllPatents(startupId),
     });
   } catch (error) {
     console.error(

@@ -115,7 +115,7 @@
                             </ul>
                         </td>
                         <td>
-                            <%= investor.contactDate %>
+                            <%= investor.contactDate.getDate() + "." + (investor.contactDate.getMonth() + 1) + "." + investor.contactDate.getFullYear() %>
                         </td>
                         <td>
                             <%= investor.country %>
@@ -168,7 +168,7 @@
                                 <%= patent.status %>
                             </td>
                             <td>
-                                <%= patent.updatedAt.getDate() + "." + patent.updatedAt.getMonth() + "." + patent.updatedAt.getFullYear() %>
+                                <%= patent.updatedAt.getDate() + "." + (patent.updatedAt.getMonth() + 1) + "." + patent.updatedAt.getFullYear() %>
                             </td>
                             <td>
                                 <button onclick="patentInfo('<%= JSON.stringify(patent) %>')">
@@ -182,4 +182,177 @@
             </div>
         </div>
     <% } %> 
+</div>
+<div class="variable-pane" id="patent-info-pane">
+    <div class="variable-pane-box">
+        <button id="exit-patent-info" class="exit"><i class="las la-times"></i></button>
+        <h3>Patent Information</h3>
+        <h4 id="invention-header"></h4>
+        <br>
+        <div id="initial-application" class="hidden">
+            <h4>Application filed. No confirmation received yet.</h4>
+        </div>
+        <div id="disclosure-phase" class="hidden">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Application Confirmed On</td>
+                        <td id="application-filed-date"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Submission Fee Deadline</td>
+                        <td id="submission-fee-deadline"></td>
+                        <td>
+                            <span id="submission-fee-deadline-check" class="hidden"><i class="las la-check-circle"></i></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Next Annual Fee Deadline</td>
+                        <td id="annual-fee-deadline"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Research Result Deadline</td>
+                        <td id="research-result-deadline"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Parallel Patent Submission Deadline</td>
+                        <td id="parallel-patent-deadline"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inventor Nomination Deadline</td>
+                        <td id="inventor-nomination-deadline"></td>
+                        <td>
+                            <span id="inventor-nomination-deadline-check" class="hidden"><i class="las la-check-circle"></i></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Compensation Claim Deadline</td>
+                        <td id="compensation-claim-deadline"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Disclosure</td>
+                        <td id="disclosure-deadline"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Secrecy</td>
+                        <td id="secrecy-deadline"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Addition Patents Deadline</td>
+                        <td id="additional-patent-deadline"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Patent Examination Request Deadline</td>
+                        <td id="examination-request-deadline"></td>
+                        <td>
+                            <span id="examination-request-deadline-check" class="hidden"><i class="las la-check-circle"></i></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="examination-phase" class="hidden">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Date of Received Examination notice</td>
+                        <td id="examination-notice-date"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Examination notice Deadline</td>
+                        <td id="examination-notice-deadline"></td>
+                        <td>
+                            <span id="examination-notice-deadline-check" class="hidden"><i class="las la-check-circle"></i></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="objection-phase" class="hidden">
+            <div>
+                <h3>The patent has been granted for granted for:</h3>
+                <h2 id="objection-granted-duration"></h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Patent grant date</td>
+                        <td id="objection-granted-on"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Grant Fee Deadline</td>
+                        <td id="grant-fee-deadline"></td>
+                        <td>
+                            <span id="grant-fee-deadline-check" class="hidden"><i class="las la-check-circle"></i></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Objection filing deadline</td>
+                        <td id="objection-filing-deadline"></td>
+                        <td>
+                            <span id="objection-filing-deadline-check" class="hidden"><i class="las la-check-circle"></i></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Objection response deadline</td>
+                        <td id="objection-response-deadline"></td>
+                        <td>
+                            <span id="objection-response-deadline-check" class="hidden"><i class="las la-check-circle"></i></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="granted" class="hidden">
+            <div>
+                <h3>The patent has been granted for granted for:</h3>
+                <h2 id="granted-duration"></h2>
+            </div>
+            <div>
+                <label>Granted on:</label>
+                <span id="granted-on"></span>
+            </div>
+        </div>
+        <div id="rejected" class="hidden">
+            <div>
+                <label>The patent has been <span id="cancel-status"></span> or has been canceled due to:</label>
+                <p id="rejection-reason"></p>
+            </div>
+            <div>
+                <label>Date:</label>
+                <span id="rejected-on"></span>
+            </div>
+        </div>
+    </div>
 </div>

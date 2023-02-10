@@ -80,7 +80,7 @@
                             </ul>
                         </td>
                         <td>
-                            <%= investor.contactDate %>
+                            <%= investor.contactDate.getDate() + "." + (investor.contactDate.getMonth() + 1) + "." + investor.contactDate.getFullYear() %>
                         </td>
                         <td>
                             <%= investor.country %>
@@ -209,7 +209,7 @@
                             <%= patent.status %>
                         </td>
                         <td>
-                            <%= patent.updatedAt.getDate() + "." + patent.updatedAt.getMonth() + "." + patent.updatedAt.getFullYear() %>
+                            <%= patent.updatedAt.getDate() + "." + (patent.updatedAt.getMonth() + 1) + "." + patent.updatedAt.getFullYear() %>
                         </td>
                         <td>
                             <button onclick="updatePatentStatus('<%= JSON.stringify(patent) %>')">
@@ -727,7 +727,7 @@
                 <label for="patent-office">Patent Office</label>
                 <select name="patentOffice" id="patent-office">
                     <option value="german">German Patent and Trademark Office</option>
-                    <option value="european">Confirmation First Application</option>
+                    <option value="european">European Patent Office</option>
                 </select>
             </div>
             <input type="submit" value="Submit" id="">

@@ -27,7 +27,7 @@
     <div class="card-fund-metrics" id="next-closing">
         <div>
             <h3>
-                <%= portfolio.nextClosing %>
+                <%= portfolio.nextClosing.getDate() + "." + (portfolio.nextClosing.getMonth() + 1) + "." + portfolio.nextClosing.getFullYear() %>
             </h3>
             <span>Next Closing</span>
         </div>
@@ -35,7 +35,7 @@
     <div class="card-fund-metrics" id="final-closing">
         <div>
             <h3>
-                <%= portfolio.finalClosing %>
+               <%= portfolio.finalClosing.getDate() + "." + (portfolio.finalClosing.getMonth() + 1) + "." + portfolio.finalClosing.getFullYear() %>
             </h3>
             <span>Final Closing</span>
         </div>
