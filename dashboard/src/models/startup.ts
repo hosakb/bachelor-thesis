@@ -1,5 +1,6 @@
 import pool from "../config/db";
 import { calcTrlProd } from "../util/calc/trl";
+import { getToday } from "../util/date";
 
 interface StartupTableRow {
   id: string;
@@ -313,7 +314,7 @@ interface Patent {
   updatedAt: Date;
   registrationFee: boolean;
   inventorNomination: boolean;
-  annualFee: boolean;
+  annualFeeDate: Date | null;
   patentExaminationRequest: boolean;
   patentExaminationNoticeDate: Date | null;
   patentExaminationNotice: boolean;
@@ -324,12 +325,13 @@ interface Patent {
   patentDuration: number | undefined;
   examinationRequest: boolean;
   objectionResponse: boolean;
+  rejectionDate: Date | null;
 }
 
 interface UpdatedPatentDisclosure {
   id: string;
   registrationFee: boolean;
-  annualFee: boolean;
+  annualFeeDate: Date;
   inventorNomination: boolean;
   examinationRequest: boolean;
 }
@@ -344,7 +346,7 @@ function isUpdatedPatentDisclosure(
     // eslint-disable-next-line no-prototype-builtins
     value.hasOwnProperty("registrationFee") &&
     // eslint-disable-next-line no-prototype-builtins
-    value.hasOwnProperty("annualFee") &&
+    value.hasOwnProperty("annualFeeDate") &&
     // eslint-disable-next-line no-prototype-builtins
     value.hasOwnProperty("inventorNomination") &&
     // eslint-disable-next-line no-prototype-builtins
@@ -1193,14 +1195,18 @@ const insertNewPatent = async (patent: NewPatent, startupId: string) => {
       patent.patentExaminationNoticeDate === undefined &&
       patent.patentGrantDate === undefined
     ) {
+      const annualFeeDate = new Date(patent.patentConfirmationDate);
+      annualFeeDate.setFullYear(annualFeeDate.getFullYear() + 1);
+
       await client.query(
-        "INSERT INTO patents (invention, inventor, status, patent_office, application_confirmation_date, startup_id) VALUES ($1, $2, $3, $4, $5, $6)",
+        "INSERT INTO patents (invention, inventor, status, patent_office, application_confirmation_date, annual_fee_date, startup_id) VALUES ($1, $2, $3, $4, $5, $6, $7)",
         [
           patent.invention,
           patent.newInventor,
           patent.patentStatus,
           patent.patentOffice,
           patent.patentConfirmationDate,
+          annualFeeDate,
           startupId,
         ]
       );
@@ -1271,7 +1277,8 @@ const getAllPatents = async (startupId: string): Promise<Patent[]> => {
         updatedAt: row.updated_at,
         registrationFee: row.registration_fee,
         inventorNomination: row.inventor_nomination,
-        annualFee: row.annual_fee,
+        annualFeeDate:
+          row.annual_fee_date !== null ? new Date(row.annual_fee_date) : null,
         patentExaminationRequest: row.patent_examination_request,
         patentExaminationNoticeDate:
           row.patent_examination_notice_date !== null
@@ -1285,6 +1292,7 @@ const getAllPatents = async (startupId: string): Promise<Patent[]> => {
         patentDuration: row.patent_duration,
         examinationRequest: row.examination_request,
         objectionResponse: row.objection_response,
+        rejectionDate: row.rejection_date,
       };
     });
   } catch (err) {
@@ -1306,34 +1314,78 @@ const updatePatent = async (
   try {
     if (isUpdatedPatentDisclosure(patentUpdate)) {
       await client.query(
-        "UPDATE patents SET registration_fee = $1, annual_fee = $2, inventor_nomination = $3, examination_request = $4 WHERE id = $5;",
+        "UPDATE patents SET registration_fee = $1, annual_fee_date = $2, inventor_nomination = $3, examination_request = $4, updated_at = $5 WHERE id = $6;",
         [
           patentUpdate.registrationFee,
-          patentUpdate.annualFee,
+          patentUpdate.annualFeeDate,
           patentUpdate.inventorNomination,
           patentUpdate.examinationRequest,
+          getToday(),
           patentUpdate.id,
         ]
       );
     } else if (isUpdatedPatentExamination(patentUpdate)) {
       await client.query(
-        "UPDATE patents SET patent_examination_notice = $1 WHERE id = $2;",
-        [patentUpdate.patentExaminationNotice, patentUpdate.id]
+        "UPDATE patents SET patent_examination_notice = $1, updated_at = $2 WHERE id = $3;",
+        [patentUpdate.patentExaminationNotice, getToday(), patentUpdate.id]
       );
     } else {
       await client.query(
-        "UPDATE patents SET grant_fee = $1, objection = $2, objection_response = $3 WHERE id = $4;",
+        "UPDATE patents SET grant_fee = $1, objection = $2, objection_response = $3, updated_at = $4 WHERE id = $5;",
         [
           patentUpdate.grantFee,
           patentUpdate.objection,
           patentUpdate.objectionResponse,
+          getToday(),
           patentUpdate.id,
         ]
       );
     }
   } catch (err) {
     throw new Error(
-      `Failed to update patent with id ${patentUpdate.id} due to Error: ${err}`
+      `Failed to update patent with id ${patentUpdate.id} due to: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const updatePatentPhaseStatus = async (
+  id: string,
+  currentStatus: string,
+  date: Date,
+  grantDuration: number
+) => {
+  const client = await pool.connect();
+
+  try {
+    if (currentStatus === "disclosure-phase") {
+      await client.query(
+        "UPDATE patents SET status = $1, patent_examination_notice_date = $2, updated_at = $3 WHERE id = $4;",
+        ["examination-phase", date, getToday(), id]
+      );
+    } else if (currentStatus === "examination-phase") {
+      if (grantDuration === undefined) {
+        throw new Error("Grant duration is undefined.");
+      }
+      if (date === undefined) {
+        throw new Error("Grant date is undefined.");
+      }
+      await client.query(
+        "UPDATE patents SET status = $1, patent_duration = $2, grant_date = $3, updated_at = $4 WHERE id = $5;",
+        ["objection-phase", grantDuration, date, getToday(), id]
+      );
+    } else if (currentStatus === "objection-phase") {
+      await client.query(
+        "UPDATE patents SET status = $1, updated_at = $2 WHERE id = $3;",
+        ["granted", getToday(), id]
+      );
+    } else {
+      throw new Error("Failed to identify phase.");
+    }
+  } catch (err) {
+    throw new Error(
+      `Failed to update patent phase status with patent id ${id} due to: ${err}`
     );
   } finally {
     client.release();
@@ -1343,13 +1395,55 @@ const updatePatent = async (
 const persistPatentConfirmationDate = async (id: string, date: Date) => {
   const client = await pool.connect();
   try {
+    const newAnnualFeeDate = new Date(date);
+    newAnnualFeeDate.setFullYear(date.getFullYear() + 1);
+
     await client.query(
-      "UPDATE patents SET application_confirmation_date = $1, status = 'disclosure-phase' WHERE id = $2;",
-      [date, id]
+      "UPDATE patents SET application_confirmation_date = $1, status = 'disclosure-phase', updated_at = $2, annual_fee_date = $3 WHERE id = $4;",
+      [date, getToday(), newAnnualFeeDate, id]
     );
   } catch (err) {
     throw new Error(
-      `Failed to update patent application confirmation date with id ${id} due to Error: ${err}`
+      `Failed to update patent application confirmation date with id ${id} due to: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const updateCancelPatent = async (
+  id: string,
+  reason: string,
+  status: string,
+  date: Date
+) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      "UPDATE patents SET rejection_reason = $1, status = $2, rejection_date = $3, updated_at = $4 WHERE id = $5;",
+      [reason, status, date, getToday(), id]
+    );
+  } catch (err) {
+    throw new Error(
+      `Failed to set patent as canceled with patent id ${id} due to: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
+const getPatentAnnualFeeDateById = async (id: string): Promise<Date> => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      "SELECT annual_fee_date FROM patents WHERE id = $1;",
+      [id]
+    );
+
+    return new Date(result.rows[0].annual_fee_date);
+  } catch (err) {
+    throw new Error(
+      `Failed query annual fee date for patent with id: ${id}. ${err}`
     );
   } finally {
     client.release();
@@ -1392,6 +1486,7 @@ export {
   getQuestionnaireFilledOut,
   getStartupIds,
   getStartupNameById,
+  getPatentAnnualFeeDateById,
   getStartups,
   getStartupTableRowById,
   getTrl,
@@ -1414,6 +1509,8 @@ export {
   updateMilestoneDuration,
   updateMilestoneProgress,
   updatePatent,
+  updatePatentPhaseStatus,
   updateStartupName,
   updateTrl,
+  updateCancelPatent,
 };

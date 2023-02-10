@@ -260,6 +260,18 @@ select {
   background: #45484e;
 }
 
+textarea {
+  width: 100%;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  outline: none;
+  border: 1px solid #979797;
+  border-radius: 0.4rem;
+  background: #45484e;
+}
+
 /* ================================= Dashboard =============================== */
 
 /* --------------------------------- Fund Portfolio ------------------------------- */
@@ -598,12 +610,12 @@ select {
 
 .submit-cards {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 2fr;
   grid-gap: 2rem;
   margin-top: 1rem;
   grid-template-areas:
     "submitTrlProd submitContactedInvestors"
-    "submitMilestones submitMilestones"
+    "submitMilestones submitPatent"
     "submitCapTable submitCapTable";
 }
 
@@ -618,6 +630,9 @@ select {
 }
 #submit-cap-table {
   grid-area: submitCapTable;
+}
+#submit-patent {
+  grid-area: submitPatent;
 }
 
 #submit-cap-table * {
@@ -641,11 +656,11 @@ select {
     display: grid;
     grid-template-columns: 2fr;
     grid-gap: 1rem;
-    grid-gap: 1rem;
     grid-template-areas:
       "submitContactedInvestors submitContactedInvestors"
       "submitTrlProd submitTrlProd"
       "submitMilestones submitMilestones"
+      "submitPatent submitPatent"
       "submitCapTable submitCapTable";
   }
 }
@@ -655,11 +670,11 @@ select {
     display: grid;
     grid-template-columns: 2fr;
     grid-gap: 1rem;
-    grid-gap: 1rem;
     grid-template-areas:
       "submitContactedInvestors submitContactedInvestors"
       "submitTrlProd submitTrlProd"
       "submitMilestones submitMilestones"
+      "submitPatent submitPatent"
       "submitCapTable submitCapTable";
   }
 }

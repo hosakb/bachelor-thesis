@@ -10,5 +10,13 @@ export function getMonth(date: Date) {
 }
 
 export function formatDate(date: Date): string {
-  return date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear();
+  return (
+    date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+  );
+}
+
+export function getToday(): Date {
+  const today = new Date();
+  today.setMonth(today.getMonth() + 1);
+  return today;
 }

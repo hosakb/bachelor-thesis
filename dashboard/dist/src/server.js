@@ -1,7 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const express_ejs_layouts_1 = __importDefault(require("express-ejs-layouts"));
@@ -18,14 +20,16 @@ const check_auth_1 = require("./middleware/check-auth");
 const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 (0, passport_2.default)(passport_1.default);
-app.use((0, express_session_1.default)({
+app.use(
+  (0, express_session_1.default)({
     // Key we want to keep secret which will encrypt all of our information
     secret: "12345",
     // Should we resave our session variables if nothing has changes which we dont
     resave: true,
     // Save empty value if there is no vaue which we do not want to do
     saveUninitialized: false,
-}));
+  })
+);
 // Funtion inside passport which initializes passport
 app.use(passport_1.default.initialize());
 // Store our variables to be persisted across the whole session. Works with app.use(Session) above

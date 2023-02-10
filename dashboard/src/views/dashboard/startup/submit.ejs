@@ -69,40 +69,40 @@
                 </thead>
                 <tbody>
                     <% for (const investor of investors) { %>
-                        <tr>
-                            <td><%= investor.name %> </td>
-                            <td><%= investor.type %> </td>
-                            <td>
-                                <ul>
-                                    <li><%= investor.email %></li>
-                                    <li><%= investor.number %></li>
-                                    <li><%= investor.website %></li>
-                                </ul>
-                            </td>
-                            <td>
-                                <%= investor.contactDate %>
-                            </td>
-                            <td>
-                                <%= investor.country %>
-                            </td>
-                            <td>
-                                <%= investor.notes %>
-                            </td>
-                            <td>
-                                <input type="hidden" value="<%= investor.id %>">
-                                <div>
-                                    <% if(investor.status == "contacted") { %>
-                                        <button id="investor-accepted" onclick="investorAccepted(this)"><i class="las la-check"></i></button>
-                                        <button id="investor-declined"><i class="las la-times" onclick="investorDeclined(this)"></i></button>
-                                    <% } else if(investor.status == "accepted")  { %>
-                                        <span><i class="las la-check"></i></span>
-                                    <% } else if(investor.status == "declined")  { %>
-                                        <span><i class="las la-times"></i></span>
-                                    <% } %> 
-                                </div>
-                            </td>
-                        </tr>
-                    <% } %> 
+                    <tr>
+                        <td><%= investor.name %> </td>
+                        <td><%= investor.type %> </td>
+                        <td>
+                            <ul>
+                                <li><%= investor.email %></li>
+                                <li><%= investor.number %></li>
+                                <li><%= investor.website %></li>
+                            </ul>
+                        </td>
+                        <td>
+                            <%= investor.contactDate %>
+                        </td>
+                        <td>
+                            <%= investor.country %>
+                        </td>
+                        <td>
+                            <%= investor.notes %>
+                        </td>
+                        <td>
+                            <input type="hidden" value="<%= investor.id %>">
+                            <div>
+                                <% if(investor.status == "contacted") { %>
+                                <button id="investor-accepted" onclick="investorAccepted(this)"><i class="las la-check"></i></button>
+                                <button id="investor-declined"><i class="las la-times" onclick="investorDeclined(this)"></i></button>
+                                <% } else if(investor.status == "accepted")  { %>
+                                <span><i class="las la-check"></i></span>
+                                <% } else if(investor.status == "declined")  { %>
+                                <span><i class="las la-times"></i></span>
+                                <% } %>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
                 </tbody>
             </table>
         </div>
@@ -185,7 +185,7 @@
     <div class="submit-card" id="submit-patent">
         <h2>Patents</h2>
         <button id="new-patent-btn">New Patent</button>
-        <div id="milestones-tbl" class="submit-table-wrapper">
+        <div class="submit-table-wrapper">
             <table>
                 <thead>
                     <tr>
@@ -193,7 +193,7 @@
                         <th>Inventor</th>
                         <th>Status</th>
                         <th>Last Status Change</th>
-                        <th>Options</th>
+                        <th>Options/Info</th>
                     </tr>
                 </thead>
                 <tbody id="patent-tbody">
@@ -213,8 +213,13 @@
                         </td>
                         <td>
                             <button onclick="updatePatentStatus('<%= JSON.stringify(patent) %>')">
-                                <span><i class="las la-edit"></i></span>
+                                <span><i class="las la-info"></i></span>
                             </button>
+                            <% if (patent.status != "rejected" && patent.status != "canceled" ) { %>
+                            <button onclick="cancelPatent('<%= patent.id %>')">
+                                <span><i class="las la-times"></i></span>
+                            </button>
+                            <% } %>
                         </td>
                     </tr>
                     <% } %>
@@ -774,11 +779,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Annual Fee Deadline</td>
+                            <td>Next Annual Fee Deadline</td>
                             <td id="annual-fee-deadline"></td>
                             <td>
                                 <span><input type="checkbox" name="annualFeeDeadline" id="annual-fee-deadline-checkbox"></span>
-                                <span id="annual-fee-deadline-check" class="hidden"><i class="las la-check-circle"></i></span>
                             </td>
                         </tr>
                         <tr>
@@ -831,12 +835,15 @@
                 </table>
                 <input type="submit" value="Submit" id="submit-disclosure-phase">
             </form>
-            <div id="examination-notice-date-received-form" class="hidden">
-                <form action="">
+            <div id="examination-notice-received-date-form" class="hidden">
+                <form action="/startup/submit/update-status" method="post">
+                    <input type="hidden" name="currentPatentStatus" value="disclosure-phase">
+                    <input type="hidden" name="patentId" id="disclosure-phase-patent-id">
                     <div class="form-item" id="examination-notice-date-received">
                         <label for="examination-notice-date-received-input">Date of received examination notice</label>
-                        <input type="date" name="examinationDateInput" id="examination-notice-date-received-input">
+                        <input type="date" name="nextPhaseDate" id="examination-notice-date-received-input" required>
                     </div>
+                    <input type="submit" value="Submit">
                 </form>
             </div>
         </div>
@@ -868,8 +875,23 @@
                         </tr>
                     </tbody>
                 </table>
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" id="submit-examination-phase">
             </form>
+            <div id="patent-grant-form" class="hidden">
+                <form action="/startup/submit/update-status" method="post">
+                    <input type="hidden" name="currentPatentStatus" value="examination-phase">
+                    <input type="hidden" name="patentId" id="examination-phase-patent-id">
+                    <div class="form-item">
+                        <label for="patent-grant-input">Date of Patent grant</label>
+                        <input type="date" name="nextPhaseDate" id="patent-grant-input" required>
+                    </div>
+                    <div class="form-item">
+                        <label for="patent-grant-duration-input">Patent grant duration:</label>
+                        <input type="number" name="grantDuration" id="patent-grant-duration-input" min="0" max="20" required>
+                    </div>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
         <div id="objection-phase" class="hidden">
             <form action="/startup/submit/update-patent" method="post">
@@ -919,8 +941,15 @@
                         </tr>
                     </tbody>
                 </table>
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" id="objection-examination-phase">
             </form>
+            <div id="objection-resolved-form" class="hidden">
+                <form action="/startup/submit/update-status" method="post">
+                    <input type="hidden" name="currentPatentStatus" value="objection-phase">
+                    <input type="hidden" name="patentId" id="objection-phase-patent-id">
+                    <input type="submit" value="Objection resolved / No Objections">
+                </form>
+            </div>
         </div>
         <div id="granted" class="hidden">
             <div>
@@ -934,7 +963,7 @@
         </div>
         <div id="rejected" class="hidden">
             <div>
-                <label>The patent has been rejected or has been canceled due to:</label>
+                <label>The patent has been <span id="cancel-status"></span> or has been canceled due to:</label>
                 <p id="rejection-reason"></p>
             </div>
             <div>
@@ -942,5 +971,31 @@
                 <span id="rejected-on"></span>
             </div>
         </div>
+    </div>
+</div>
+<div class="variable-pane" id="cancel-patent-pane">
+    <div class="variable-pane-box">
+        <button id="exit-cancel-patent-pane" class="exit"><i class="las la-times"></i></button>
+        <h3>Cancel Patent</h3>
+        <br>
+        <form action="/startup/submit/cancel-patent" method="post">
+            <input type="hidden" name="id" id="cancel-patent-id">
+            <div class="form-item">
+                <label for="cancel-patent-date">Date of Rejection or Cancellation:</label>
+                <input type="date" name="date" required />
+            </div>
+            <div class="form-item">
+                <label for="cancel-patent-status">Status:</label>
+                <select name="status" id="cancel-patent-status">
+                    <option value="canceled">Canceled</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+            <div class="form-item">
+                <label for="cancel-patent-reason">Reason for Rejection or Cancellation:</label>
+                <textarea name="reason" cols="30" rows="10"></textarea>
+            </div>
+            <input type="submit" value="Cancel">
+        </form>
     </div>
 </div>

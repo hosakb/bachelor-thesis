@@ -34,6 +34,9 @@ import {
   UpdatedPatentObjection,
   updatePatent,
   persistPatentConfirmationDate,
+  updatePatentPhaseStatus,
+  updateCancelPatent,
+  getPatentAnnualFeeDateById,
 } from "../models/startup";
 import { getMonth } from "../util/date";
 import {
@@ -544,13 +547,24 @@ router.post("/submit/update-patent", async (req, res) => {
     | UpdatedPatentExamination
     | UpdatedPatentObjection;
   try {
-    if (patentId === undefined || patentId === '' || patentStatus === undefined || patentStatus === '') {
+    if (
+      patentId === undefined ||
+      patentId === "" ||
+      patentStatus === undefined ||
+      patentStatus === ""
+    ) {
       throw new Error("Patent or Status not identifiable.");
     } else if (patentStatus === "disclosure-phase") {
+      const lastAnnualFeeDate: Date = await getPatentAnnualFeeDateById(
+        patentId
+      );
+      const newAnnualFeeDate = new Date(lastAnnualFeeDate);
+      newAnnualFeeDate.setFullYear(lastAnnualFeeDate.getFullYear() + 1);
       p = {
         id: patentId,
         registrationFee: submissionFeeDeadline === "on" ? true : false,
-        annualFee: annualFeeDeadline === "on" ? true : false,
+        annualFeeDate:
+          annualFeeDeadline === "on" ? newAnnualFeeDate : lastAnnualFeeDate,
         inventorNomination: inventorNominationDeadline === "on" ? true : false,
         examinationRequest: examinationRequestDeadline === "on" ? true : false,
       };
@@ -588,7 +602,40 @@ router.post("/submit/initial-patent-application", async (req, res) => {
     res.redirect("/startup/submit");
   } catch (error) {
     console.error(
+      `Failed to update initial patent information. Error: ${error}. Redirecting to /startup/submit ${error}`
+    );
+    res.redirect("/startup/submit");
+  }
+});
+
+router.post("/submit/update-status", async (req, res) => {
+  const { currentPatentStatus, patentId, nextPhaseDate, grantDuration } =
+    req.body;
+
+  try {
+    await updatePatentPhaseStatus(
+      patentId,
+      currentPatentStatus,
+      new Date(nextPhaseDate),
+      parseInt(grantDuration)
+    );
+    res.redirect("/startup/submit");
+  } catch (error) {
+    console.error(
       `Failed to update patent information. Error: ${error}. Redirecting to /startup/submit ${error}`
+    );
+    res.redirect("/startup/submit");
+  }
+});
+
+router.post("/submit/cancel-patent", async (req, res) => {
+  const { id, date, status, reason } = req.body;
+  try {
+    await updateCancelPatent(id, reason, status, new Date(date));
+    res.redirect("/startup/submit");
+  } catch (error) {
+    console.error(
+      `Failed to set patent as canceled with patent id ${id}. ${error}. Redirecting to /startup/submit ${error}`
     );
     res.redirect("/startup/submit");
   }
