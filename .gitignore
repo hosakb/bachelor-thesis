@@ -1,4 +1,5 @@
-.env
+dashboard/.env
+scraper/.env
 node_modules
 generated/**/*
 dashboard/dist/**
