@@ -38,11 +38,11 @@ git clone git@github.com:hosakb/bachelor-thesis.git
 
 2. (Extract and) Open the folder bachelor-thesis. It should contain two other folders called `dashbaord` and `scraper`.
 
-Note: Before progressing, make sure you have Node.js 14 and Node Package Manager Installed. For Windows, this can be done via Node Version Manager. 
+Note: Before progressing, make sure you have Node.js v12.22.12 and Node Package Manager Installed. For Windows, this can be done via Node Version Manager. 
 Just head over to [this repo](https://github.com/coreybutler/nvm-windows/releases) to download the installer. More information on NVM and its 
 installation and use can be found in [this post](https://tamalweb.com/which-nodejs-version).
 
-Once Node.js 14 is installed, run the following command in both directories to install all the dependencies.
+Once Node.js v12.22.12 is installed, run the following command in both directories to install all the dependencies.
 ```
 npm i
 ```
