@@ -51,6 +51,7 @@
             </div>
         </div>
     </div>
+     <% if(dashboard == "fund") { %>
     <div class="card-startup-metrics" id="trl">
         <div id="trl-prod-metric">
             <h2>
@@ -141,46 +142,45 @@
             </table>
         </div>
     </div>
-    <% if(dashboard == "fund") { %>
-        <div class="card-startup-table" id="patent">
-            <h2>Patents</h2>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Invention</th>
-                            <th>Inventor</th>
-                            <th>Status</th>
-                            <th>Last Status Change</th>
-                            <th>Options/Info</th>
-                        </tr>
-                    </thead>
-                    <tbody id="patent-tbody">
-                        <% for(const patent of locals.patents) { %>
-                        <tr>
-                            <td>
-                                <%= patent.invention %>
-                            </td>
-                            <td>
-                                <%= patent.inventor %>
-                            </td>
-                            <td>
-                                <%= patent.status %>
-                            </td>
-                            <td>
-                                <%= patent.updatedAt.getDate() + "." + (patent.updatedAt.getMonth() + 1) + "." + patent.updatedAt.getFullYear() %>
-                            </td>
-                            <td>
-                                <button onclick="patentInfo('<%= JSON.stringify(patent) %>')">
-                                    <span><i class="las la-info"></i></span>
-                                </button>
-                            </td>
-                        </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-            </div>
+    <div class="card-startup-table" id="patent">
+        <h2>Patents</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Invention</th>
+                        <th>Inventor</th>
+                        <th>Phase</th>
+                        <th>Last Status Change</th>
+                        <th>Options/Info</th>
+                    </tr>
+                </thead>
+                <tbody id="patent-tbody">
+                    <% for(const patent of locals.patents) { %>
+                    <tr>
+                        <td>
+                            <%= patent.invention %>
+                        </td>
+                        <td>
+                            <%= patent.inventor %>
+                        </td>
+                        <td>
+                            <%= patent.status %>
+                        </td>
+                        <td>
+                            <%= patent.updatedAt.getDate() + "." + (patent.updatedAt.getMonth() + 1) + "." + patent.updatedAt.getFullYear() %>
+                        </td>
+                        <td>
+                            <button onclick="patentInfo('<%= JSON.stringify(patent) %>')">
+                                <span><i class="las la-info"></i></span>
+                            </button>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
         </div>
+    </div>
     <% } %> 
 </div>
 <div class="variable-pane" id="patent-info-pane">
