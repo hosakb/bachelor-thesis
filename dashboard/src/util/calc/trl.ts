@@ -1,4 +1,4 @@
-import { TrlData } from "../../models/startup";
+import { TrlData } from "../../models/trl";
 
 export const calcTrlProd = (trlData: TrlData[]): number => {
   let trlCriticalitySum = 0;

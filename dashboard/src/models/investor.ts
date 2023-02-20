@@ -12,7 +12,7 @@ interface Weights {
   sum: number;
 }
 
-interface Fund {
+interface Investor {
   id: string;
   name: string;
   createdAt: Date;
@@ -25,7 +25,7 @@ interface Fund {
   type: string;
 }
 
-interface NewFund {
+interface NewInvestor {
   name: string;
   investmentSector: string;
   hardCap: number;
@@ -35,7 +35,7 @@ interface NewFund {
   type: string;
 }
 
-interface UpdatedFund {
+interface UpdatedInvestor {
   id: string;
   name: string;
   sector: string;
@@ -45,7 +45,7 @@ interface UpdatedFund {
   finalClosing: Date;
 }
 
-interface AdminFundPortfolio {
+interface AdminInvestorPortfolio {
   name: string;
   sector: string;
   hardCap: number;
@@ -56,12 +56,12 @@ interface AdminFundPortfolio {
   type: string;
 }
 
-const getFunds = async (): Promise<Fund[]> => {
+const getInvestors = async (): Promise<Investor[]> => {
   const client = await pool.connect();
 
   try {
     const result = await client.query(
-      "SELECT id, name, created_at, updated_at, investment_sector, fund_volume, hard_cap, next_closing, final_closing, type FROM fund",
+      "SELECT id, name, created_at, updated_at, investment_sector, fund_volume, hard_cap, next_closing, final_closing, type FROM investor",
       []
     );
 
@@ -86,13 +86,14 @@ const getFunds = async (): Promise<Fund[]> => {
   }
 };
 
-const getFundNameById = async (fundId: string) => {
+const getInvestorNameById = async (fundId: string) => {
   const client = await pool.connect();
 
   try {
-    const result = await client.query("SELECT name FROM fund WHERE id = $1", [
-      fundId,
-    ]);
+    const result = await client.query(
+      "SELECT name FROM investor WHERE id = $1",
+      [fundId]
+    );
 
     if (result.rowCount === 0) {
       throw new Error(`No fund found found for id ${fundId}.`);
@@ -111,10 +112,10 @@ const getFundNameById = async (fundId: string) => {
 const updateWeights = async (fundId: string, weights: Weights) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE fund SET weights = $1 WHERE id = $2;", [
-      JSON.stringify(weights),
-      fundId,
-    ]);
+    await client.query(
+      "UPDATE investor SET weights = $1, updated_at = NOW() WHERE id = $2;",
+      [JSON.stringify(weights), fundId]
+    );
   } catch (err) {
     throw new Error(
       `Failed to update weighting for fund with id ${fundId} with the following error: ${err}`
@@ -128,7 +129,7 @@ const getWeights = async (fundId: string): Promise<Weights> => {
   const client = await pool.connect();
   let result;
   try {
-    result = await client.query("SELECT weights FROM fund WHERE id = $1;", [
+    result = await client.query("SELECT weights FROM investor WHERE id = $1;", [
       fundId,
     ]);
   } catch (err) {
@@ -141,11 +142,11 @@ const getWeights = async (fundId: string): Promise<Weights> => {
   return result.rows[0].weights;
 };
 
-const insertNewFund = async (fund: NewFund): Promise<string> => {
+const insertNewInvestor = async (fund: NewInvestor): Promise<string> => {
   const client = await pool.connect();
   try {
     const result = await client.query(
-      `INSERT INTO fund (name, investment_sector, fund_volume, hard_cap, next_closing, final_closing, type) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;`,
+      `INSERT INTO investor (name, investment_sector, fund_volume, hard_cap, next_closing, final_closing, type) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;`,
       [
         fund.name,
         fund.investmentSector,
@@ -169,12 +170,12 @@ const insertNewFund = async (fund: NewFund): Promise<string> => {
   }
 };
 
-const getFundById = async (fundId: string): Promise<Fund> => {
+const getInvestorById = async (fundId: string): Promise<Investor> => {
   const client = await pool.connect();
 
   try {
     const result = await client.query(
-      "SELECT id, name, investment_sector, fund_volume, hard_cap, next_closing, final_closing, created_at, updated_at, type FROM fund WHERE id=$1",
+      "SELECT id, name, investment_sector, fund_volume, hard_cap, next_closing, final_closing, created_at, updated_at, type FROM investor WHERE id=$1",
       [fundId]
     );
 
@@ -226,11 +227,11 @@ const getFundById = async (fundId: string): Promise<Fund> => {
   }
 };
 
-const updateFund = async (fund: UpdatedFund) => {
+const updateInvestor = async (fund: UpdatedInvestor) => {
   const client = await pool.connect();
   try {
     await client.query(
-      "UPDATE fund SET name = $1, investment_sector = $2, fund_volume = $3, hard_cap = $4, next_closing = $5, final_closing = $6 WHERE id = $7;",
+      "UPDATE investor SET name = $1, investment_sector = $2, fund_volume = $3, hard_cap = $4, next_closing = $5, final_closing = $6, updated_at = NOW() WHERE id = $7;",
       [
         fund.name,
         fund.sector,
@@ -250,10 +251,10 @@ const updateFund = async (fund: UpdatedFund) => {
   }
 };
 
-const deleteFund = async (id: string) => {
+const deleteInvestor = async (id: string) => {
   const client = await pool.connect();
   try {
-    await client.query("DELETE FROM fund WHERE id = $1;", [id]);
+    await client.query("DELETE FROM investor WHERE id = $1;", [id]);
   } catch (err) {
     throw new Error(`Failed to delete fund with id ${id}. Error: ${err}`);
   } finally {
@@ -261,18 +262,47 @@ const deleteFund = async (id: string) => {
   }
 };
 
+const investorIdExists = async (fundId: string) => {
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query("SELECT * FROM investor WHERE id=$1", [
+      fundId,
+    ]);
+
+    if (result.rowCount > 1) {
+      console.error(
+        `Multiple funds received for fund id: ${fundId}. Expected one.`
+      );
+      return false;
+    } else if (result.rowCount === 0) {
+      console.error(`Fund with fund id ${fundId} does not exists.`);
+      return false;
+    } else {
+      return true;
+    }
+  } catch (err) {
+    throw new Error(
+      `Failed to validate fund with id ${fundId} with the following error: ${err}`
+    );
+  } finally {
+    client.release();
+  }
+};
+
 export {
-  UpdatedFund,
+  UpdatedInvestor,
   Weights,
-  NewFund,
-  Fund,
-  AdminFundPortfolio,
-  updateFund,
-  getFunds,
+  NewInvestor,
+  Investor,
+  AdminInvestorPortfolio,
+  updateInvestor,
+  getInvestors,
   updateWeights,
   getWeights,
-  getFundNameById,
-  insertNewFund,
-  getFundById,
-  deleteFund,
+  getInvestorNameById,
+  insertNewInvestor,
+  getInvestorById,
+  deleteInvestor,
+  investorIdExists,
 };

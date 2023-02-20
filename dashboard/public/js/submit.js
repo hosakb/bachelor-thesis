@@ -403,6 +403,7 @@ document
       })
         .then(() => {
           alert("Successfully added contacted investor");
+          location.reload();
         })
         .catch(() => {
           alert("Failed to add contacted investor.");
@@ -557,6 +558,7 @@ function investorAccepted(e) {
   })
     .then(() => {
       alert("Successfully updated contacted investors status");
+      location.reload();
     })
     .catch(() => {
       alert("Failed to update contacted investors status.");
@@ -583,6 +585,7 @@ function investorDeclined(e) {
   })
     .then(() => {
       alert("Successfully updated contacted investors status");
+      location.reload();
     })
     .catch(() => {
       alert("Failed to update contacted investors status.");

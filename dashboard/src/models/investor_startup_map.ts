@@ -2,42 +2,14 @@ import pool from "../config/db";
 
 import { StartupTableRow, getStartupTableRowById } from "./startup";
 
-const fundIdExists = async (fundId: string) => {
-  const client = await pool.connect();
-
-  try {
-    const result = await client.query("SELECT * FROM fund WHERE id=$1", [
-      fundId,
-    ]);
-
-    if (result.rowCount > 1) {
-      console.error(
-        `Multiple funds received for fund id: ${fundId}. Expected one.`
-      );
-      return false;
-    } else if (result.rowCount === 0) {
-      console.error(`Fund with fund id ${fundId} does not exists.`);
-      return false;
-    } else {
-      return true;
-    }
-  } catch (err) {
-    throw new Error(
-      `Failed to validate fund with id ${fundId} with the following error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const getStartupsForFund = async (
+const getStartupsForInvestor = async (
   fundId: string
 ): Promise<StartupTableRow[]> => {
   const client = await pool.connect();
   let result;
   try {
     result = await client.query(
-      `SELECT startup_id, rating FROM fund_startup_map WHERE fund_id=$1`,
+      `SELECT startup_id, rating FROM investor_startup_map WHERE fund_id=$1`,
       [fundId]
     );
   } catch (err) {
@@ -68,11 +40,11 @@ const getStartupsForFund = async (
   }
 };
 
-const getStartupIdsForFund = async (fundId: string): Promise<string[]> => {
+const getStartupIdsForInvestor = async (fundId: string): Promise<string[]> => {
   const client = await pool.connect();
   try {
     const result = await client.query(
-      `SELECT startup_id FROM fund_startup_map WHERE fund_id=$1`,
+      `SELECT startup_id FROM investor_startup_map WHERE fund_id=$1`,
       [fundId]
     );
 
@@ -88,11 +60,14 @@ const getStartupIdsForFund = async (fundId: string): Promise<string[]> => {
   }
 };
 
-const insertFundStartupRelation = async (fundId: string, startupId: string) => {
+const insertInvestorStartupRelation = async (
+  fundId: string,
+  startupId: string
+) => {
   const client = await pool.connect();
   try {
     await client.query(
-      "INSERT INTO fund_startup_map (fund_id, startup_id) VALUES ($1, $2);",
+      "INSERT INTO investor_startup_map (fund_id, startup_id) VALUES ($1, $2);",
       [fundId, startupId]
     );
   } catch (err) {
@@ -104,16 +79,16 @@ const insertFundStartupRelation = async (fundId: string, startupId: string) => {
   }
 };
 
-const updateFundStartups = async (fundId: string, startups: string[]) => {
+const updateInvestorStartups = async (fundId: string, startups: string[]) => {
   const client = await pool.connect();
   try {
-    await client.query("DELETE FROM fund_startup_map WHERE fund_id = $1;", [
+    await client.query("DELETE FROM investor_startup_map WHERE fund_id = $1;", [
       fundId,
     ]);
 
     for (const startupId of startups) {
       await client.query(
-        "INSERT INTO fund_startup_map (fund_id, startup_id) VALUES ($1, $2);",
+        "INSERT INTO investor_startup_map (fund_id, startup_id) VALUES ($1, $2);",
         [fundId, startupId]
       );
     }
@@ -134,7 +109,7 @@ const updateRatingTotal = async (
   const client = await pool.connect();
   try {
     await client.query(
-      "UPDATE fund_startup_map SET rating = $1 WHERE fund_id = $2 AND startup_id = $3;",
+      "UPDATE investor_startup_map SET rating = $1 WHERE fund_id = $2 AND startup_id = $3;",
       [ratingTotal, fundId, startupId]
     );
   } catch (err) {
@@ -147,10 +122,9 @@ const updateRatingTotal = async (
 };
 
 export {
-  getStartupsForFund,
-  fundIdExists,
-  insertFundStartupRelation,
-  updateFundStartups,
+  getStartupsForInvestor,
+  insertInvestorStartupRelation,
+  updateInvestorStartups,
   updateRatingTotal,
-  getStartupIdsForFund,
+  getStartupIdsForInvestor,
 };

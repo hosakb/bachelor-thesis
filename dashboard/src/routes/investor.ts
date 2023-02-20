@@ -1,26 +1,30 @@
 import express, { Router } from "express";
 import { Row } from "read-excel-file";
-import { getFundById, getFundNameById } from "../models/fund";
-
 import {
-  fundIdExists,
-  getStartupsForFund,
+  investorIdExists,
+  getInvestorById,
+  getInvestorNameById,
+} from "../models/investor";
+import { Expertise } from "../models/track_record";
+import {
+  getStartupsForInvestor,
   updateRatingTotal,
-} from "../models/fund_startup_map";
-import { getWeights, updateWeights, Weights } from "../models/fund";
+} from "../models/investor_startup_map";
+import { getWeights, updateWeights, Weights } from "../models/investor";
 import {
-  getAllPatents,
   getCapTable,
-  getInvestors,
-  getMetrics,
-  getMilestones,
   getQuestionnaire,
-  getTrl,
-  Metrics,
-  Milestone,
   Questionnaire,
   QuestionnaireAvg,
 } from "../models/startup";
+
+import { Milestone, getMilestones } from "../models/milestone";
+
+import { getTrl } from "../models/trl";
+
+import { Metrics, getMetrics } from "../models/metrics";
+import { getInvestors } from "../models/potential_investor";
+import { getAllPatents } from "../models/patent";
 import {
   getExpertiseByStartup,
   getFoundersByStartupId,
@@ -31,7 +35,6 @@ import {
   getWeightedPoints,
 } from "../util/calc/rating";
 import { getMonth } from "../util/date";
-import { Expertise } from "../util/types/express";
 
 const router: Router = express.Router();
 
@@ -54,13 +57,13 @@ router.get("/", async (req, res) => {
     req.session.fundId = fundId;
 
     try {
-      if (await !fundIdExists(fundId)) {
+      if (await !investorIdExists(fundId)) {
         res.redirect("/"); // invalid query result for fundId
         return;
       }
 
-      req.session.startupTable = await getStartupsForFund(fundId);
-      const portfolio = await getFundById(fundId);
+      req.session.startupTable = await getStartupsForInvestor(fundId);
+      const portfolio = await getInvestorById(fundId);
 
       res.render("dashboard/fund/index", {
         layout: "../views/layouts/dashboard.ejs",
@@ -68,7 +71,7 @@ router.get("/", async (req, res) => {
         scripts: ["/js/table", "/js/ag-grid-community.min"],
         portfolio,
         page: "dashboard",
-        title: await getFundNameById(fundId),
+        title: await getInvestorNameById(fundId),
         name: req.user?.firstName + " " + req.user?.lastName,
         view: "fund",
       });
@@ -107,7 +110,7 @@ router.get("/startup/founders", async (req, res) => {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "fund",
       scripts: ["/js/chart/chart.min", "/js/founders"],
-      title: req.startupName,
+      title: req.session.startupName,
       name: req.user?.firstName + " " + req.user?.lastName,
       founders: await getFoundersByStartupId(startupId),
       startup: req.session.selectedStartup,
@@ -168,8 +171,7 @@ router.get("/startup/", async (req, res) => {
         "/js/fund",
       ],
       dashboard: "fund",
-      kpis: req.kpis,
-      title: req.startupName,
+      title: req.session.startupName,
       page: "startup",
       view: "startup",
       name: req.user?.firstName + " " + req.user?.lastName,
@@ -254,7 +256,7 @@ router.get("/startup/rating", async (req, res) => {
       layout: "../views/layouts/dashboard.ejs",
       dashboard: "fund",
       scripts: ["/js/rating"],
-      title: req.startupName,
+      title: req.session.startupName,
       name: req.user?.firstName + " " + req.user?.lastName,
       startup: req.session.selectedStartup,
       weightedRating: weightedRating,

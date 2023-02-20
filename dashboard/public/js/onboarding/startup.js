@@ -59,32 +59,41 @@ function submitCapTable() {
 function submitStartupData() {
   const phase = document.querySelector("#phase").value;
   const productToMarket = document.querySelector("#product-to-market").value;
-  const timeToMarket = document.querySelector("#time-to-market").value;
+  let timeToMarket = document.querySelector("#time-to-market").value;
   const sector = document.querySelector("#sector").value;
   const investedCapital = document.querySelector("#invested-capital").value;
 
-  fetch("/onboarding/startup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
-    body: JSON.stringify({
-      startupInfo: {
-        phase: phase,
-        sector: sector,
-        productToMarket: productToMarket,
-        timeToMarket: timeToMarket,
-        investedCapital: investedCapital,
+  console.log(productToMarketSelect.value);
+  if (productToMarketSelect.value === "yes") {
+    timeToMarket = null;
+  }
+
+  if (timeToMarket !== "") {
+    fetch("/onboarding/startup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    }),
-  })
-    .then((response) => {
-      if (response.redirected) {
-        window.location.href = response.url;
-      }
+      redirect: "follow",
+      body: JSON.stringify({
+        startupInfo: {
+          phase: phase,
+          sector: sector,
+          productToMarket: productToMarket,
+          timeToMarket: timeToMarket,
+          investedCapital: investedCapital,
+        },
+      }),
     })
-    .catch(function (err) {
-      console.error(err); //TODO:
-    });
+      .then((response) => {
+        if (response.redirected) {
+          window.location.href = response.url;
+        }
+      })
+      .catch(function (err) {
+        console.error(err); //TODO:
+      });
+  } else {
+    alert("Please provide the estimated time to market.");
+  }
 }

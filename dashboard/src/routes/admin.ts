@@ -8,16 +8,16 @@ import {
   updateStartupName,
 } from "../models/startup";
 import {
-  Fund,
-  AdminFundPortfolio,
-  deleteFund,
-  getFundById,
-  getFunds,
-  insertNewFund,
-  NewFund,
-  UpdatedFund,
-  updateFund,
-} from "../models/fund";
+  Investor,
+  AdminInvestorPortfolio,
+  deleteInvestor,
+  getInvestorById,
+  getInvestors,
+  insertNewInvestor,
+  NewInvestor,
+  UpdatedInvestor,
+  updateInvestor,
+} from "../models/investor";
 import {
   deleteUser,
   emailRegistered,
@@ -37,14 +37,12 @@ import {
   getBusinessCentralUserByStartupId,
   insertBusinessCentralUser,
   updateBusinessCentralUser,
-} from "../models/businessCentral";
+} from "../models/business_central";
 import {
-  getStartupIdsForFund,
-  getStartupsForFund,
-  insertFundStartupRelation,
-  updateFundStartups,
-} from "../models/fund_startup_map";
-import { start } from "repl";
+  getStartupIdsForInvestor,
+  insertInvestorStartupRelation,
+  updateInvestorStartups,
+} from "../models/investor_startup_map";
 
 const router: Router = express.Router();
 
@@ -56,7 +54,7 @@ router.get("/", async (req, res) => {
       page: "admin",
       title: "Admin Panel",
       name: req.user?.firstName + " " + req.user?.lastName,
-      funds: await getFunds(),
+      funds: await getInvestors(),
       startups: await getAllStartups(),
       users: await getUsers(),
     });
@@ -75,7 +73,7 @@ router.get("/users", async (req, res) => {
       page: "users",
       title: "Admin Panel",
       name: req.user?.firstName + " " + req.user?.lastName,
-      funds: await getFunds(),
+      funds: await getInvestors(),
       startups: await getAllStartups(),
       users: await getUsers(),
     });
@@ -272,7 +270,7 @@ router.get("/funds", async (req, res) => {
       page: "funds",
       title: "Admin Panel",
       name: req.user?.firstName + " " + req.user?.lastName,
-      funds: await getFunds(),
+      funds: await getInvestors(),
       startups: await getStartups(),
       allStartups: allStartups,
     });
@@ -295,7 +293,7 @@ router.post("/add-fund", async (req, res) => {
     type,
   } = req.body;
 
-  const newFund: NewFund = {
+  const newFund: NewInvestor = {
     name: fundName,
     investmentSector,
     hardCap,
@@ -306,10 +304,10 @@ router.post("/add-fund", async (req, res) => {
   };
 
   try {
-    const fundId = await insertNewFund(newFund);
+    const fundId = await insertNewInvestor(newFund);
 
     for (const startupId of startups) {
-      await insertFundStartupRelation(fundId, startupId);
+      await insertInvestorStartupRelation(fundId, startupId);
     }
     res.status(200).json();
   } catch (err) {
@@ -320,9 +318,9 @@ router.post("/add-fund", async (req, res) => {
 router.post("/get-fund", async (req, res) => {
   const { id } = req.body;
   try {
-    const fund: Fund = await getFundById(id);
-    const startups = await getStartupIdsForFund(id);
-    const fundPortfolio: AdminFundPortfolio = {
+    const fund: Investor = await getInvestorById(id);
+    const startups = await getStartupIdsForInvestor(id);
+    const fundPortfolio: AdminInvestorPortfolio = {
       name: fund.name,
       sector: fund.investmentSector,
       volume: fund.volume,
@@ -350,7 +348,7 @@ router.post("/update-fund", async (req, res) => {
     fundsStartups,
   } = req.body;
 
-  const updatedFund: UpdatedFund = {
+  const updatedFund: UpdatedInvestor = {
     id,
     name: fundName,
     sector: investmentSector,
@@ -363,8 +361,8 @@ router.post("/update-fund", async (req, res) => {
   const startupIds: string[] = fundsStartups;
 
   try {
-    await updateFund(updatedFund);
-    await updateFundStartups(id, startupIds);
+    await updateInvestor(updatedFund);
+    await updateInvestorStartups(id, startupIds);
     res.status(200).json();
   } catch (err) {
     throw new Error(`Failed to update fund. Error: ${err}`);
@@ -375,7 +373,7 @@ router.post("/delete-fund", async (req, res) => {
   const { id } = req.body;
 
   try {
-    await deleteFund(id);
+    await deleteInvestor(id);
     res.status(200).json();
   } catch (err) {
     throw new Error(`Failed to delete fund. Error: ${err}`);

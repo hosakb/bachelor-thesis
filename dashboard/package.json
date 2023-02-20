@@ -33,7 +33,8 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pg": "^8.8.0",
-    "read-excel-file": "^5.5.0"
+    "read-excel-file": "^5.5.0",
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -49,6 +50,7 @@
     "@types/passport": "^1.0.11",
     "@types/passport-local": "^1.0.34",
     "@types/pg": "^8.6.5",
+    "@types/serve-favicon": "^2.5.3",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
     "dotenv": "^16.0.3",

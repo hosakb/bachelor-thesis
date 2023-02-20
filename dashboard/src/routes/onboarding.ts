@@ -4,8 +4,6 @@ import {
   persistCapTable,
   persistInfo,
   StartupInfo,
-  TrlData,
-  persistTrlData,
   persistCoreTechnology,
   Questionnaire,
   persistQuestionnaire,
@@ -17,6 +15,8 @@ import {
   multerUpload,
   uploadCapTable,
 } from "../util/excel";
+
+import { TrlData, persistTrlData } from "../models/trl";
 
 const router: Router = express.Router();
 
@@ -54,7 +54,7 @@ router.post(
       const capTable = formatCapTable(rows);
       req.session.capTable = capTable;
       res.json(JSON.stringify({ capTable: capTable }));
-
+      deleteSpreadsheets();
       return;
     } catch (error) {
       console.error(
@@ -397,7 +397,7 @@ router.get("/track-record", async (req, res) => {
 
   res.render("onboarding/track_record", {
     layout: "../views/layouts/onboarding.ejs",
-    title: req.startupName,
+    title: req.session.startupName,
     name: req.user?.firstName + " " + req.user?.lastName,
     startupName: newStartup.name,
     founder: req.user?.firstName + " " + req.user?.lastName,

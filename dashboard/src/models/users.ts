@@ -72,12 +72,6 @@ interface Founder {
   lastName: string;
 }
 
-interface GeneralPartner {
-  id: string;
-  firstName: string;
-  lastName: string;
-}
-
 const getUsers = async (): Promise<AdminUser[]> => {
   const client = await pool.connect();
 
@@ -116,7 +110,7 @@ const getUsers = async (): Promise<AdminUser[]> => {
       } else if (user.fund !== null) {
         try {
           const result = await client.query(
-            "SELECT name FROM fund WHERE id = $1;",
+            "SELECT name FROM investor WHERE id = $1;",
             [user.fund]
           );
           const fund = result.rows[0].name;
@@ -357,7 +351,7 @@ const updateUser = async (updatedUser: UpdatedUser) => {
 
   try {
     await client.query(
-      `UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE id = $5`,
+      `UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4, updated_at = NOW() WHERE id = $5`,
       [
         updatedUser.firstName,
         updatedUser.lastName,

@@ -1,4 +1,4 @@
-import { Weights } from "../../models/fund";
+import { Weights } from "../../models/investor";
 import {
   Questionnaire,
   QuestionnaireAvg,

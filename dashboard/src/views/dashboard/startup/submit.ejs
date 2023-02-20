@@ -215,7 +215,7 @@
                             <button onclick="updatePatentStatus('<%= JSON.stringify(patent) %>')">
                                 <span><i class="las la-info"></i></span>
                             </button>
-                            <% if (patent.status != "rejected" && patent.status != "canceled" ) { %>
+                            <% if (patent.status != "rejected" && patent.status != "canceled" && patent.status != "granted" ) { %>
                             <button onclick="cancelPatent('<%= patent.id %>')">
                                 <span><i class="las la-times"></i></span>
                             </button>

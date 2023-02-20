@@ -10,9 +10,10 @@ import {
 } from "../models/users";
 import {
   getFirstStartupLoginById,
-  getTrlAvailable,
   getQuestionnaireFilledOut,
 } from "../models/startup";
+
+import { getTrlAvailable } from "../models/trl";
 
 const router: Router = express.Router();
 

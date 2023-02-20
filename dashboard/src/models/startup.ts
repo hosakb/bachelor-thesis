@@ -1,6 +1,4 @@
 import pool from "../config/db";
-import { calcTrlProd } from "../util/calc/trl";
-import { getToday } from "../util/date";
 
 interface StartupTableRow {
   id: string;
@@ -32,65 +30,12 @@ interface AdminStartup {
   updatedAt: Date;
 }
 
-enum InvestmentPhase {
-  Seed = "seed",
-  Startup = "startup",
-  FirstStage = "first_stage",
-  SecondStage = "second_stage",
-  ThirdStage = "third_stage",
-  Final = "final",
-}
-
 interface StartupInfo {
   phase: string;
   sector: string;
   timeToMarket: number;
   productToMarket: boolean;
   investedCapital: number;
-}
-
-interface Milestone {
-  id: string;
-  index: number;
-  name: string;
-  start: string;
-  end: string;
-  progress: number;
-}
-
-interface NewMilestone {
-  index: number;
-  name: string;
-  start: string;
-  end: string;
-  progress: number;
-}
-
-interface UnIndexedMilestone {
-  name: string;
-  start: string;
-  end: string;
-  progress: number;
-}
-
-interface Trl {
-  product: string;
-  trlProd: number;
-  trlData: TrlData[];
-}
-
-interface TrlData {
-  id: string;
-  technology: string;
-  trl: number;
-  criticality: number;
-}
-
-interface Metrics {
-  date: Date;
-  burnRate: number;
-  cashRunway: number;
-  liquidity: number;
 }
 
 interface Questionnaire {
@@ -258,138 +203,6 @@ interface WeightedPoints {
   h7: number;
   h8: number;
   sum: number;
-}
-
-interface NewInvestor {
-  name: string;
-  type: string;
-  email: string;
-  number: string | undefined;
-  url: string | undefined;
-  country: string;
-  notes: string | undefined;
-  contactDate: Date;
-  startupId: string;
-}
-
-interface Investor {
-  id: string;
-  name: string;
-  type: string;
-  email: string;
-  number: string | undefined;
-  url: string | undefined;
-  country: string;
-  notes: string | undefined;
-  contactDate: Date;
-  status: string;
-}
-
-interface UpdatedInvestor {
-  id: string;
-  email: string;
-  number: string | undefined;
-  url: string | undefined;
-  notes: string | undefined;
-}
-
-interface NewPatent {
-  invention: string;
-  newInventor: string;
-  patentStatus: string;
-  patentConfirmationDate: Date | undefined;
-  patentExaminationNoticeDate: Date | undefined;
-  patentGrantDate: Date | undefined;
-  patentOffice: string;
-  patentDuration: number | undefined;
-}
-
-interface Patent {
-  id: string;
-  invention: string;
-  inventor: string;
-  status: string;
-  confirmationDate: Date | null;
-  patentOffice: string;
-  updatedAt: Date;
-  registrationFee: boolean;
-  inventorNomination: boolean;
-  annualFeeDate: Date | null;
-  patentExaminationRequest: boolean;
-  patentExaminationNoticeDate: Date | null;
-  patentExaminationNotice: boolean;
-  grantDate: Date | null;
-  grantFee: boolean;
-  objection: boolean;
-  rejectionReason: string | null;
-  patentDuration: number | undefined;
-  examinationRequest: boolean;
-  objectionResponse: boolean;
-  rejectionDate: Date | null;
-}
-
-interface UpdatedPatentDisclosure {
-  id: string;
-  registrationFee: boolean;
-  annualFeeDate: Date;
-  inventorNomination: boolean;
-  examinationRequest: boolean;
-}
-
-function isUpdatedPatentDisclosure(
-  value:
-    | UpdatedPatentDisclosure
-    | UpdatedPatentExamination
-    | UpdatedPatentObjection
-): value is UpdatedPatentDisclosure {
-  return (
-    // eslint-disable-next-line no-prototype-builtins
-    value.hasOwnProperty("registrationFee") &&
-    // eslint-disable-next-line no-prototype-builtins
-    value.hasOwnProperty("annualFeeDate") &&
-    // eslint-disable-next-line no-prototype-builtins
-    value.hasOwnProperty("inventorNomination") &&
-    // eslint-disable-next-line no-prototype-builtins
-    value.hasOwnProperty("examinationRequest")
-  );
-}
-
-interface UpdatedPatentExamination {
-  id: string;
-  patentExaminationNotice: boolean;
-}
-
-function isUpdatedPatentExamination(
-  value:
-    | UpdatedPatentDisclosure
-    | UpdatedPatentExamination
-    | UpdatedPatentObjection
-): value is UpdatedPatentExamination {
-  // eslint-disable-next-line no-prototype-builtins
-  return value.hasOwnProperty("patentExaminationNotice");
-}
-
-interface UpdatedPatentObjection {
-  id: string;
-  grantFee: boolean;
-  objection: boolean;
-  objectionResponse: boolean;
-}
-
-function isUpdatedPatentObjection(
-  value:
-    | UpdatedPatentDisclosure
-    | UpdatedPatentExamination
-    | UpdatedPatentObjection
-): value is UpdatedPatentObjection {
-  return (
-    // eslint-disable-next-line no-prototype-builtins
-    value.hasOwnProperty("grantFee") &&
-    // eslint-disable-next-line no-prototype-builtins
-    value.hasOwnProperty("objection") &&
-    // eslint-disable-next-line no-prototype-builtins
-    value.hasOwnProperty("objectionResponse")
-  );
 }
 
 const insertNewStartup = async (startupName: string): Promise<string> => {
@@ -606,10 +419,10 @@ const updateInvestmentPhase = async (
 ) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE startup set stage = $1 where id = $2", [
-      investmentPhase,
-      startupId,
-    ]);
+    await client.query(
+      "UPDATE startup set stage = $1, updated_at = NOW() where id = $2",
+      [investmentPhase, startupId]
+    );
   } catch (err) {
     throw new Error(
       `Failed to update investment phase for startup id ${startupId}. Error: ${err}`
@@ -626,7 +439,7 @@ const updateInvestedCapital = async (
   const client = await pool.connect();
   try {
     await client.query(
-      "UPDATE startup set invested_capital = $1 where id = $2",
+      "UPDATE startup set invested_capital = $1, updated_at = NOW() where id = $2",
       [investedCapital, startupId]
     );
   } catch (err) {
@@ -641,10 +454,10 @@ const updateInvestedCapital = async (
 const persistCapTable = async (capTable: string, startupId: string) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE startup SET cap_table = $1 WHERE id = $2", [
-      capTable,
-      startupId,
-    ]);
+    await client.query(
+      "UPDATE startup SET cap_table = $1, updated_at = NOW() WHERE id = $2",
+      [capTable, startupId]
+    );
   } catch (err) {
     throw new Error(
       `Failed to persist cap table for startup id ${startupId}. Error: ${err}`
@@ -657,10 +470,10 @@ const persistCapTable = async (capTable: string, startupId: string) => {
 const updateStartupName = async (name: string, startupId: string) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE startup SET name = $1 WHERE id = $2", [
-      name,
-      startupId,
-    ]);
+    await client.query(
+      "UPDATE startup SET name = $1, updated_at = NOW() WHERE id = $2",
+      [name, startupId]
+    );
   } catch (err) {
     throw new Error(
       `Failed to update startup name for startup id ${startupId}. Error: ${err}`
@@ -694,7 +507,7 @@ const persistInfo = async (startupInfo: StartupInfo, startupId: string) => {
   const client = await pool.connect();
   try {
     await client.query(
-      "UPDATE startup SET stage = $1, invested_capital = $2, sector = $3, has_product = $4 , est_time_to_market = $5 WHERE id = $6",
+      "UPDATE startup SET stage = $1, invested_capital = $2, sector = $3, has_product = $4 , est_time_to_market = $5, updated_at = NOW() WHERE id = $6",
       [
         startupInfo.phase,
         startupInfo.investedCapital,
@@ -732,246 +545,17 @@ const getInfoByStartupId = async (startupId: string) => {
   return info;
 };
 
-const persistMilestones = async (
-  milestones: NewMilestone[],
-  startupId: string
-) => {
-  const client = await pool.connect();
-  try {
-    await client.query("DELETE FROM milestones WHERE startup_id = $1;", [
-      startupId,
-    ]);
-
-    for (const milestone of milestones) {
-      await client.query(
-        "INSERT INTO milestones (start_date, end_date, progress, startup_id, name, index) VALUES ($1, $2, $3, $4, $5, $6)",
-        [
-          milestone.start,
-          milestone.end,
-          milestone.progress,
-          startupId,
-          milestone.name,
-          milestone.index,
-        ]
-      );
-    }
-  } catch (err) {
-    throw new Error(
-      `Failed to insert startup milestones for startup id ${startupId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const persistMilestonesWithId = async (
-  milestones: Milestone[],
-  startupId: string
-) => {
-  const client = await pool.connect();
-  try {
-    await client.query("DELETE FROM milestones WHERE startup_id = $1;", [
-      startupId,
-    ]);
-
-    for (const milestone of milestones) {
-      await client.query(
-        "INSERT INTO milestones (id, start_date, end_date, progress, startup_id, name, index) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-        [
-          milestone.id,
-          milestone.start,
-          milestone.end,
-          milestone.progress,
-          startupId,
-          milestone.name,
-          milestone.index,
-        ]
-      );
-    }
-  } catch (err) {
-    throw new Error(
-      `Failed to insert startup milestones for startup id ${startupId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const getMilestones = async (startupId: string): Promise<Milestone[]> => {
-  const client = await pool.connect();
-  let result;
-  try {
-    result = await client.query(
-      "SELECT id, name, start_date, end_date, progress, index FROM milestones WHERE startup_id = $1",
-      [startupId]
-    );
-  } catch (err) {
-    throw new Error(
-      `Failed to query milestones for startup id ${startupId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-
-  const milestones: Milestone[] = result.rows.map((row) => {
-    return {
-      id: row.id,
-      index: row.index,
-      name: row.name,
-      start: row.start_date,
-      end: row.end_date,
-      progress: row.progress,
-    };
-  });
-
-  return milestones;
-};
-
-const updateMilestoneProgress = async (taskId: string, progress: number) => {
-  const client = await pool.connect();
-  try {
-    await client.query("UPDATE milestones SET progress = $1 WHERE id = $2", [
-      progress,
-      taskId,
-    ]);
-  } catch (err) {
-    throw new Error(
-      `Failed to update milestones progress with id ${taskId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const updateMilestoneDuration = async (
-  taskId: string,
-  start: string,
-  end: string
-) => {
-  const client = await pool.connect();
-  try {
-    await client.query(
-      "UPDATE milestones SET start_date = $1, end_date = $2 WHERE id = $3",
-      [start, end, taskId]
-    );
-  } catch (err) {
-    throw new Error(
-      `Failed to update milestone with id ${taskId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const getTrlAvailable = async (startupId: string) => {
-  const client = await pool.connect();
-  let result;
-  try {
-    result = await client.query("SELECT id FROM trl WHERE startup_id = $1;", [
-      startupId,
-    ]);
-  } catch (err) {
-    throw new Error(
-      `Failed to query availability of trl data for startup with id ${startupId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-  if (result.rowCount == 0) {
-    return false;
-  }
-
-  return true;
-};
-
-const getTrl = async (startupId: string): Promise<Trl> => {
-  const client = await pool.connect();
-  let result;
-  try {
-    result = await client.query(
-      "SELECT startup.product, trl.id, trl.technology, trl.trl, trl.criticality FROM trl JOIN startup ON trl.startup_id = startup.id WHERE startup.id = $1;",
-      [startupId]
-    );
-  } catch (err) {
-    throw new Error(
-      `Failed to query trl data for startup with id ${startupId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-
-  const trlData: TrlData[] = result.rows.map((trl) => {
-    return {
-      id: trl.id,
-      technology: trl.technology,
-      trl: trl.trl,
-      criticality: trl.criticality,
-    };
-  });
-
-  const trl: Trl = {
-    product: result.rows[0].product,
-    trlProd: calcTrlProd(trlData),
-    trlData: trlData,
-  };
-
-  return trl;
-};
-
-const persistTrlData = async (startupId: string, trlData: TrlData[]) => {
-  const client = await pool.connect();
-  try {
-    for (const trl of trlData) {
-      await client.query(
-        "INSERT INTO trl (technology, trl, criticality, startup_id) VALUES ($1, $2, $3, $4);",
-        [trl.technology, trl.trl, trl.criticality, startupId]
-      );
-    }
-  } catch (err) {
-    throw new Error(
-      `Failed to persist trl data for startup with id ${startupId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
 const persistCoreTechnology = async (startupId: string, product: string) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE startup SET product = $1 WHERE id = $2;", [
-      product,
-      startupId,
-    ]);
+    await client.query(
+      "UPDATE startup SET product = $1, updated_at = NOW() WHERE id = $2;",
+      [product, startupId]
+    );
   } catch (err) {
     throw new Error(
       `Failed to persist product for startup with id ${startupId}. Error: ${err}`
     );
-  } finally {
-    client.release();
-  }
-};
-
-const updateTrl = async (trlData: TrlData) => {
-  const client = await pool.connect();
-  try {
-    await client.query(
-      "UPDATE trl SET technology = $1, trl = $2, criticality = $3 WHERE id = $4;",
-      [trlData.technology, trlData.trl, trlData.criticality, trlData.id]
-    );
-  } catch (err) {
-    throw new Error(`${err}`);
-  } finally {
-    client.release();
-  }
-};
-
-const deleteTrl = async (id: string) => {
-  const client = await pool.connect();
-  try {
-    await client.query("DELETE FROM trl WHERE id = $1;", [id]);
-  } catch (err) {
-    throw new Error(`Failed to delete trl with id ${id}. Error: ${err}`);
   } finally {
     client.release();
   }
@@ -994,10 +578,10 @@ const persistQuestionnaire = async (
 ) => {
   const client = await pool.connect();
   try {
-    await client.query("UPDATE startup SET questionnaire = $1 WHERE id = $2;", [
-      JSON.stringify(questionnaire),
-      startupId,
-    ]);
+    await client.query(
+      "UPDATE startup SET questionnaire = $1, updated_at = NOW() WHERE id = $2;",
+      [JSON.stringify(questionnaire), startupId]
+    );
   } catch (err) {
     throw new Error(
       `Failed to persist questionnaire data for startup with id ${startupId}. Error: ${err}`
@@ -1047,470 +631,33 @@ const getQuestionnaireFilledOut = async (startupId: string) => {
   }
 };
 
-const getMetrics = async (startupId: string): Promise<Metrics[]> => {
-  const client = await pool.connect();
-  let result;
-  try {
-    result = await client.query(
-      "SELECT date, burn_rate, cash_runway, liquidity FROM metrics WHERE startup = $1;",
-      [startupId]
-    );
-  } catch (err) {
-    throw new Error(
-      `Failed to query metrics data for startup with id ${startupId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-
-  const metrics: Metrics[] = result.rows.map((row) => {
-    return {
-      date: row.date,
-      burnRate: row.burn_rate,
-      cashRunway: row.cash_runway,
-      liquidity: row.liquidity,
-    };
-  });
-
-  return metrics;
-};
-
-const insertInvestor = async (investor: NewInvestor) => {
-  const client = await pool.connect();
-  try {
-    await client.query(
-      "INSERT INTO investors (name, type, email, number, url, country, notes, contact_date, startup_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
-      [
-        investor.name,
-        investor.type,
-        investor.email,
-        investor.number,
-        investor.url,
-        investor.country,
-        investor.notes,
-        investor.contactDate,
-        investor.startupId,
-      ]
-    );
-  } catch (err) {
-    throw new Error(
-      `Failed to persist contacted investor startup with id ${investor.startupId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const getInvestors = async (startupId: string): Promise<Investor[]> => {
-  const client = await pool.connect();
-  try {
-    const result = await client.query(
-      "SELECT id, name, type, email, number, url, country, notes, contact_date, startup_id, status FROM investors WHERE startup_id = $1;",
-      [startupId]
-    );
-
-    const investors: Investor[] = result.rows.map((row) => {
-      return {
-        id: row.id,
-        name: row.name,
-        type: row.type,
-        email: row.email,
-        number: row.number,
-        url: row.url,
-        country: row.country,
-        notes: row.notes,
-        contactDate: row.contact_date,
-        status: row.status,
-      };
-    });
-
-    return investors;
-  } catch (err) {
-    throw new Error(
-      `Failed to contacted investors for startup with id ${startupId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const updateInvestor = async (updatedInvestor: UpdatedInvestor) => {
-  const client = await pool.connect();
-  try {
-    await client.query(
-      "UPDATE investors SET email = $1, number = $2, url = $3, notes = $4  WHERE id = $5;",
-      [
-        updatedInvestor.email,
-        updatedInvestor.notes,
-        updatedInvestor.url,
-        updatedInvestor.notes,
-        updatedInvestor.id,
-      ]
-    );
-  } catch (err) {
-    throw new Error(
-      `Failed to update contacted investors for with id ${updatedInvestor.id}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const updateInvestorStatus = async (status: string, id: string) => {
-  const client = await pool.connect();
-  try {
-    await client.query("UPDATE investors SET status = $1 WHERE id = $2;", [
-      status,
-      id,
-    ]);
-  } catch (err) {
-    throw new Error(
-      `Failed to update contacted investors status with id ${id}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const insertNewPatent = async (patent: NewPatent, startupId: string) => {
-  const client = await pool.connect();
-  try {
-    if (
-      patent.patentConfirmationDate === undefined &&
-      patent.patentExaminationNoticeDate === undefined &&
-      patent.patentGrantDate === undefined
-    ) {
-      await client.query(
-        "INSERT INTO patents (invention, inventor, status, patent_office, startup_id) VALUES ($1, $2, $3, $4, $5)",
-        [
-          patent.invention,
-          patent.newInventor,
-          patent.patentStatus,
-          patent.patentOffice,
-          startupId,
-        ]
-      );
-    } else if (
-      patent.patentConfirmationDate !== undefined &&
-      patent.patentExaminationNoticeDate === undefined &&
-      patent.patentGrantDate === undefined
-    ) {
-      const annualFeeDate = new Date(patent.patentConfirmationDate);
-      annualFeeDate.setFullYear(annualFeeDate.getFullYear() + 1);
-
-      await client.query(
-        "INSERT INTO patents (invention, inventor, status, patent_office, application_confirmation_date, annual_fee_date, startup_id) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-        [
-          patent.invention,
-          patent.newInventor,
-          patent.patentStatus,
-          patent.patentOffice,
-          patent.patentConfirmationDate,
-          annualFeeDate,
-          startupId,
-        ]
-      );
-    } else if (
-      patent.patentConfirmationDate === undefined &&
-      patent.patentExaminationNoticeDate !== undefined &&
-      patent.patentGrantDate === undefined
-    ) {
-      await client.query(
-        "INSERT INTO patents (invention, inventor, status, patent_office, patent_examination_notice_date, startup_id) VALUES ($1, $2, $3, $4, $5, $6)",
-        [
-          patent.invention,
-          patent.newInventor,
-          patent.patentStatus,
-          patent.patentOffice,
-          patent.patentExaminationNoticeDate,
-          startupId,
-        ]
-      );
-    } else if (
-      patent.patentConfirmationDate === undefined &&
-      patent.patentExaminationNoticeDate === undefined &&
-      patent.patentGrantDate !== undefined
-    ) {
-      await client.query(
-        "INSERT INTO patents (invention, inventor, status, patent_office, grant_date, patent_duration, startup_id) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-        [
-          patent.invention,
-          patent.newInventor,
-          patent.patentStatus,
-          patent.patentOffice,
-          patent.patentGrantDate,
-          patent.patentDuration,
-          startupId,
-        ]
-      );
-    } else {
-      throw new Error("Unknown Patent Status");
-    }
-  } catch (err) {
-    throw new Error(
-      `Failed to insert new patent for startup with id: ${startupId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const getAllPatents = async (startupId: string): Promise<Patent[]> => {
-  const client = await pool.connect();
-  try {
-    const result = await client.query(
-      "SELECT * FROM patents WHERE startup_id = $1;",
-      [startupId]
-    );
-
-    return result.rows.map((row) => {
-      return {
-        id: row.id,
-        invention: row.invention,
-        inventor: row.inventor,
-        status: row.status,
-        confirmationDate:
-          row.application_confirmation_date !== null
-            ? new Date(row.application_confirmation_date)
-            : null,
-        patentOffice: row.patent_office,
-        updatedAt: row.updated_at,
-        registrationFee: row.registration_fee,
-        inventorNomination: row.inventor_nomination,
-        annualFeeDate:
-          row.annual_fee_date !== null ? new Date(row.annual_fee_date) : null,
-        patentExaminationRequest: row.patent_examination_request,
-        patentExaminationNoticeDate:
-          row.patent_examination_notice_date !== null
-            ? new Date(row.patent_examination_notice_date)
-            : null,
-        patentExaminationNotice: row.patent_examination_notice,
-        grantDate: row.grant_date !== null ? new Date(row.grant_date) : null,
-        grantFee: row.grant_fee,
-        objection: row.objection,
-        rejectionReason: row.rejection_reason,
-        patentDuration: row.patent_duration,
-        examinationRequest: row.examination_request,
-        objectionResponse: row.objection_response,
-        rejectionDate: row.rejection_date,
-      };
-    });
-  } catch (err) {
-    throw new Error(
-      `Failed query patents for startup with id: ${startupId}. Error: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const updatePatent = async (
-  patentUpdate:
-    | UpdatedPatentDisclosure
-    | UpdatedPatentExamination
-    | UpdatedPatentObjection
-) => {
-  const client = await pool.connect();
-  try {
-    if (isUpdatedPatentDisclosure(patentUpdate)) {
-      await client.query(
-        "UPDATE patents SET registration_fee = $1, annual_fee_date = $2, inventor_nomination = $3, examination_request = $4, updated_at = $5 WHERE id = $6;",
-        [
-          patentUpdate.registrationFee,
-          patentUpdate.annualFeeDate,
-          patentUpdate.inventorNomination,
-          patentUpdate.examinationRequest,
-          getToday(),
-          patentUpdate.id,
-        ]
-      );
-    } else if (isUpdatedPatentExamination(patentUpdate)) {
-      await client.query(
-        "UPDATE patents SET patent_examination_notice = $1, updated_at = $2 WHERE id = $3;",
-        [patentUpdate.patentExaminationNotice, getToday(), patentUpdate.id]
-      );
-    } else {
-      await client.query(
-        "UPDATE patents SET grant_fee = $1, objection = $2, objection_response = $3, updated_at = $4 WHERE id = $5;",
-        [
-          patentUpdate.grantFee,
-          patentUpdate.objection,
-          patentUpdate.objectionResponse,
-          getToday(),
-          patentUpdate.id,
-        ]
-      );
-    }
-  } catch (err) {
-    throw new Error(
-      `Failed to update patent with id ${patentUpdate.id} due to: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const updatePatentPhaseStatus = async (
-  id: string,
-  currentStatus: string,
-  date: Date,
-  grantDuration: number
-) => {
-  const client = await pool.connect();
-
-  try {
-    if (currentStatus === "disclosure-phase") {
-      await client.query(
-        "UPDATE patents SET status = $1, patent_examination_notice_date = $2, updated_at = $3 WHERE id = $4;",
-        ["examination-phase", date, getToday(), id]
-      );
-    } else if (currentStatus === "examination-phase") {
-      if (grantDuration === undefined) {
-        throw new Error("Grant duration is undefined.");
-      }
-      if (date === undefined) {
-        throw new Error("Grant date is undefined.");
-      }
-      await client.query(
-        "UPDATE patents SET status = $1, patent_duration = $2, grant_date = $3, updated_at = $4 WHERE id = $5;",
-        ["objection-phase", grantDuration, date, getToday(), id]
-      );
-    } else if (currentStatus === "objection-phase") {
-      await client.query(
-        "UPDATE patents SET status = $1, updated_at = $2 WHERE id = $3;",
-        ["granted", getToday(), id]
-      );
-    } else {
-      throw new Error("Failed to identify phase.");
-    }
-  } catch (err) {
-    throw new Error(
-      `Failed to update patent phase status with patent id ${id} due to: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const persistPatentConfirmationDate = async (id: string, date: Date) => {
-  const client = await pool.connect();
-  try {
-    const newAnnualFeeDate = new Date(date);
-    newAnnualFeeDate.setFullYear(date.getFullYear() + 1);
-
-    await client.query(
-      "UPDATE patents SET application_confirmation_date = $1, status = 'disclosure-phase', updated_at = $2, annual_fee_date = $3 WHERE id = $4;",
-      [date, getToday(), newAnnualFeeDate, id]
-    );
-  } catch (err) {
-    throw new Error(
-      `Failed to update patent application confirmation date with id ${id} due to: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const updateCancelPatent = async (
-  id: string,
-  reason: string,
-  status: string,
-  date: Date
-) => {
-  const client = await pool.connect();
-  try {
-    await client.query(
-      "UPDATE patents SET rejection_reason = $1, status = $2, rejection_date = $3, updated_at = $4 WHERE id = $5;",
-      [reason, status, date, getToday(), id]
-    );
-  } catch (err) {
-    throw new Error(
-      `Failed to set patent as canceled with patent id ${id} due to: ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
-const getPatentAnnualFeeDateById = async (id: string): Promise<Date> => {
-  const client = await pool.connect();
-  try {
-    const result = await client.query(
-      "SELECT annual_fee_date FROM patents WHERE id = $1;",
-      [id]
-    );
-
-    return new Date(result.rows[0].annual_fee_date);
-  } catch (err) {
-    throw new Error(
-      `Failed query annual fee date for patent with id: ${id}. ${err}`
-    );
-  } finally {
-    client.release();
-  }
-};
-
 export {
-  InvestmentPhase,
-  Investor,
-  Metrics,
-  Milestone,
-  NewInvestor,
-  NewMilestone,
-  NewPatent,
   Questionnaire,
   QuestionnaireAvg,
   Rating,
   Startup,
   StartupInfo,
   StartupTableRow,
-  TrlData,
-  UnIndexedMilestone,
-  UpdatedPatentDisclosure,
-  UpdatedPatentExamination,
-  UpdatedPatentObjection,
   WeightedPoints,
   deleteStartup,
-  deleteTrl,
-  getAllPatents,
   getAllStartups,
   getCapTable,
   getFirstStartupLoginById,
   getInfoByStartupId,
   getInvestmentPhase,
-  getInvestors,
-  getMetrics,
-  getMilestones,
   getNewStartupById,
   getQuestionnaire,
   getQuestionnaireFilledOut,
   getStartupIds,
   getStartupNameById,
-  getPatentAnnualFeeDateById,
   getStartups,
   getStartupTableRowById,
-  getTrl,
-  getTrlAvailable,
-  insertInvestor,
-  insertNewPatent,
   insertNewStartup,
   persistCapTable,
   persistCoreTechnology,
   persistInfo,
-  persistMilestones,
-  persistMilestonesWithId,
-  persistPatentConfirmationDate,
   persistQuestionnaire,
-  persistTrlData,
   updateInvestedCapital,
   updateInvestmentPhase,
-  updateInvestor,
-  updateInvestorStatus,
-  updateMilestoneDuration,
-  updateMilestoneProgress,
-  updatePatent,
-  updatePatentPhaseStatus,
   updateStartupName,
-  updateTrl,
-  updateCancelPatent,
 };

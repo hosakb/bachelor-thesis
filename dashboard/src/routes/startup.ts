@@ -2,30 +2,42 @@ import express, { Router } from "express";
 import { Row } from "read-excel-file";
 import {
   getInvestmentPhase,
-  Milestone,
-  getMilestones,
-  updateMilestoneDuration,
-  updateMilestoneProgress,
-  getTrl,
-  Metrics,
-  getMetrics,
   getStartupNameById,
-  getInvestors,
   getCapTable,
   updateInvestmentPhase,
   updateInvestedCapital,
   persistCapTable,
-  TrlData,
-  updateTrl,
-  deleteTrl,
-  persistTrlData,
-  NewInvestor,
-  insertInvestor,
-  updateInvestorStatus,
+} from "../models/startup";
+
+import {
+  Milestone,
+  getMilestones,
+  updateMilestoneDuration,
+  updateMilestoneProgress,
   UnIndexedMilestone,
   NewMilestone,
   persistMilestones,
   persistMilestonesWithId,
+} from "../models/milestone";
+
+import {
+  getTrl,
+  TrlData,
+  updateTrl,
+  deleteTrl,
+  persistTrlData,
+} from "../models/trl";
+
+import { Metrics, getMetrics } from "../models/metrics";
+
+import {
+  getInvestors,
+  NewInvestor,
+  insertInvestor,
+  updateInvestorStatus,
+} from "../models/potential_investor";
+
+import {
   NewPatent,
   insertNewPatent,
   getAllPatents,
@@ -37,7 +49,8 @@ import {
   updatePatentPhaseStatus,
   updateCancelPatent,
   getPatentAnnualFeeDateById,
-} from "../models/startup";
+} from "../models/patent";
+
 import { getMonth } from "../util/date";
 import {
   deleteSpreadsheets,
@@ -75,7 +88,6 @@ router.get("/", async (req, res) => {
           "/js/startup",
         ],
         phase: await getInvestmentPhase(startupId),
-        kpis: req.kpis,
         page: "dashboard",
         title: await getStartupNameById(startupId),
         name: req.user?.firstName + " " + req.user?.lastName,
@@ -155,9 +167,7 @@ router.put("/gantt/progress", async (req) => {
 // =============================== Submit =====================================
 router.get("/submit", async (req, res) => {
   const trl = await getTrl(req.session.startupId);
-  req.session.trl = trl;
   const investors = await getInvestors(req.session.startupId);
-  req.session.investors = investors;
 
   const startupName: string = await getStartupNameById(req.session.startupId);
   req.session.startupName = startupName;
@@ -168,7 +178,6 @@ router.get("/submit", async (req, res) => {
   req.session.phase = investmentPhase;
 
   const milestones = await getMilestones(req.session.startupId);
-  req.session.milestones = milestones;
 
   const capTable: Row[] = await getCapTable(req.session.startupId);
 
@@ -195,7 +204,8 @@ router.post("/submit/reupload", (req, res) => {
   res.redirect("/startup/submit");
 });
 
-router.post("/submit/cap-table",
+router.post(
+  "/submit/cap-table",
   multerUpload.single("cap-table"),
   async (req, res) => {
     const { nextPhase, investedCapital } = req.body;
@@ -207,7 +217,6 @@ router.post("/submit/cap-table",
       );
 
       const rows = await uploadCapTable();
-
       const capTable = formatCapTable(rows);
 
       const startupId = req.user?.startup;
@@ -217,6 +226,7 @@ router.post("/submit/cap-table",
       }
 
       await persistCapTable(JSON.stringify(capTable), startupId);
+      deleteSpreadsheets();
       res.redirect("/startup/submit");
 
       return;

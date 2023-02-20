@@ -20,6 +20,11 @@ interface PreviousVenture {
   reasonForFailure: string;
 }
 
+interface Expertise {
+  name: string[];
+  amount: number[];
+}
+
 const insertTrackRecord = async (
   userId: string,
   expertise: string,
@@ -102,6 +107,7 @@ const getExpertiseByStartup = async (startupId: string): Promise<string[]> => {
 };
 
 export {
+  Expertise,
   Founder,
   PreviousVenture,
   insertTrackRecord,
