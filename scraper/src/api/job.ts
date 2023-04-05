@@ -12,7 +12,7 @@ import { BusinessCentral } from "../api/business-central";
 
 export const startJob = () => {
   new CronJob(
-    "* * 6 * * *", // Scrapes data at 6 AM
+    "* * 5 * * *", // Scrapes data at 6 AM
     async function () {
       let bcUsers;
       console.info("Scraping Financial Data from Business Central");

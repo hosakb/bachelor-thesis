@@ -74,7 +74,7 @@ document
       redirect: "follow",
       body: JSON.stringify({ milestones }),
     }).catch(() => {
-      alert("Failed to add new Startupatent. Please try again.");
+      alert("Failed to add new milestones. Please try again.");
     });
 
     document.getElementById("add-milestones-pane").classList.toggle("show");

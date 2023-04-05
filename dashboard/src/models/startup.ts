@@ -320,7 +320,7 @@ const getStartupTableRowById = async (
   return s;
 };
 
-const getStartups = async () => {
+const getStartups = async (): Promise<Startup[]> => {
   const client = await pool.connect();
   let result;
 

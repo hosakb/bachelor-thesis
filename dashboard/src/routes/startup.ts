@@ -78,7 +78,6 @@ router.get("/", async (req, res) => {
     }
   } else {
     try {
-      const trl = await getTrl(startupId);
       res.render("dashboard/startup/index", {
         layout: "../views/layouts/dashboard.ejs",
         dashboard: "startup",
@@ -91,7 +90,7 @@ router.get("/", async (req, res) => {
         page: "dashboard",
         title: await getStartupNameById(startupId),
         name: req.user?.firstName + " " + req.user?.lastName,
-        trl: trl,
+        trl: await getTrl(startupId),
         investors: await getInvestors(startupId),
       });
     } catch (error) {
