@@ -23,14 +23,14 @@ const getStartupsForInvestor = async (
   try {
     const startups: StartupTableRow[] = [];
 
-    result.rows.forEach(async (row) => {
+    for (const row of result.rows) {
       const startup = await getStartupTableRowById(row.startup_id);
       const rating = row.rating;
       startups.push({
         ...startup,
         rating,
       });
-    });
+    }
 
     return startups;
   } catch (err) {

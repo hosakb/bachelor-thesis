@@ -1,0 +1,99 @@
+{
+  "steps": [
+    {
+      "name": "login rejects wrong password / unknown email; anonymous redirect",
+      "detail": ""
+    },
+    {
+      "name": "startup gantt: 3 drags -> single save request",
+      "detail": "PUTs=1"
+    },
+    {
+      "name": "startup add technology (range validation, persisted)",
+      "detail": "rows=2"
+    },
+    {
+      "name": "startup TRL inline edit persists through reload (special characters)",
+      "detail": ""
+    },
+    {
+      "name": "startup TRL empty name rejected with feedback",
+      "detail": ""
+    },
+    {
+      "name": "startup milestone edit: prefilled dates, validation, persistence",
+      "detail": ""
+    },
+    {
+      "name": "startup add milestone; triple-click submit creates one",
+      "detail": "rows=2"
+    },
+    {
+      "name": "startup delete milestone persists",
+      "detail": ""
+    },
+    {
+      "name": "startup investor status update persists",
+      "detail": ""
+    },
+    {
+      "name": "startup cap table: invalid upload reported, valid upload rendered",
+      "detail": ""
+    },
+    {
+      "name": "startup blocked from /admin (403); logout ends session",
+      "detail": ""
+    },
+    {
+      "name": "fund portfolio -> startup detail/founders/rating; foreign startup 403",
+      "detail": ""
+    },
+    {
+      "name": "stakeholder sees only own portfolio and no fund figures",
+      "detail": ""
+    },
+    {
+      "name": "admin user create / duplicate email / edit / delete",
+      "detail": ""
+    },
+    {
+      "name": "admin create startup appears after reload",
+      "detail": ""
+    },
+    {
+      "name": "first login of un-onboarded startup enters onboarding",
+      "detail": "/onboarding/startup"
+    },
+    {
+      "name": "mobile submit horizontal overflow px",
+      "detail": "0"
+    },
+    {
+      "name": "mobile viewport renders; keyboard reaches labelled icon buttons",
+      "detail": "named=18"
+    },
+    {
+      "name": "4 roles x 5 concurrent reloads keep their own sessions",
+      "detail": ""
+    }
+  ],
+  "screenshots": [
+    "qa/after/login-invalid-login.png",
+    "qa/after/startup-overview.png",
+    "qa/after/startup-submit-before.png",
+    "qa/after/startup-submit-after-edits.png",
+    "qa/after/startup-submit-cap-table.png",
+    "qa/after/fund-portfolio.png",
+    "qa/after/fund-startup-detail.png",
+    "qa/after/fund-startup-founders.png",
+    "qa/after/fund-startup-rating.png",
+    "qa/after/stakeholder-portfolio.png",
+    "qa/after/admin-overview.png",
+    "qa/after/admin-users.png",
+    "qa/after/admin-startups.png",
+    "qa/after/admin-funds.png",
+    "qa/after/onboarding-first-step.png",
+    "qa/after/mobile-submit.png"
+  ],
+  "issues": []
+}

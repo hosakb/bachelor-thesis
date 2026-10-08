@@ -10,7 +10,7 @@ const getMetrics = async (startupId: string): Promise<Metrics[]> => {
   let result;
   try {
     result = await client.query(
-      "SELECT date, burn_rate, cash_runway, liquidity FROM metrics WHERE startup = $1;",
+      "SELECT date, burn_rate, cash_runway, liquidity FROM metrics WHERE startup = $1 ORDER BY date;",
       [startupId]
     );
   } catch (err) {

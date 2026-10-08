@@ -33,6 +33,9 @@ function generatePw(length) {
 
 document.getElementById("password").value = generatePw(PW_LENGHT);
 
+// Email of the user currently loaded into the edit form.
+let loadedEditEmail = "";
+
 document.querySelector("#role").addEventListener("change", (e) => {
   if (e.target.value == "startup") {
     let fund = document.querySelector("#fund-input");
@@ -75,6 +78,10 @@ document.querySelector("#users").addEventListener("change", async (e) => {
     body: JSON.stringify({ id: e.target.value }),
   });
 
+  if (!responses.ok) {
+    alert("Failed to load the selected user.");
+    return;
+  }
   const responserJson = await responses.json();
 
   let newUser = document.querySelector("#new-user");
@@ -82,6 +89,7 @@ document.querySelector("#users").addEventListener("change", async (e) => {
     newUser.classList.remove("hidden");
   }
 
+  loadedEditEmail = responserJson.email;
   document.querySelector("#same-id").value = responserJson.id;
   document.querySelector("#new-first-name").value = responserJson.firstName;
   document.querySelector("#new-last-name").value = responserJson.lastName;
@@ -166,23 +174,22 @@ document
           };
         }
 
-        fetch("/admin/add-user", {
+        const addResponse = await fetch("/admin/add-user", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           redirect: "follow",
           body: JSON.stringify(newUser),
-        }).then(() => {
-          alert("Successfully added new user.");
-          document.getElementById("email").value = "";
-          document.getElementById("first-name").value = "";
-          document.getElementById("last-name").value = "";
-          document.getElementById("password").value = "";
-          document.getElementById("role").value = "";
-          document.getElementById("fund").value = "";
-          document.getElementById("startup").value = "";
-        });
+        }).catch(() => undefined);
+
+        if (addResponse === undefined || !addResponse.ok) {
+          alert("Failed to add new user. Please try again.");
+          return;
+        }
+        alert("Successfully added new user.");
+        // Reload so the edit and delete lists include the new user.
+        location.reload();
       }
     }
   });
@@ -202,17 +209,20 @@ document
     if (emptyInputsEditUser()) {
       alert("Please fill out all fields.");
     } else {
-      const email = document.getElementById("email").value;
-      const emailTakenResult = await fetch("/admin/email-taken", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        redirect: "follow",
-        body: JSON.stringify({ email: email }),
-      });
-
-      const emailTakenResultJson = await emailTakenResult.json();
+      // Only the edited address must be free; keeping the current one is fine.
+      const email = document.getElementById("new-email").value;
+      let emailTakenResultJson = false;
+      if (email !== loadedEditEmail) {
+        const emailTakenResult = await fetch("/admin/email-taken", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          redirect: "follow",
+          body: JSON.stringify({ email: email }),
+        });
+        emailTakenResultJson = await emailTakenResult.json();
+      }
 
       if (emailTakenResultJson) {
         alert("Email already taken. Please choose another mail address.");
@@ -230,11 +240,14 @@ document
             email: document.getElementById("new-email").value,
             password: document.getElementById("new-password").value,
           }),
-        }).catch(() => {
-          alert("Something went wrong during saving of updated credentials. ");
-        });
+        }).catch(() => undefined);
 
+        if (res === undefined || !res.ok) {
+          alert("Something went wrong during saving of updated credentials.");
+          return;
+        }
         alert("User updated");
+        location.reload();
       }
     }
   });
@@ -251,10 +264,14 @@ document
       redirect: "follow",
       body: JSON.stringify({ id: deleteUserId }),
     })
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error();
+        }
         document.querySelector("#chose-delete").classList.add("hidden");
 
         alert("Successfully deleted user.");
+        location.reload();
       })
       .catch(() => {
         alert("Failed to delete user.");

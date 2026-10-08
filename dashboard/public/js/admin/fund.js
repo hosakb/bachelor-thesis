@@ -59,7 +59,10 @@ async function registerFund() {
       redirect: "follow",
       body: JSON.stringify(newFund),
     })
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Request failed");
+        }
         document.getElementById("name").value = "";
         document.getElementById("sector").value = "";
         document.getElementById("hard-cap").value = "";
@@ -73,6 +76,7 @@ async function registerFund() {
           checkbox.checked = false;
         }
         alert("Successfully added new Fund");
+        location.reload();
       })
       .catch(() => {
         alert("Failed to add new Fund. Please try again.");
@@ -115,7 +119,10 @@ async function registerStakeholder() {
       redirect: "follow",
       body: JSON.stringify(newStakeholder),
     })
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Request failed");
+        }
         document.getElementById("stakeholder-name").value = "";
 
         for (const checkbox of document.querySelectorAll(
@@ -124,6 +131,7 @@ async function registerStakeholder() {
           checkbox.checked = false;
         }
         alert("Successfully added new Stakeholder");
+        location.reload();
       })
       .catch(() => {
         alert("Failed to add new Stakeholder. Please try again.");
@@ -143,6 +151,10 @@ document.getElementById("funds").addEventListener("change", async (e) => {
     alert("Failed to fetch Fund. Please try again.");
   });
 
+  if (!res || !res.ok) {
+    alert("Failed to fetch Fund. Please try again.");
+    return;
+  }
   const fund = await res.json();
 
   if (fund.type == "fund") {
@@ -224,8 +236,12 @@ async function submitEditedFund() {
         fundsStartups,
       }),
     })
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Request failed");
+        }
         alert("Successfully updated fund");
+        location.reload();
         document.getElementById("new-name").value = "";
         document.getElementById("new-sector").value = "";
         document.getElementById("new-hard-cap").value = "";
@@ -279,8 +295,12 @@ async function submitEditedStakeholder() {
         fundsStartups,
       }),
     })
-      .then(() => {
-        alert("Successfully Stakeholder fund");
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Request failed");
+        }
+        alert("Successfully updated stakeholder");
+        location.reload();
         document.getElementById("new-name").value = "";
 
         const startups = document.querySelectorAll(
@@ -322,10 +342,14 @@ document
       redirect: "follow",
       body: JSON.stringify({ id: deleteFundId }),
     })
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Request failed");
+        }
         document.querySelector("#chose-delete").classList.add("hidden");
 
         alert("Successfully deleted fund.");
+        location.reload();
       })
       .catch(() => {
         alert("Failed to delete fund.");

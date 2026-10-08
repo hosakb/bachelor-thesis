@@ -189,8 +189,10 @@ router.post("/add-startup", async (req, res) => {
   const { name, bcUsername, bcPassword, bcCompany } = req.body;
 
   try {
-    const startupId = await insertNewStartup(name);
+    // Hash first: if NTLM hashing is unavailable (OpenSSL 3 without the
+    // legacy provider) no startup row is created without credentials.
     const { lm, nt } = getHashedPassword(bcPassword);
+    const startupId = await insertNewStartup(name);
     const bcUser: AdminBusinessCentralUser = {
       company: bcCompany,
       username: bcUsername,
@@ -226,8 +228,8 @@ router.post("/update-startup", async (req, res) => {
   const { id, name, bcUsername, bcPassword, bcCompany } = req.body;
 
   try {
-    await updateStartupName(name, id);
     const { lm, nt } = getHashedPassword(bcPassword);
+    await updateStartupName(name, id);
     const bcUser: AdminBusinessCentralUser = {
       company: bcCompany,
       username: bcUsername,
