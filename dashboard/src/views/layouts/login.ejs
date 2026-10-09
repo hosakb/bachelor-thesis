@@ -11,7 +11,7 @@
 
 <body>
 
-    <div class="wrapper">
+    <div class="wrapper<%= typeof localDemo !== 'undefined' && localDemo ? ' demo-login' : '' %>">
         <header></header>
         <%- body %>
         <footer></footer>

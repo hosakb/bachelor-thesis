@@ -128,7 +128,7 @@ test("Funds and stakeholders can only open startups in their portfolio", async (
   assert.match(rating.text, /Quantum Forge/);
   await stakeholder.get("/fund").expect(200);
   const table = await stakeholder.get("/fund/table/values").expect(200);
-  assert.deepEqual(table.body.map((row) => row.name), ["Quantum Forge"]);
+  assert.deepEqual(table.body.map((row) => row.name), ["Quantum Forge", "Tidal Health"]);
 });
 
 test("Startup detail renders when a startup has no TRL entries", async () => {

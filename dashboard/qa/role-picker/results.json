@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "admin 1440: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "startup 1440: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "fund 1440: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "stakeholder 1440: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "admin 390: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "startup 390: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "fund 390: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "stakeholder 390: keyboard, destination, reload, populated fixtures, logout, tampering"
+  ],
+  "errors": []
+}
