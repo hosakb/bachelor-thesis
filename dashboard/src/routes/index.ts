@@ -1,12 +1,15 @@
 import express, { Router, Response, Request } from "express";
 import { checkAuthenticated } from "../middleware/check-auth";
 import passport from "passport";
+import { randomBytes } from "crypto";
 
 import {
   Role,
+  User,
   UserRole,
   getUserRole,
   getFirstUserLoginByEmail,
+  getLoginUserByEmail,
 } from "../models/users";
 import {
   getFirstStartupLoginById,
@@ -18,7 +21,69 @@ import { getTrlAvailable } from "../models/trl";
 const router: Router = express.Router();
 
 router.get("/", checkAuthenticated, (req, res) => {
-  res.render("index", { layout: "../views/layouts/login.ejs" });
+  const localDemo = Boolean(req.app.locals.demoAccounts);
+  if (localDemo) req.session.demoLoginToken = randomBytes(32).toString("hex");
+  res.render("index", {
+    layout: "../views/layouts/login.ejs",
+    localDemo,
+    demoLoginToken: localDemo ? req.session.demoLoginToken : undefined,
+  });
+});
+
+// Only the isolated launcher supplies this server-owned fixture map.
+router.post("/demo/login", async (req, res, next) => {
+  const accounts = req.app.locals.demoAccounts;
+  if (!accounts) return res.sendStatus(404);
+  const origin = req.get("Origin");
+  if (
+    (origin && origin !== `${req.protocol}://${req.get("host")}`) ||
+    typeof req.body.token !== "string" ||
+    !req.session.demoLoginToken ||
+    req.body.token !== req.session.demoLoginToken
+  )
+    return res.status(403).send("Reload the role picker and try again.");
+  const role = req.body.role;
+  if (
+    typeof role !== "string" ||
+    !Object.prototype.hasOwnProperty.call(accounts, role) ||
+    Object.keys(req.body).some((key) => key !== "role" && key !== "token")
+  )
+    return res.sendStatus(400);
+  try {
+    const fixture = await getLoginUserByEmail(accounts[role]);
+    if (fixture.role !== role) return res.sendStatus(400);
+    const user: User = {
+      id: fixture.id,
+      firstName: fixture.firstName,
+      lastName: fixture.lastName,
+      email: fixture.email,
+      role: fixture.role,
+      created_at: fixture.created_at,
+      updated_at: fixture.updated_at,
+      startup: fixture.startup,
+      fund: fixture.fund,
+    };
+    delete req.session.demoLoginToken;
+    req.logIn(user, async (error) => {
+      if (error) return next(error);
+      try {
+        const userRole = await getUserRole(user.email);
+        if (userRole.role === Role.Admin) return loginAdmin(userRole, res);
+        if (userRole.role === Role.Startup)
+          return await loginOrOnboardStartupUser(
+            userRole,
+            user.email,
+            res,
+            req
+          );
+        return loginFund(userRole, req, res);
+      } catch (error) {
+        next(error);
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.post(
