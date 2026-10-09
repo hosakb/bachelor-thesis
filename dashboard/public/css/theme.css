@@ -298,13 +298,6 @@ body.app #expertise-table-wrapper {
 body.app .card-startup-table {
   overflow: hidden;
 }
-/* dashboard.css breaks long cell text "anywhere", which also splits short
-   words and dates mid-word when columns get narrow. Break only words that
-   cannot fit on their own line. */
-body.app .submit-table-wrapper td,
-body.app .card-startup-table td {
-  overflow-wrap: break-word;
-}
 
 /* ---------------------------------------------------------- controls */
 body.app button,
@@ -357,8 +350,9 @@ body.app .exit:hover {
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* :where keeps this at low specificity so component rules can size inputs. */
 body.app
-  input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]),
+  input:where(:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"])),
 body.app select,
 body.app textarea {
   min-height: 3.6rem;
@@ -399,7 +393,7 @@ body.app input[type="radio"] {
   margin: 0 0.6rem 0 0;
   vertical-align: middle;
 }
-body.app td input:not([type="checkbox"]):not([type="radio"]),
+body.app td input:where(:not([type="checkbox"]):not([type="radio"])),
 body.app td select {
   margin: 0;
 }
@@ -680,6 +674,13 @@ body.app .empty-state {
   body.app .table-container table {
     min-width: 56rem;
   }
+  /* With that minimum width, dashboard.css "anywhere" wrapping is not
+     needed and only split dates and names mid-word. Desktop keeps it so
+     the option/status columns stay inside the card. */
+  body.app .submit-table-wrapper td,
+  body.app .card-startup-table td {
+    overflow-wrap: break-word;
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -712,6 +713,15 @@ body.app .empty-state {
   body.app th,
   body.app td {
     padding: 0.9rem 1rem;
+  }
+  /* Rating overview: keep the weighting inputs in view on phones. */
+  body.app .rating-table-wrapper th,
+  body.app .rating-table-wrapper td {
+    padding: 0.8rem 0.5rem;
+  }
+  body.app .weighting-input {
+    width: 4.6rem;
+    padding: 0.5rem;
   }
   body.app table {
     font-size: 1.25rem;

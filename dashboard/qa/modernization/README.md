@@ -27,7 +27,8 @@ Visual fixes, all roles:
 - Founders: expertise doughnut and table in a wrapping flex layout instead of floats.
 - Onboarding product step: cards overlapped because grid rows were sized in percentages; now auto rows.
 - Onboarding questionnaire: wide radio tables scroll per table on tablet/mobile instead of widening the page.
-- Tablet and mobile (up to 1024px): cards stack in document order in one column; dense submit/detail tables keep a 56rem minimum width and scroll inside their card. At all widths, table cells only break words that cannot fit on a line (dashboard.css broke dates, names and emails mid-word); onboarding header no longer runs under its sidebar on mobile.
+- Tablet and mobile (up to 1024px): cards stack in document order in one column; dense submit/detail tables keep a 56rem minimum width, scroll inside their card, and only break words that cannot fit on a line (dashboard.css broke dates, names and emails mid-word). Desktop keeps the original `anywhere` wrapping so option/status columns stay inside the card. Onboarding header no longer runs under its sidebar on mobile.
+- Rating overview on phones: tighter cell padding and narrower weighting inputs keep the inputs in view. The generic input style uses `:where()` so such component rules can size inputs.
 - Login: centred card with labelled controls; production email/password form gets the same styling.
 - `prefers-reduced-motion` disables transitions and chart animation.
 
@@ -35,12 +36,14 @@ Known limitation left as is: the Gantt default Day view of multi-year milestones
 
 ## Visual evidence
 
-`qa/modernization/before/` (c8c224b, captured from a detached scratch worktree of that commit) and `qa/modernization/after/` (this branch), 53 screenshots each: login, admin overview/users/startups/funds, startup overview/submit/Gantt year view, fund portfolio/startup detail/founders/rating/patent dialog, stakeholder portfolio, onboarding startup/product/questionnaire/track record, at 1440x1000, 834x1112 and 390x844. Each `results.json` records URL, document horizontal overflow, and form controls outside the viewport that no scroll container reaches.
+`qa/modernization/before/` (c8c224b, captured with the same script from a detached scratch worktree of that commit) and `qa/modernization/after/` (this branch), 53 screenshots each: login, admin overview/users/startups/funds, startup overview/submit/Gantt year view, fund portfolio/startup detail/founders/rating/patent dialog, stakeholder portfolio, onboarding startup/product/questionnaire/track record, at 1440x1000, 834x1112 and 390x844. Each `results.json` records per page: URL, document horizontal overflow (`overflowX`), controls outside the viewport that no scroll container reaches (`offscreenControls`), and table controls past the visible edge of their scroll wrapper, reachable by sideways scrolling (`scrollHiddenTableControls`).
 
-| | pages with document overflow / unreachable controls | console, page, HTTP >= 400, failed or external requests |
-| --- | --- | --- |
-| before | 3 (questionnaire tablet 462px/19, product mobile 191px, questionnaire mobile 906px/208) | 0 |
-| after | 0 | 0 |
+| | document overflow / unreachable controls | table controls hidden until scrolled | console, page, HTTP >= 400, failed or external requests |
+| --- | --- | --- | --- |
+| before | questionnaire tablet 462px/19, product mobile 191px, questionnaire mobile 906px/208 | submit tablet 12, detail tablet 2, submit mobile 16, detail mobile 2 | 0 |
+| after | none | desktop 0, tablet: questionnaire 7 (two wide radio rows scroll inside their table); mobile: submit 20, detail 2, questionnaire 156 (each questionnaire table scrolls on its own instead of the whole page) | 0 |
+
+Trade-off on phones: the submit tables keep whole words and dates and scroll sideways inside the card, so a few more option buttons start out of view (20 vs 16).
 
 Inspected by eye, before vs after: startup overview desktop/mobile, Gantt year, fund portfolio/detail/founders/rating/patent dialog, admin overview/users, startup submit desktop/mobile, onboarding startup/product/questionnaire, login. Colors remain the original scheme.
 

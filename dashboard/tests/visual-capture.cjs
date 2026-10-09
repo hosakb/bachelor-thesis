@@ -177,9 +177,32 @@ async function main() {
                 !scrollable(el)
               );
             }).length;
+            // Controls inside a horizontal scroller (table wrapper) that sit
+            // past its visible edge: reachable, but hidden until scrolled.
+            const scrollHidden = [
+              ...document.querySelectorAll(
+                "table button, table input, table select"
+              ),
+            ].filter((el) => {
+              const r = el.getBoundingClientRect();
+              if (!r.width) return false;
+              for (
+                let p = el.parentElement;
+                p && p !== document.body;
+                p = p.parentElement
+              ) {
+                const ox = getComputedStyle(p).overflowX;
+                if (ox === "auto" || ox === "scroll" || ox === "hidden") {
+                  const b = p.getBoundingClientRect();
+                  if (r.right > b.right + 1 || r.left < b.left - 1) return true;
+                }
+              }
+              return false;
+            }).length;
             return {
               overflowX: Math.max(0, doc.scrollWidth - doc.clientWidth),
               offscreenControls: clipped,
+              scrollHiddenTableControls: scrollHidden,
               bodyFont: getComputedStyle(document.body).fontFamily,
             };
           });

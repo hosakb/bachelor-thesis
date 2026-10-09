@@ -26,6 +26,7 @@
       "file": "login-login-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -36,6 +37,7 @@
       "file": "admin-overview-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -46,6 +48,7 @@
       "file": "admin-users-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -56,6 +59,7 @@
       "file": "admin-startups-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -66,6 +70,7 @@
       "file": "admin-funds-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -76,6 +81,7 @@
       "file": "startup-overview-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -86,6 +92,7 @@
       "file": "startup-submit-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -103,6 +110,7 @@
       "file": "fund-portfolio-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -113,6 +121,7 @@
       "file": "fund-detail-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -123,6 +132,7 @@
       "file": "fund-founders-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -133,6 +143,7 @@
       "file": "fund-rating-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -150,6 +161,7 @@
       "file": "stakeholder-portfolio-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -160,6 +172,7 @@
       "file": "onboarding-startup-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -170,6 +183,7 @@
       "file": "onboarding-product-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -180,6 +194,7 @@
       "file": "onboarding-questionnaire-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -190,6 +205,7 @@
       "file": "onboarding-track-record-desktop.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -200,6 +216,7 @@
       "file": "login-login-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -210,6 +227,7 @@
       "file": "admin-overview-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -220,6 +238,7 @@
       "file": "admin-users-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -230,6 +249,7 @@
       "file": "admin-startups-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -240,6 +260,7 @@
       "file": "admin-funds-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -250,6 +271,7 @@
       "file": "startup-overview-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -260,6 +282,7 @@
       "file": "startup-submit-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -277,6 +300,7 @@
       "file": "fund-portfolio-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -287,6 +311,7 @@
       "file": "fund-detail-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -297,6 +322,7 @@
       "file": "fund-founders-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -307,6 +333,7 @@
       "file": "fund-rating-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -317,6 +344,7 @@
       "file": "stakeholder-portfolio-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -327,6 +355,7 @@
       "file": "onboarding-startup-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -337,6 +366,7 @@
       "file": "onboarding-product-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -347,6 +377,7 @@
       "file": "onboarding-questionnaire-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 7,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -357,6 +388,7 @@
       "file": "onboarding-track-record-tablet.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -367,6 +399,7 @@
       "file": "login-login-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -377,6 +410,7 @@
       "file": "admin-overview-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -387,6 +421,7 @@
       "file": "admin-users-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -397,6 +432,7 @@
       "file": "admin-startups-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -407,6 +443,7 @@
       "file": "admin-funds-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -417,6 +454,7 @@
       "file": "startup-overview-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -427,6 +465,7 @@
       "file": "startup-submit-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 20,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -444,6 +483,7 @@
       "file": "fund-portfolio-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -454,6 +494,7 @@
       "file": "fund-detail-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 2,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -464,6 +505,7 @@
       "file": "fund-founders-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -474,6 +516,7 @@
       "file": "fund-rating-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -491,6 +534,7 @@
       "file": "stakeholder-portfolio-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -501,6 +545,7 @@
       "file": "onboarding-startup-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -511,6 +556,7 @@
       "file": "onboarding-product-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -521,6 +567,7 @@
       "file": "onboarding-questionnaire-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 156,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     },
     {
@@ -531,6 +578,7 @@
       "file": "onboarding-track-record-mobile.png",
       "overflowX": 0,
       "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
       "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", \"DejaVu Sans\", sans-serif"
     }
   ]
