@@ -1,0 +1,956 @@
+[
+  {
+    "state": "login",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-desktop.png"
+  },
+  {
+    "state": "admin-overview",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-overview-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-overview-desktop.png"
+  },
+  {
+    "state": "admin-users",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-users-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-users-desktop.png"
+  },
+  {
+    "state": "admin-startups",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-startups-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-startups-desktop.png"
+  },
+  {
+    "state": "admin-funds",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-funds-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-funds-desktop.png"
+  },
+  {
+    "state": "startup-overview",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-overview-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-overview-desktop.png"
+  },
+  {
+    "state": "startup-submit",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-desktop.png"
+  },
+  {
+    "state": "fund-portfolio",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-portfolio-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-portfolio-desktop.png"
+  },
+  {
+    "state": "fund-detail",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-detail-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-detail-desktop.png"
+  },
+  {
+    "state": "fund-founders",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-founders-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-founders-desktop.png"
+  },
+  {
+    "state": "fund-rating",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-rating-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-rating-desktop.png"
+  },
+  {
+    "state": "stakeholder-portfolio",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/stakeholder-portfolio-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/stakeholder-portfolio-desktop.png"
+  },
+  {
+    "state": "emptyfund-portfolio",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/emptyfund-portfolio-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/emptyfund-portfolio-desktop.png"
+  },
+  {
+    "state": "onboarding-startup",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-startup-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-startup-desktop.png"
+  },
+  {
+    "state": "onboarding-product",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-product-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-product-desktop.png"
+  },
+  {
+    "state": "onboarding-questionnaire",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-questionnaire-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-questionnaire-desktop.png"
+  },
+  {
+    "state": "onboarding-track-record",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-track-record-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-track-record-desktop.png"
+  },
+  {
+    "state": "admin-overview-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-overview-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-overview-nav-toggle-desktop.png"
+  },
+  {
+    "state": "admin-users-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-users-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-users-nav-toggle-desktop.png"
+  },
+  {
+    "state": "admin-startups-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-startups-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-startups-nav-toggle-desktop.png"
+  },
+  {
+    "state": "admin-funds-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-funds-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-funds-nav-toggle-desktop.png"
+  },
+  {
+    "state": "startup-overview-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-overview-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-overview-nav-toggle-desktop.png"
+  },
+  {
+    "state": "startup-submit-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-nav-toggle-desktop.png"
+  },
+  {
+    "state": "fund-portfolio-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-portfolio-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-portfolio-nav-toggle-desktop.png"
+  },
+  {
+    "state": "fund-detail-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-detail-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-detail-nav-toggle-desktop.png"
+  },
+  {
+    "state": "fund-founders-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-founders-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-founders-nav-toggle-desktop.png"
+  },
+  {
+    "state": "fund-rating-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-rating-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-rating-nav-toggle-desktop.png"
+  },
+  {
+    "state": "stakeholder-portfolio-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/stakeholder-portfolio-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/stakeholder-portfolio-nav-toggle-desktop.png"
+  },
+  {
+    "state": "emptyfund-portfolio-nav-toggle",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/emptyfund-portfolio-nav-toggle-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/emptyfund-portfolio-nav-toggle-desktop.png"
+  },
+  {
+    "state": "onboarding-startup-field-focus",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-startup-field-focus-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-startup-field-focus-desktop.png"
+  },
+  {
+    "state": "onboarding-product-field-focus",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-product-field-focus-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-product-field-focus-desktop.png"
+  },
+  {
+    "state": "onboarding-questionnaire-field-focus",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-questionnaire-field-focus-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-questionnaire-field-focus-desktop.png"
+  },
+  {
+    "state": "onboarding-track-record-field-focus",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-track-record-field-focus-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-track-record-field-focus-desktop.png"
+  },
+  {
+    "state": "startup-gantt-week",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-gantt-week-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-gantt-week-desktop.png"
+  },
+  {
+    "state": "startup-gantt-month",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-gantt-month-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-gantt-month-desktop.png"
+  },
+  {
+    "state": "startup-gantt-year",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-gantt-year-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-gantt-year-desktop.png"
+  },
+  {
+    "state": "fund-gantt-week",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-gantt-week-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-gantt-week-desktop.png"
+  },
+  {
+    "state": "fund-gantt-month",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-gantt-month-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-gantt-month-desktop.png"
+  },
+  {
+    "state": "fund-gantt-year",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-gantt-year-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-gantt-year-desktop.png"
+  },
+  {
+    "state": "fund-patent-detail",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-patent-detail-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-patent-detail-desktop.png"
+  },
+  {
+    "state": "startup-technology-edit",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-technology-edit-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-technology-edit-desktop.png"
+  },
+  {
+    "state": "startup-submit-technology",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-technology-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-technology-desktop.png"
+  },
+  {
+    "state": "startup-submit-investor",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-investor-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-investor-desktop.png"
+  },
+  {
+    "state": "startup-submit-milestone",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-milestone-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-milestone-desktop.png"
+  },
+  {
+    "state": "startup-submit-investment-round",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-investment-round-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-investment-round-desktop.png"
+  },
+  {
+    "state": "startup-submit-new-patent",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-new-patent-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-new-patent-desktop.png"
+  },
+  {
+    "state": "startup-submit-patent-update",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-patent-update-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-patent-update-desktop.png"
+  },
+  {
+    "state": "startup-submit-patent-cancel",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-patent-cancel-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-patent-cancel-desktop.png"
+  },
+  {
+    "state": "login-focus",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-focus-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-focus-desktop.png"
+  },
+  {
+    "state": "login-invalid",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-invalid-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-invalid-desktop.png"
+  },
+  {
+    "state": "login-error",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-error-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-error-desktop.png"
+  },
+  {
+    "state": "admin-stakeholder-registration",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-stakeholder-registration-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-stakeholder-registration-desktop.png"
+  },
+  {
+    "state": "fund-rating-expanded",
+    "viewport": "desktop",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-rating-expanded-desktop.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-rating-expanded-desktop.png"
+  },
+  {
+    "state": "login",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-tablet.png"
+  },
+  {
+    "state": "admin-overview",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-overview-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-overview-tablet.png"
+  },
+  {
+    "state": "admin-users",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-users-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-users-tablet.png"
+  },
+  {
+    "state": "admin-startups",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-startups-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-startups-tablet.png"
+  },
+  {
+    "state": "admin-funds",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-funds-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-funds-tablet.png"
+  },
+  {
+    "state": "startup-overview",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-overview-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-overview-tablet.png"
+  },
+  {
+    "state": "startup-submit",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-tablet.png"
+  },
+  {
+    "state": "fund-portfolio",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-portfolio-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-portfolio-tablet.png"
+  },
+  {
+    "state": "fund-detail",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-detail-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-detail-tablet.png"
+  },
+  {
+    "state": "fund-founders",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-founders-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-founders-tablet.png"
+  },
+  {
+    "state": "fund-rating",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-rating-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-rating-tablet.png"
+  },
+  {
+    "state": "stakeholder-portfolio",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/stakeholder-portfolio-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/stakeholder-portfolio-tablet.png"
+  },
+  {
+    "state": "emptyfund-portfolio",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/emptyfund-portfolio-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/emptyfund-portfolio-tablet.png"
+  },
+  {
+    "state": "onboarding-startup",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-startup-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-startup-tablet.png"
+  },
+  {
+    "state": "onboarding-product",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-product-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-product-tablet.png"
+  },
+  {
+    "state": "onboarding-questionnaire",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-questionnaire-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-questionnaire-tablet.png"
+  },
+  {
+    "state": "onboarding-track-record",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-track-record-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-track-record-tablet.png"
+  },
+  {
+    "state": "admin-overview-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-overview-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-overview-nav-toggle-tablet.png"
+  },
+  {
+    "state": "admin-users-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-users-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-users-nav-toggle-tablet.png"
+  },
+  {
+    "state": "admin-startups-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-startups-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-startups-nav-toggle-tablet.png"
+  },
+  {
+    "state": "admin-funds-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-funds-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-funds-nav-toggle-tablet.png"
+  },
+  {
+    "state": "startup-overview-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-overview-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-overview-nav-toggle-tablet.png"
+  },
+  {
+    "state": "startup-submit-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-nav-toggle-tablet.png"
+  },
+  {
+    "state": "fund-portfolio-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-portfolio-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-portfolio-nav-toggle-tablet.png"
+  },
+  {
+    "state": "fund-detail-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-detail-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-detail-nav-toggle-tablet.png"
+  },
+  {
+    "state": "fund-founders-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-founders-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-founders-nav-toggle-tablet.png"
+  },
+  {
+    "state": "fund-rating-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-rating-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-rating-nav-toggle-tablet.png"
+  },
+  {
+    "state": "stakeholder-portfolio-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/stakeholder-portfolio-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/stakeholder-portfolio-nav-toggle-tablet.png"
+  },
+  {
+    "state": "emptyfund-portfolio-nav-toggle",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/emptyfund-portfolio-nav-toggle-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/emptyfund-portfolio-nav-toggle-tablet.png"
+  },
+  {
+    "state": "onboarding-startup-field-focus",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-startup-field-focus-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-startup-field-focus-tablet.png"
+  },
+  {
+    "state": "onboarding-product-field-focus",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-product-field-focus-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-product-field-focus-tablet.png"
+  },
+  {
+    "state": "onboarding-questionnaire-field-focus",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-questionnaire-field-focus-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-questionnaire-field-focus-tablet.png"
+  },
+  {
+    "state": "onboarding-track-record-field-focus",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-track-record-field-focus-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-track-record-field-focus-tablet.png"
+  },
+  {
+    "state": "startup-gantt-week",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-gantt-week-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-gantt-week-tablet.png"
+  },
+  {
+    "state": "startup-gantt-month",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-gantt-month-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-gantt-month-tablet.png"
+  },
+  {
+    "state": "startup-gantt-year",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-gantt-year-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-gantt-year-tablet.png"
+  },
+  {
+    "state": "fund-gantt-week",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-gantt-week-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-gantt-week-tablet.png"
+  },
+  {
+    "state": "fund-gantt-month",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-gantt-month-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-gantt-month-tablet.png"
+  },
+  {
+    "state": "fund-gantt-year",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-gantt-year-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-gantt-year-tablet.png"
+  },
+  {
+    "state": "fund-patent-detail",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-patent-detail-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-patent-detail-tablet.png"
+  },
+  {
+    "state": "startup-technology-edit",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-technology-edit-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-technology-edit-tablet.png"
+  },
+  {
+    "state": "startup-submit-technology",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-technology-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-technology-tablet.png"
+  },
+  {
+    "state": "startup-submit-investor",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-investor-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-investor-tablet.png"
+  },
+  {
+    "state": "startup-submit-milestone",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-milestone-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-milestone-tablet.png"
+  },
+  {
+    "state": "startup-submit-investment-round",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-investment-round-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-investment-round-tablet.png"
+  },
+  {
+    "state": "startup-submit-new-patent",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-new-patent-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-new-patent-tablet.png"
+  },
+  {
+    "state": "startup-submit-patent-update",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-patent-update-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-patent-update-tablet.png"
+  },
+  {
+    "state": "startup-submit-patent-cancel",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-patent-cancel-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-patent-cancel-tablet.png"
+  },
+  {
+    "state": "login-focus",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-focus-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-focus-tablet.png"
+  },
+  {
+    "state": "login-invalid",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-invalid-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-invalid-tablet.png"
+  },
+  {
+    "state": "login-error",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-error-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-error-tablet.png"
+  },
+  {
+    "state": "admin-stakeholder-registration",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-stakeholder-registration-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-stakeholder-registration-tablet.png"
+  },
+  {
+    "state": "fund-rating-expanded",
+    "viewport": "tablet",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-rating-expanded-tablet.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-rating-expanded-tablet.png"
+  },
+  {
+    "state": "login",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-mobile.png"
+  },
+  {
+    "state": "admin-overview",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-overview-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-overview-mobile.png"
+  },
+  {
+    "state": "admin-users",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-users-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-users-mobile.png"
+  },
+  {
+    "state": "admin-startups",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-startups-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-startups-mobile.png"
+  },
+  {
+    "state": "admin-funds",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-funds-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-funds-mobile.png"
+  },
+  {
+    "state": "startup-overview",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-overview-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-overview-mobile.png"
+  },
+  {
+    "state": "startup-submit",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-mobile.png"
+  },
+  {
+    "state": "fund-portfolio",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-portfolio-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-portfolio-mobile.png"
+  },
+  {
+    "state": "fund-detail",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-detail-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-detail-mobile.png"
+  },
+  {
+    "state": "fund-founders",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-founders-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-founders-mobile.png"
+  },
+  {
+    "state": "fund-rating",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-rating-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-rating-mobile.png"
+  },
+  {
+    "state": "stakeholder-portfolio",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/stakeholder-portfolio-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/stakeholder-portfolio-mobile.png"
+  },
+  {
+    "state": "emptyfund-portfolio",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/emptyfund-portfolio-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/emptyfund-portfolio-mobile.png"
+  },
+  {
+    "state": "onboarding-startup",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-startup-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-startup-mobile.png"
+  },
+  {
+    "state": "onboarding-product",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-product-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-product-mobile.png"
+  },
+  {
+    "state": "onboarding-questionnaire",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-questionnaire-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-questionnaire-mobile.png"
+  },
+  {
+    "state": "onboarding-track-record",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-track-record-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-track-record-mobile.png"
+  },
+  {
+    "state": "admin-overview-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-overview-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-overview-nav-toggle-mobile.png"
+  },
+  {
+    "state": "admin-users-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-users-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-users-nav-toggle-mobile.png"
+  },
+  {
+    "state": "admin-startups-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-startups-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-startups-nav-toggle-mobile.png"
+  },
+  {
+    "state": "admin-funds-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-funds-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-funds-nav-toggle-mobile.png"
+  },
+  {
+    "state": "startup-overview-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-overview-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-overview-nav-toggle-mobile.png"
+  },
+  {
+    "state": "startup-submit-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-nav-toggle-mobile.png"
+  },
+  {
+    "state": "fund-portfolio-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-portfolio-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-portfolio-nav-toggle-mobile.png"
+  },
+  {
+    "state": "fund-detail-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-detail-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-detail-nav-toggle-mobile.png"
+  },
+  {
+    "state": "fund-founders-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-founders-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-founders-nav-toggle-mobile.png"
+  },
+  {
+    "state": "fund-rating-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-rating-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-rating-nav-toggle-mobile.png"
+  },
+  {
+    "state": "stakeholder-portfolio-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/stakeholder-portfolio-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/stakeholder-portfolio-nav-toggle-mobile.png"
+  },
+  {
+    "state": "emptyfund-portfolio-nav-toggle",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/emptyfund-portfolio-nav-toggle-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/emptyfund-portfolio-nav-toggle-mobile.png"
+  },
+  {
+    "state": "onboarding-startup-field-focus",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-startup-field-focus-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-startup-field-focus-mobile.png"
+  },
+  {
+    "state": "onboarding-product-field-focus",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-product-field-focus-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-product-field-focus-mobile.png"
+  },
+  {
+    "state": "onboarding-questionnaire-field-focus",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-questionnaire-field-focus-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-questionnaire-field-focus-mobile.png"
+  },
+  {
+    "state": "onboarding-track-record-field-focus",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/onboarding-track-record-field-focus-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/onboarding-track-record-field-focus-mobile.png"
+  },
+  {
+    "state": "startup-gantt-week",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-gantt-week-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-gantt-week-mobile.png"
+  },
+  {
+    "state": "startup-gantt-month",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-gantt-month-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-gantt-month-mobile.png"
+  },
+  {
+    "state": "startup-gantt-year",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-gantt-year-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-gantt-year-mobile.png"
+  },
+  {
+    "state": "fund-gantt-week",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-gantt-week-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-gantt-week-mobile.png"
+  },
+  {
+    "state": "fund-gantt-month",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-gantt-month-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-gantt-month-mobile.png"
+  },
+  {
+    "state": "fund-gantt-year",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-gantt-year-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-gantt-year-mobile.png"
+  },
+  {
+    "state": "fund-patent-detail",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-patent-detail-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-patent-detail-mobile.png"
+  },
+  {
+    "state": "startup-technology-edit",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-technology-edit-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-technology-edit-mobile.png"
+  },
+  {
+    "state": "startup-submit-technology",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-technology-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-technology-mobile.png"
+  },
+  {
+    "state": "startup-submit-investor",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-investor-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-investor-mobile.png"
+  },
+  {
+    "state": "startup-submit-milestone",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-milestone-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-milestone-mobile.png"
+  },
+  {
+    "state": "startup-submit-investment-round",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-investment-round-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-investment-round-mobile.png"
+  },
+  {
+    "state": "startup-submit-new-patent",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-new-patent-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-new-patent-mobile.png"
+  },
+  {
+    "state": "startup-submit-patent-update",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-patent-update-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-patent-update-mobile.png"
+  },
+  {
+    "state": "startup-submit-patent-cancel",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/startup-submit-patent-cancel-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/startup-submit-patent-cancel-mobile.png"
+  },
+  {
+    "state": "login-focus",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-focus-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-focus-mobile.png"
+  },
+  {
+    "state": "login-invalid",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-invalid-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-invalid-mobile.png"
+  },
+  {
+    "state": "login-error",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/login-error-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/login-error-mobile.png"
+  },
+  {
+    "state": "admin-stakeholder-registration",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/admin-stakeholder-registration-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/admin-stakeholder-registration-mobile.png"
+  },
+  {
+    "state": "fund-rating-expanded",
+    "viewport": "mobile",
+    "before": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7/dashboard/qa/layout-corrections/before/fund-rating-expanded-mobile.png",
+    "after": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard/qa/layout-corrections/after/fund-rating-expanded-mobile.png"
+  }
+]

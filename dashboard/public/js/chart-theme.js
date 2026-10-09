@@ -1,5 +1,6 @@
 // Shared Chart.js presentation defaults: readable axis/legend text on the
-// dark cards and the dashboard font. Only appearance is configured here;
+// dark cards and the dashboard font, using colors that already exist in
+// dashboard.css. Only appearance is configured here;
 // datasets, colors per series and values stay in the page scripts.
 // Loaded (deferred) after chart.min.js and before any chart is created,
 // because the page scripts build charts on DOMContentLoaded.
@@ -12,8 +13,8 @@
     window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  d.color = "#d7dae0";
-  d.borderColor = "rgba(255, 255, 255, 0.10)";
+  d.color = "rgb(219, 219, 219)";
+  d.borderColor = "#00000030";
   d.font.family = getComputedStyle(document.body).fontFamily;
   d.font.size = 12;
 

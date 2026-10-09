@@ -1,0 +1,1 @@
+Publisher regenerated portable image index/CSV with unique state-viewport filenames and verified all 420 image references against original source bytes. This fixes original-baseline filename collisions in the upstream portable bundle; approved application source and QA report unchanged.

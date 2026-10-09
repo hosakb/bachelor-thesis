@@ -56,6 +56,12 @@ const FLOWS = [
     email: "stakeholder@example.test",
     pages: [["portfolio", "/fund"]],
   },
+  // Empty state: a fund with no portfolio rows (AG Grid no-rows overlay).
+  {
+    role: "emptyfund",
+    email: "emptyfund@example.test",
+    pages: [["portfolio", "/fund"]],
+  },
   {
     role: "onboarding",
     email: "onboarding@example.test",

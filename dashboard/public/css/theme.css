@@ -1,14 +1,16 @@
 /*
  * Presentation layer shared by every layout. Loaded after the page
- * stylesheets so it only refines them: the palette below is the original
- * one (sidebar, accent, header, page, card and table colors), only spacing,
- * typography, alignment and component consistency change here.
+ * stylesheets so it only refines them. Every color below is a value that
+ * already exists in dashboard.css / admin.css / founder-onboarding.css /
+ * login.css (see qa/baseline-2026-10-09/INVENTORY.md); no new colors are
+ * introduced. Only spacing, typography, alignment and component
+ * consistency change here.
  * No webfonts: the stack resolves to locally installed system fonts.
  */
 :root {
   --c-sidebar: #393e46;
+  --c-sidebar-shadow: #222831;
   --c-accent: #d65a31;
-  --c-accent-hover: #e2683f;
   --c-header: rgb(53, 53, 53);
   --c-page: #252b38;
   --c-card: #3f495e;
@@ -18,11 +20,11 @@
   --c-input: #45484e;
   --c-input-border: #979797;
   --c-button: #797b80;
-  --c-button-hover: #8a8c91;
-  --c-text: #f2f3f0;
-  --c-text-muted: #c3c7cf;
-  --c-line: rgba(255, 255, 255, 0.08);
-  --c-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  --c-text: #fff;
+  --c-text-muted: rgb(219, 219, 219);
+  --c-line: #00000030;
+  --c-backdrop: rgba(0, 0, 0, 0.7);
+  --c-shadow: 0 3px 6px #00000030;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
     "Noto Sans", "DejaVu Sans", sans-serif;
   --radius: 12px;
@@ -37,6 +39,9 @@
 }
 
 body.app {
+  position: relative;
+  display: flow-root;
+  min-height: 100vh;
   background: var(--c-page);
   color: var(--c-text);
   font-size: 1.4rem;
@@ -90,7 +95,7 @@ body.app .main-content > header {
   height: var(--header-h);
   align-items: center;
   padding: 0 2.4rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--c-shadow);
 }
 body.app .main-content > header h2 {
   font-size: 1.9rem;
@@ -112,7 +117,18 @@ body.app main {
   padding: 2.4rem;
 }
 
+/* Paint the full app-shell height; navigation remains sticky on long pages. */
+body.app .sidebar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: auto;
+  min-height: 100vh;
+}
 body.app .sidebar-brand {
+  position: sticky;
+  top: 0;
+  background: var(--c-sidebar);
   height: var(--header-h);
   align-items: center;
   padding: 0 1rem;
@@ -121,6 +137,10 @@ body.app .sidebar-brand h1 {
   font-size: 2rem;
 }
 body.app .sidebar-menu {
+  position: sticky;
+  top: calc(var(--header-h) + 1.2rem);
+  max-height: calc(100vh - var(--header-h) - 1.2rem);
+  overflow-y: auto;
   margin-top: 1.2rem;
 }
 body.app .sidebar-menu li {
@@ -133,7 +153,7 @@ body.app .sidebar-menu a {
   transition: background-color 150ms ease;
 }
 body.app .sidebar-menu a:not(.active):hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--c-sidebar-shadow);
 }
 body.app .sidebar-menu a:focus-visible {
   outline-offset: -2px;
@@ -275,8 +295,12 @@ body.app table > tr:last-child td {
 body.app tr:nth-child(even) {
   background-color: var(--c-row-alt);
 }
+/* Original hover token from dashboard.css. */
 body.app tbody tr:hover td {
-  background-color: rgba(255, 255, 255, 0.035);
+  background-color: var(--c-row-alt);
+}
+body.app tbody tr:nth-child(even):hover td {
+  background-color: var(--c-thead);
 }
 /* The old hover rounded single cells; keep rows rectangular. */
 body.app tr:hover td:first-child,
@@ -321,10 +345,11 @@ body.app input[type="button"] {
   max-width: none;
   width: auto;
 }
+/* Hover changes the border only, so no derived button shade is needed. */
 body.app button:hover,
 body.app input[type="submit"]:hover,
 body.app input[type="button"]:hover {
-  background: var(--c-button-hover);
+  border-color: var(--c-input-border);
 }
 body.app button:disabled {
   opacity: 0.6;
@@ -347,7 +372,7 @@ body.app .exit {
   border: 1px solid var(--c-line);
 }
 body.app .exit:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--c-input);
 }
 
 /* :where keeps this at low specificity so component rules can size inputs. */
@@ -373,13 +398,21 @@ body.app input[type="file"] {
 body.app input:focus-visible,
 body.app select:focus-visible,
 body.app textarea:focus-visible {
-  outline: none;
+  outline: 2px solid var(--c-accent);
+  outline-offset: 1px;
   border-color: var(--c-accent);
-  box-shadow: 0 0 0 3px rgba(214, 90, 49, 0.35);
 }
 body.app input::placeholder,
 body.app textarea::placeholder {
-  color: #b5b8be;
+  color: var(--c-input-border);
+}
+/* Error state: a field the user has left invalid (required, type=email,
+   min/max) gets the accent border. :user-invalid only matches after
+   interaction, so untouched forms are not flagged. */
+body.app input:user-invalid,
+body.app select:user-invalid,
+body.app textarea:user-invalid {
+  border-color: var(--c-accent);
 }
 body.app select option {
   background: var(--c-input);
@@ -415,13 +448,13 @@ body.app .btn-item > * {
 
 /* ---------------------------------------------------------- dialogs */
 body.app .variable-pane {
-  background-color: rgba(10, 12, 18, 0.72);
+  background-color: var(--c-backdrop);
 }
 body.app .variable-pane-box {
   background: var(--c-page);
   border: 1px solid var(--c-line);
   border-radius: var(--radius);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+  box-shadow: 4px 4px 10px var(--c-sidebar-shadow);
   padding: 2.4rem;
   max-width: calc(100vw - 3.2rem);
   max-height: calc(100vh - 6.4rem);
@@ -436,6 +469,10 @@ body.app .variable-pane-box .form-item * {
 }
 
 /* ---------------------------------------------------------- Gantt */
+body.app svg.gantt {
+  max-width: none;
+  display: block;
+}
 body.app .overflow-chart {
   overflow: auto;
   max-height: 32rem;
@@ -469,16 +506,17 @@ body.app .gantt .grid-row:nth-child(even) {
   fill: var(--c-row-alt);
 }
 body.app .gantt .row-line {
-  stroke: rgba(255, 255, 255, 0.06);
+  stroke: var(--c-line);
 }
 body.app .gantt .tick {
-  stroke: rgba(255, 255, 255, 0.07);
+  stroke: var(--c-thead);
 }
 body.app .gantt .tick.thick {
-  stroke: rgba(255, 255, 255, 0.16);
+  stroke: var(--c-button);
 }
 body.app .gantt .today-highlight {
-  fill: rgba(214, 90, 49, 0.22);
+  fill: var(--c-accent);
+  fill-opacity: 0.22;
 }
 body.app .gantt .upper-text,
 body.app .gantt .lower-text {
@@ -521,8 +559,8 @@ body.app .ag-theme-alpine-dark {
   --ag-header-foreground-color: var(--c-text);
   --ag-border-color: var(--c-line);
   --ag-row-border-color: var(--c-line);
-  --ag-row-hover-color: rgba(214, 90, 49, 0.14);
-  --ag-selected-row-background-color: rgba(214, 90, 49, 0.24);
+  --ag-row-hover-color: var(--c-thead);
+  --ag-selected-row-background-color: var(--c-sidebar);
   --ag-font-family: var(--font);
   --ag-font-size: 13px;
   --ag-borders: none;
@@ -631,9 +669,29 @@ body.layout-admin main > br {
 }
 
 /* ---------------------------------------------------------- empty/status */
-body.app #gantt:empty,
-body.app .empty-state {
+/* startup.js writes its existing "No milestones yet" text into #gantt when
+   there are no tasks; give that text the same muted, padded empty style as
+   the AG Grid overlays. No text is added here. */
+/* #gantt IS the SVG: populated charts never contain a nested svg. */
+body.app #gantt:not(:has(.grid-header)) {
+  padding: 2.4rem 1.6rem;
   color: var(--c-text-muted);
+  font-style: italic;
+  text-align: center;
+}
+body.app .ag-theme-alpine-dark .ag-overlay-no-rows-center,
+body.app .ag-theme-alpine-dark .ag-overlay-loading-center {
+  padding: 1.2rem 1.6rem;
+  color: var(--c-text-muted);
+  font-style: italic;
+  background: var(--c-thead);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  box-shadow: none;
+}
+/* Admin "Email already taken" message (shown by admin/users.js). */
+body.app label#email-taken {
+  color: var(--c-accent);
 }
 
 /* ---------------------------------------------------------- responsive */
@@ -743,6 +801,9 @@ body.app .empty-state {
 
 /* ================================================================ login */
 body.login-page {
+  box-sizing: border-box;
+  display: grid;
+  align-items: center;
   min-height: 100vh;
   margin: 0;
   padding: 6vh 1.6rem;
@@ -752,6 +813,7 @@ body.login-page {
   background-color: rgb(60, 72, 72);
 }
 body.login-page .wrapper {
+  box-sizing: border-box;
   width: 100%;
   max-width: 44rem;
   margin: 0 auto;
@@ -759,7 +821,7 @@ body.login-page .wrapper {
   overflow: hidden;
   border-radius: 14px;
   background-color: gray;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 3px 6px #00000030;
 }
 body.login-page header,
 body.login-page footer {
@@ -775,7 +837,7 @@ body.login-page h1 {
   margin-bottom: 8px;
   font-size: 28px;
   line-height: 1.2;
-  color: #111;
+  color: black;
 }
 body.login-page ul {
   margin: 0;
@@ -786,14 +848,14 @@ body.login-page ul li {
   margin-bottom: 8px;
   padding: 8px 12px;
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.12);
-  color: #111;
+  background: #e7e7e7;
+  color: black;
   font-size: 15px;
 }
 body.login-page p {
   margin-top: 0;
   margin-bottom: 16px;
-  color: #1b1b1b;
+  color: black;
   font-size: 15px;
 }
 body.login-page form {
@@ -805,20 +867,22 @@ body.login-page form {
 body.login-page form > div {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 body.login-page label {
   font-weight: 600;
   font-size: 14px;
-  color: #111;
+  color: black;
 }
 body.login-page input:not([type="hidden"]):not([type="submit"]),
 body.login-page select {
+  box-sizing: border-box;
   width: 100%;
   min-height: 42px;
   padding: 8px 12px;
   font-size: 15px;
-  color: #111;
-  background: #fff;
+  color: black;
+  background: #eee;
   border: 1px solid rgb(107, 113, 123);
   border-radius: 8px;
 }
@@ -830,14 +894,18 @@ body.login-page input[type="submit"] {
   font-size: 15px;
   font-weight: 600;
   color: #fff;
-  background: rgb(60, 72, 72);
+  background: darkslategray;
   border: 0;
   border-radius: 8px;
   cursor: pointer;
 }
+body.login-page input[type="submit"] {
+  width: 100%;
+  margin-top: 8px;
+}
 body.login-page button:hover,
 body.login-page input[type="submit"]:hover {
-  background: rgb(45, 55, 55);
+  background: rgb(60, 72, 72);
 }
 body.login-page input:focus-visible,
 body.login-page select:focus-visible,
