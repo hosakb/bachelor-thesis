@@ -27,7 +27,7 @@ Visual fixes, all roles:
 - Founders: expertise doughnut and table in a wrapping flex layout instead of floats.
 - Onboarding product step: cards overlapped because grid rows were sized in percentages; now auto rows.
 - Onboarding questionnaire: wide radio tables scroll per table on tablet/mobile instead of widening the page.
-- Mobile/tablet: cards stack in document order in one column; dense submit/detail tables keep a 56rem minimum width and scroll inside their card instead of breaking words letter by letter; onboarding header no longer runs under its sidebar.
+- Tablet and mobile (up to 1024px): cards stack in document order in one column; dense submit/detail tables keep a 56rem minimum width and scroll inside their card. At all widths, table cells only break words that cannot fit on a line (dashboard.css broke dates, names and emails mid-word); onboarding header no longer runs under its sidebar on mobile.
 - Login: centred card with labelled controls; production email/password form gets the same styling.
 - `prefers-reduced-motion` disables transitions and chart animation.
 

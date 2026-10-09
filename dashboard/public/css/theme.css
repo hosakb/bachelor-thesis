@@ -298,6 +298,13 @@ body.app #expertise-table-wrapper {
 body.app .card-startup-table {
   overflow: hidden;
 }
+/* dashboard.css breaks long cell text "anywhere", which also splits short
+   words and dates mid-word when columns get narrow. Break only words that
+   cannot fit on their own line. */
+body.app .submit-table-wrapper td,
+body.app .card-startup-table td {
+  overflow-wrap: break-word;
+}
 
 /* ---------------------------------------------------------- controls */
 body.app button,
@@ -651,6 +658,28 @@ body.app .empty-state {
     max-width: 100%;
     overflow-x: auto;
   }
+  /* Below desktop width two card columns are too narrow for the dense
+     tables: stack cards in one column, in document order. */
+  body.app .cards,
+  body.app .submit-cards {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: none;
+  }
+  /* !important: the page CSS assigns areas by id selector. */
+  body.app .cards > *,
+  body.app .submit-cards > * {
+    grid-area: auto !important;
+  }
+  /* A stray <br> between cards would become an empty grid row. */
+  body.app .cards > br {
+    display: none;
+  }
+  /* Dense tables keep readable columns and scroll inside their card. */
+  body.app .submit-table-wrapper table,
+  body.app .card-startup-table table,
+  body.app .table-container table {
+    min-width: 56rem;
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -680,31 +709,9 @@ body.app .empty-state {
   body.app .submit-card {
     padding: 1.6rem;
   }
-  /* One column in document order; avoids empty named rows adding gaps. */
-  body.app .cards,
-  body.app .submit-cards {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: none;
-  }
-  /* !important: the page CSS assigns areas by id selector. */
-  body.app .cards > *,
-  body.app .submit-cards > * {
-    grid-area: auto !important;
-  }
   body.app th,
   body.app td {
     padding: 0.9rem 1rem;
-  }
-  /* Dense tables keep readable columns and scroll inside their card
-     instead of breaking words letter by letter. */
-  body.app .submit-table-wrapper table,
-  body.app .card-startup-table table,
-  body.app .table-container table {
-    min-width: 56rem;
-  }
-  body.app .submit-table-wrapper td,
-  body.app .card-startup-table td {
-    overflow-wrap: break-word;
   }
   body.app table {
     font-size: 1.25rem;
