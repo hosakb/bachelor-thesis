@@ -29,6 +29,10 @@ document.querySelector("#add-milestone-btn").addEventListener("click", (e) => {
     progress.value == ""
   ) {
     alert("Please fill out all the fields.");
+  } else if (Number(progress.value) < 0 || Number(progress.value) > 100) {
+    alert("Percentage of completion must be between 0 and 100.");
+  } else if (end.value < start.value) {
+    alert("The due date cannot be before the start date.");
   } else {
     milestones.push({
       name: name.value,
@@ -66,16 +70,29 @@ document.querySelector("#add-milestone-btn").addEventListener("click", (e) => {
 document
   .querySelector("#submit-milestones-btn")
   .addEventListener("click", async () => {
-    await fetch("/startup/submit/add-milestone", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow",
-      body: JSON.stringify({ milestones }),
-    }).catch(() => {
+    if (milestones.length === 0) {
+      alert("Please add at least one milestone before submitting.");
+      return;
+    }
+    const submitButton = document.querySelector("#submit-milestones-btn");
+    submitButton.disabled = true;
+    try {
+      const response = await fetch("/startup/submit/add-milestone", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        body: JSON.stringify({ milestones }),
+      });
+      if (!response.ok || response.redirected) {
+        throw new Error();
+      }
+    } catch {
+      submitButton.disabled = false;
       alert("Failed to add new milestones. Please try again.");
-    });
+      return;
+    }
 
     document.getElementById("add-milestones-pane").classList.toggle("show");
     milestones = [];
@@ -88,7 +105,7 @@ function editMilestoneRow(x) {
   let milestoneNameInput = document.createElement("input");
   milestoneNameInput.type = "text";
   milestoneNameInput.id = "milestone-name-" + x;
-  milestoneNameInput.value = row[0].innerHTML.trim();
+  milestoneNameInput.value = row[0].textContent.trim();
 
   row[0].innerHTML = "";
   row[0].appendChild(milestoneNameInput);
@@ -96,7 +113,7 @@ function editMilestoneRow(x) {
   let milestoneStartInput = document.createElement("input");
   milestoneStartInput.type = "date";
   milestoneStartInput.id = "milestone-start-" + x;
-  milestoneStartInput.value = row[1].innerHTML.trim();
+  milestoneStartInput.value = row[1].textContent.trim();
 
   row[1].innerHTML = "";
   row[1].appendChild(milestoneStartInput);
@@ -104,7 +121,7 @@ function editMilestoneRow(x) {
   let milestoneEndInput = document.createElement("input");
   milestoneEndInput.type = "date";
   milestoneEndInput.id = "milestone-end-" + x;
-  milestoneEndInput.value = row[2].innerHTML.trim();
+  milestoneEndInput.value = row[2].textContent.trim();
 
   row[2].innerHTML = "";
   row[2].appendChild(milestoneEndInput);
@@ -114,7 +131,7 @@ function editMilestoneRow(x) {
   milestoneProgressInput.min = 0;
   milestoneProgressInput.max = 100;
   milestoneProgressInput.id = "milestone-progress-" + x;
-  milestoneProgressInput.value = row[3].innerHTML.trim();
+  milestoneProgressInput.value = row[3].textContent.trim();
 
   row[3].innerHTML = "";
   row[3].appendChild(milestoneProgressInput);
@@ -123,14 +140,16 @@ function editMilestoneRow(x) {
     .querySelector("#milestone-option-btn-" + x)
     .classList.toggle("hidden");
   document.querySelector("#milestone-ok-btn-" + x).classList.toggle("hidden");
+  document
+    .querySelector("#milestone-cancel-btn-" + x)
+    .classList.toggle("hidden");
 }
 
 function deleteMilestoneRow(x) {
+  if (!confirm("Delete this milestone?")) {
+    return;
+  }
   const id = document.querySelector("#milestone-" + x).value;
-  const milestoneTbody = document.querySelector("#milestones-list-tbody");
-  const tr = document.querySelector(".milestone-" + x);
-
-  milestoneTbody.removeChild(tr);
 
   fetch("/startup/submit/delete-milestone", {
     method: "POST",
@@ -141,28 +160,43 @@ function deleteMilestoneRow(x) {
     body: JSON.stringify({
       id: id,
     }),
-  }).catch(function (err) {
-    console.info(err); //TODO:
-  });
+  })
+    .then((response) => {
+      if (!response.ok || response.redirected) {
+        throw new Error("Failed to delete the milestone.");
+      }
+      location.reload();
+    })
+    .catch(function (err) {
+      alert(err.message);
+    });
 }
 
 function saveMilestone(x) {
-  const name = document.querySelector("#milestone-name-" + x).value;
+  const name = document.querySelector("#milestone-name-" + x).value.trim();
   const start = document.querySelector("#milestone-start-" + x).value;
   const end = document.querySelector("#milestone-end-" + x).value;
   const progress = document.querySelector("#milestone-progress-" + x).value;
 
-  const id = document.querySelector("#milestone-" + x).value;
-  document
-    .querySelector("#milestone-option-btn-" + x)
-    .classList.toggle("hidden");
-  document.querySelector("#milestone-ok-btn-" + x).classList.toggle("hidden");
+  if (
+    name === "" ||
+    start === "" ||
+    end === "" ||
+    progress === "" ||
+    Number(progress) < 0 ||
+    Number(progress) > 100
+  ) {
+    alert("Please fill out all fields. Completion must be between 0 and 100.");
+    return;
+  }
+  if (end < start) {
+    alert("The due date cannot be before the start date.");
+    return;
+  }
 
-  const row = document.querySelector(".milestone-" + x).children;
-  row[0].innerHTML = name;
-  row[1].innerHTML = start;
-  row[2].innerHTML = end;
-  row[3].innerHTML = progress;
+  const id = document.querySelector("#milestone-" + x).value;
+  const okButton = document.querySelector("#milestone-ok-btn-" + x);
+  okButton.disabled = true;
 
   fetch("/startup/submit/update-milestone", {
     method: "POST",
@@ -177,9 +211,18 @@ function saveMilestone(x) {
       end,
       progress,
     }),
-  }).catch(function (err) {
-    console.info(err); //TODO:
-  });
+  })
+    .then(async (response) => {
+      if (!response.ok || response.redirected) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body.error || "Failed to update the milestone.");
+      }
+      location.reload();
+    })
+    .catch(function (err) {
+      okButton.disabled = false;
+      alert(err.message);
+    });
 }
 
 function cancelEdit() {
@@ -194,7 +237,7 @@ function editRow(x) {
   let technologyInput = document.createElement("input");
   technologyInput.type = "text";
   technologyInput.id = "technology-" + x;
-  technologyInput.value = row[0].innerHTML.trim();
+  technologyInput.value = row[0].textContent.trim();
 
   row[0].innerHTML = "";
   row[0].appendChild(technologyInput);
@@ -206,8 +249,8 @@ function editRow(x) {
   trlOptionDefault.selected = true;
   trlOptionDefault.disabled = true;
   trlOptionDefault.hidden = true;
-  trlOptionDefault.value = row[1].innerHTML.trim();
-  trlOptionDefault.text = row[1].innerHTML.trim();
+  trlOptionDefault.value = row[1].textContent.trim();
+  trlOptionDefault.text = row[1].textContent.trim();
   trlSelect.appendChild(trlOptionDefault);
 
   let trlOptionOne = document.createElement("option");
@@ -265,8 +308,8 @@ function editRow(x) {
   optionDefault.selected = true;
   optionDefault.disabled = true;
   optionDefault.hidden = true;
-  optionDefault.value = row[2].innerHTML.trim();
-  optionDefault.text = row[2].innerHTML.trim();
+  optionDefault.value = row[2].textContent.trim();
+  optionDefault.text = row[2].textContent.trim();
   criticalitySelect.appendChild(optionDefault);
 
   let optionOne = document.createElement("option");
@@ -289,14 +332,14 @@ function editRow(x) {
 
   document.querySelector("#option-btn-" + x).classList.toggle("hidden");
   document.querySelector("#ok-btn-" + x).classList.toggle("hidden");
+  document.querySelector("#cancel-btn-" + x).classList.toggle("hidden");
 }
 
 function deleteRow(x) {
+  if (!confirm("Delete this technology?")) {
+    return;
+  }
   const id = document.querySelector("#id-" + x).value;
-  const trlTbody = document.querySelector("#trl-tbody");
-  const tr = document.querySelector(".trl-" + x);
-
-  trlTbody.removeChild(tr);
 
   fetch("/startup/submit/delete-trl", {
     method: "POST",
@@ -304,29 +347,32 @@ function deleteRow(x) {
       "Content-Type": "application/json",
     },
     redirect: "follow",
-    body: JSON.stringify({
-      id: {
-        id: id,
-      },
-    }),
-  }).catch(function (err) {
-    console.info(err); //TODO:
-  });
+    body: JSON.stringify({ id }),
+  })
+    .then((response) => {
+      if (!response.ok || response.redirected) {
+        throw new Error("Failed to delete the technology.");
+      }
+      location.reload();
+    })
+    .catch(function (err) {
+      alert(err.message);
+    });
 }
 
 function saveTrl(x) {
-  const technology = document.querySelector("#technology-" + x).value;
+  const technology = document.querySelector("#technology-" + x).value.trim();
   const trl = document.querySelector("#trl-" + x).value;
   const criticality = document.querySelector("#criticality-" + x).value;
   const id = document.querySelector("#id-" + x).value;
 
-  document.querySelector("#option-btn-" + x).classList.toggle("hidden");
-  document.querySelector("#ok-btn-" + x).classList.toggle("hidden");
+  if (technology === "") {
+    alert("Please enter a technology name.");
+    return;
+  }
 
-  const row = document.querySelector(".trl-" + x).children;
-  row[0].innerHTML = technology;
-  row[1].innerHTML = trl;
-  row[2].innerHTML = criticality;
+  const okButton = document.querySelector("#ok-btn-" + x);
+  okButton.disabled = true;
 
   fetch("/startup/submit/update-trl", {
     method: "POST",
@@ -342,9 +388,17 @@ function saveTrl(x) {
         criticality: criticality,
       },
     }),
-  }).catch(function (err) {
-    console.info(err); //TODO:
-  });
+  })
+    .then((response) => {
+      if (!response.ok || response.redirected) {
+        throw new Error("Failed to update the technology.");
+      }
+      location.reload();
+    })
+    .catch(function (err) {
+      okButton.disabled = false;
+      alert(err.message);
+    });
 }
 
 function cancelMilestoneEdit(x) {
@@ -538,15 +592,10 @@ document
     document.getElementById("next-investment-round").classList.toggle("show");
   });
 
-function investorAccepted(e) {
-  const td = e.parentElement.parentElement.parentElement;
-  const span = document.createElement("span");
-  span.classList.add("las");
-  span.classList.add("la-check");
-  td.appendChild(span);
-  td.children[1].classList.add("hidden");
-
-  const id = td.children[6].children[0].value;
+function updateInvestorStatus(e, status) {
+  const cell = e.closest("td");
+  const id = cell.querySelector("input[type=hidden]").value;
+  cell.querySelectorAll("button").forEach((button) => (button.disabled = true));
 
   fetch("/startup/submit/update-investor-status", {
     method: "POST",
@@ -554,42 +603,28 @@ function investorAccepted(e) {
       "Content-Type": "application/json",
     },
     redirect: "follow",
-    body: JSON.stringify({ id, status: "accepted" }),
+    body: JSON.stringify({ id, status }),
   })
-    .then(() => {
-      alert("Successfully updated contacted investors status");
+    .then((response) => {
+      if (!response.ok || response.redirected) {
+        throw new Error();
+      }
       location.reload();
     })
     .catch(() => {
+      cell
+        .querySelectorAll("button")
+        .forEach((button) => (button.disabled = false));
       alert("Failed to update contacted investors status.");
     });
 }
 
+function investorAccepted(e) {
+  updateInvestorStatus(e, "accepted");
+}
+
 function investorDeclined(e) {
-  const td = e.parentElement.parentElement.parentElement;
-  const span = document.createElement("span");
-  span.classList.add("las");
-  span.classList.add("la-times");
-  td.appendChild(span);
-  td.children[1].classList.add("hidden");
-
-  const id = td.children[0].value;
-
-  fetch("/startup/submit/update-investor-status", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
-    body: JSON.stringify({ id, status: "declined" }),
-  })
-    .then(() => {
-      alert("Successfully updated contacted investors status");
-      location.reload();
-    })
-    .catch(() => {
-      alert("Failed to update contacted investors status.");
-    });
+  updateInvestorStatus(e, "declined");
 }
 
 // ============================== Patent ========================================
@@ -927,5 +962,12 @@ Date.prototype.addMonths = function (value) {
 function formatDate(date) {
   return (
     date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear()
+  );
+}
+
+if (new URLSearchParams(window.location.search).has("capTableError")) {
+  history.replaceState(null, "", window.location.pathname);
+  alert(
+    "Please upload a valid .xlsx cap table (max. 5 MB). Nothing was changed."
   );
 }

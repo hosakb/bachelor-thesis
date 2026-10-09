@@ -22,12 +22,16 @@ document.getElementById("submit-new-startup").addEventListener("click", () => {
       redirect: "follow",
       body: JSON.stringify(newStartup),
     })
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Request failed");
+        }
         document.getElementById("name").value = "";
         document.getElementById("company").value = "";
         document.getElementById("bc-username").value = "";
         document.getElementById("bc-password").value = "";
         alert("Successfully added new Startup");
+        location.reload();
       })
       .catch(() => {
         alert("Failed to add new Startup. Please try again.");
@@ -47,6 +51,10 @@ document.getElementById("startups").addEventListener("change", async (e) => {
     alert("Failed to fetch Startup. Please try again.");
   });
 
+  if (!res || !res.ok) {
+    alert("Failed to fetch Startup. Please try again.");
+    return;
+  }
   const startup = await res.json();
 
   document.getElementById("edited-name").value = startup.name;
@@ -76,8 +84,12 @@ document
         redirect: "follow",
         body: JSON.stringify({ id, name, bcUsername, bcPassword, bcCompany }),
       })
-        .then(() => {
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Request failed");
+          }
           alert("Successfully updated startup credentials");
+          location.reload();
           document.getElementById("edited-name").value = "";
           document.getElementById("edited-company").value = "";
           document.getElementById("edited-bc-username").value = "";
@@ -116,10 +128,14 @@ document
       redirect: "follow",
       body: JSON.stringify({ id: deleteStartupId }),
     })
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Request failed");
+        }
         document.querySelector("#chose-delete").classList.add("hidden");
 
         alert("Successfully deleted startup.");
+        location.reload();
       })
       .catch(() => {
         alert("Failed to delete startup.");

@@ -21,6 +21,8 @@ import {
 import { Milestone, getMilestones } from "../models/milestone";
 
 import { getTrl } from "../models/trl";
+import { getStartupNameById } from "../models/startup";
+import { startupInFundPortfolio } from "../models/ownership";
 
 import { Metrics, getMetrics } from "../models/metrics";
 import { getInvestors } from "../models/potential_investor";
@@ -57,7 +59,7 @@ router.get("/", async (req, res) => {
     req.session.fundId = fundId;
 
     try {
-      if (await !investorIdExists(fundId)) {
+      if (!(await investorIdExists(fundId))) {
         res.redirect("/"); // invalid query result for fundId
         return;
       }
@@ -88,8 +90,28 @@ router.get("/table/values", (req, res) => {
   res.status(200).json(req.session.startupTable);
 });
 
-router.post("/startup", (req, res) => {
-  req.session.selectedStartup = req.body.id;
+router.post("/startup", async (req, res) => {
+  const startupId = req.body.id;
+
+  try {
+    if (!(await startupInFundPortfolio(req.session.fundId, startupId))) {
+      console.error(
+        `Fund ${req.session.fundId} tried to select startup ${startupId} outside its portfolio.`
+      );
+      res.status(403).send("Forbidden");
+      return;
+    }
+
+    req.session.selectedStartup = String(startupId);
+    req.session.startupName = await getStartupNameById(String(startupId));
+  } catch (error) {
+    console.error(
+      `Failed to select startup ${startupId} due to ${error}. Redirecting to fund dashboard.`
+    );
+    res.redirect("/fund/");
+    return;
+  }
+
   res.setHeader("content-type", "application/javascript");
   res.redirect(`startup`);
 });
@@ -101,7 +123,7 @@ router.get("/startup/founders", async (req, res) => {
     console.log(
       `Redirecting user ${req.user?.id} to fund screen since no selected startup was found.`
     );
-    res.redirect("/fund/");
+    return res.redirect("/fund/");
   }
   try {
     const capTable: Row[] = await getCapTable(startupId);
@@ -157,7 +179,7 @@ router.get("/startup/", async (req, res) => {
     console.log(
       `Redirecting user ${req.user?.id} to fund screen since no selected startup was found.`
     );
-    res.redirect("/fund/");
+    return res.redirect("/fund/");
   }
 
   try {
@@ -196,7 +218,7 @@ router.get("/startup/rating", async (req, res) => {
     console.log(
       `Redirecting user ${req.user?.id} to fund screen since no selected startup was found.`
     );
-    res.redirect("/fund/");
+    return res.redirect("/fund/");
   }
   try {
     const questionnaire: Questionnaire = await getQuestionnaire(startupId);

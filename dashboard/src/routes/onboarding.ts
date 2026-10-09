@@ -12,7 +12,7 @@ import { PreviousVenture, insertTrackRecord } from "../models/track_record";
 import {
   deleteSpreadsheets,
   formatCapTable,
-  multerUpload,
+  capTableUpload,
   uploadCapTable,
 } from "../util/excel";
 
@@ -44,26 +44,23 @@ router.get("/startup", async (req, res) => {
   });
 });
 
-router.post(
-  "/cap-table",
-  multerUpload.single("cap-table"),
-  async (req, res) => {
-    try {
-      const rows = await uploadCapTable();
+router.post("/cap-table", capTableUpload, async (req, res) => {
+  try {
+    const rows = await uploadCapTable(req.file);
 
-      const capTable = formatCapTable(rows);
-      req.session.capTable = capTable;
-      res.json(JSON.stringify({ capTable: capTable }));
-      deleteSpreadsheets();
-      return;
-    } catch (error) {
-      console.error(
-        `The following error occurred during upload of a cap table. Redirecting to /submit ${error}`
-      );
-      res.redirect("/");
-    }
+    const capTable = formatCapTable(rows);
+    req.session.capTable = capTable;
+    res.json(JSON.stringify({ capTable: capTable }));
+    return;
+  } catch (error) {
+    console.error(
+      `The following error occurred during upload of a cap table: ${error}`
+    );
+    res
+      .status(400)
+      .json({ error: "Please upload a valid .xlsx cap table (max. 5 MB)." });
   }
-);
+});
 
 router.post("/reupload", (req, res) => {
   deleteSpreadsheets();
@@ -160,7 +157,7 @@ router.get("/questionnaire", async (req, res) => {
     title: req.session.startupName,
     name: req.user?.firstName + " " + req.user?.lastName,
     startupName: req.session.startupName,
-    scripts: ["/js/onboarding/questionnaire"],
+    scripts: [],
   });
 });
 

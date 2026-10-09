@@ -1,0 +1,14 @@
+{
+  "steps": [
+    "full onboarding: cap table, product/TRL, questionnaire, founder; reload and re-login",
+    "admin fund/stakeholder create, edit, selection reset, cancel deletion and delete",
+    "patent initial application -> disclosure/deadlines -> examination -> objection -> granted; cancellation and reload"
+  ],
+  "errors": [],
+  "external": [],
+  "screenshots": [
+    "qa/remaining/onboarding-completed.png",
+    "qa/remaining/admin-fund-edit.png",
+    "qa/remaining/patent-granted.png"
+  ]
+}

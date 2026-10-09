@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "adapter": "node-web",
+  "directory": "dashboard",
+  "command": {
+    "runtime": "node",
+    "entrypoint": "local-demo.cjs",
+    "args": [],
+    "portEnv": "PORT"
+  },
+  "preview": "responsive"
+}

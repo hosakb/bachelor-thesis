@@ -12,7 +12,8 @@ import investorDashboardRouter from "./routes/investor";
 import startupDashboardRouter from "./routes/startup";
 import adminRouter from "./routes/admin";
 import onboardingRouter from "./routes/onboarding";
-import { checkNotAuthenticated } from "./middleware/check-auth";
+import { checkNotAuthenticated, requireRole } from "./middleware/check-auth";
+import { errorHandler, forwardAsyncErrors } from "./middleware/async-errors";
 import path from "path";
 
 const app = express();
@@ -45,17 +46,46 @@ app.set("layout", "layouts/login");
 app.use(expressLayouts);
 
 app.use(express.static(path.join(__dirname, "../public")));
+// Serve the Line Awesome icon fonts from the installed package so the local
+// /css/line-awesome.min.css (which references ../fonts/) works offline.
+app.use(
+  "/fonts",
+  express.static(
+    path.join(
+      path.dirname(require.resolve("line-awesome/package.json")),
+      "dist/line-awesome/fonts"
+    )
+  )
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", indexRouter);
+app.use("/", forwardAsyncErrors(indexRouter));
 
 app.use(checkNotAuthenticated);
 
-app.use("/fund", investorDashboardRouter);
-app.use("/admin", adminRouter);
-app.use("/startup", startupDashboardRouter);
-app.use("/onboarding", onboardingRouter);
+app.use(
+  "/fund",
+  requireRole("fund", "stakeholder"),
+  forwardAsyncErrors(investorDashboardRouter)
+);
+app.use("/admin", requireRole("admin"), forwardAsyncErrors(adminRouter));
+app.use(
+  "/startup",
+  requireRole("startup"),
+  forwardAsyncErrors(startupDashboardRouter)
+);
+app.use(
+  "/onboarding",
+  requireRole("startup"),
+  forwardAsyncErrors(onboardingRouter)
+);
 
-app.listen(process.env.PORT || 3000);
+app.use(errorHandler);
+
+export default app;
+
+if (require.main === module) {
+  app.listen(process.env.PORT || 3000);
+}

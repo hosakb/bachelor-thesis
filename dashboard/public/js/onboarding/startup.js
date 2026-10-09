@@ -32,13 +32,18 @@ function submitCapTable() {
     method: "POST",
     body: formData,
   })
-    .then((response) => {
-      return response.json();
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to upload the cap table.");
+      }
+      return data;
     })
     .then((data) => {
       const table = document.querySelector("#cap-table");
       const rows = JSON.parse(data).capTable;
-      document.querySelector("#cap-table-div").classList.toggle("hidden");
+      table.replaceChildren();
+      document.querySelector("#cap-table-div").classList.remove("hidden");
       for (const row of rows) {
         let tr = document.createElement("tr");
         for (const cell of row) {
@@ -52,6 +57,9 @@ function submitCapTable() {
         }
         table.appendChild(tr);
       }
+    })
+    .catch((err) => {
+      alert(err.message);
     });
 }
 
@@ -63,7 +71,6 @@ function submitStartupData() {
   const sector = document.querySelector("#sector").value;
   const investedCapital = document.querySelector("#invested-capital").value;
 
-  console.log(productToMarketSelect.value);
   if (productToMarketSelect.value === "yes") {
     timeToMarket = null;
   }

@@ -361,10 +361,9 @@ textarea {
 .cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: minmax(auto, 30%) minmax(auto, 30%) repeat(
-      2,
-      minmax(auto, 20%)
-    );
+  /* Rows grow with their content so the Gantt controls and charts are never
+     clipped or covered by the next row of cards. */
+  grid-auto-rows: auto;
   grid-gap: 2rem;
   margin-top: 1rem;
   grid-template-areas:
@@ -766,4 +765,16 @@ textarea {
 /* Milestones */
 #milestones-tbl {
   float: right;
+}
+
+/* Long unbroken user input (names, notes, URLs) wraps instead of pushing
+   the date, progress and option columns out of the card. */
+.submit-table-wrapper td,
+.card-startup-table td {
+  overflow-wrap: anywhere;
+}
+
+.submit-table-wrapper td.nowrap {
+  white-space: nowrap;
+  overflow-wrap: normal;
 }

@@ -93,7 +93,7 @@ const getMilestones = async (startupId: string): Promise<Milestone[]> => {
   let result;
   try {
     result = await client.query(
-      "SELECT id, name, start_date, end_date, progress, index FROM milestones WHERE startup_id = $1",
+      "SELECT id, name, start_date, end_date, progress, index FROM milestones WHERE startup_id = $1 ORDER BY index, id",
       [startupId]
     );
   } catch (err) {

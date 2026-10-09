@@ -3,7 +3,7 @@ import { calcTrlProd } from "../util/calc/trl";
 
 interface Trl {
   product: string;
-  trlProd: number;
+  trlProd: number | null;
   trlData: TrlData[];
 }
 
@@ -39,7 +39,7 @@ const getTrl = async (startupId: string): Promise<Trl> => {
   let result;
   try {
     result = await client.query(
-      "SELECT startup.product, trl.id, trl.technology, trl.trl, trl.criticality FROM trl JOIN startup ON trl.startup_id = startup.id WHERE startup.id = $1;",
+      "SELECT startup.product, trl.id, trl.technology, trl.trl, trl.criticality FROM startup LEFT JOIN trl ON trl.startup_id = startup.id WHERE startup.id = $1 ORDER BY trl.id;",
       [startupId]
     );
   } catch (err) {
@@ -50,14 +50,21 @@ const getTrl = async (startupId: string): Promise<Trl> => {
     client.release();
   }
 
-  const trlData: TrlData[] = result.rows.map((trl) => {
-    return {
-      id: trl.id,
-      technology: trl.technology,
-      trl: trl.trl,
-      criticality: trl.criticality,
-    };
-  });
+  if (result.rows.length === 0) {
+    throw new Error(`No startup found with id ${startupId}.`);
+  }
+
+  // A startup without TRL rows yields a single row with NULL trl columns.
+  const trlData: TrlData[] = result.rows
+    .filter((trl) => trl.id !== null && trl.id !== undefined)
+    .map((trl) => {
+      return {
+        id: trl.id,
+        technology: trl.technology,
+        trl: trl.trl,
+        criticality: trl.criticality,
+      };
+    });
 
   const trl: Trl = {
     product: result.rows[0].product,

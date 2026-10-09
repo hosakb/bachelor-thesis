@@ -63,7 +63,7 @@ const getInvestors = async (startupId: string): Promise<Investor[]> => {
   const client = await pool.connect();
   try {
     const result = await client.query(
-      "SELECT id, name, type, email, number, url, country, notes, contact_date, startup_id, status FROM investors WHERE startup_id = $1;",
+      "SELECT id, name, type, email, number, url, country, notes, contact_date, startup_id, status FROM investors WHERE startup_id = $1 ORDER BY contact_date, id;",
       [startupId]
     );
 

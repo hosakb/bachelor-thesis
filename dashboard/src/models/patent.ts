@@ -171,7 +171,7 @@ const getAllPatents = async (startupId: string): Promise<Patent[]> => {
   const client = await pool.connect();
   try {
     const result = await client.query(
-      "SELECT * FROM patents WHERE startup_id = $1;",
+      "SELECT * FROM patents WHERE startup_id = $1 ORDER BY id;",
       [startupId]
     );
 

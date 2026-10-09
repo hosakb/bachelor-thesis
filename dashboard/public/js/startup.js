@@ -119,7 +119,8 @@ function renderGantt(data) {
   const tasks = data.map((t) => {
     return {
       custom_index: t.index,
-      id: t.id,
+      // Frappe Gantt matches bars by their string data-id attribute.
+      id: String(t.id),
       name: t.name,
       start: t.start,
       end: t.end,
@@ -129,6 +130,11 @@ function renderGantt(data) {
   });
 
   sessionStorage.setItem("tasks", JSON.stringify(tasks));
+  if (tasks.length === 0) {
+    document.querySelector("#gantt").textContent = "No milestones yet. Add one on the Submit page.";
+    gantt = null;
+    return;
+  }
 
   // eslint-disable-next-line no-undef
   gantt = new Gantt("#gantt", tasks, {
@@ -156,62 +162,100 @@ function renderGantt(data) {
 }
 
 function change_view_mode(period) {
-  gantt.change_view_mode(period);
+  if (gantt) gantt.change_view_mode(period);
+}
+
+// Pending Gantt edits keyed by task id. Each drag replaces the previous
+// pending value for that task, and the Ok/Cancel buttons are wired once, so
+// repeated drags never stack listeners or send duplicate/stale requests.
+const pendingGanttChanges = new Map();
+
+function toIsoDate(date) {
+  const d = new Date(date);
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
 function updatePeriod(task, start, end) {
-  document
-    .querySelector("#gantt-changes-ok-btn")
-    .addEventListener("click", () => {
-      document.querySelector("#gantt-changes").classList.add("hidden");
-
-      const taskDuration = { taskId: task.id, start: start, end: end };
-
-      fetch("/startup/gantt/period", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        redirect: "follow",
-        body: JSON.stringify(taskDuration),
-      }).catch(function (err) {
-        console.error(err); //TODO:
-      });
-    });
-  document
-    .querySelector("#gantt-changes-cancel-btn")
-    .addEventListener("click", () => {
-      cancelGanttChanges();
-    });
+  const change = pendingGanttChanges.get(task.id) || {};
+  change.period = { start: toIsoDate(start), end: toIsoDate(end) };
+  pendingGanttChanges.set(task.id, change);
 }
 
 function updateProgress(task, progress) {
-  const taskProgress = { taskId: task.id, progress: progress };
+  const change = pendingGanttChanges.get(task.id) || {};
+  change.progress = progress;
+  pendingGanttChanges.set(task.id, change);
+}
 
-  document
-    .querySelector("#gantt-changes-ok-btn")
-    .addEventListener("click", () => {
-      document.querySelector("#gantt-changes").classList.add("hidden");
-      fetch("/startup/gantt/progress", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        redirect: "follow",
-        body: JSON.stringify(taskProgress),
-      }).catch(function (err) {
-        console.error(err); //TODO:
-      });
-    });
-  document
-    .querySelector("#gantt-changes-cancel-btn")
-    .addEventListener("click", () => {
-      cancelGanttChanges();
-    });
+async function sendGanttUpdate(url, body) {
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    body: JSON.stringify(body),
+  });
+  if (!response.ok || response.redirected) {
+    throw new Error("Failed to save milestone changes.");
+  }
+}
+
+async function saveGanttChanges() {
+  const okButton = document.querySelector("#gantt-changes-ok-btn");
+  okButton.disabled = true;
+  try {
+    for (const [taskId, change] of pendingGanttChanges) {
+      if (change.period) {
+        await sendGanttUpdate("/startup/gantt/period", {
+          taskId,
+          start: change.period.start,
+          end: change.period.end,
+        });
+      }
+      if (change.progress !== undefined) {
+        await sendGanttUpdate("/startup/gantt/progress", {
+          taskId,
+          progress: change.progress,
+        });
+      }
+      pendingGanttChanges.delete(taskId);
+    }
+    document.querySelector("#gantt-changes").classList.add("hidden");
+    sessionStorage.setItem(
+      "tasks",
+      JSON.stringify(
+        gantt.tasks.map((t) => ({
+          custom_index: t.custom_index,
+          id: t.id,
+          name: t.name,
+          start: toIsoDate(t._start),
+          // _end is exclusive (midnight after the last day).
+          end: toIsoDate(new Date(t._end.getTime() - 1000)),
+          progress: t.progress,
+          dependencies: "",
+        }))
+      )
+    );
+  } catch (err) {
+    alert(err.message);
+  } finally {
+    okButton.disabled = false;
+  }
 }
 
 function cancelGanttChanges() {
+  pendingGanttChanges.clear();
   let tasks = JSON.parse(sessionStorage.getItem("tasks"));
   gantt.refresh(tasks);
   document.querySelector("#gantt-changes").classList.add("hidden");
+}
+
+const ganttOkButton = document.querySelector("#gantt-changes-ok-btn");
+if (ganttOkButton) {
+  ganttOkButton.addEventListener("click", saveGanttChanges);
+  document
+    .querySelector("#gantt-changes-cancel-btn")
+    .addEventListener("click", cancelGanttChanges);
 }

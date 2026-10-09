@@ -50,15 +50,13 @@ router.post(
   }
 );
 
-router.get("/logout", (req, res) => {
+router.get("/logout", (req, res, next) => {
   req.logout({ keepSessionInfo: false }, (err) => {
     if (err) {
-      throw new Error(
-        `Failed to logout user ${req.user?.id} correctly due to ${err}`
-      );
+      return next(err);
     }
+    res.redirect("/");
   });
-  res.redirect("/");
 });
 
 export default router;

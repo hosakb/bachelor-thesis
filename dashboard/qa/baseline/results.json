@@ -1,0 +1,156 @@
+[
+  {
+    "role": "admin",
+    "path": "/admin",
+    "url": "http://127.0.0.1:3307/admin",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Admin Panel\nAvery Demo\nOverview\nUsers\n\n\nName\tEmail\tRole\tCreated At\tUpdated At\tStartup\tFund\nAvery Demo\tadmin@example.test\tadmin\t8.10.2026\t8.10.2026\t\t\nAvery Demo\tstartup@example.test\tstartup\t8.10.2026\t8.10.2026\tHelioFusion\t\nAvery Demo\tfund@example.test\tfund\t8.10.2026\t8.10.2026\t\tAurora Ventures\nAvery Demo\tstakeholder@example.test\tstakeholder\t8.10.2026\t8.10.2026\t\tAurora Ventures\nFunds\n\n\nName\tCreated At\tUpdated At\nAurora Ventures\t8.10.2026\t8.10.2026\nStakeholders\n\n\nName\tCreated At\tUpdated At\nStartups\n\n\nName\tInvestment Phase\tCreated At\tUpdated At\nHelioFusion\tSeed\t8.10.2026\t8.10.2026\nQuantum Forge\tSeed\t8.10.2026\t8.10.2026",
+    "screenshot": "qa/baseline/admin-_admin.png"
+  },
+  {
+    "role": "admin",
+    "path": "/admin/users",
+    "url": "http://127.0.0.1:3307/admin/users",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Admin Panel\nAvery Demo\nAdd User\nFirst Name: \nLast Name: \nEmail: \nPassword: \nRole: \nAdmin\nFund\nStartup\nStakeholder\nSubmit new User\n\n\nEdit User\nSelect User\nAvery Demo\nAvery Demo\nAvery Demo\nAvery Demo\n\n\nDelete\nSelect User\nAvery Demo\nAvery Demo\nAvery Demo\nAvery Demo\nDelete User",
+    "screenshot": "qa/baseline/admin-_admin_users.png"
+  },
+  {
+    "role": "admin",
+    "path": "/admin/startups",
+    "url": "http://127.0.0.1:3307/admin/startups",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Admin Panel\nAvery Demo\nAdd Startup\nName: \nBusiness Central Credentials\nCompany: \nUsername: \nPassword: \nSubmit new Startup\n\n\nEdit Startup\nSelect Startup\nHelioFusion\nQuantum Forge\nSubmit edited Startup\n\n\nDelete Startup\nSelect Startup\nHelioFusion\nQuantum Forge\n Delete Startup",
+    "screenshot": "qa/baseline/admin-_admin_startups.png"
+  },
+  {
+    "role": "admin",
+    "path": "/admin/funds",
+    "url": "http://127.0.0.1:3307/admin/funds",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Admin Panel\nAvery Demo\nRegister Fund or Stakeholder\nSelect\nFund\nStakeholder\n\n\n\n\nEdit Fund or Stakeholder\nSelect Fund or Stakeholder\nAurora Ventures\n\n\nDelete Fund or Stakeholder\nSelect Fund\nAurora Ventures\nDelete Fund",
+    "screenshot": "qa/baseline/admin-_admin_funds.png"
+  },
+  {
+    "role": "startup",
+    "path": "/startup",
+    "url": "http://127.0.0.1:3307/startup",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "HelioFusion\nAvery Demo\nMilestones\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n01\nJanuary\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n01\nFebruary\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n01\nMarch\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n01\nApril\n02\nPrototype\nDay Week Month Year\nCash Runway\nBurn Rate\nLiquidity",
+    "screenshot": "qa/baseline/startup-_startup.png"
+  },
+  {
+    "role": "startup",
+    "path": "/startup/submit",
+    "url": "http://127.0.0.1:3307/startup/submit",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "HelioFusion\nAvery Demo\nTechnology Readiness Level\nTechnology\tTRL\tCriticality\tOptions\nCore technology\t5\t3\t\n \n\nAdd Technology\nContacted Investors\nName\tType\tContact Details\tDate of Contact\tLocation\tNotes\tStatus\nFictional Capital\tVC\t\ncontact@example.test\n\t1.2.2026\t\t\t\n \nAdd new Investor\nMilestones\nAdd Milestones\nMilestone\tStart Date\tDue Date\tProgress\tOptions\nPrototype\tThu Jan 01 2026 00:00:00 GMT+0000 (Coordinated Universal Time)\tSun Mar 01 2026 00:00:00 GMT+0000 (Coordinated Universal Time)\t50\t\n \nCapitalization Table\nNext investment round\nFounder\tShares\tShare\nAvery\t80\t80\nAurora\t20\t20\nPatents\nNew Patent\nInvention\tInventor\tStatus\tLast Status Change\tOptions/Info\nDemo invention\tAvery\tapplication-phase\t8.10.2026\t ",
+    "screenshot": "qa/baseline/startup-_startup_submit.png"
+  },
+  {
+    "role": "fund",
+    "path": "/fund",
+    "url": "http://127.0.0.1:3307/fund",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Aurora Ventures\nAvery Demo\nDeep Tech\nInvestment Sector\n20000000 $\nHard Cap\n10000000 $\nFund Volume\n1.11.2026\nNext Closing\n1.1.2027\nFinal Closing\nStartup Name\nSector\nInvestment Stage\nTotal Investment (M$)\nRating\nHelioFusion\nEnergy\nSeed\n1000000\n2.4\nQuantum Forge\nEnergy\nSeed\n1000000\n3.1",
+    "screenshot": "qa/baseline/fund-_fund.png"
+  },
+  {
+    "role": "fund",
+    "path": "/fund/startup",
+    "url": "http://127.0.0.1:3307/fund/startup",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Avery Demo\nMilestones\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n01\nJanuary\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n01\nFebruary\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n01\nMarch\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n01\nApril\n02\nPrototype\nDay Week Month Year\nCash Runway\nBurn Rate\nLiquidity\n5\nTRL(PROD) of Prototype\n\n\nTechnology\tTRL\tCriticality\nCore technology\t5\t3\n\n\nContacted Investors\nName\tType\tContact Details\tDate of Contact\tLocation\tNotes\tStatus\nFictional Capital\tVC\t\ncontact@example.test\n\t1.2.2026\t\t\t\nPatents\nInvention\tInventor\tPhase\tLast Status Change\tOptions/Info\nDemo invention\tAvery\tapplication-phase\t8.10.2026\t",
+    "screenshot": "qa/baseline/fund-_fund_startup.png"
+  },
+  {
+    "role": "fund",
+    "path": "/fund/startup/founders",
+    "url": "http://127.0.0.1:3307/fund/startup/founders",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Avery Demo\nFounders Track Records\n\n\nFounder Name\tVenture Name\tFounding Date\tCo-Founders\tLast Valuation (M)\tStill in Business\tReason for Failure\nAvery Demo\tNo previous ventures\n\n\nCap-Table\nFounder\tShares\tShare\nAvery\t80\t80\nAurora\t20\t20\n\n\nDomain of Expertise\nName\tExpertise\nAvery Demo\tEngineering,Management",
+    "screenshot": "qa/baseline/fund-_fund_startup_founders.png"
+  },
+  {
+    "role": "fund",
+    "path": "/fund/startup/rating",
+    "url": "http://127.0.0.1:3307/fund/startup/rating",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Avery Demo\nRating\n\n\nOverview\n#\tCategory\tPoints\tWeighting\tWeighted Points\tMax. Points\tRating\n1.\tCorporate governance and strategy\t3\t\n\t3\t5\t7.8\n2.\tBusiness environment and product\t3\t\n\t3\t5\t7.8\n3.\tControlling\t3\t\n\t3\t5\t7.8\n4.\tOrganization\t3\t\n\t3\t5\t7.8\n5.\tRisk Control and Risk Management\t3\t\n\t3\t5\t7.8\n6.\tProcess (Value Chain)\t3\t\n\t3\t5\t7.8\n7.\tAccounting and relationship with the bank\t3\t\n\t3\t5\t7.8\n8.\tCurrent company development/company situation\t3\t\n\t3\t5\t7.8\n\tSum Points 1. - 8. (24 of 40 Points)\t24\t8\t24\t40\t7.8\n\n\nDetailed Summery\n#\tCategory\tQuestion Points\tSub-Category Points\tCategory Points\tMax. Points\tRating\n1.\tCorporate governance and strategy\t\t\t3\t5\t7.8\n2.\tBusiness environment and product\t\t\t3\t5\t7.8\n3.\tPlanning & Control\t\t\t3\t5\t7.8\n4.\tOrganization\t\t\t3\t5\t7.8\n5.\tRisk Control and Risk Management\t\t\t3\t5\t7.8\n6.\tProcess (Value Chain)\t\t\t3\t5\t7.8\n7.\tAccounting and relationship with the bank\t\t\t3\t5\t7.8\n8.\tCurrent company development/company situation\t\t\t3\t5\t7.8",
+    "screenshot": "qa/baseline/fund-_fund_startup_rating.png"
+  },
+  {
+    "role": "stakeholder",
+    "path": "/fund",
+    "url": "http://127.0.0.1:3307/fund",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Aurora Ventures\nAvery Demo\nDeep Tech\nInvestment Sector\n20000000 $\nHard Cap\n10000000 $\nFund Volume\n1.11.2026\nNext Closing\n1.1.2027\nFinal Closing\nStartup Name\nSector\nInvestment Stage\nTotal Investment (M$)\nRating\nQuantum Forge\nEnergy\nSeed\n1000000\n3.1\nHelioFusion\nEnergy\nSeed\n1000000\n7.8",
+    "screenshot": "qa/baseline/stakeholder-_fund.png"
+  },
+  {
+    "role": "stakeholder",
+    "path": "/fund/startup",
+    "url": "http://127.0.0.1:3307/fund/startup",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Avery Demo\nMilestones\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n01\nJanuary\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n01\nFebruary\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n01\nMarch\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n01\nApril\n02\nPrototype\nDay Week Month Year\nCash Runway\nBurn Rate\nLiquidity\n5\nTRL(PROD) of Prototype\n\n\nTechnology\tTRL\tCriticality\nCore technology\t5\t3\n\n\nContacted Investors\nName\tType\tContact Details\tDate of Contact\tLocation\tNotes\tStatus\nFictional Capital\tVC\t\ncontact@example.test\n\t1.2.2026\t\t\t\nPatents\nInvention\tInventor\tPhase\tLast Status Change\tOptions/Info\nDemo invention\tAvery\tapplication-phase\t8.10.2026\t",
+    "screenshot": "qa/baseline/stakeholder-_fund_startup.png"
+  },
+  {
+    "role": "stakeholder",
+    "path": "/fund/startup/founders",
+    "url": "http://127.0.0.1:3307/fund/startup/founders",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Avery Demo\nFounders Track Records\n\n\nFounder Name\tVenture Name\tFounding Date\tCo-Founders\tLast Valuation (M)\tStill in Business\tReason for Failure\nAvery Demo\tNo previous ventures\n\n\nCap-Table\nFounder\tShares\tShare\nAvery\t80\t80\nAurora\t20\t20\n\n\nDomain of Expertise\nName\tExpertise\nAvery Demo\tEngineering,Management",
+    "screenshot": "qa/baseline/stakeholder-_fund_startup_founders.png"
+  },
+  {
+    "role": "stakeholder",
+    "path": "/fund/startup/rating",
+    "url": "http://127.0.0.1:3307/fund/startup/rating",
+    "status": 200,
+    "errors": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "text": "Avery Demo\nRating\n\n\nOverview\n#\tCategory\tPoints\tWeighting\tWeighted Points\tMax. Points\tRating\n1.\tCorporate governance and strategy\t3\t\n\t3\t5\t7.8\n2.\tBusiness environment and product\t3\t\n\t3\t5\t7.8\n3.\tControlling\t3\t\n\t3\t5\t7.8\n4.\tOrganization\t3\t\n\t3\t5\t7.8\n5.\tRisk Control and Risk Management\t3\t\n\t3\t5\t7.8\n6.\tProcess (Value Chain)\t3\t\n\t3\t5\t7.8\n7.\tAccounting and relationship with the bank\t3\t\n\t3\t5\t7.8\n8.\tCurrent company development/company situation\t3\t\n\t3\t5\t7.8\n\tSum Points 1. - 8. (24 of 40 Points)\t24\t8\t24\t40\t7.8\n\n\nDetailed Summery\n#\tCategory\tQuestion Points\tSub-Category Points\tCategory Points\tMax. Points\tRating\n1.\tCorporate governance and strategy\t\t\t3\t5\t7.8\n2.\tBusiness environment and product\t\t\t3\t5\t7.8\n3.\tPlanning & Control\t\t\t3\t5\t7.8\n4.\tOrganization\t\t\t3\t5\t7.8\n5.\tRisk Control and Risk Management\t\t\t3\t5\t7.8\n6.\tProcess (Value Chain)\t\t\t3\t5\t7.8\n7.\tAccounting and relationship with the bank\t\t\t3\t5\t7.8\n8.\tCurrent company development/company situation\t\t\t3\t5\t7.8",
+    "screenshot": "qa/baseline/stakeholder-_fund_startup_rating.png"
+  }
+]

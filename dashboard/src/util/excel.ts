@@ -1,22 +1,13 @@
-import { Request } from "express";
-import multer, { FileFilterCallback, StorageEngine } from "multer";
+import { NextFunction, Request, Response } from "express";
+import multer, { FileFilterCallback } from "multer";
 import readXlsxFile, { Row } from "read-excel-file/node";
-import fs from "fs";
-import path from "path";
-import { getTodaysDate } from "./date";
-const FILENAME_CAP_TABLE =
-  "cap-table-" + getTodaysDate() + Math.round(Math.random() * 1e9) + ".xlsx";
+import { Readable } from "stream";
 
-const UPLOAD_PATH = path.join(__dirname, "..", "..", "public", "uploads");
-
-const multerStorage: StorageEngine = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/uploads");
-  },
-  filename: function (req: Request, file, cb) {
-    cb(null, FILENAME_CAP_TABLE);
-  },
-});
+// Cap tables are parsed straight from the request's in-memory buffer. Nothing
+// is written to disk, so concurrent uploads by different users cannot
+// overwrite or read each other's spreadsheet, and no uploaded file is ever
+// reachable through the public static directory.
+const MAX_CAP_TABLE_BYTES = 5 * 1024 * 1024;
 
 const FILE_FILTER = (
   req: Request,
@@ -37,35 +28,36 @@ const FILE_FILTER = (
 };
 
 const multerUpload = multer({
-  storage: multerStorage,
+  storage: multer.memoryStorage(),
   fileFilter: FILE_FILTER,
+  limits: { fileSize: MAX_CAP_TABLE_BYTES, files: 1 },
 });
 
-const uploadCapTable = async () => {
-  const filePath = path.join(UPLOAD_PATH, FILENAME_CAP_TABLE);
+// Accepts the "cap-table" field. Oversized or malformed uploads are dropped
+// (req.file stays undefined) so the route reports a normal validation error
+// instead of an unhandled multer exception.
+const capTableUpload = (req: Request, res: Response, next: NextFunction) => {
+  multerUpload.single("cap-table")(req, res, (err?: unknown) => {
+    if (err) {
+      console.error(`Rejected cap table upload: ${err}`);
+      req.file = undefined;
+    }
+    next();
+  });
+};
 
-  return await readXlsxFile(fs.createReadStream(filePath), {
+const uploadCapTable = async (file: Express.Multer.File | undefined) => {
+  if (file === undefined || file.buffer === undefined) {
+    throw new Error("No valid .xlsx cap table was uploaded.");
+  }
+
+  return await readXlsxFile(Readable.from([file.buffer]), {
     dateFormat: "mm/dd/yyyy",
   });
 };
 
-const deleteSpreadsheets = () => {
-  fs.readdir(UPLOAD_PATH, (err, files) => {
-    if (err)
-      throw new Error(
-        `Failed to read spreadsheet directory at ${UPLOAD_PATH} after submission of kpis with the following error ${err}`
-      );
-
-    for (const file of files) {
-      fs.unlink(path.join(UPLOAD_PATH, file), (err) => {
-        if (err)
-          throw new Error(
-            `Failed to delete spreadsheet ${file} in directory ${UPLOAD_PATH} with the following error ${err}`
-          );
-      });
-    }
-  });
-};
+// Kept for route compatibility; uploads are no longer stored on disk.
+const deleteSpreadsheets = () => undefined;
 
 const formatCapTable = (rows: Row[]) => {
   const columns = rows.reduce(
@@ -108,4 +100,10 @@ const formatCapTable = (rows: Row[]) => {
   return capTable;
 };
 
-export { multerUpload, deleteSpreadsheets, uploadCapTable, formatCapTable };
+export {
+  capTableUpload,
+  multerUpload,
+  deleteSpreadsheets,
+  uploadCapTable,
+  formatCapTable,
+};

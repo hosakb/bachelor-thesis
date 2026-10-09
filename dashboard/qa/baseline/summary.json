@@ -1,0 +1,12 @@
+{
+  "pages": 14,
+  "roles": [
+    "admin",
+    "startup",
+    "fund",
+    "stakeholder"
+  ],
+  "non200": 0,
+  "pageErrors": [],
+  "blockedExternalResourceErrors": 14
+}
