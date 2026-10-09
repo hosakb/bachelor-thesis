@@ -130,6 +130,11 @@ function renderGantt(data) {
   });
 
   sessionStorage.setItem("tasks", JSON.stringify(tasks));
+  if (tasks.length === 0) {
+    document.querySelector("#gantt").textContent = "No milestones yet. Add one on the Submit page.";
+    gantt = null;
+    return;
+  }
 
   // eslint-disable-next-line no-undef
   gantt = new Gantt("#gantt", tasks, {
@@ -157,7 +162,7 @@ function renderGantt(data) {
 }
 
 function change_view_mode(period) {
-  gantt.change_view_mode(period);
+  if (gantt) gantt.change_view_mode(period);
 }
 
 // Pending Gantt edits keyed by task id. Each drag replaces the previous

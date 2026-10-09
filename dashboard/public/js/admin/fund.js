@@ -184,9 +184,7 @@ document.getElementById("funds").addEventListener("change", async (e) => {
   const startups = document.querySelectorAll("#new-startups-list li input");
 
   for (const startup of startups) {
-    if (fund.startups.includes(startup.value)) {
-      startup.checked = true;
-    }
+    startup.checked = fund.startups.map(String).includes(startup.value);
   }
 });
 

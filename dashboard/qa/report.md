@@ -14,10 +14,23 @@ node --test tests/http.test.cjs
 node --openssl-legacy-provider --test tests/http.test.cjs
 node --test tests/large-fixture.test.cjs                     # LOCAL_DB_EXTRA_STARTUPS=150 by default
 CHROMIUM_PATH=/path/to/chromium node tests/e2e.cjs           # starts its own server on :3317
-PORT=3307 NODE_ENV=test node --openssl-legacy-provider --require ./tests/local-db.cjs ./src/server.ts   # manual run
+node --test tests/demo-runtime.test.cjs                     # hostile-env boot/login/reset
+CHROMIUM_PATH=/path/to/chromium node tests/remaining-e2e.cjs # clean sandbox-runtime flows on :3331
+PORT=3307 node local-demo.cjs                               # safe loopback-only manual demo
 ```
 
-`tests/local-db.cjs` replaces `src/config/db.ts` with pg-mem before the app loads. It seeds two funds (fund and stakeholder type), four startups (two in the fund portfolio, one only in the stakeholder portfolio, one outside every portfolio, one not yet onboarded) and six logins `{admin,startup,startup2,onboarding,fund,stakeholder}@example.test` with password `local-demo-only`. State lasts for one process. It is not a production migration.
+Scraper, run from `scraper/`:
+
+```
+npm run build
+node --openssl-legacy-provider --test tests/bc-contract.test.cjs
+```
+
+`tests/bc-contract.test.cjs` runs the compiled scraper job (unchanged cron tick, NTLM client, models and `calculateMetrics`) against a local HTTP server on 127.0.0.1 that performs the NTLM type1/type2/type3 handshake and answers the two OData queries the scraper sends (account `1331` balance; `1601`/`1602` short-term liabilities). The database module is swapped for an in-process fake before load, so `.env` is never read. The test checks the handshake, the exact filters, the rounded rows written to `business_central_finance`, the burn rate, cash runway and liquidity written to `metrics` across three ticks, and that an unreachable company is logged without stopping the job. A deliberate change to the liquidity formula made it fail (mutation check). `npm run build` rewrites two tracked files in `scraper/dist`; they are not part of this change.
+
+`tests/local-db.cjs` replaces `src/config/db.ts` with pg-mem before the app loads. It seeds two investors (fund and stakeholder type), four startups (two in the fund portfolio, one only in the stakeholder portfolio, and one fresh onboarding startup outside every portfolio) and six logins `{admin,startup,startup2,onboarding,fund,stakeholder}@example.test` with password `local-demo-only`. State lasts for one process. It is not a production migration.
+
+Install dashboard dependencies with `npm ci` (include dev dependencies), then run the manual demo command above and open http://127.0.0.1:3307. Stop with Ctrl-C; restart resets all fictional data. `.local-app-sandbox/launch.json` provides the node-web sandbox launch contract. The opt-in `local-demo.cjs` rejects outbound socket connections and loading `pg`/`dotenv`, preloads the fixture before application routes, and binds only 127.0.0.1. Its modern-Node legacy-crypto child uses an allowlisted environment, not inherited DB/ERP credentials or NODE_OPTIONS. Tests used Node 26.7.0 on Linux. Do not use the legacy `npm start` or committed `.env` for this demo. Hosting project discovery remains the sandbox owner's responsibility; this PR does not deploy it.
 
 On Node 17 and later, Business Central password hashing (NTLM: MD4/DES via httpntlm) needs `--openssl-legacy-provider`. The crypto itself was not changed.
 
@@ -43,18 +56,28 @@ On Node 17 and later, Business Central password hashing (NTLM: MD4/DES via httpn
 | 16 | Admin add/update startup inserted the startup before hashing failed, leaving orphans | hash first | http |
 | 17 | Long unbroken input pushed table columns out of the card; dates wrapped at hyphens | `overflow-wrap`, nowrap date cells | screenshot review |
 | 18 | Icon-only buttons had no accessible name | `aria-label` and `title` | e2e keyboard step |
+| 19 | Admin fund edit did not restore selected startup checkboxes (number/string IDs) and retained stale checks when switching investors | compare IDs as strings and set every checkbox | remaining-e2e fund/stakeholder CRUD |
+| 20 | Freshly onboarded startup overview crashed in Frappe Gantt with no milestones | existing card displays a small empty-state message; view-mode clicks are safe | remaining-e2e full onboarding/re-login |
+| 21 | Questionnaire page requested a nonexistent script, causing 404/MIME console errors | remove unused script reference; native form retained | remaining-e2e questionnaire completion |
+| 22 | Patent granted pane repeated "granted for" in its heading (found visually) | remove duplicate wording, preserve layout | remaining-e2e exact heading assertion |
 
 ## Results (actual runs)
 
 - TypeScript `tsc --noEmit`: pass. ESLint (repo config, `.ts`): pass.
 - Unit: 1/1. HTTP: 15/15 without the legacy provider and 15/15 with it.
 - Large fixture: 152 portfolio rows, all unique, `/fund` and the table API answered in 146 ms total.
+- Scraper Business Central contract: 1/1 with `--openssl-legacy-provider`. Without the flag it fails on Node 26 with `digital envelope routines::unsupported` (the MD4 limitation above).
 - Browser E2E (`tests/e2e.cjs`, headless Chromium build 1243): 19 steps passed, 16 screenshots, 0 console errors, 0 page exceptions, 0 failed local requests, 0 external requests. Covered: invalid and valid login, anonymous redirect, startup Gantt drag and save plus reload, TRL add/edit/validation with special characters, milestone add/edit/delete/validation with long input and repeated clicks, investor status, invalid and valid cap-table upload, logout, cross-role 403, fund portfolio → detail/founders/rating plus reload, foreign-startup 403, stakeholder portfolio isolation without fund figures, admin user create/duplicate email/edit/delete, admin startup create, onboarding entry, 390 px mobile layout (0 px horizontal overflow), keyboard reachability of labelled icon buttons, and 4 concurrent role sessions × 5 reload rounds.
-- Screenshots: `qa/baseline/` (before UI changes) and `qa/after/`. Reviewed by eye: startup overview, submit page before and after edits, mobile submit.
+- Latest rerun: model unit 1/1; dashboard HTTP, large-fixture and demo-runtime suites 17/17 together with the legacy provider. Dashboard TypeScript and repository ESLint pass. Scraper build and TypeScript pass; scraper has no lint script/config, so an ESLint 10 probe could not run and is not a pass.
+- Latest large fixture rerun: 152 portfolio rows, all unique; reported load_ms=164. This is a local smoke load, not a capacity benchmark.
+- `tests/remaining-e2e.cjs`: 3 additional complete browser flows, 3 screenshots, zero console/page errors and external requests. Covered full onboarding (cap-table upload, product/TRL, every questionnaire field, founder submission, reload and logout/re-login), admin fund and stakeholder create/edit/delete/cancel-deletion and selection reset, patent initial application/disclosure/examination/objection/granted transitions with concrete deadline assertions, cancellation and reload. The previously wrong fixture expertise JSON column is now text, matching the real app's string input; demo seed patent status uses the application's supported initial-application state.
+- Sandbox-runtime regression: boots twice with deliberately hostile DATABASE_URL/PGHOST, logs loopback URL, authenticates fictional startup and shows fixture data each launch; 1/1. The actual browser flows above run through the sandbox entrypoint, not a substitute app.
+- Screenshots: `qa/baseline/` (before UI changes), `qa/after/`, and `qa/remaining/`. Visually reviewed baseline vs. updated submit page, startup overview, mobile submit and patent pane. Original dark cards, colors, typography, sidebar/navigation and two-column desktop structure are preserved. Offline icons now appear and dates are compact; long text wraps inside cards. Narrow tables use horizontal scrolling; not a claim that every column fits simultaneously on a phone.
+- Independent read-only review inspected the main-to-working-tree application diff, guards, uploads, fixture/runtime and scraper contract test. No blocking new security/logic/regression findings. Reviewer requested excluding the agent-only task DB diagnostic helper: removed. Pre-existing hardening suggestions were recorded separately (t_d3e72791), pending Ben authorization; no scope expansion here.
 
 ## Limitations, not verified
 
-- Scraper against a Business Central mock: not run. Only `npm run build` passed. A reusable ERP mock is the separate follow-up task t_9ce2d6e9.
-- Full onboarding walkthrough (all questionnaire steps), patent lifecycle transitions and admin fund edit/delete were not driven in the browser. Only the first onboarding step and admin page rendering were checked for those areas.
+- Business Central: only checked against the test-only contract server above, which is shaped by what the scraper code requests, not by a recorded live response. A reusable ERP demo mock and tutorial are the separate follow-up task t_9ce2d6e9. No live Business Central was contacted.
+- Browser coverage is a deterministic regression/stress suite, not exhaustive fuzzing of every possible input, patent branch or browser. Founder completion used an engineering expertise/no-prior-ventures path; only desktop Chromium and a 390 px mobile viewport were exercised.
 - Not tested: Firefox, Windows (the README's reference platform), real PostgreSQL, live ERP.
-- Not in scope and unchanged: the hard-coded session secret `"12345"` in `server.ts`, the committed `.env` credentials referenced by the README, and the NTLM hashing scheme. These need a separate security decision from Ben.
+- Not in scope and unchanged: the hard-coded session secret `"12345"` in `server.ts`, the committed `.env` credentials referenced by the README, the NTLM hashing scheme, and a commented credential-like string in `scraper/src/api/business-central.js`. These need a separate security decision from Ben.

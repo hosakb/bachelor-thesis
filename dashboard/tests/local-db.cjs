@@ -20,7 +20,7 @@ const db = newDb();
 db.public.none(`
 CREATE TABLE startup (id serial PRIMARY KEY, name text, stage text DEFAULT 'Seed', invested_capital float DEFAULT 0, sector text, has_product boolean, est_time_to_market integer, product text, cap_table jsonb, questionnaire jsonb, info jsonb, created_at timestamp DEFAULT now(), updated_at timestamp DEFAULT now());
 CREATE TABLE investor (id serial PRIMARY KEY, name text, investment_sector text, fund_volume float, hard_cap float, next_closing timestamp, final_closing timestamp, type text, weights jsonb, created_at timestamp DEFAULT now(), updated_at timestamp DEFAULT now());
-CREATE TABLE track_record (id serial PRIMARY KEY, expertise jsonb, ventures jsonb);
+CREATE TABLE track_record (id serial PRIMARY KEY, expertise text, ventures jsonb);
 CREATE TABLE users (id serial PRIMARY KEY, first_name text, last_name text, email text UNIQUE, password text, role text, startup integer REFERENCES startup(id) ON DELETE SET NULL, fund integer REFERENCES investor(id) ON DELETE SET NULL, track_record integer REFERENCES track_record(id), created_at timestamp DEFAULT now(), updated_at timestamp DEFAULT now());
 CREATE TABLE investor_startup_map (fund_id integer REFERENCES investor(id) ON DELETE CASCADE, startup_id integer REFERENCES startup(id) ON DELETE CASCADE, rating float, PRIMARY KEY(fund_id,startup_id));
 CREATE TABLE trl (id serial PRIMARY KEY, technology text, trl float, criticality float, startup_id integer REFERENCES startup(id) ON DELETE CASCADE);
@@ -75,7 +75,7 @@ function seedStartup(name, { onboarded = true, sector = "Energy" } = {}) {
    INSERT INTO metrics (date,burn_rate,cash_runway,liquidity,startup) VALUES ('2026-01-01',12000,18,2.1,${id}),('2026-02-01',14000,16,1.9,${id});
    INSERT INTO investors (name,type,email,contact_date,startup_id) VALUES ('Fictional Capital','VC','contact@example.test','2026-02-01',${id});
    INSERT INTO business_central (company,username,startup_id) VALUES ('Fictional','demo',${id});
-   INSERT INTO patents (invention,inventor,status,patent_office,startup_id) VALUES ('Demo invention','Avery','application-phase','DPMA',${id});`);
+   INSERT INTO patents (invention,inventor,status,patent_office,startup_id) VALUES ('Demo invention','Avery','initial-application','DPMA',${id});`);
   return id;
 }
 

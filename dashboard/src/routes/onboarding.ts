@@ -157,7 +157,7 @@ router.get("/questionnaire", async (req, res) => {
     title: req.session.startupName,
     name: req.user?.firstName + " " + req.user?.lastName,
     startupName: req.session.startupName,
-    scripts: ["/js/onboarding/questionnaire"],
+    scripts: [],
   });
 });
 
