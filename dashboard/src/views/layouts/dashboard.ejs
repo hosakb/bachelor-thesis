@@ -9,9 +9,10 @@
     <link rel="stylesheet" type="text/css" href="/css/frappe-gantt.min.css">
     <link rel="stylesheet" type="text/css" href="/css/line-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="/css/theme.css">
 </head>
 
-<body>
+<body class="app layout-dashboard">
     <% if(dashboard == "fund") {%>
     <%- include("../partials/sidebar_fund.ejs") %>
     <% } else if(dashboard == "startup") { %>
@@ -28,6 +29,9 @@
 
     <% for (const script of scripts) { %>
     <script type="application/javascript" src="<%= script %>.js" defer></script>
+    <% } %>
+    <% if (scripts.includes("/js/chart/chart.min")) { %>
+    <script type="application/javascript" src="/js/chart-theme.js" defer></script>
     <% } %>
 </body>
 

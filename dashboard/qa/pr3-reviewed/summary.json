@@ -1,0 +1,8 @@
+{
+  "cases": 159,
+  "fresh_browser_errors": 0,
+  "fresh_geometry_defects": 0,
+  "before_sidebar_gap_cases": 100,
+  "before_gantt_inset_cases": 33,
+  "before_document_overflow_cases": 1
+}

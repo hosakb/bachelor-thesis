@@ -1,0 +1,44 @@
+Independent regression QA — t_1e30c3f7
+
+{
+  "verification_commands": 10,
+  "matrix_cases": 159,
+  "per_viewport": {
+    "desktop": 53,
+    "tablet": 53,
+    "mobile": 53
+  },
+  "matrix_failures": 0,
+  "browser_errors": 0,
+  "independent_keyboard_chart_cases": 15,
+  "e2e_steps": 19,
+  "role_picker_checks": 8,
+  "source_files_hash_verified": 108,
+  "source_directory": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7",
+  "tested_directory": "/home/boh/react-native-dev/bachelor-thesis/.worktrees/t_1e30c3f7"
+}
+
+Tested an isolated, hash-verified copy of the actual uncommitted t_869afac7 handoff, not the stale remote PR or this task's original checkout. Source code unchanged. No commit, push, publication or live DB/ERP connection. Dependency directories were symlinked to the implementation worktree; application data was deterministic fictional pg-mem data. Source hashes were reverified against both copies after all runs.
+
+Executed dashboard runner with CHROMIUM_PATH=/home/boh/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome: node tests/run-layout-verification.cjs
+Exact subcommands, stdout/stderr and exit codes: dashboard/qa/layout-corrections/verification.txt and verification.json
+  exit 0: node --openssl-legacy-provider --test tests/*.test.cjs
+  exit 0: node --openssl-legacy-provider --require ./tests/layout-model-fixture.cjs --test src/models/investor_startup_map.test.ts
+  exit 0: cd ../scraper && npx tsc -p tests/tsconfig-contract.json && node --openssl-legacy-provider --test tests/bc-contract.test.cjs
+  exit 0: npx tsc --noEmit
+  exit 0: npm run lint
+  exit 0: npx prettier --check public/css/theme.css public/js/chart-theme.js tests/layout-geometry.cjs tests/layout-matrix.cjs tests/layout-model-fixture.cjs tests/summarize-layout.cjs tests/run-layout-verification.cjs ../scraper/tests/tsconfig-contract.json
+  exit 0: node tests/e2e.cjs
+  exit 0: node tests/remaining-e2e.cjs
+  exit 0: node tests/role-picker-e2e.cjs
+  exit 0: VISUAL_OUT=qa/modernization/after node tests/visual-capture.cjs
+
+Executed with same CHROMIUM_PATH: node tests/layout-matrix.cjs (exit 0); node tests/independent-qa.cjs (exit 0). Matrix raw per-case geometry/defects/browser errors: dashboard/qa/layout-corrections/after/results.json; server output: same directory/server.log. Additional raw focus traces and chart initialization/data checks: dashboard/qa/independent/results.json.
+
+Verified: 21 dashboard unit/HTTP/fixture tests, 1 isolated legacy model test, 1 fictional NTLM scraper contract; typecheck, lint, scoped formatting. Full browser startup/admin/fund/stakeholder CRUD, TRL, multiple Gantt milestone drag/save, cap-table upload, investor status, authorization/ownership isolation, logout, reloads, concurrent sessions. Remaining E2E covers complete onboarding and patent lifecycle/cancellation/reload. Picker checks all 4 roles at desktop/mobile. Matrix covers 53 page/UI states at desktop1440x1000, tablet834x1112, mobile390x844, including empty fund, forms, sidebar variants and Gantt modes, with zero browser/geometry failures. Large fixture regression confirms153 portfolio rows. Supplemental test checks credential Tab order email→password→submit at all3 viewports, visible keyboard-reachable controls for4 roles at all3 viewports, initialized nonzero financial canvases and finite datasets. It is not a complete accessibility audit.
+
+Setup failures retained honestly: initial combined source-copy/runner foreground call exceeded the tool420-second deadline after six successful checks, before browser results were persisted. No passing claim made for that attempt. System command -v chromium chromium-browser google-chrome returned1 and therefore its chained E2E did not run. Located installed Playwright Chromium1243 and explicitly set CHROMIUM_PATH. A standalone180-second-bounded full e2e then passed19 steps/16 screenshots/0 issue groups. The complete final runner and full matrix exited0, independently observed through process_manage. Earlier shell python -c discovery was blocked by headless approval policy; replaced with qa-run.py.
+
+Limits/open issues: no functional failures found; before/after visual approval belongs to t_004b1565 and is not claimed here. No live ERP/database integration or remote CI gate executed, and no provider review fabricated. Charts were tested for renderability/data, not manually validated for every plotted number. Intentional bounded horizontal table/Gantt scrolling is retained. Dependency vulnerability remediation is outside this presentation-only QA scope.
+
+Downstream: review actual source handoff /home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7; newly captured after images and per-case manifest are at /home/boh/react-native-dev/bachelor-thesis/.worktrees/t_1e30c3f7/dashboard/qa/layout-corrections/after. Existing baseline images live under implementation dashboard/qa/layout-corrections/before; use original inventory baseline when comparing modernization as a whole, not just correction CSS. Publication should wait for visual review.
