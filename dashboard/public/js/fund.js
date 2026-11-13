@@ -114,7 +114,8 @@ function renderGantt(data) {
     return {
       custom_index: t.index,
       id: t.id,
-      name: t.name,
+      name: window.GanttContent.escape(t.name),
+      plainName: t.name,
       start: t.start,
       end: t.end,
       progress: t.progress,
@@ -124,14 +125,7 @@ function renderGantt(data) {
   // eslint-disable-next-line no-undef
   gantt = new Gantt("#gantt", tasks, {
     custom_popup_html: function (task) {
-      const end_date = task.end;
-      return `
-      <div class="details-container">
-        <h5>${task.name}</h5>
-        <p>Expected to finish by ${end_date}</p>
-        <p>${task.progress}% completed!</p>
-      </div>
-      `;
+      return window.GanttContent.popup(task);
     },
   });
 }

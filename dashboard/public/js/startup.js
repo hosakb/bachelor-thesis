@@ -121,7 +121,8 @@ function renderGantt(data) {
       custom_index: t.index,
       // Frappe Gantt matches bars by their string data-id attribute.
       id: String(t.id),
-      name: t.name,
+      name: window.GanttContent.escape(t.name),
+      plainName: t.name,
       start: t.start,
       end: t.end,
       progress: t.progress,
@@ -141,14 +142,7 @@ function renderGantt(data) {
     bar_height: 20,
     bar_corner_radius: 10,
     custom_popup_html: function (task) {
-      const end_date = task.end;
-      return `
-          <div class="details-container">
-            <h5>${task.name}</h5>
-            <p>Expected to finish by ${end_date}</p>
-            <p>${task.progress}% completed!</p>
-          </div>
-          `;
+      return window.GanttContent.popup(task);
     },
     on_date_change: function (task, start, end) {
       document.querySelector("#gantt-changes").classList.remove("hidden");
@@ -230,6 +224,7 @@ async function saveGanttChanges() {
           custom_index: t.custom_index,
           id: t.id,
           name: t.name,
+          plainName: t.plainName,
           start: toIsoDate(t._start),
           // _end is exclusive (midnight after the last day).
           end: toIsoDate(new Date(t._end.getTime() - 1000)),

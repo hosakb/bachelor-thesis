@@ -3,6 +3,7 @@ import expressLayouts from "express-ejs-layouts";
 import passport from "passport";
 import flash from "express-flash";
 import session from "express-session";
+import { sessionOptions } from "./config/session";
 import favicon from "serve-favicon";
 
 import initializePassport from "./config/passport";
@@ -22,16 +23,7 @@ app.use(favicon(path.join(__dirname, "..", "public", "favicon.ico")));
 
 initializePassport(passport);
 
-app.use(
-  session({
-    // Key we want to keep secret which will encrypt all of our information
-    secret: "12345",
-    // Should we resave our session variables if nothing has changes which we dont
-    resave: true,
-    // Save empty value if there is no vaue which we do not want to do
-    saveUninitialized: false,
-  })
-);
+app.use(session(sessionOptions()));
 
 // Funtion inside passport which initializes passport
 app.use(passport.initialize());

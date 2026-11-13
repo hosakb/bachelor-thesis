@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "startup 1440: stored label and popup are literal text; reload safe; save/cancel retain plain popup text",
+    "fund 1440: stored label and popup are literal text; reload safe",
+    "stakeholder 1440: stored label and popup are literal text; reload safe",
+    "startup 390: stored label and popup are literal text; reload safe; save/cancel retain plain popup text",
+    "fund 390: stored label and popup are literal text; reload safe",
+    "stakeholder 390: stored label and popup are literal text; reload safe"
+  ],
+  "errors": []
+}
