@@ -53,6 +53,7 @@ import {
 } from "../models/patent";
 
 import { getMonth, toDateInputValue } from "../util/date";
+import { rangedNumber, validPeriod, validatedMilestone, validatedTrl } from "../util/validation";
 import {
   deleteSpreadsheets,
   formatCapTable,
@@ -104,6 +105,7 @@ router.get("/", async (req, res) => {
         scripts: [
           "/js/gantt/frappe-gantt.min",
           "/js/chart/chart.min",
+          "/js/gantt-content",
           "/js/startup",
         ],
         phase: await getInvestmentPhase(startupId),
@@ -169,6 +171,11 @@ router.put(
   async (req, res) => {
     const { taskId, start, end } = req.body;
 
+    if (!validPeriod(start, end)) {
+      res.status(400).json({ error: "Provide valid calendar dates with end not before start." });
+      return;
+    }
+
     try {
       await updateMilestoneDuration(taskId, start, end);
       res.sendStatus(200);
@@ -183,7 +190,12 @@ router.put(
   "/gantt/progress",
   ownedRecord("milestones", (req) => req.body.taskId),
   async (req, res) => {
-    const { taskId, progress } = req.body;
+    const { taskId } = req.body;
+    const progress = rangedNumber(req.body.progress, 0, 100);
+    if (progress === null) {
+      res.status(400).json({ error: "Completion must be a number from 0 to 100." });
+      return;
+    }
 
     try {
       await updateMilestoneProgress(taskId, progress);
@@ -275,13 +287,16 @@ router.post(
   "/submit/update-trl",
   ownedRecord("trl", (req) => req.body.trlData?.id),
   async (req, res) => {
-    const { id, technology, trl, criticality } = req.body.trlData;
+    const parsed = validatedTrl(req.body.trlData);
+    if (!parsed) {
+      res.status(400).json({ error: "Provide a technology, integer TRL 1-9 and criticality 1-3." });
+      return;
+    }
+    const { id } = req.body.trlData;
     try {
       const trlData: TrlData = {
         id,
-        technology,
-        trl,
-        criticality,
+        ...parsed,
       };
 
       await updateTrl(trlData);
@@ -320,12 +335,15 @@ router.post(
 
 router.post("/submit/add-trl", async (req, res) => {
   const { newTechnology, newTrlValue, newCriticality } = req.body;
+  const parsed = validatedTrl({technology: newTechnology, trl: newTrlValue, criticality: newCriticality});
+  if (!parsed) {
+    res.status(400).json({ error: "Provide a technology, integer TRL 1-9 and criticality 1-3." });
+    return;
+  }
   try {
     const trlData: TrlData = {
       id: "",
-      technology: newTechnology,
-      trl: newTrlValue,
-      criticality: newCriticality,
+      ...parsed,
     };
 
     await persistTrlData(req.session.startupId, [trlData]);
@@ -387,8 +405,16 @@ router.post(
 
 router.post("/submit/add-milestone", async (req, res) => {
   const { milestones } = req.body;
-
-  const unIndexedMilestones: UnIndexedMilestone[] = milestones;
+  if (!Array.isArray(milestones) || milestones.length === 0 || milestones.length > 1000) {
+    res.status(400).json({ error: "Provide a nonempty milestone array of at most 1000 entries." });
+    return;
+  }
+  const parsed = milestones.map(validatedMilestone);
+  if (parsed.some((milestone) => milestone === null)) {
+    res.status(400).json({ error: "Each milestone needs a name, valid dates and completion from 0 to 100." });
+    return;
+  }
+  const unIndexedMilestones = parsed as UnIndexedMilestone[];
   try {
     const existingMilestones: Milestone[] = await getMilestones(
       req.session.startupId
@@ -464,22 +490,9 @@ router.post("/submit/delete-milestone", async (req, res) => {
 });
 
 router.post("/submit/update-milestone", async (req, res) => {
-  const { id, name, start, end, progress } = req.body;
-
-  const startDate = new Date(start);
-  const endDate = new Date(end);
-  const progressValue = Number(progress);
-  if (
-    typeof name !== "string" ||
-    name.trim() === "" ||
-    Number.isNaN(startDate.getTime()) ||
-    Number.isNaN(endDate.getTime()) ||
-    endDate.getTime() < startDate.getTime() ||
-    progress === "" ||
-    !Number.isFinite(progressValue) ||
-    progressValue < 0 ||
-    progressValue > 100
-  ) {
+  const { id } = req.body;
+  const parsed = validatedMilestone(req.body);
+  if (!parsed) {
     res.status(400).json({
       error:
         "Please provide a name, valid start and due dates (due date not before start date) and a completion between 0 and 100.",
@@ -499,10 +512,7 @@ router.post("/submit/update-milestone", async (req, res) => {
 
     for (const m of existingMilestones) {
       if (m.id == id) {
-        m.name = name.trim();
-        m.start = start;
-        m.end = end;
-        m.progress = progressValue;
+        Object.assign(m, parsed);
       }
     }
 

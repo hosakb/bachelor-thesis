@@ -17,6 +17,7 @@ import {
 } from "../util/excel";
 
 import { TrlData, persistTrlData } from "../models/trl";
+import { validatedTrl } from "../util/validation";
 
 const router: Router = express.Router();
 
@@ -124,7 +125,19 @@ router.get("/product", async (req, res) => {
 router.post("/trl", async (req, res) => {
   const { trlData, coreTechnology } = req.body;
 
-  const newTrlData: TrlData[] = JSON.parse(trlData);
+  let newTrlData: TrlData[];
+  try {
+    const decoded: unknown = typeof trlData === "string" ? JSON.parse(trlData) : trlData;
+    if (!Array.isArray(decoded) || decoded.length > 1000) throw new Error("Invalid TRL array");
+    newTrlData = decoded.map((value) => {
+      const entry = validatedTrl(value);
+      if (!entry) throw new Error("Invalid TRL entry");
+      return { id: "", ...entry };
+    });
+  } catch {
+    res.status(400).json({ error: "Provide valid technologies with integer TRL 1-9 and criticality 1-3." });
+    return;
+  }
   const startupId = req.user?.startup;
 
   if (startupId == undefined) {

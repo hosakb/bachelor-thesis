@@ -1,0 +1,20 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+require('ts-node/register');
+test('session configuration fails closed in production and never uses a fixed fallback',()=>{
+  const {sessionOptions}=require('../src/config/session.ts');
+  for(const secret of [undefined,'','12345',' '.repeat(40)]) assert.throws(()=>sessionOptions({NODE_ENV:'production',SESSION_SECRET:secret}),/SESSION_SECRET/);
+  const secret='fictional-test-secret-not-a-real-credential-12345';
+  const prod=sessionOptions({NODE_ENV:'production',SESSION_SECRET:secret});
+  assert.equal(prod.secret,secret);
+  assert.equal(prod.resave,false);
+  assert.equal(prod.saveUninitialized,false);
+  assert.equal(prod.cookie.httpOnly,true);
+  assert.equal(prod.cookie.sameSite,'lax');
+  assert.equal(prod.cookie.secure,true);
+  const a=sessionOptions({NODE_ENV:'test'}),b=sessionOptions({NODE_ENV:'test'});
+  assert.notEqual(a.secret,b.secret);
+  assert.ok(a.secret.length>=32);
+  assert.equal(a.cookie.secure,false);
+  assert.equal(sessionOptions({NODE_ENV:'development',SESSION_SECRET:secret}).secret,secret);
+});

@@ -190,6 +190,7 @@ router.get("/startup/", async (req, res) => {
       scripts: [
         "/js/gantt/frappe-gantt.min",
         "/js/chart/chart.min",
+        "/js/gantt-content",
         "/js/fund",
       ],
       dashboard: "fund",
