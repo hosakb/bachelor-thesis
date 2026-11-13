@@ -109,4 +109,44 @@ for (const [login, role, startup, fund, trackRecord] of users) {
   );
 }
 
-module.exports = { db, pool, ids: { helio, quantum, orbit, fresh } };
+// Keep original identities and first milestone IDs stable for regressions.
+// Additional fixtures are deterministic and use no external services.
+const tide = seedStartup('Tidal Health', { sector: 'Health' });
+const cedar = seedStartup('Cedar Analytics', { sector: 'Software' });
+const empty = db.public.one("INSERT INTO startup (name,stage,sector,cap_table,questionnaire) VALUES ('Empty Meadow','Pre-seed','Agriculture',NULL,NULL) RETURNING id").id;
+db.public.none(`
+
+UPDATE startup SET stage='Pre-seed' WHERE id=${orbit};
+UPDATE startup SET stage='Growth' WHERE id=${tide};
+UPDATE startup SET stage='Series B' WHERE id=${cedar};
+INSERT INTO investor (name,investment_sector,fund_volume,hard_cap,next_closing,final_closing,type,weights) VALUES
+ ('Meridian Capital','Health',15000000,30000000,'2026-10-01','2027-03-01','fund',${json(weights)}),
+ ('Juniper Incubator','Software',3000000,5000000,'2026-11-15','2027-04-01','stakeholder',${json(weights)}),
+ ('Empty Horizon Fund','Agriculture',1000000,2000000,'2027-01-01','2027-07-01','fund',${json(weights)});
+INSERT INTO investor_startup_map VALUES (1,${tide},3.8),(2,${tide},2.6),(3,${tide},3.2),(3,${cedar},4.2),(4,${cedar},3.6),(4,${orbit},2.1);
+`);
+for (const [id, name] of [[helio, 'HelioFusion'], [quantum, 'Quantum Forge'], [orbit, 'Orbit Labs'], [tide, 'Tidal Health'], [cedar, 'Cedar Analytics']]) {
+  const trackRecord = db.public.one(`INSERT INTO track_record (expertise,ventures) VALUES ('["Research","Product"]','[]') RETURNING id`).id;
+  db.public.none(`
+  INSERT INTO milestones (name,start_date,end_date,progress,index,startup_id) VALUES
+   ('Feasibility complete','2025-09-01','2025-12-01',100,1,${id}),
+   ('Pilot deployment','2026-06-01','2026-12-01',65,2,${id}),
+   ('Market launch','2027-01-01','2027-04-01',0,3,${id});
+  INSERT INTO metrics (date,burn_rate,cash_runway,liquidity,startup) VALUES ('2026-03-01',16000,14,1.8,${id}),('2026-04-01',18000,12,1.6,${id});
+  INSERT INTO trl (technology,trl,criticality,startup_id) VALUES ('Integration subsystem',4,2,${id});
+  INSERT INTO investors (name,type,email,country,notes,contact_date,status,startup_id) VALUES ('Meridian Demo Contacts','VC','hello@example.test','Germany','Fictional follow-up','2026-04-01','contacted',${id});
+  INSERT INTO patents (invention,inventor,status,patent_office,application_confirmation_date,startup_id) VALUES ('${name} fictional component','Morgan','initial-application','EPO','2026-03-01',${id});
+  INSERT INTO users (first_name,last_name,email,password,role,startup,track_record) VALUES ('Morgan','Demo','founder${id}@example.test','${hash}','startup',${id},${trackRecord});
+  UPDATE startup SET cap_table=${json([['Founder','Shares','Share'],['Avery',60,60],['Morgan',20,20],['Demo Fund',20,20]])} WHERE id=${id};
+  `);
+}
+const extraAccounts = [
+ ['fund2','fund',null,3,1], ['stakeholder2','stakeholder',null,4,1], ['emptyfund','fund',null,5,1],
+ ['startup3','startup',orbit,null,1], ['startup4','startup',tide,null,1], ['startup5','startup',cedar,null,1], ['emptyonboarding','startup',empty,null,null],
+];
+for (const [login, role, startup, fund, trackRecord] of extraAccounts) {
+ const record = trackRecord === null ? null : db.public.one(`INSERT INTO track_record (expertise,ventures) VALUES ('["Engineering"]','[]') RETURNING id`).id;
+ db.public.none(`INSERT INTO users (first_name,last_name,email,password,role,startup,fund,track_record) VALUES ('Avery','Demo','${login}@example.test','${hash}','${role}',${startup ?? 'NULL'},${fund ?? 'NULL'},${record ?? 'NULL'});`);
+}
+const demoAccounts = Object.freeze({ admin: 'admin@example.test', startup: 'startup@example.test', fund: 'fund@example.test', stakeholder: 'stakeholder@example.test' });
+module.exports = { db, pool, demoAccounts, ids: { helio, quantum, orbit, fresh, tide, cedar, empty } };

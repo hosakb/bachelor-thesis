@@ -179,6 +179,7 @@ async function main() {
         if (r.method() === "PUT" && r.url().includes("/startup/gantt/")) puts.push(r.url());
       });
       const bar = s.page.locator(".bar-wrapper .bar").first();
+      await bar.scrollIntoViewIfNeeded();
       for (let i = 0; i < 3; i++) {
         const box = await bar.boundingBox();
         await s.page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
@@ -260,7 +261,7 @@ async function main() {
       await s.page.fill("#milestone-name-0", longName);
       await s.page.fill("#milestone-progress-0", "35");
       await Promise.all([s.page.waitForNavigation(), s.page.click("#milestone-ok-btn-0")]);
-      const row = s.page.locator("#milestones-list-tbody tr").first();
+      const row = s.page.locator("#milestones-list-tbody tr").filter({ hasText: longName });
       assert.equal((await row.locator("td").nth(1).innerText()).trim(), "2026-06-10");
       assert.equal((await row.locator("td").nth(2).innerText()).trim(), "2026-07-01");
       assert.equal((await row.locator("td").nth(0).innerText()).trim(), longName);
@@ -292,8 +293,9 @@ async function main() {
       step("startup delete milestone persists");
 
       // Contacted investor status.
-      await Promise.all([s.page.waitForNavigation(), s.page.click("#investor-declined")]);
-      assert.equal(await s.page.locator("#investor-declined").count(), 0);
+      const contactsBefore = await s.page.locator("#investor-declined").count();
+      await Promise.all([s.page.waitForNavigation(), s.page.locator("#investor-declined").first().click()]);
+      assert.equal(await s.page.locator("#investor-declined").count(), contactsBefore - 1);
       step("startup investor status update persists");
 
       // Cap table: invalid file -> feedback, nothing changed; valid file -> rendered.
@@ -343,7 +345,7 @@ async function main() {
       assert.equal(new URL(s.page.url()).pathname, "/fund");
       await s.page.waitForSelector("#table .ag-center-cols-container .ag-row");
       const rows = await s.page.locator("#table .ag-center-cols-container .ag-row").count();
-      assert.equal(rows, 2);
+      assert.equal(rows, 3);
       await assertIconsRender(s.page);
       await shot(s, "portfolio");
       await Promise.all([
@@ -383,7 +385,7 @@ async function main() {
       await login(s, "stakeholder@example.test");
       await s.page.waitForSelector("#table .ag-center-cols-container .ag-row");
       const names = await s.page.locator("#table .ag-center-cols-container .ag-row").allInnerTexts();
-      assert.equal(names.length, 1);
+      assert.equal(names.length, 2);
       assert.match(names[0], /Quantum Forge/);
       const text = await s.page.locator("body").innerText();
       assert.ok(!/Hard Cap/.test(text), "stakeholder must not see fund information");

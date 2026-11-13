@@ -3,6 +3,11 @@ body {
   font-size: 26px;
 }
 
+.wrapper.demo-login {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
 .wrapper {
   width: 900px;
   margin: 0 auto;

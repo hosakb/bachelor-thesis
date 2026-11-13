@@ -19,6 +19,7 @@ declare global {
 
 declare module "express-session" {
   export interface Session {
+    demoLoginToken?: string;
     startupId: string;
     fundId: string;
     startupTable: Startup[];

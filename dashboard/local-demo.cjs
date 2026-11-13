@@ -30,6 +30,7 @@ if (!process.execArgv.includes('--openssl-legacy-provider')) {
   // The shared fixture owns all fictional data; state resets on every launch.
   require('./tests/local-db.cjs');
   const app = require('./src/server.ts').default;
+  app.locals.demoAccounts = require('./tests/local-db.cjs').demoAccounts;
   const server = app.listen(port, '127.0.0.1', () => console.log(`Fictional local demo: http://127.0.0.1:${port} (restart to reset)`));
   for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => server.close(() => process.exit(0)));
 }

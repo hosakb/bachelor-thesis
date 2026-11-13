@@ -17,6 +17,20 @@
     <% } %>
 </ul>
 
+<% if (localDemo) { %>
+<p>Fictional local demo. Changes reset when the demo restarts.</p>
+<form action="/demo/login" method="POST">
+    <input type="hidden" name="token" value="<%= demoLoginToken %>" />
+    <label for="role">Role</label>
+    <select id="role" name="role" required>
+        <option value="admin">Admin</option>
+        <option value="startup">Startup</option>
+        <option value="fund">VC fund</option>
+        <option value="stakeholder">Incubator / stakeholder</option>
+    </select>
+    <button type="submit">Enter demo</button>
+</form>
+<% } else { %>
 <form action="/login" method="POST">
     <div>
         <input type="email" id="email" name="email" placeholder="Email" required />
@@ -28,3 +42,4 @@
         <input type="submit" value="Login" />
     </div>
 </form>
+<% } %>

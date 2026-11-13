@@ -36,9 +36,13 @@ async function main() {
       });
       page.on('dialog', d => d.accept());
       await page.goto(BASE);
-      await page.fill('[name=email]', email + '@example.test');
-      await page.fill('[name=password]', 'local-demo-only');
-      await Promise.all([page.waitForNavigation(), page.click('[type=submit]')]);
+      if (email === 'onboarding') {
+        await context.request.post(BASE + '/login', { form: { email: 'onboarding@example.test', password: 'local-demo-only' } });
+        await page.goto(BASE + '/onboarding/startup');
+      } else {
+        await page.selectOption('#role', email);
+        await Promise.all([page.waitForNavigation(), page.click('[type=submit]')]);
+      }
       return { page, context };
     }
     async function save(page, selector) { await Promise.all([page.waitForNavigation(), page.click(selector)]); }
@@ -78,8 +82,8 @@ async function main() {
       await expect(page.locator('#trl-tbody')).toContainText('Thermal <core> & storage');
       await shot(page, 'onboarding-completed');
       await page.goto(BASE + '/logout');
-      await page.fill('[name=email]', 'onboarding@example.test'); await page.fill('[name=password]', 'local-demo-only');
-      await save(page, '[type=submit]');
+      await context.request.post(BASE + '/login', { form: { email: 'onboarding@example.test', password: 'local-demo-only' } });
+      await page.goto(BASE + '/startup');
       await expect(page).toHaveURL(BASE + '/startup');
       step('full onboarding: cap table, product/TRL, questionnaire, founder; reload and re-login');
       await context.close();
