@@ -1,0 +1,915 @@
+/*
+ * Presentation layer shared by every layout. Loaded after the page
+ * stylesheets so it only refines them. Every color below is a value that
+ * already exists in dashboard.css / admin.css / founder-onboarding.css /
+ * login.css (see qa/baseline-2026-10-09/INVENTORY.md); no new colors are
+ * introduced. Only spacing, typography, alignment and component
+ * consistency change here.
+ * No webfonts: the stack resolves to locally installed system fonts.
+ */
+:root {
+  --c-sidebar: #393e46;
+  --c-sidebar-shadow: #222831;
+  --c-accent: #d65a31;
+  --c-header: rgb(53, 53, 53);
+  --c-page: #252b38;
+  --c-card: #3f495e;
+  --c-table: rgb(53, 58, 70);
+  --c-thead: #414752;
+  --c-row-alt: rgb(58, 68, 85);
+  --c-input: #45484e;
+  --c-input-border: #979797;
+  --c-button: #797b80;
+  --c-text: #fff;
+  --c-text-muted: rgb(219, 219, 219);
+  --c-line: #00000030;
+  --c-backdrop: rgba(0, 0, 0, 0.7);
+  --c-shadow: 0 3px 6px #00000030;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", "DejaVu Sans", sans-serif;
+  --radius: 12px;
+  --radius-sm: 6px;
+  --gap: 2rem;
+  --header-h: 5.6rem;
+}
+
+/* ---------------------------------------------------------------- base */
+* {
+  font-family: var(--font);
+}
+
+body.app {
+  position: relative;
+  display: flow-root;
+  min-height: 100vh;
+  background: var(--c-page);
+  color: var(--c-text);
+  font-size: 1.4rem;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body.app h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+body.app main h2 {
+  font-size: 1.8rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+body.app main h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+body.app main h4 {
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+body.app main p,
+body.app main span,
+body.app main label,
+body.app main li {
+  font-size: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------- app chrome */
+body.app .main-content > header {
+  height: var(--header-h);
+  align-items: center;
+  padding: 0 2.4rem;
+  box-shadow: var(--c-shadow);
+}
+body.app .main-content > header h2 {
+  font-size: 1.9rem;
+  font-weight: 650;
+}
+body.app .main-content > header h2 label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+body.app .user-wrapper h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+body.app main {
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
+  padding: 2.4rem;
+}
+
+/* Paint the full app-shell height; navigation remains sticky on long pages. */
+body.app .sidebar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: auto;
+  min-height: 100vh;
+}
+body.app .sidebar-brand {
+  position: sticky;
+  top: 0;
+  background: var(--c-sidebar);
+  height: var(--header-h);
+  align-items: center;
+  padding: 0 1rem;
+}
+body.app .sidebar-brand h1 {
+  font-size: 2rem;
+}
+body.app .sidebar-menu {
+  position: sticky;
+  top: calc(var(--header-h) + 1.2rem);
+  max-height: calc(100vh - var(--header-h) - 1.2rem);
+  overflow-y: auto;
+  margin-top: 1.2rem;
+}
+body.app .sidebar-menu li {
+  margin-bottom: 0.8rem;
+}
+body.app .sidebar-menu a {
+  min-height: 4.4rem;
+  border-radius: 30px 0 0 30px;
+  font-size: 1.3rem;
+  transition: background-color 150ms ease;
+}
+body.app .sidebar-menu a:not(.active):hover {
+  background: var(--c-sidebar-shadow);
+}
+body.app .sidebar-menu a:focus-visible {
+  outline-offset: -2px;
+}
+
+/* ---------------------------------------------------------- cards */
+body.app .card,
+body.app .card-milestone,
+body.app .card-startup-metrics,
+body.app .card-startup-table,
+body.app .card-fund-metrics,
+body.app .card-table,
+body.app .submit-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  box-shadow: var(--c-shadow);
+  backdrop-filter: none;
+  padding: 2.4rem;
+  min-width: 0;
+}
+
+body.app .cards,
+body.app .submit-cards,
+body.app .founder-cards {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.app .cards,
+body.app .fund-cards,
+body.app .founder-cards,
+body.app .rating-cards,
+body.app .submit-cards {
+  gap: var(--gap);
+  margin-top: 0;
+}
+
+body.app .card > h2,
+body.app .card > h3,
+body.app .card-milestone > h2,
+body.app .card-startup-metrics h2,
+body.app .card-startup-table > h2,
+body.app .card-startup-table > h3,
+body.app .submit-card > h2,
+body.app .submit-card > div > h2 {
+  margin-bottom: 1.6rem;
+}
+
+/* Metric tiles on the fund portfolio: value over label. */
+body.app .card-fund-metrics {
+  padding: 1.8rem 2rem;
+  align-items: center;
+}
+body.app .card-fund-metrics h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+body.app .card-fund-metrics span {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--c-text-muted);
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+}
+body.app .card-table {
+  padding: 1.2rem;
+  overflow: auto;
+}
+
+/* Chart cards: let the chart fill the card instead of shrinking. */
+body.app .card-startup-metrics {
+  display: block;
+}
+body.app .card-startup-metrics > div:not(#trl-prod-metric) {
+  width: 100%;
+  min-width: 0;
+}
+body.app .chart-container {
+  height: auto;
+}
+body.app .chart-container canvas {
+  max-width: 100%;
+}
+body.app #trl-prod-metric h2 {
+  font-size: 3.2rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+body.app #trl-prod-metric span {
+  color: var(--c-text-muted);
+}
+body.app #trl > br {
+  display: none;
+}
+body.app #trl table {
+  margin-top: 1.6rem;
+}
+
+/* ---------------------------------------------------------- tables */
+body.app table {
+  font-size: 1.3rem;
+  height: auto;
+  background: var(--c-table);
+  box-shadow: none;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+}
+body.app thead,
+body.app thead tr {
+  background: var(--c-thead);
+  box-shadow: none;
+}
+body.app th {
+  background: var(--c-thead);
+  color: var(--c-text);
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+  text-align: left;
+  vertical-align: bottom;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid var(--c-line);
+}
+body.app td {
+  text-align: left;
+  vertical-align: middle;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid var(--c-line);
+}
+body.app tbody tr:last-child td,
+body.app table > tr:last-child td {
+  border-bottom: 0;
+}
+body.app tr:nth-child(even) {
+  background-color: var(--c-row-alt);
+}
+/* Original hover token from dashboard.css. */
+body.app tbody tr:hover td {
+  background-color: var(--c-row-alt);
+}
+body.app tbody tr:nth-child(even):hover td {
+  background-color: var(--c-thead);
+}
+/* The old hover rounded single cells; keep rows rectangular. */
+body.app tr:hover td:first-child,
+body.app tr:hover td:last-child {
+  border-radius: 0;
+}
+body.app td ul li {
+  line-height: 1.5;
+}
+
+body.app .table-container,
+body.app .submit-table-wrapper,
+body.app .rating-table-wrapper,
+body.app .vertical-table-container,
+body.app #expertise-table-wrapper {
+  overflow: auto;
+  border-radius: var(--radius-sm);
+}
+body.app .card-startup-table {
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------- controls */
+body.app button,
+body.app input[type="submit"],
+body.app input[type="button"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 3rem;
+  padding: 0.5rem 1.2rem;
+  background: var(--c-button);
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+  max-width: none;
+  width: auto;
+}
+/* Hover changes the border only, so no derived button shade is needed. */
+body.app button:hover,
+body.app input[type="submit"]:hover,
+body.app input[type="button"]:hover {
+  border-color: var(--c-input-border);
+}
+body.app button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+body.app button span,
+body.app button i {
+  color: inherit;
+  font-size: 1.5rem;
+}
+/* Compact icon-only buttons in table rows. */
+body.app td button {
+  min-width: 3rem;
+  padding: 0.4rem 0.6rem;
+  margin: 0.15rem;
+}
+body.app .exit {
+  min-width: 3.2rem;
+  background: transparent;
+  border: 1px solid var(--c-line);
+}
+body.app .exit:hover {
+  background: var(--c-input);
+}
+
+/* :where keeps this at low specificity so component rules can size inputs. */
+body.app
+  input:where(:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"])),
+body.app select,
+body.app textarea {
+  min-height: 3.6rem;
+  padding: 0.7rem 1rem;
+  font-size: 1.35rem;
+  color: var(--c-text);
+  background: var(--c-input);
+  border: 1px solid var(--c-input-border);
+  border-radius: var(--radius-sm);
+}
+body.app input[type="file"] {
+  font-size: 1.3rem;
+  padding: 0.6rem;
+  border: 1px dashed var(--c-input-border);
+  border-radius: var(--radius-sm);
+  background: var(--c-input);
+}
+body.app input:focus-visible,
+body.app select:focus-visible,
+body.app textarea:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 1px;
+  border-color: var(--c-accent);
+}
+body.app input::placeholder,
+body.app textarea::placeholder {
+  color: var(--c-input-border);
+}
+/* Error state: a field the user has left invalid (required, type=email,
+   min/max) gets the accent border. :user-invalid only matches after
+   interaction, so untouched forms are not flagged. */
+body.app input:user-invalid,
+body.app select:user-invalid,
+body.app textarea:user-invalid {
+  border-color: var(--c-accent);
+}
+body.app select option {
+  background: var(--c-input);
+  color: var(--c-text);
+}
+body.app input[type="checkbox"],
+body.app input[type="radio"] {
+  accent-color: var(--c-accent);
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: 0 0.6rem 0 0;
+  vertical-align: middle;
+}
+body.app td input:where(:not([type="checkbox"]):not([type="radio"])),
+body.app td select {
+  margin: 0;
+}
+
+body.app label {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--c-text);
+}
+body.app .form-item {
+  margin-bottom: 1.2rem;
+}
+body.app .form-item > * {
+  margin-bottom: 0.6rem;
+}
+body.app .btn-item > * {
+  margin-top: 0.4rem;
+}
+
+/* ---------------------------------------------------------- dialogs */
+body.app .variable-pane {
+  background-color: var(--c-backdrop);
+}
+body.app .variable-pane-box {
+  background: var(--c-page);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  box-shadow: 4px 4px 10px var(--c-sidebar-shadow);
+  padding: 2.4rem;
+  max-width: calc(100vw - 3.2rem);
+  max-height: calc(100vh - 6.4rem);
+  overflow: auto;
+}
+body.app .variable-pane-box h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.2rem;
+}
+body.app .variable-pane-box .form-item * {
+  margin: 0.4rem 0;
+}
+
+/* ---------------------------------------------------------- Gantt */
+body.app svg.gantt {
+  max-width: none;
+  display: block;
+}
+body.app .overflow-chart {
+  overflow: auto;
+  max-height: 32rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--c-line);
+  background: var(--c-table);
+}
+body.app .card-milestone > div:not(.overflow-chart) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+}
+body.app .card-milestone > div:not(.overflow-chart) button {
+  margin: 0;
+}
+body.app #gantt {
+  display: block;
+}
+body.app .gantt .grid-background {
+  fill: none;
+}
+body.app .gantt .grid-header {
+  fill: var(--c-thead);
+  stroke: var(--c-line);
+}
+body.app .gantt .grid-row {
+  fill: var(--c-table);
+}
+body.app .gantt .grid-row:nth-child(even) {
+  fill: var(--c-row-alt);
+}
+body.app .gantt .row-line {
+  stroke: var(--c-line);
+}
+body.app .gantt .tick {
+  stroke: var(--c-thead);
+}
+body.app .gantt .tick.thick {
+  stroke: var(--c-button);
+}
+body.app .gantt .today-highlight {
+  fill: var(--c-accent);
+  fill-opacity: 0.22;
+}
+body.app .gantt .upper-text,
+body.app .gantt .lower-text {
+  fill: var(--c-text-muted);
+  font-size: 12px;
+}
+body.app .gantt .upper-text {
+  fill: var(--c-text);
+  font-weight: 600;
+}
+body.app .gantt .bar-label {
+  font-size: 12px;
+  font-weight: 600;
+}
+body.app .gantt .bar-label.big {
+  fill: var(--c-text);
+}
+body.app .gantt-container .popup-wrapper {
+  border-radius: var(--radius-sm);
+  box-shadow: var(--c-shadow);
+}
+body.app .details-container {
+  padding: 1rem 1.2rem;
+}
+body.app .details-container h5 {
+  font-size: 1.3rem;
+  margin-bottom: 0.4rem;
+}
+body.app .details-container p {
+  font-size: 1.2rem;
+  color: var(--c-text-muted);
+}
+
+/* ---------------------------------------------------------- ag-grid */
+body.app .ag-theme-alpine-dark {
+  --ag-background-color: var(--c-table);
+  --ag-header-background-color: var(--c-thead);
+  --ag-odd-row-background-color: var(--c-row-alt);
+  --ag-foreground-color: var(--c-text);
+  --ag-header-foreground-color: var(--c-text);
+  --ag-border-color: var(--c-line);
+  --ag-row-border-color: var(--c-line);
+  --ag-row-hover-color: var(--c-thead);
+  --ag-selected-row-background-color: var(--c-sidebar);
+  --ag-font-family: var(--font);
+  --ag-font-size: 13px;
+  --ag-borders: none;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+body.app #table {
+  min-height: 24rem;
+}
+body.app .ag-theme-alpine-dark .ag-row {
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------- founders */
+body.app #founders {
+  max-height: none;
+}
+body.app #expertise {
+  height: auto;
+  min-height: 30rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+}
+body.app #expertise > h2 {
+  flex: 1 0 100%;
+  margin-bottom: 0;
+}
+body.app #pie-chart-container {
+  float: none;
+  flex: 0 0 auto;
+  height: auto;
+  max-width: 100%;
+}
+body.app #expertise-table-wrapper {
+  float: none;
+  flex: 1 1 32rem;
+  width: auto;
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------- rating */
+body.app main > h1 + .rating-cards,
+body.app main > h2 + .rating-cards {
+  margin-top: 1.6rem;
+}
+body.app .weighting-input {
+  float: none;
+  max-width: 7rem;
+  margin: 0;
+  text-align: center;
+}
+body.app .rating-table-wrapper td,
+body.app .rating-table-wrapper th {
+  text-align: center;
+}
+body.app .rating-table-wrapper td:nth-child(2),
+body.app .rating-table-wrapper th:nth-child(2) {
+  text-align: left;
+}
+
+/* ---------------------------------------------------------- onboarding */
+/* The product step sized its grid rows in percentages of an auto-height
+   grid, so cards were shorter than their content and overlapped. */
+body.layout-onboarding .cards {
+  grid-template-rows: none;
+  grid-auto-rows: auto;
+  align-items: start;
+}
+body.layout-onboarding main > div > h2 {
+  margin-bottom: 1.6rem;
+}
+body.app .category {
+  font-size: 2rem;
+  margin-top: 2.4rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--c-accent);
+}
+body.app .sub-category {
+  font-size: 1.6rem;
+  margin-top: 1.8rem;
+}
+body.app .sub-sub-category {
+  font-size: 1.4rem;
+  color: var(--c-text-muted);
+}
+body.app form td span {
+  vertical-align: middle;
+}
+
+/* ---------------------------------------------------------- admin */
+body.app .admin-tbl {
+  margin-bottom: 1.6rem;
+}
+body.layout-admin main > div > h2,
+body.layout-admin main > div > div > h2,
+body.layout-onboarding main h2 {
+  margin-bottom: 1rem;
+}
+body.layout-admin main > div > div + br,
+body.layout-admin main > br {
+  display: block;
+  content: "";
+  margin-top: 1.6rem;
+}
+
+/* ---------------------------------------------------------- empty/status */
+/* startup.js writes its existing "No milestones yet" text into #gantt when
+   there are no tasks; give that text the same muted, padded empty style as
+   the AG Grid overlays. No text is added here. */
+/* #gantt IS the SVG: populated charts never contain a nested svg. */
+body.app #gantt:not(:has(.grid-header)) {
+  padding: 2.4rem 1.6rem;
+  color: var(--c-text-muted);
+  font-style: italic;
+  text-align: center;
+}
+body.app .ag-theme-alpine-dark .ag-overlay-no-rows-center,
+body.app .ag-theme-alpine-dark .ag-overlay-loading-center {
+  padding: 1.2rem 1.6rem;
+  color: var(--c-text-muted);
+  font-style: italic;
+  background: var(--c-thead);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  box-shadow: none;
+}
+/* Admin "Email already taken" message (shown by admin/users.js). */
+body.app label#email-taken {
+  color: var(--c-accent);
+}
+
+/* ---------------------------------------------------------- responsive */
+@media only screen and (max-width: 1024px) {
+  body.app .fund-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "investmentSector investmentSector"
+      "hardCap volume"
+      "nextClosing finalClosing"
+      "portfolioTable portfolioTable";
+  }
+  /* Questionnaire tables have no wrapper; scroll them individually. */
+  body.layout-onboarding form table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  /* Below desktop width two card columns are too narrow for the dense
+     tables: stack cards in one column, in document order. */
+  body.app .cards,
+  body.app .submit-cards {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: none;
+  }
+  /* !important: the page CSS assigns areas by id selector. */
+  body.app .cards > *,
+  body.app .submit-cards > * {
+    grid-area: auto !important;
+  }
+  /* A stray <br> between cards would become an empty grid row. */
+  body.app .cards > br {
+    display: none;
+  }
+  /* Dense tables keep readable columns and scroll inside their card. */
+  body.app .submit-table-wrapper table,
+  body.app .card-startup-table table,
+  body.app .table-container table {
+    min-width: 56rem;
+  }
+  /* With that minimum width, dashboard.css "anywhere" wrapping is not
+     needed and only split dates and names mid-word. Desktop keeps it so
+     the option/status columns stay inside the card. */
+  body.app .submit-table-wrapper td,
+  body.app .card-startup-table td {
+    overflow-wrap: break-word;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  :root {
+    --gap: 1.4rem;
+    --header-h: 5.2rem;
+  }
+  body.app main {
+    padding: 1.4rem;
+  }
+  body.app .main-content > header {
+    padding: 0 1.2rem;
+  }
+  body.app .main-content > header h2 label {
+    width: auto;
+  }
+  /* Onboarding keeps its narrow sidebar on mobile; the fixed header
+     must not extend past the viewport behind it. */
+  body.layout-onboarding .main-content > header {
+    width: calc(100% - 6rem);
+  }
+  body.app .card,
+  body.app .card-milestone,
+  body.app .card-startup-metrics,
+  body.app .card-startup-table,
+  body.app .card-table,
+  body.app .submit-card {
+    padding: 1.6rem;
+  }
+  body.app th,
+  body.app td {
+    padding: 0.9rem 1rem;
+  }
+  /* Rating overview: keep the weighting inputs in view on phones. */
+  body.app .rating-table-wrapper th,
+  body.app .rating-table-wrapper td {
+    padding: 0.8rem 0.5rem;
+  }
+  body.app .weighting-input {
+    width: 4.6rem;
+    padding: 0.5rem;
+  }
+  body.app table {
+    font-size: 1.25rem;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  body.app .fund-cards {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: none;
+  }
+  body.app .fund-cards > * {
+    grid-area: auto !important;
+  }
+  body.app .user-wrapper img {
+    margin-right: 0.6rem;
+  }
+}
+
+/* ================================================================ login */
+body.login-page {
+  box-sizing: border-box;
+  display: grid;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 6vh 1.6rem;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: rgb(60, 72, 72);
+}
+body.login-page .wrapper {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background-color: gray;
+  box-shadow: 0 3px 6px #00000030;
+}
+body.login-page header,
+body.login-page footer {
+  padding: 0;
+  height: 10px;
+}
+body.login-page .wrapper > :not(header):not(footer) {
+  margin-left: 28px;
+  margin-right: 28px;
+}
+body.login-page h1 {
+  margin-top: 26px;
+  margin-bottom: 8px;
+  font-size: 28px;
+  line-height: 1.2;
+  color: black;
+}
+body.login-page ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+body.login-page ul li {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #e7e7e7;
+  color: black;
+  font-size: 15px;
+}
+body.login-page p {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: black;
+  font-size: 15px;
+}
+body.login-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+body.login-page form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+body.login-page label {
+  font-weight: 600;
+  font-size: 14px;
+  color: black;
+}
+body.login-page input:not([type="hidden"]):not([type="submit"]),
+body.login-page select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 12px;
+  font-size: 15px;
+  color: black;
+  background: #eee;
+  border: 1px solid rgb(107, 113, 123);
+  border-radius: 8px;
+}
+body.login-page button,
+body.login-page input[type="submit"] {
+  float: none;
+  min-height: 42px;
+  padding: 8px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: darkslategray;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+body.login-page input[type="submit"] {
+  width: 100%;
+  margin-top: 8px;
+}
+body.login-page button:hover,
+body.login-page input[type="submit"]:hover {
+  background: rgb(60, 72, 72);
+}
+body.login-page input:focus-visible,
+body.login-page select:focus-visible,
+body.login-page button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}

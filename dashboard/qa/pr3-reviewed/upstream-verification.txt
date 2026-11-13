@@ -1,0 +1,236 @@
+Local PR3 verification; fictional DB; external browser requests blocked.
+
+$ node --openssl-legacy-provider --test tests/*.test.cjs
+✔ sandbox demo boots with hostile legacy env, binds loopback and resets fictional data (3870.231327ms)
+Logged in as fund with id 1 and redirected to /fund/1
+Logged in as fund with id 2 and redirected to /fund/2
+Logged in as fund with id 3 and redirected to /fund/3
+Logged in as fund with id 4 and redirected to /fund/4
+Logged in as fund with id 5 and redirected to /fund/5
+Logged in as startup with id 5 and redirected to /startup/5
+Logged in as startup with id 6 and redirected to /startup/6
+Startup 6 tried to access a milestones record it does not own.
+First login as startup with id 7 and redirected to /onboarding/startup due to first login.}
+✔ expanded deterministic portfolios and histories render with ownership isolation (643.593888ms)
+Logged in as startup with id 1 and redirected to /startup/1
+✔ TRL edits and deletion respond and persist (125.449646ms)
+Logged in as startup with id 1 and redirected to /startup/1
+✔ Gantt updates respond and persist (76.06845ms)
+Logged in as startup with id 1 and redirected to /startup/1
+User 2 with role startup is not allowed to access /admin.
+User 2 with role startup is not allowed to access /admin/get-user.
+User 2 with role startup is not allowed to access /admin/delete-user.
+User 2 with role startup is not allowed to access /fund.
+Logged in as fund with id 1 and redirected to /fund/1
+User 5 with role fund is not allowed to access /admin/users.
+User 5 with role fund is not allowed to access /startup.
+User 5 with role fund is not allowed to access /onboarding/product.
+Logged in as fund with id 2 and redirected to /fund/2
+User 6 with role stakeholder is not allowed to access /admin.
+User 6 with role stakeholder is not allowed to access /startup/submit.
+Logged in as admin with id
+          1
+            and redirected to /admin/
+User 1 with role admin is not allowed to access /startup.
+User 1 with role admin is not allowed to access /fund.
+User not authenticated. Redirect to login.
+✔ Routers are restricted to their roles (289.77805ms)
+Logged in as startup with id 1 and redirected to /startup/1
+Startup 1 tried to access a trl record it does not own.
+Startup 1 tried to access a trl record it does not own.
+Startup 1 tried to access a milestones record it does not own.
+Startup 1 tried to access a milestones record it does not own.
+Startup 1 tried to access a investors record it does not own.
+Startup 1 tried to access a patents record it does not own.
+Startup 1 tried to access a patents record it does not own.
+Startup 1 tried to access a trl record it does not own.
+✔ Startups cannot modify another startup's records (87.726909ms)
+Logged in as fund with id 1 and redirected to /fund/1
+Fund 1 tried to select startup 3 outside its portfolio.
+Logged in as fund with id 2 and redirected to /fund/2
+Fund 2 tried to select startup 1 outside its portfolio.
+✔ Funds and stakeholders can only open startups in their portfolio (163.052602ms)
+Logged in as fund with id 1 and redirected to /fund/1
+✔ Startup detail renders when a startup has no TRL entries (66.764754ms)
+Logged in as fund with id 1 and redirected to /fund/1
+Redirecting user 5 to fund screen since no selected startup was found.
+Redirecting user 5 to fund screen since no selected startup was found.
+Redirecting user 5 to fund screen since no selected startup was found.
+✔ Fund detail pages without a selected startup redirect cleanly (64.090117ms)
+Logged in as admin with id
+          1
+            and redirected to /admin/
+User not authenticated. Redirect to login.
+✔ Login landing does not redirect to itself; logout completes before redirect (64.229829ms)
+Logged in as startup with id 2 and redirected to /startup/2
+✔ TRL deletion accepts the legacy nested payload (69.17126ms)
+Logged in as startup with id 2 and redirected to /startup/2
+✔ Milestone edits render as date-input values, validate and persist (97.282837ms)
+Logged in as startup with id 2 and redirected to /startup/2
+✔ Investor status rejects unknown values (64.549431ms)
+TRL information missing for startup with id 1. Redirecting to /onboarding/product due to first login.}
+✔ Icon font and stylesheet are served locally (71.387242ms)
+TRL information missing for startup with id 1. Redirecting to /onboarding/product due to first login.}
+The following error occurred during upload of a cap table. Redirecting to /startup/submit Error: No valid .xlsx cap table was uploaded.
+Logged in as startup with id 2 and redirected to /startup/2
+The following error occurred during upload of a cap table. Redirecting to /startup/submit Error: FILE_ENDED
+First login as startup with id 4 and redirected to /onboarding/startup due to first login.}
+The following error occurred during upload of a cap table: Error: No valid .xlsx cap table was uploaded.
+✔ Cap table uploads are parsed per request and never written to public/ (233.712626ms)
+Logged in as admin with id
+          1
+            and redirected to /admin/
+Request POST /admin/get-user failed: Error: Failed to query user for id 999999. Error: Error: Failed query user with id: 999999. Error:  Error: No user found for id: 999999
+✔ Failing async handlers return 500 instead of crashing the process (68.26393ms)
+Logged in as admin with id
+          1
+            and redirected to /admin/
+✔ Admin startup creation never leaves a startup without credentials (67.042847ms)
+Logged in as fund with id 1 and redirected to /fund/1
+portfolio rows=153 load_ms=159
+✔ fund portfolio lists every mapped startup in a large fixture (244.994732ms)
+(node:3103201) [DEP0044] DeprecationWarning: The `util.isArray` API is deprecated. Please use `Array.isArray()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ normal application never enables demo authentication from env or request (109.119358ms)
+Logged in as admin with id
+          1
+            and redirected to /admin/
+User 1 with role admin is not allowed to access /startup/submit/delete-trl.
+User not authenticated. Redirect to login.
+Logged in as startup with id 1 and redirected to /startup/1
+User 2 with role startup is not allowed to access /admin/delete-user.
+Startup 1 tried to access a trl record it does not own.
+User not authenticated. Redirect to login.
+Logged in as fund with id 1 and redirected to /fund/1
+User 5 with role fund is not allowed to access /admin/delete-user.
+User 5 with role fund is not allowed to access /startup/submit/delete-trl.
+User not authenticated. Redirect to login.
+Logged in as fund with id 2 and redirected to /fund/2
+User 6 with role stakeholder is not allowed to access /admin/delete-user.
+User 6 with role stakeholder is not allowed to access /startup/submit/delete-trl.
+User not authenticated. Redirect to login.
+User not authenticated. Redirect to login.
+User not authenticated. Redirect to login.
+User not authenticated. Redirect to login.
+User not authenticated. Redirect to login.
+User not authenticated. Redirect to login.
+User not authenticated. Redirect to login.
+User not authenticated. Redirect to login.
+User not authenticated. Redirect to login.
+✔ explicit local demo uses only allowlisted fixture roles and normal sessions (152.727646ms)
+User not authenticated. Redirect to login.
+Logged in as admin with id
+          1
+            and redirected to /admin/
+User not authenticated. Redirect to login.
+✔ demo login rejects cross-origin, missing, foreign, stale and replayed tokens (18.775592ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3915.41074
+
+exit_code=0
+
+$ node --openssl-legacy-provider --require ./tests/layout-model-fixture.cjs --test src/models/investor_startup_map.test.ts
+✔ getStartupsForInvestor returns every mapped startup (74.522324ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1013.4001
+
+exit_code=0
+
+$ cd ../scraper && npx tsc -p tests/tsconfig-contract.json && node --openssl-legacy-provider --test tests/bc-contract.test.cjs
+✔ scraper job reads Business Central over NTLM and persists metrics (46.128932ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 87.314925
+
+exit_code=0
+
+$ npx tsc --noEmit
+
+exit_code=0
+
+$ npm run lint
+
+> Dashboard@1.0.0 lint
+> eslint . --ext .ts
+
+
+exit_code=0
+
+$ npx prettier --check public/css/theme.css public/js/chart-theme.js tests/layout-geometry.cjs tests/layout-matrix.cjs tests/layout-model-fixture.cjs tests/summarize-layout.cjs tests/run-layout-verification.cjs ../scraper/tests/tsconfig-contract.json
+Checking formatting...
+All matched files use Prettier code style!
+
+exit_code=0
+
+$ node tests/e2e.cjs
+ok - login rejects wrong password / unknown email; anonymous redirect
+ok - startup gantt: 3 drags -> single save request (PUTs=1)
+ok - startup add technology (range validation, persisted) (rows=3)
+ok - startup TRL inline edit persists through reload (special characters)
+ok - startup TRL empty name rejected with feedback
+ok - startup milestone edit: prefilled dates, validation, persistence
+ok - startup add milestone; triple-click submit creates one (rows=5)
+ok - startup delete milestone persists
+ok - startup investor status update persists
+ok - startup cap table: invalid upload reported, valid upload rendered
+ok - startup blocked from /admin (403); logout ends session
+ok - fund portfolio -> startup detail/founders/rating; foreign startup 403
+ok - stakeholder sees only own portfolio and no fund figures
+ok - admin user create / duplicate email / edit / delete
+ok - admin create startup appears after reload
+ok - first login of un-onboarded startup enters onboarding (/onboarding/startup)
+ok - mobile viewport renders; keyboard reaches labelled icon buttons (named=26)
+ok - 4 roles x 5 concurrent reloads keep their own sessions
+
+19 steps, 16 screenshots, 0 issue groups
+
+exit_code=0
+
+$ node tests/remaining-e2e.cjs
+ok - full onboarding: cap table, product/TRL, questionnaire, founder; reload and re-login
+ok - admin fund/stakeholder create, edit, selection reset, cancel deletion and delete
+ok - patent initial application -> disclosure/deadlines -> examination -> objection -> granted; cancellation and reload
+
+exit_code=0
+
+$ node tests/role-picker-e2e.cjs
+{
+  "checks": [
+    "admin 1440: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "startup 1440: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "fund 1440: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "stakeholder 1440: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "admin 390: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "startup 390: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "fund 390: keyboard, destination, reload, populated fixtures, logout, tampering",
+    "stakeholder 390: keyboard, destination, reload, populated fixtures, logout, tampering"
+  ],
+  "errors": []
+}
+
+exit_code=0
+
+$ VISUAL_OUT=qa/modernization/after node tests/visual-capture.cjs
+{
+  "screenshots": 56,
+  "problemGroups": []
+}
+
+exit_code=0

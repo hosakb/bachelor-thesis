@@ -1,0 +1,585 @@
+{
+  "base": "http://127.0.0.1:3342",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "name": "tablet",
+      "width": 834,
+      "height": 1112
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "pages": [
+    {
+      "viewport": "desktop",
+      "role": "login",
+      "page": "login",
+      "url": "/",
+      "file": "login-login-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "\"Times New Roman\""
+    },
+    {
+      "viewport": "desktop",
+      "role": "admin",
+      "page": "overview",
+      "url": "/admin",
+      "file": "admin-overview-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "admin",
+      "page": "users",
+      "url": "/admin/users",
+      "file": "admin-users-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "admin",
+      "page": "startups",
+      "url": "/admin/startups",
+      "file": "admin-startups-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "admin",
+      "page": "funds",
+      "url": "/admin/funds",
+      "file": "admin-funds-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "startup",
+      "page": "overview",
+      "url": "/startup",
+      "file": "startup-overview-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "startup",
+      "page": "submit",
+      "url": "/startup/submit",
+      "file": "startup-submit-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "startup",
+      "page": "gantt-year",
+      "url": "/startup",
+      "file": "startup-gantt-year-desktop.png"
+    },
+    {
+      "viewport": "desktop",
+      "role": "fund",
+      "page": "portfolio",
+      "url": "/fund",
+      "file": "fund-portfolio-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "fund",
+      "page": "detail",
+      "url": "/fund/startup",
+      "file": "fund-detail-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "fund",
+      "page": "founders",
+      "url": "/fund/startup/founders",
+      "file": "fund-founders-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "fund",
+      "page": "rating",
+      "url": "/fund/startup/rating",
+      "file": "fund-rating-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "fund",
+      "page": "patent-pane",
+      "url": "/fund/startup",
+      "file": "fund-patent-pane-desktop.png"
+    },
+    {
+      "viewport": "desktop",
+      "role": "stakeholder",
+      "page": "portfolio",
+      "url": "/fund",
+      "file": "stakeholder-portfolio-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "onboarding",
+      "page": "startup",
+      "url": "/onboarding/startup",
+      "file": "onboarding-startup-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "onboarding",
+      "page": "product",
+      "url": "/onboarding/product",
+      "file": "onboarding-product-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "onboarding",
+      "page": "questionnaire",
+      "url": "/onboarding/questionnaire",
+      "file": "onboarding-questionnaire-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "desktop",
+      "role": "onboarding",
+      "page": "track-record",
+      "url": "/onboarding/track-record",
+      "file": "onboarding-track-record-desktop.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "login",
+      "page": "login",
+      "url": "/",
+      "file": "login-login-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "\"Times New Roman\""
+    },
+    {
+      "viewport": "tablet",
+      "role": "admin",
+      "page": "overview",
+      "url": "/admin",
+      "file": "admin-overview-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "admin",
+      "page": "users",
+      "url": "/admin/users",
+      "file": "admin-users-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "admin",
+      "page": "startups",
+      "url": "/admin/startups",
+      "file": "admin-startups-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "admin",
+      "page": "funds",
+      "url": "/admin/funds",
+      "file": "admin-funds-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "startup",
+      "page": "overview",
+      "url": "/startup",
+      "file": "startup-overview-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "startup",
+      "page": "submit",
+      "url": "/startup/submit",
+      "file": "startup-submit-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 12,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "startup",
+      "page": "gantt-year",
+      "url": "/startup",
+      "file": "startup-gantt-year-tablet.png"
+    },
+    {
+      "viewport": "tablet",
+      "role": "fund",
+      "page": "portfolio",
+      "url": "/fund",
+      "file": "fund-portfolio-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "fund",
+      "page": "detail",
+      "url": "/fund/startup",
+      "file": "fund-detail-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 2,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "fund",
+      "page": "founders",
+      "url": "/fund/startup/founders",
+      "file": "fund-founders-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "fund",
+      "page": "rating",
+      "url": "/fund/startup/rating",
+      "file": "fund-rating-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "stakeholder",
+      "page": "portfolio",
+      "url": "/fund",
+      "file": "stakeholder-portfolio-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "onboarding",
+      "page": "startup",
+      "url": "/onboarding/startup",
+      "file": "onboarding-startup-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "onboarding",
+      "page": "product",
+      "url": "/onboarding/product",
+      "file": "onboarding-product-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "onboarding",
+      "page": "questionnaire",
+      "url": "/onboarding/questionnaire",
+      "file": "onboarding-questionnaire-tablet.png",
+      "overflowX": 462,
+      "offscreenControls": 19,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "tablet",
+      "role": "onboarding",
+      "page": "track-record",
+      "url": "/onboarding/track-record",
+      "file": "onboarding-track-record-tablet.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "login",
+      "page": "login",
+      "url": "/",
+      "file": "login-login-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "\"Times New Roman\""
+    },
+    {
+      "viewport": "mobile",
+      "role": "admin",
+      "page": "overview",
+      "url": "/admin",
+      "file": "admin-overview-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "admin",
+      "page": "users",
+      "url": "/admin/users",
+      "file": "admin-users-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "admin",
+      "page": "startups",
+      "url": "/admin/startups",
+      "file": "admin-startups-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "admin",
+      "page": "funds",
+      "url": "/admin/funds",
+      "file": "admin-funds-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "startup",
+      "page": "overview",
+      "url": "/startup",
+      "file": "startup-overview-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "startup",
+      "page": "submit",
+      "url": "/startup/submit",
+      "file": "startup-submit-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 16,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "startup",
+      "page": "gantt-year",
+      "url": "/startup",
+      "file": "startup-gantt-year-mobile.png"
+    },
+    {
+      "viewport": "mobile",
+      "role": "fund",
+      "page": "portfolio",
+      "url": "/fund",
+      "file": "fund-portfolio-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "fund",
+      "page": "detail",
+      "url": "/fund/startup",
+      "file": "fund-detail-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 2,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "fund",
+      "page": "founders",
+      "url": "/fund/startup/founders",
+      "file": "fund-founders-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "fund",
+      "page": "rating",
+      "url": "/fund/startup/rating",
+      "file": "fund-rating-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "fund",
+      "page": "patent-pane",
+      "url": "/fund/startup",
+      "file": "fund-patent-pane-mobile.png"
+    },
+    {
+      "viewport": "mobile",
+      "role": "stakeholder",
+      "page": "portfolio",
+      "url": "/fund",
+      "file": "stakeholder-portfolio-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "onboarding",
+      "page": "startup",
+      "url": "/onboarding/startup",
+      "file": "onboarding-startup-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "onboarding",
+      "page": "product",
+      "url": "/onboarding/product",
+      "file": "onboarding-product-mobile.png",
+      "overflowX": 191,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "onboarding",
+      "page": "questionnaire",
+      "url": "/onboarding/questionnaire",
+      "file": "onboarding-questionnaire-mobile.png",
+      "overflowX": 906,
+      "offscreenControls": 208,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    },
+    {
+      "viewport": "mobile",
+      "role": "onboarding",
+      "page": "track-record",
+      "url": "/onboarding/track-record",
+      "file": "onboarding-track-record-mobile.png",
+      "overflowX": 0,
+      "offscreenControls": 0,
+      "scrollHiddenTableControls": 0,
+      "bodyFont": "sans-serif"
+    }
+  ]
+}

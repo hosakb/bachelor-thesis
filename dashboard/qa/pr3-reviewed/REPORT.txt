@@ -1,0 +1,65 @@
+Independent before/after visual QA — t_004b1565
+
+Verdict: APPROVED for the scoped local presentation handoff. No remaining must-fix visual or regression finding was established. Publication is a separate downstream phase; this report does not claim remote PR acceptance, deployment, merge, or CI green.
+
+Target: existing PR https://github.com/hosakb/bachelor-thesis/pull/3, branch style/pr1-frontend-modernization ONLY. Latest root-task user steering supersedes old PR1 publication instructions. Do not modify/push PR1 or PR2 branches or create a new PR.
+
+What was reviewed
+  Actual uncommitted implementation: /home/boh/react-native-dev/bachelor-thesis/.worktrees/t_869afac7, based on267cfb4097b86ba60b8e3ebdce77b824b529fc65. Remote267cfb4 alone does not contain this handoff.
+  Fresh independent copy: /home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565. 108 source/test files were copied and SHA256-verified before execution. source-manifest.json identifies exact bytes approved; publisher must preserve/reverify them.
+  Read-only inspection of implementation diff: theme.css, chart-theme.js, credential login labels/autocomplete, bounded TRL table wrapper. Comparison with reviewed c8c224b confirms production routes, models, fixture launcher and original per-page calculation/chart scripts unchanged. Layout templates only load shared presentation assets; no business-logic change found.
+
+Independent fresh execution
+  cwd: /home/boh/react-native-dev/bachelor-thesis/.worktrees/t_004b1565/dashboard
+  CHROMIUM_PATH=/home/boh/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome MATRIX_PORT=3371 node tests/layout-matrix.cjs
+  Exit0;159/159 cases captured;53 distinct page/UI states at each of desktop1440x1000, tablet834x1112, mobile390x844. Zero geometry defects, zero console/page/HTTP>=400/request-failed/external-request problems, zero document-overflow cases.
+  Assertions evaluated initial, bottom-scrolled and toggled states: sidebar shell/viewport coverage, sticky top, link reachability, mandatory populated Gantt on detail routes, bars/header, top inset, grid extent, real horizontal timeline/table scroll reachability. All actual159 screenshots present, unique case keys verified programmatically.
+  Own test port3371 has no remaining listener after completion. git diff --check on source handoff passes.
+
+Defects reproduced before and eliminated after
+  Frozen pre-correction CSS matrix:100 cases with sidebar-shell gap;33 with Gantt top inset;1 with document horizontal overflow. Categories overlap, not a summed total of affected cases.
+  Fresh final matrix:0 in each category. Original purple milestone bars and time-range controls retained. Wide Gantt timeline is deliberately internally scrollable; date/bar cuts at viewport edges are not irreversible clipping. Fund-detail mobile expanded-sidebar TRL table now stays within a bounded scroll container.
+  Important baseline qualification: correction-before renders use frozen old CSS with current credential labels, not an untouched remote267cfb4 page. Original task1 pre-modernization screenshots are a separate baseline.
+
+Visual comparisons and exact evidence paths
+  pairs.json:159 correction-before / fresh-after pairs with absolute paths, state and viewport.
+  original-pairs.json:51 matched task1 original / fresh-after page pairs (17 states x3 viewports), covering admin, startup, fund, stakeholder, onboarding and empty-fund pages. Anonymous original login is a demo role picker, not the credential form, so it is NOT misrepresented as a matched credential-login comparison.
+  index.html:portable side-by-side browser index of all159 correction pairs and51 original pairs. Full source-resolution images are included in the evidence ZIP.
+  Overview sheets overview-{desktop,tablet,mobile}-{1,2,3}.jpg:all159 before/after thumbnail pairs inspected. Thumbnail overview is not a claim that every tiny glyph was manually audited.
+  Original sheets original-{desktop,tablet,mobile}-{1,2}.jpg:representative admin, startup, fund-detail, stakeholder, onboarding-product and rating comparisons inspected at larger size.
+  Detail-login-mobile.jpg:full credential card visible, labelled fields and submit readable, balanced vertical centering; montage crop initially suggested a low/clipped card, disproved by the full-resolution comparison.
+  Detail-startup-overview-mobile.jpg and financial-desktop.png:chart legend/axes/ticks and series readable, no actual label overlap. Reduced-motion handling is retained in shared chart defaults.
+  fund-detail-mobile-bottom.png:expanded sidebar and TRL/investor/patent cards reviewed; long table strings scroll within cards, no card-to-card overflow. Labels remain readable at native mobile width, but expanded navigation leaves dense content deliberately narrow.
+  Full startup-submit-investor-mobile.png:all fields, close and submit fit in tall dialog; no overlapping controls found. Other dialog/contact-sheet views show no new overlap; tall dialogs retain internal scrolling.
+
+Verified visual outcomes
+  Original palette remains recognizable: navy page/slate cards, charcoal sidebar/header, orange active navigation, purple milestone bars, inherited red/peach financial series and yellow rating cells. Pending fidelity corrections replace derived presentation colors with existing palette tokens. Gantt grid now matches the surrounding dark dashboard; chart meaning/series values are untouched.
+  Shared system-font hierarchy, row spacing, cards, headings and controls align consistently. Original product onboarding's compressed mobile columns become a readable vertical flow. Rating data remains dense but reachable through deliberate horizontal scrolling, not hidden.
+  Sidebar fills available shell on long pages with sticky reachable navigation. Mobile collapse/expand semantics remain intact. Gantt no longer receives populated-chart empty-state padding and its full grid width remains reachable.
+  Credential login labels, autocomplete and full-width submit improve clarity without changing authentication. Demo-picker branch/CSRF route untouched.
+  Apparent original stakeholder rating difference7.8 vs fresh4 on tablet was investigated: unchanged investor.ts rating GET computes and persists ratingTotal via updateRatingTotal. The original capture visits rating between viewports; the fresh matrix runs portfolio before rating. This is pre-existing stateful capture ordering, not a CSS/calculation regression. Screenshots are not asserted to have identical seed lifecycle state across both different capture harnesses.
+
+Upstream independent regression execution (t_1e30c3f7)
+  Raw records copied as upstream-verification.txt/json; all10 commands exit0 on a hash-verified copy of this same implementation. These were executed by upstream QA, not re-executed or invented by this visual review.
+  cwd dashboard; CHROMIUM_PATH=/home/boh/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome
+  1 node --openssl-legacy-provider --test tests/*.test.cjs —21/21 pass
+  2 node --openssl-legacy-provider --require ./tests/layout-model-fixture.cjs --test src/models/investor_startup_map.test.ts —1/1 pass
+  3 cd ../scraper && npx tsc -p tests/tsconfig-contract.json && node --openssl-legacy-provider --test tests/bc-contract.test.cjs —1/1 local NTLM contract pass
+  4 npx tsc --noEmit —pass
+  5 npm run lint —pass
+  6 npx prettier --check public/css/theme.css public/js/chart-theme.js tests/layout-geometry.cjs tests/layout-matrix.cjs tests/layout-model-fixture.cjs tests/summarize-layout.cjs tests/run-layout-verification.cjs ../scraper/tests/tsconfig-contract.json —pass
+  7 node tests/e2e.cjs —19 steps,16 screenshots,0 issue groups; CRUD, TRL, milestones drag/save, cap-table, investor state, isolation, persistence/concurrency
+  8 node tests/remaining-e2e.cjs —onboarding and patent/fund/stakeholder flows pass
+  9 node tests/role-picker-e2e.cjs —8 role/viewport checks pass
+  10 VISUAL_OUT=qa/modernization/after node tests/visual-capture.cjs —pass
+  Additional upstream node tests/independent-qa.cjs —15 keyboard/chart cases pass; all3 credential Tab sequences email→password→submit,4-role keyboard reachability at3 viewports, initialized nonzero canvases and finite datasets. Upstream independent full159-case matrix also passes.
+
+Open issues and limitations
+  No remaining must-fix found in this local scoped review. Intentional wide-table/Gantt scrolling and dense expanded-mobile-sidebar layouts remain; mobile charts read best with navigation collapsed. This is not exhaustive WCAG, every financial number, cross-browser or live ERP/database validation.
+  Test data is fictional local pg-mem; scraper contract uses local fictional HTTP. Upstream setup failures and pre-existing dependency vulnerabilities are preserved in upstream report; no unrelated dependency remediation performed.
+  The headless execute_code helper was blocked by approval policy in this run; it did not execute and was not needed. Ordinary approved file scripts and terminal execution produced the real results. No review provider was fabricated or unavailable for the performed image-tool review.
+  Commit/push, remote screenshot/body readback, checks and final board acceptance remain downstream. No remote status queried/claimed by this task. Absence of configured checks must not be called CI green.
+
+Publisher handoff
+  Publish scoped implementation source from t_869afac7 matching source-manifest.json plus new test/evidence whitelist from its source-handoff.zip; do not mass-stage regenerated legacy qa folders, archives, server.log, node_modules, dist or cache files.
+  Include this report and portable paired image evidence in PR3 summary while preserving existing body. Independent regression and visual gates now approve these exact local bytes. Verify actual published SHA/body/artifact URLs and configured checks; do not merge or restart the sandbox service.

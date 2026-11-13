@@ -1,0 +1,42 @@
+[
+  {
+    "command": "node --openssl-legacy-provider --test tests/*.test.cjs",
+    "exit_code": 0
+  },
+  {
+    "command": "node --openssl-legacy-provider --require ./tests/layout-model-fixture.cjs --test src/models/investor_startup_map.test.ts",
+    "exit_code": 0
+  },
+  {
+    "command": "cd ../scraper && npx tsc -p tests/tsconfig-contract.json && node --openssl-legacy-provider --test tests/bc-contract.test.cjs",
+    "exit_code": 0
+  },
+  {
+    "command": "npx tsc --noEmit",
+    "exit_code": 0
+  },
+  {
+    "command": "npm run lint",
+    "exit_code": 0
+  },
+  {
+    "command": "npx prettier --check public/css/theme.css public/js/chart-theme.js tests/layout-geometry.cjs tests/layout-matrix.cjs tests/layout-model-fixture.cjs tests/summarize-layout.cjs tests/run-layout-verification.cjs ../scraper/tests/tsconfig-contract.json",
+    "exit_code": 0
+  },
+  {
+    "command": "node tests/e2e.cjs",
+    "exit_code": 0
+  },
+  {
+    "command": "node tests/remaining-e2e.cjs",
+    "exit_code": 0
+  },
+  {
+    "command": "node tests/role-picker-e2e.cjs",
+    "exit_code": 0
+  },
+  {
+    "command": "VISUAL_OUT=qa/modernization/after node tests/visual-capture.cjs",
+    "exit_code": 0
+  }
+]

@@ -70,7 +70,7 @@
     },
     {
       "name": "mobile viewport renders; keyboard reaches labelled icon buttons",
-      "detail": "named=27"
+      "detail": "named=26"
     },
     {
       "name": "4 roles x 5 concurrent reloads keep their own sessions",
