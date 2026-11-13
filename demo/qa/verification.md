@@ -48,7 +48,11 @@ Inspected desktop/tablet fund portfolio, mobile stakeholder and desktop/mobile a
 
 A separate read-only gpt-6.1-sol/OpenAI Codex reviewer approved this exact scoped implementation with no must-fix findings. The reviewer independently ran the four focused tests and TypeScript/whitespace checks, inspected isolation, production-scope boundaries, mock honesty, import/persistence and reset behavior. Browser scripts were read, not independently rerun or visually approved by that reviewer. Parent execution owns the browser and visual evidence above.
 
-Non-blocking review limitations: helper test ports are fixed; shutdown tests cover normal successful shutdown, not arbitrarily stalled requests. Clean-clone verification is recorded separately after the reviewed commit.
+Non-blocking review limitations: helper test ports are fixed; shutdown tests cover normal successful shutdown, not arbitrarily stalled requests.
+
+## Clean-clone tutorial verification
+
+Cloned the actual pushed `feat/erp-demo-server` branch from GitHub into a new isolated checkout at `.worktrees/t_07a4ef3c-clean-demo`, head `0246e13b61b505c8d253287abe98832a44adc800`. Followed the README install/build sequence literally: both `npm ci --ignore-scripts` commands and the normal scraper build passed without existing node_modules or developer configuration. All four demo tests and all twelve browser cases passed again in that fresh clone. The launcher test exercises the documented startup, role login, terminal import, reload and stop/restart reset twice. Browser execution used the documented `CHROMIUM_PATH` option for this host. No source changes were required after independent review; this section only records the completed check.
 
 ## Setup failures and boundaries
 
