@@ -1,0 +1,65 @@
+{
+  "cases": [
+    {
+      "role": "admin",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "role": "startup",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "role": "fund",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "role": "stakeholder",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "role": "admin",
+      "width": 834,
+      "passed": true
+    },
+    {
+      "role": "startup",
+      "width": 834,
+      "passed": true
+    },
+    {
+      "role": "fund",
+      "width": 834,
+      "passed": true
+    },
+    {
+      "role": "stakeholder",
+      "width": 834,
+      "passed": true
+    },
+    {
+      "role": "admin",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "role": "startup",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "role": "fund",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "role": "stakeholder",
+      "width": 390,
+      "passed": true
+    }
+  ],
+  "errors": []
+}

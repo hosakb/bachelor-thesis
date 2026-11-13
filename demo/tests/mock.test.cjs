@@ -1,0 +1,30 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const { createMock, companies } = require('../mock-erp.cjs');
+const httpntlm = require('../../scraper/node_modules/httpntlm');
+const { promisify } = require('node:util');
+const get = promisify(httpntlm.get);
+
+test('maintained ERP mock implements the real scraper NTLM/OData subset', async t => {
+  const mock = createMock();
+  await new Promise(resolve => mock.server.listen(0, '127.0.0.1', resolve));
+  t.after(() => new Promise(resolve => mock.server.close(resolve)));
+  const base = `http://127.0.0.1:${mock.server.address().port}`;
+  const company = companies[0];
+  const url = `${base}/ODataV4/Company('${company.name}')/testtest?$filter=No eq '1331'`;
+  assert.equal((await fetch(url)).status, 401);
+  assert.equal((await fetch(url, {headers:{Authorization:'NTLM !!!'}})).status, 401);
+  const options = {username:'demo', lm_password:Buffer.alloc(16,1), nt_password:Buffer.alloc(16,2), workstation:'demo', domain:''};
+  const balance = await get({...options, url});
+  assert.equal(balance.statusCode, 200);
+  assert.deepEqual(JSON.parse(balance.body).value, [{No:'1331',Balance:company.balances[0]}]);
+  const liabilities = await get({...options, url:url.replace("No eq '1331'", "No eq '1601' or No eq '1602'")});
+  assert.deepEqual(JSON.parse(liabilities.body).value.map(r => r.Balance), company.liabilities);
+  mock.setSnapshot(2);
+  assert.equal(JSON.parse((await get({...options,url})).body).value[0].Balance, company.balances[2]);
+  assert.equal((await get({...options,url:url.replace(company.name,'Unknown')})).statusCode,404);
+  assert.equal((await get({...options,url:url.replace("No eq '1331'","No eq '9999'")})).statusCode,400);
+  assert.equal((await fetch(base+'/health')).status,200);
+  assert.ok(mock.requests.some(r => r.type === 1));
+  assert.ok(mock.requests.some(r => r.type === 3));
+});
